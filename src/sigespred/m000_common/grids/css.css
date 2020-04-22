@@ -1,0 +1,155 @@
+
+.ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td {
+    padding-right: 0px !important;
+    white-space: normal !important;
+
+}
+
+
+
+.table > tbody > tr > td {
+    padding: 5px !important;
+    padding-right: 3px;
+    border: solid 1px #dedede;
+  
+}
+
+
+.ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+    height: 40px;
+    margin-top: 3px;
+ 
+    white-space: inherit !important;
+}
+
+
+#gview_gridpropietario .ui-th-column .ui-th-ltr{
+    border:1px solid #dedede;
+}
+
+.ui-th-column,.ui-th-ltr{
+    white-space: inherit !important;
+    
+}
+
+
+.table > tbody > tr > td{
+    border: 1px solid black !important;
+}
+/*Seccion datos del predio*/
+.datos_expediente_h{
+    background: yellow !important;
+    border:1px solid black;
+    color: black;
+}
+.datos_expediente_r{
+    background: #FFFF8C !important;
+    color: black;
+}
+
+/*Seccion datos del predio*/
+.inf_pred_afect_h{
+    background: #FF2A2A !important;
+    color: white;
+}
+.inf_pred_afect_r{
+    background: #FFA4A4 !important;
+    color: black;
+}
+/*Otro dato 01*/
+.block_datos_1_h{
+    background: #1280DA !important;
+    color: white;
+}
+.block_datos_1_r{
+    background: #8DC7F5 !important;
+    color: black;
+}
+
+/*Etapa 01*/
+.etapa_1_h_a{
+    background: #E88B00 !important;
+    color: white;
+}
+.etapa_1_h_b{
+    background: #FFA620 !important;
+    color: white;
+}
+.etapa_1_r{
+    background: #FFDBA4 !important;
+    color: black;
+}
+
+/*Etapa 02*/
+.etapa_2_h_a{
+    background: #008040 !important;
+    color: white;
+}
+.etapa_2_h_b{
+    background: #009D4F !important;
+    color: white;
+}
+.etapa_2_r{
+    background: #A4FFD1 !important;
+    color: black;
+}
+/*devengado*/
+.devengado_h{
+    background: #FC4236 !important;
+    color: white;
+}
+.devengado_r{
+    background: #FEDCDA !important;
+    color: black;
+}
+
+/*Etapa 03*/
+.etapa_3_h_a{
+    background: #257CFE !important;
+    color: white;
+}
+.etapa_3_h_b{
+    background: #0162F3 !important;
+    color: white;
+}
+.etapa_3_r{
+    background: #A4C8FF !important;
+    color: black;
+}
+
+/*VALORIZACION DEL TERRENO*/
+
+.val_terre_h_a{
+    background: #9d0000 !important;
+    color: white;
+}
+.val_terre_h_b{
+    background: #D70000 !important;
+    color: white;
+}
+.val_terre_r{
+    background: #FFD2D2 !important;
+    color: black;
+}
+.val_terre_r_b{
+    background: #FF8080 !important;
+    color: black;
+}
+.val_terre_r_a{
+    background: #FFAAAA !important;
+    color: black;
+}
+
+
+
+.ui-th-ltr{
+    background: #F0F0F0;
+}
+.ui-search-input{
+    width: 80%;
+}
+.ui-state-highlight { background: yellow !important; }
+
+.resaltado{
+    background: yellow !important;
+}

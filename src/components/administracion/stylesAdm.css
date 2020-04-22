@@ -1,0 +1,115 @@
+.btn-siderbar{
+    height: 26px;
+    margin-left:-8px;
+}
+.footerproce{
+    z-index: 1000;
+}
+.detail{
+    margin-top: 20px;
+    margin-left: -5px !important;
+    color: white !important;    
+}
+.text-red{
+    color: #FB5A43!important;
+}
+
+aside.skin-1 .main-menu > ul > li > a .menu-hover {
+    background: red;
+    box-shadow: 0 0 10px 0px red;
+    -moz-box-shadow: 0 0 10px 0px red;
+    -webkit-box-shadow: 0 0 10px 0px red;
+}
+.mtop-25{
+    margin-top: 25px !important;
+}
+.fullborder{
+    margin: 10px 10px 10px 10px;
+}
+
+.padding-trabajador{
+    padding: 15px !important;
+}
+
+.trabajdorlist:hover{
+    background: #EDEBE9;
+}
+
+ input.uppercaseinput {
+      text-transform: uppercase;
+  }
+
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+}
+.fileUpload input[type=file]{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+
+input:not(:focus):invalid {
+    border-bottom: 1px solid #FDB3A8;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+input:not(:focus):valid {
+  
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+textarea:not(:focus):invalid {
+    border-bottom: 1px solid #FDB3A8;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+textarea:not(:focus):valid {
+    border-bottom: 1px solid ;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+input:focus:invalid {
+   
+}
+
+.margin-form-search{
+    margin-right: 5px!important;
+}
+
+.margin-form-boton{
+    margin-top: 5px!important;
+}
+.fototrabajador-list{
+    height: 45px;
+    width: 45px;
+}
+
+.fototrabajador-list2{
+    height: 60px;
+    width: 60px;
+}
+.propietarioborder{
+    border: 1px solid #93E1FF;
+    margin-top: 3px;
+}
+
+.ocupanteborder{
+    border: 1px solid #FD9975;
+    margin-top: 3px;
+}
+
+
+

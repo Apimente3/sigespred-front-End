@@ -1,0 +1,33 @@
+.text-select-proc{
+    color: purple !important;
+}
+.footer-navbar-wrapper {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    margin-top: auto;
+}
+
+.anaranjado{
+    color: orange !important;
+}
+
+.bloqueador{
+opacity: 1; visibility: visible; position: fixed; overflow: auto; z-index: 2001; transition: all 0.3s ease 0s; top: 0px; right: 0px; left: 0px; bottom: 0px; text-align: center
+; display: block;
+    border-radius: 5px!important;
+}
+.bloqueador2{
+    opacity: 1; visibility: visible; display: inline-block; outline: none; transition: all 0.3s ease 0s; text-align: left; position: relative; vertical-align: middle;
+    border-radius: 5px!important;
+}
+.bloqueador3{
+    display: inline-block; vertical-align: middle; height: 100%;
+}
+.backblq{
+    opacity: 0.5; visibility: visible; background-color: black; position: fixed; top: 0px; right: 0px; bottom: 0px; left: 0px; z-index: 2000; transition: all 0.3s ease 0s;
+}
+.visorPDF{
+    height: 800px;
+    width: 1300px;
+}

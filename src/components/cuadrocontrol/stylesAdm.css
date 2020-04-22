@@ -1,0 +1,45 @@
+
+.footerproce{
+    z-index: 1000;
+}
+.detail{
+    margin-top: 30px;
+    color: white !important;    
+}
+.text-red{
+    color: #FB5A43!important;
+}
+
+aside.skin-1 .main-menu > ul > li > a .menu-hover {
+    background: red;
+    box-shadow: 0 0 10px 0px red;
+    -moz-box-shadow: 0 0 10px 0px red;
+    -webkit-box-shadow: 0 0 10px 0px red;
+}
+.mtop-25{
+    margin-top: 25px !important;
+}
+.fullborder{
+    margin: 10px 10px 10px 10px;
+}
+
+.padding-trabajador{
+    padding: 15px !important;
+}
+
+.trabajdorlist:hover{
+    background: #EDEBE9;
+}
+.cuadrocontainer{
+    margin-top: 90px;
+padding: 10px;
+}
+
+.mtop150{
+    margin-top: 90px;
+    margin-left: 15px;
+    
+}
+.rowcellcuadro{
+    padding: 5px;
+}

@@ -1,0 +1,2 @@
+export const BUSCAR_PROYECTOS = 'BUSCAR_PROYECTOS';
+

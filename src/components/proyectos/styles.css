@@ -1,0 +1,59 @@
+.margin20{
+    margin-right:20px
+}
+.select-search{
+    display:inline-block;
+    width:100px
+}
+.mtop-5 {
+    margin-top: 5px;
+}
+footer{
+    margin-left: 0 !important;
+    background: #D21318;
+    color: white;
+}
+
+footer .list-unstyled > li> a> small{
+    color: white;
+}
+
+.margin-rigth-20{
+    margin-right: 50px !important;
+}
+.font-9{
+    font-size: 9px !important;
+}
+.predio-list{
+    border-color:rgba(0,0,0,0.0) !important;
+    margin-top: 3px !important;
+}
+.list-group-item{
+    padding: 2px 2px 2px 2px !important;
+}
+.font-7{
+    font-size: 9px !important;
+}
+
+.footer {
+    background-color:red;
+    position:fixed;
+    bottom:0px;
+    left:0px;
+    right:0px;
+   
+    margin-bottom:0px;
+    /* Set the fixed height of the footer here */
+
+}
+.h-list-pred-footer{
+    height: 125px;
+}
+
+.footer-navbar-wrapper {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    margin-top: auto;
+}
+

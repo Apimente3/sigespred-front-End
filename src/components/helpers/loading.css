@@ -1,0 +1,12 @@
+.loading {
+    background: transparent url(https://a-v2.sndcdn.com/assets/images/loader-db80c58f.gif) no-repeat 50%;
+    clear: both;
+    text-align: center;
+    box-sizing: border-box;
+    min-height: 40px;
+    width: 100%;
+}
+
+.loading.m-padded {
+    padding: 200px 0;
+}

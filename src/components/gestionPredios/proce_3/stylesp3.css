@@ -1,0 +1,114 @@
+.mtop-20{
+    margin-top: 60px;
+}
+
+.footer {
+
+
+}
+
+.btn-control{
+    width: 150px;
+    margin-right: 5px;
+}
+
+.h-list-pred-footer{
+    height: 100px !important;
+}
+.margin-button-form{
+    margin-bottom: 180px !important;
+}
+
+.footer-navbar-wrapper {
+    -webkit-box-flex: 0 !important;
+    -ms-flex: none !important;
+    flex: none !important;
+    margin-top: auto !important;
+}
+
+.flex-child--no-shrink {
+    -webkit-flex-shrink: 0 !important;
+    flex-shrink: 0 !important;
+}
+
+.flex-child {
+    display: block !important;
+    max-width: 100% !important; 
+}
+
+.pb24 {
+    padding-bottom: 24px !important;
+}
+
+.limiter {
+    margin-left: auto;
+    margin-right: auto;
+    width: 91.666666666%;
+    max-width: 1200px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.color-darken50 {
+    color: rgba(31, 51, 73, 0.50) !important;
+}
+
+.txt-s {
+    font-size: 12px;
+    line-height: 18px;
+}
+.mr18 {
+    margin-right: 18px !important;
+}
+
+.footer-proce a{
+    color: white !important;    
+}
+
+.footerproce {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: red;
+    color: white;
+    text-align: center;
+}
+
+.text-fech_proc{
+    color: #00aced !important;
+}
+
+.text-fech_gene{
+    color: #8c8c8c !important;
+}
+
+.form-button-proc{
+     width: 75px !important;
+    height: 30px;
+ }
+.form-button-proc2{
+    width: 95px !important;
+    height: 30px;
+}
+.btn-form-margin{
+    margin-right: 3px;
+}
+.margin-checkbox-form{
+    margin-left: 35px;
+    margin-top:80px !important;
+}
+.lbl-form-small{
+    font-size: 11px;
+}
+
+.lbl-form-small-10{
+    font-size: 10px;
+}
+
+.lbl-form-small-9{
+    font-size: 9px;
+}
+.anaranjado{
+    color: orange !important;
+}

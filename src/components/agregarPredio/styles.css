@@ -1,0 +1,32 @@
+.mtop-20{
+    margin-top: 50px;
+}
+
+.footer {
+
+
+}
+.btn-control{
+    width: 150px;
+    margin-right: 5px;
+}
+.floatright{
+    float: right !important;
+}
+
+.h-list-pred-footer{
+    height: 100px !important;
+}
+.margin-button-form{
+    margin-bottom: 0px !important;
+}
+
+.footer-navbar-wrapper {
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    margin-top: auto;
+}
+.sin-marginform{
+    padding-right:0px !important;
+}

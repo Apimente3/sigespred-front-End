@@ -1,0 +1,1 @@
+<div className="loading regular m-padded"></div>

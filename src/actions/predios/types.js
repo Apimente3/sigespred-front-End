@@ -1,0 +1,2 @@
+export const LISTAR_PREDIOS = 'LISTAR_PREDIOS';
+export const AGREGAR_PREDIO = 'AGREGAR_PREDIO';
