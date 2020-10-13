@@ -14,14 +14,13 @@ export function deleteToken() {
     localStorage.removeItem(TOKEN_KEY);
 }
 
-export const login = ({token, trabajador }) => {
-    
-    if(!token || !trabajador){
+export const login = ({token, usuario }) => {
+    if(!token || !usuario){
         return null
     }
     localStorage.setItem(TOKEN_KEY, token);
-    localStorage.setItem(USUARIO, JSON.stringify(trabajador))
-    localStorage.setItem(USUARIO_ID, trabajador.id)
+    localStorage.setItem(USUARIO, JSON.stringify(usuario))
+    localStorage.setItem(USUARIO_ID, usuario.id)
     return true;
 }
 

@@ -48,11 +48,11 @@ const Login = ({history}) => {
     }, []);
 
 
-    async function login(dni, password) {
+    async function login(dni, contrasenia) {
         try {
             const {data} = await axios.post('/login', {
                 dni,
-                password
+                contrasenia
             });
             if (LoginSession(data)) {
                 history.push('/list-proyectos');
