@@ -2,26 +2,46 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 const ComboData = ({ id, name, data, valorkey, valornombre, nombrefuncion}) => {
+    let varData = data[Object.keys(data)[0]];
 
     const clickMe = () => {
         this.props.clickMe()
     }
-
-    return (
-        <>
-        <div>
-           
-        </div>
-        <select id={id} name={name} onChange={() => nombrefuncion()} className="form-control">
-            <option value="">--SELECCIONE--</option>
-            {data.result.map((value) =>  
-                <option key={value[`${valorkey}`].toString()} value={value[`${valorkey}`].toString()}>
-                    {value[`${valornombre}`].toString()}
-                </option>
-            )}
-        </select>
-        </>
-    );
+    
+    if (nombrefuncion){
+        return (
+            <>
+            <div>
+               
+            </div>
+            <select id={id} name={name} onChange={() => nombrefuncion()} className="form-control">
+                <option value="">--SELECCIONE--</option>
+                {varData.map((value) =>  
+                    <option key={value[`${valorkey}`].toString()} value={value[`${valorkey}`].toString()}>
+                        {value[`${valornombre}`].toString()}
+                    </option>
+                )}
+            </select>
+            </>
+        );
+    } else {
+        return (
+            <>
+            <div>
+               
+            </div>
+            <select id={id} name={name} className="form-control">
+                <option value="">--SELECCIONE--</option>
+                {varData.map((value) =>  
+                    <option key={value[`${valorkey}`].toString()} value={value[`${valorkey}`].toString()}>
+                        {value[`${valornombre}`].toString()}
+                    </option>
+                )}
+            </select>
+            </>
+        );
+    }
+    
 };
 
 // Checkbox.propTypes = {

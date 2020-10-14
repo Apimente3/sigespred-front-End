@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import moment from 'moment';
+import { useAsync } from "react-use";
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import Header from "../../sigespred/m000_common/headers/Header";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
@@ -13,6 +14,7 @@ import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import ComboData from "../../components/helpers/ComboData";
+import  {helperGetListProyectos, helperGetListTipoPlano, helperGetListDepartamento} from "../../components/helpers/LoadMaestros";
 
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
 
@@ -22,7 +24,8 @@ const {$} = window;
 
 /*Lista los proyectos de acuerdo a una busqueda*/
 async function getListProyectos(busqueda = '') {
-    const {data: proyectos} = await Axios.get(`/gestionpredial`);
+    const {data:proyectos} = await Axios.get(`/gestionpredial`);
+    
     return {proyectos};
 }
 
@@ -37,37 +40,18 @@ async function getListPlanos(busqueda = '') {
     // return {proyectos, resumen};
 }
 
-function useAsync(getUrl, params) {
-    const [value, setValue] = useState(null);
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(true);
-    async function getResource() {
-      try {
-        setLoading(true);
-        // const result = await getMethod(...params);
-        const {data:result} = await Axios.get(`${getUrl}`);
-        setValue({result});
-      } catch (e) {
-        setError(e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    useEffect(() => {
-      getResource();
-    }, params);
-  
-    return { value, error, loading };
-  }
 
 function alertTest(){
     alert('por aqui se paso');
 }
 
 const Planos = ({history}) => {
-    const resListaProyectos = useAsync('/gestionpredial', [""]);
-    const resListaTipoPlano = useAsync('/tipoplano', [""]);
-    const resListaDepartmento = useAsync('/departamento', [""]);
+    const resListaProyectos = useAsync(helperGetListProyectos, []);    
+    const resListaTipoPlano = useAsync(helperGetListTipoPlano, [""]);
+    const resListaDepartmento = useAsync(helperGetListDepartamento, [""]);
+    // const resListaProyectos = useAsync('/gestionpredial', [""]);
+    // const resListaTipoPlano = useAsync('/tipoplano', [""]);
+    // const resListaDepartmento = useAsync('/departamento', [""]);
 
 
     const [planos, set_planos] = useState([]);
@@ -97,7 +81,6 @@ const Planos = ({history}) => {
             }
             */
         }
-        moment.locale('es');
         init();
     }, []);
     
