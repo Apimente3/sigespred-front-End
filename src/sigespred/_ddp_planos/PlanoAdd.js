@@ -16,8 +16,14 @@ import {serverFile} from "../../config/axios";
 const {$} = window;
 
 const PlanoAdd = ({history}) => {
-
-
+    
+    
+    
+    
+    
+    
+    
+    
     const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'});
     const dispatch = useDispatch();
     const agregarTrabajadorComp = (trabajador) => dispatch(agregar(trabajador));
@@ -94,17 +100,213 @@ const PlanoAdd = ({history}) => {
 
 
                 <form onSubmit={registrar}>
-
-
                     <div className="container mtop-20">
                         <form>
                             <fieldset className={'fielsettext'}>
                                 <legend align="mtop-25 center fielsettext ">
-                                    <label className={'titleform'}>REGISTRO DE TRABAJADOR</label>
+                                    <label className={'titleform'}>REGISTRAR PLANO</label>
                                 </legend>
                             </fieldset>
                         </form>
+                        <div className="form-group mtop-25">
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <fieldset>
+                                        <legend>Datos de Codificación</legend>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label"><span className="obligatorio">* </span>Tipo de Plano</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="tipoplano" name="tipoplano" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label"><span className="obligatorio">* </span>Proyecto</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="proyecto" name="proyecto" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label"><span className="obligatorio">* </span>Nro. de Expediente</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                {/* <input type="text" className="form-control " id="codplano" name="codplano" placeholder="Código del plano" onBlur={definirFiltro}/> */}
+                                                <input type="text" className="form-control " id="expediente" name="expediente" placeholder="Número de expediente"/>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label"><span className="obligatorio">* </span>Año</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="periodo" name="periodo" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label"><span className="obligatorio">* </span>Proceso</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="proceso" name="proceso" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div className="col-md-6">
+                                    <fieldset>
+                                        <legend>Datos Generales</legend>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Profesional Solicitante</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="profesional" name="profesional" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Estado del Plano</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="estadoplano" name="estadoplano" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Plano Antecedente</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                {/* <input type="text" className="form-control " id="codplano" name="codplano" placeholder="Código del plano" onBlur={definirFiltro}/> */}
+                                                <input type="text" className="form-control" id="antecedente" name="antecedente" readOnly/>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Fecha de Creación</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <input style={{'line-height': '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control" />
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Observaciones</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <input type="text" className="form-control" id="observacion" name="observacion"/>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div className="row mt-5">
+                                <div className="col-md-6">
+                                    <fieldset>
+                                        <legend>Ubicación</legend>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Tramo</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="tramo" name="tramo" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Subtramo</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <input type="text" className="form-control" id="subtramo" name="subtramo"/>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Departamento</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="departamento" name="departamento" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Provincia</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="provincia" name="provincia" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Distrito</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <select id="distrito" name="distrito" className="form-control">
+                                                    <option value="0">--SELECCIONE--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div className="col-md-6">
+                                    <fieldset>
+                                        <legend>Archivos</legend>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Plano Dígital</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <form className="md-form">
+                                                    <UploadFile key="plano_digital" file={trabajador.foto}
+                                                        accept={'.jpg,.png,.gif'}
+                                                        setFile={saveFotoPortada}></UploadFile>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Memoría Descriptiva</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <form className="md-form">
+                                                    <UploadFile key="plano_digital" file={trabajador.foto}
+                                                        accept={'.jpg,.png,.gif'}
+                                                        setFile={saveFotoPortada}></UploadFile>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        
+                        </div>
+
+
                         <div className="panel panel-default form-horizontal no-margin form-border">
+                       
+
+
                             <div className="panel-heading">
                                 <h5></h5>
                             </div>

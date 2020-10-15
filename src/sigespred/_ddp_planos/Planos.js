@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import moment from 'moment';
-import { useAsync } from "react-use";
+import { useAsync } from "react-async-hook";
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import Header from "../../sigespred/m000_common/headers/Header";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
@@ -14,7 +14,7 @@ import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import ComboData from "../../components/helpers/ComboData";
-import  {helperGetListProyectos, helperGetListTipoPlano, helperGetListDepartamento} from "../../components/helpers/LoadMaestros";
+import  {helperGetListProyectos, helperGetListTipoPlano, helperGetListDepartamento, helperGetListProvincia} from "../../components/helpers/LoadMaestros";
 
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
 
@@ -23,7 +23,8 @@ const {alasql}=window;
 const {$} = window;
 
 /*Lista los proyectos de acuerdo a una busqueda*/
-async function getListProyectos(busqueda = '') {
+async function getListProyectos(busqueda) {
+
     const {data:proyectos} = await Axios.get(`/gestionpredial`);
     
     return {proyectos};
@@ -48,41 +49,36 @@ function alertTest(){
 const Planos = ({history}) => {
     const resListaProyectos = useAsync(helperGetListProyectos, []);    
     const resListaTipoPlano = useAsync(helperGetListTipoPlano, [""]);
-    const resListaDepartmento = useAsync(helperGetListDepartamento, [""]);
-    // const resListaProyectos = useAsync('/gestionpredial', [""]);
-    // const resListaTipoPlano = useAsync('/tipoplano', [""]);
-    // const resListaDepartmento = useAsync('/departamento', [""]);
+    const resListaDepartmento = useAsync(helperGetListDepartamento, []);
+    const resListaProvincia = useAsync(helperGetListProvincia,["02"]);
 
+    const [loadingProv, setLoadingProv] = useState(true);
+    const [filtros, setfiltros] = useState('');
+
+    const definirFiltro=()=>{
+        let valFiltro = '';
+        let valorCodPlano = $('#codplano').val().trim();
+        if (valorCodPlano){
+            valFiltro = `codplano=${valorCodPlano}`;
+        }
+        let departamentoId = $('#departamento').val();
+        if (departamentoId){
+            valFiltro += valFiltro.length > 0 ?  `&departamentoid=${departamentoId}`: `departamentoid=${departamentoId}`;
+        }
+        let proyectoId = $('#proyecto').val();
+        if (proyectoId){
+            valFiltro += valFiltro.length > 0 ?  `&gestionpredialid=${proyectoId}`: `departamentoid=${proyectoId}`;
+        }
+        console.log(valFiltro);
+    }
+
+    
 
     const [planos, set_planos] = useState([]);
     const [proyectos, set_proyectos] = useState([]);
 
     const [resumen, set_resumen] = useState([]);
     const [busqueda, set_busqueda] = useState("");
-
-    useEffect(() => {
-        async function init() {
-            try {
-                let {planos} = await getListPlanos();
-                set_planos(planos);
-                // let {proyectos} = await getListProyectos();
-                // set_proyectos(proyectos);
-            }
-            catch (error) {
-            }
-            
-            /*
-            try {
-                let {proyectos, resumen} = await getListProyectos();
-                set_proyectos(proyectos);
-                set_resumen(resumen);
-            }
-            catch (error) {
-            }
-            */
-        }
-        init();
-    }, []);
     
     const buscarProyecto =async (e)=>{
         e.preventDefault()
@@ -115,8 +111,17 @@ const Planos = ({history}) => {
     }
 
     const cargarprovincia = () => {
+        let departamentoId = $('#departamento').val();
+        if (departamentoId){
+            setLoadingProv(false);
+            resListaProvincia.result = helperGetListProvincia(departamentoId);
+            console.log(resListaProvincia.value);
+        } else {
+            setLoadingProv(true);
+        }
         console.log('I have been clicked')
         console.log($('#departamento').val());
+        definirFiltro();
       }
 
 
@@ -158,7 +163,7 @@ const Planos = ({history}) => {
                                                 </div>
                                                 
                                                 <div className="col-md-4">
-                                                    <input type="text" className="form-control " id="codplano" name="codplano" placeholder="Código del plano"/>
+                                                    <input type="text" className="form-control " id="codplano" name="codplano" placeholder="Código del plano" onBlur={definirFiltro}/>
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label">Proyecto</label>
@@ -168,7 +173,7 @@ const Planos = ({history}) => {
                                                     ? "Failed to load resource A"
                                                     : resListaProyectos.loading
                                                     ? "Loading A..."
-                                                    : <ComboData id="proyecto" name="proyecto" data={resListaProyectos.value} valorkey="id" valornombre="denominacion" />}
+                                                    : <ComboData id="proyecto" name="proyecto" data={resListaProyectos.result} valorkey="id" valornombre="denominacion" nombrefuncion={definirFiltro}/>}
                                                 </div>
                                             </div>
                                             <div className="row mb-3">
@@ -262,7 +267,7 @@ const Planos = ({history}) => {
                                                     ? "Failed to load resource A"
                                                     : resListaTipoPlano.loading
                                                     ? "Loading A..."
-                                                    : <ComboData id="tipoplano" name="tipoplano" data={resListaTipoPlano.value} valorkey="id" valornombre="descripcion" />}
+                                                    : <ComboData id="tipoplano" name="tipoplano" data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
                                                 </div>
                                             </div>
                                             <div className="row mb-3">
@@ -296,19 +301,21 @@ const Planos = ({history}) => {
                                                     ? "Failed to load resource A"
                                                     : resListaDepartmento.loading
                                                     ? "Loading A..."
-                                                    : <ComboData id="departamento" name="departamento" data={resListaDepartmento.value} valorkey="id_dpto" valornombre="nombre" nombrefuncion={cargarprovincia}/>}
+                                                    : <ComboData id="departamento" name="departamento" data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" nombrefuncion={cargarprovincia}/>}
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label">Provincia</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select id="provincia" className="form-control" name="rol">
-                                                        <option value="0">--SELECCIONE--</option>
-                                                        <option value="RURAL">AQUISICION DE PREDIOS</option>
-                                                        <option value="RURAL">LIBERACION DE INTERFERENCIAS</option>
-                                                        <option value="RURAL">PAGO DE MEJORAS</option>
-                                                        <option value="RURAL">TRANFERENCIA INTERESTATALES</option>
-                                                    </select>
+                                                    {loadingProv 
+                                                    ?"Cargando Provincias..." 
+                                                    : "Listas"}
+                                                    
+                                                    {resListaProvincia.error
+                                                    ? "Failed to load resource A"
+                                                    : resListaProvincia.loading
+                                                    ? "Loading A..."
+                                                    : <ComboData id="provincia" name="provincia" data={resListaProvincia.result} valorkey="id_prov" valornombre="nombre"/>}
                                                 </div>
                                             </div>
                                             <div className="row mb-3">
@@ -323,6 +330,7 @@ const Planos = ({history}) => {
                                                         <option value="RURAL">PAGO DE MEJORAS</option>
                                                         <option value="RURAL">TRANFERENCIA INTERESTATALES</option>
                                                     </select>
+                                                    
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label"></label>
@@ -334,56 +342,6 @@ const Planos = ({history}) => {
                                         </div>
                                     </form>
                                 </div>
-
-                                {/* <ul className="list-group">
-
-                                    <table className="table table-bordered table-condensed table-hover table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th ></th>
-                                            <th >Nº</th>
-                                            <th >Nombres</th>
-                                            <th>Profesion</th>
-                                            <th>DNI</th>
-                                            <th>Rol</th>
-                                            <th>Telefonos</th>
-                                            <th className="pull-right">Acciones</th>
-                                            <th ></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                       
-
-                                    {
-                                        (false)?
-                                            <>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            <PlanoLoad/>
-                                            </>
-                                            :
-                                            
-                                        (planos.length==0)? 
-                                            <PlanoNoEcontrado/>
-                                            :
-                                        planos.map((plano,i) => (
-                                            <Plano num={i+1}
-                                                key={plano.id}
-                                                plano={plano}
-                                            />
-                                        ))
-                                    }
-
-                                        </tbody>
-                                    </table>
-                                </ul> */}
                                 <div>
                                     <GridPlano/>
                                 </div>

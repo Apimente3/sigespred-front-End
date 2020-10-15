@@ -16,3 +16,8 @@ export const helperGetListTipoPlano = async (busqueda = '') => {
     const {data:departamentos} = await Axios.get(`/departamento`);
     return {departamentos};
 }
+
+export const helperGetListProvincia = async(params= '01') => {
+    const {data:provincias} = await Axios.get(`/provincia?departamentoid=${params}`);
+    return {provincias};
+}
