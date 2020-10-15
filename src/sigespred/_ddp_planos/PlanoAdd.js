@@ -2,12 +2,14 @@ import React, {useState, useEffect, useRef} from 'react';
 import Header from "../../sigespred/m000_common/headers/Header";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
-
 import {Link} from "react-router-dom";
 import FileBase64 from 'react-file-base64';
 import {toastr} from 'react-redux-toastr'
+import { useAsync } from "react-async-hook";
 import {agregar, setcontinuarAgregar} from '../../actions/trabajador/Actions';
-
+import ComboOptions from "../../components/helpers/ComboOptions";
+import  {helperGetListProyectos, helperGetListTipoPlano, helperGetListDepartamento, helperGetListProvincia, helperGetListDetalle} from "../../components/helpers/LoadMaestros";
+import * as PARAMS from "../../config/parameters";
 
 import {useDispatch, useSelector} from 'react-redux';
 import UploadFile from "../../components/helpers/uploaders/Upload";
@@ -16,10 +18,36 @@ import {serverFile} from "../../config/axios";
 const {$} = window;
 
 const PlanoAdd = ({history}) => {
-    
-    
-    
-    
+    const [plano, set_plano] = useState({observaciones: 'Nuevo Registro'});
+    const resListaTipoPlano = useAsync(helperGetListTipoPlano, [""]);
+    const resListaProyectos = useAsync(helperGetListProyectos, []);
+    const resListaAnios = useAsync(helperGetListDetalle, [PARAMS.LISTASIDS.ANIO]);
+
+    const limpiarForm = () => {
+        set_plano({observaciones: 'Nuevo Registro'})
+    }
+
+
+    function handleInputChange(e) {
+        console.log(plano);
+        if (['nroexpediente'].includes(e.target.name)) {
+            set_plano({
+                ...plano,
+                [e.target.name]: e.target.value.toUpperCase()
+            });
+        }else{
+            set_plano({
+                ...plano,
+                [e.target.name]: e.target.value
+            });
+        }
+        console.log(plano);
+    }
+
+        
+
+
+
     
     
     
@@ -34,9 +62,7 @@ const PlanoAdd = ({history}) => {
         setcontinuarAgregarComp(true)
     }, []);
 
-    const limpiarForm = () => {
-        set_trabajador({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'})
-    }
+
 
     const registrar = async e => {
         e.preventDefault();
@@ -67,20 +93,7 @@ const PlanoAdd = ({history}) => {
 
     /*Permite el cambio del los datos del trabajador*/
 
-    function handleInputChange(e) {
-        if (['nombres', 'apellidos', 'direccion','cargo'].includes(e.target.name)) {
-            set_trabajador({
-                ...trabajador,
-                [e.target.name]: e.target.value.toUpperCase()
-            });
-        }else{
-            set_trabajador({
-                ...trabajador,
-                [e.target.name]: e.target.value
-            });
-        }
     
-    }
 
         /*Guardando la foto del trbajador*/
         const saveFotoPortada = (pmd) => {
@@ -101,13 +114,11 @@ const PlanoAdd = ({history}) => {
 
                 <form onSubmit={registrar}>
                     <div className="container mtop-20">
-                        <form>
-                            <fieldset className={'fielsettext'}>
-                                <legend align="mtop-25 center fielsettext ">
-                                    <label className={'titleform'}>REGISTRAR PLANO</label>
-                                </legend>
-                            </fieldset>
-                        </form>
+                        <fieldset className={'fielsettext'}>
+                            <legend align="mtop-25 center fielsettext ">
+                                <label className={'titleform'}>REGISTRAR PLANO</label>
+                            </legend>
+                        </fieldset>
                         <div className="form-group mtop-25">
                             <div className="row">
                                 <div className="col-md-6">
@@ -118,8 +129,17 @@ const PlanoAdd = ({history}) => {
                                                 <label className="control-label"><span className="obligatorio">* </span>Tipo de Plano</label>
                                             </div>
                                             <div className="col-md-8">
-                                                <select id="tipoplano" name="tipoplano" className="form-control">
-                                                    <option value="0">--SELECCIONE--</option>
+                                                <select className="form-control" id="tipoplanoid" name="tipoplanoid"
+                                                required
+                                                title="El Tipo de Plano es requerido"
+                                                onChange={handleInputChange}
+                                                >
+                                                    <option value="">--SELECCIONE--</option>
+                                                    {resListaTipoPlano.error
+                                                    ? "Se produjo un error cargando los tipos de plano"
+                                                    : resListaTipoPlano.loading
+                                                    ? "Cargando..."
+                                                    : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
                                                 </select>
                                             </div>
                                         </div>
@@ -128,8 +148,17 @@ const PlanoAdd = ({history}) => {
                                                 <label className="control-label"><span className="obligatorio">* </span>Proyecto</label>
                                             </div>
                                             <div className="col-md-8">
-                                                <select id="proyecto" name="proyecto" className="form-control">
-                                                    <option value="0">--SELECCIONE--</option>
+                                                <select className="form-control" id="gestionpredialid" name="gestionpredialid" 
+                                                required
+                                                title="El Proyecto es requerido"
+                                                onChange={handleInputChange}
+                                                >
+                                                    <option value="">--SELECCIONE--</option>
+                                                    {resListaProyectos.error
+                                                    ? "Se produjo un error cargando los proyectos"
+                                                    : resListaProyectos.loading
+                                                    ? "Cargando..."
+                                                    : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>}
                                                 </select>
                                             </div>
                                         </div>
@@ -139,7 +168,13 @@ const PlanoAdd = ({history}) => {
                                             </div>
                                             <div className="col-md-8">
                                                 {/* <input type="text" className="form-control " id="codplano" name="codplano" placeholder="Código del plano" onBlur={definirFiltro}/> */}
-                                                <input type="text" className="form-control " id="expediente" name="expediente" placeholder="Número de expediente"/>
+                                                <input type="text" className="form-control " id="nroexpediente" name="nroexpediente" 
+                                                placeholder="Número de expediente"
+                                                required
+                                                title="El Número de Expediente es requerido"
+                                                autoComplete = "off"
+                                                onChange={handleInputChange}
+                                                />
                                             </div>
                                         </div>
                                         <div className="row mt-3">
@@ -147,8 +182,17 @@ const PlanoAdd = ({history}) => {
                                                 <label className="control-label"><span className="obligatorio">* </span>Año</label>
                                             </div>
                                             <div className="col-md-8">
-                                                <select id="periodo" name="periodo" className="form-control">
+                                                <select className="form-control" id="periodoid" name="periodoid" 
+                                                required
+                                                title="El Año es requerido"
+                                                onChange={handleInputChange}
+                                                >
                                                     <option value="0">--SELECCIONE--</option>
+                                                    {resListaAnios.error
+                                                    ? "Se produjo un error cargando los tipos de plano"
+                                                    : resListaAnios.loading
+                                                    ? "Cargando..."
+                                                    : <ComboOptions data={resListaAnios.result} valorkey="valorcodigo" valornombre="valortexto" />}
                                                 </select>
                                             </div>
                                         </div>
@@ -201,7 +245,7 @@ const PlanoAdd = ({history}) => {
                                                 <label className="control-label">Fecha de Creación</label>
                                             </div>
                                             <div className="col-md-8">
-                                                <input style={{'line-height': '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control" />
+                                                <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control" />
                                             </div>
                                         </div>
                                         <div className="row mt-3">
@@ -209,7 +253,7 @@ const PlanoAdd = ({history}) => {
                                                 <label className="control-label">Observaciones</label>
                                             </div>
                                             <div className="col-md-8">
-                                                <input type="text" className="form-control" id="observacion" name="observacion"/>
+                                                <input type="text" className="form-control" id="observaciones" name="observaciones"/>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -267,6 +311,18 @@ const PlanoAdd = ({history}) => {
                                                 </select>
                                             </div>
                                         </div>
+                                        <div className="row mt-3">
+                                            <div className="col-md-4 text-right">
+                                                <label className="control-label">Referencia Geográfica</label>
+                                            </div>
+                                            <div className="col-md-8">
+                                                <form className="md-form">
+                                                    <UploadFile key="plano_digital" file={trabajador.foto}
+                                                        accept={'.jpg,.png,.gif'}
+                                                        setFile={saveFotoPortada}></UploadFile>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </fieldset>
                                 </div>
                                 <div className="col-md-6">
@@ -301,6 +357,9 @@ const PlanoAdd = ({history}) => {
                             </div>
                         
                         </div>
+
+
+
 
 
                         <div className="panel panel-default form-horizontal no-margin form-border">
@@ -541,7 +600,7 @@ const PlanoAdd = ({history}) => {
                                             <button id="btnguardar" type="submit"
                                                     className="btn btn-danger btn-sm btn-control">Guardar
                                             </button>
-                                            <Link to={`/list-trabajadores`}
+                                            <Link to={`/planos`}
                                                   className="btn btn-default btn-sm btn-control">Cancelar</Link>
 
                                         </div>

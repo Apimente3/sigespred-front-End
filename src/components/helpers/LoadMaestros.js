@@ -21,3 +21,11 @@ export const helperGetListProvincia = async(params= '01') => {
     const {data:provincias} = await Axios.get(`/provincia?departamentoid=${params}`);
     return {provincias};
 }
+
+export const helperGetListDetalle = async(params) => {
+    if (params) {
+        const {data:listado} = await Axios.get(`/listadetalle?listaid=${params}`);
+        return {listado};
+    }
+    return [];
+}

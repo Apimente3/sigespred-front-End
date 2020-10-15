@@ -47,7 +47,7 @@ function alertTest(){
 }
 
 const Planos = ({history}) => {
-    const resListaProyectos = useAsync(helperGetListProyectos, []);    
+    const resListaProyectos = useAsync(helperGetListProyectos, []);
     const resListaTipoPlano = useAsync(helperGetListTipoPlano, [""]);
     const resListaDepartmento = useAsync(helperGetListDepartamento, []);
     const resListaProvincia = useAsync(helperGetListProvincia,["02"]);

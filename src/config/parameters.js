@@ -26,3 +26,10 @@ export var tipourbanizacion_global=[{"tipourbanizacion":"AGR"},
     {"tipourbanizacion":"URB"},
     {"tipourbanizacion":"UV"},
     {"tipourbanizacion":"VILLA"}];
+
+export const LISTASIDS = {
+        GENERO: 1,
+        TIPODOC: 2,
+        ESTADOPREG: 3, 
+        ANIO: 4
+    }
