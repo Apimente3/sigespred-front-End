@@ -5,7 +5,7 @@ import {toastr} from "react-redux-toastr";
 import UploadFile from "../../components/helpers/uploaders/UploadExpFiles";
 import {initAxiosInterceptors, serverFile} from "../../config/axios";
 
-import ReactDataGrid from "react-data-grid";
+
 import {Link} from "react-router-dom";
 
 const Axios = initAxiosInterceptors();
@@ -124,7 +124,7 @@ const Procesos = ({match}) => {
                                                         <div className="image-info">
                                                             <Link className="pull-right leter-white" to={`/proyecto-edit/`} ><i className="fa fa-sign-in fa-2x"></i></Link>
                                                             <Link to={"/proyecto-datos-generales/"}>
-                                                                <div className="h3 leter-white">Actividades del Diagnostico Tecnico Legal como son: Registro de Predios y Titulares, 
+                                                                <div className="h3 leter-white">Actividades del Diagnostico Tecnico Legal como son: Registro de Predios y Titulares,
                                                                     Registro de Actividades de Diagnostico, Interferecias
                                                                 </div> </Link>
 
@@ -140,12 +140,12 @@ const Procesos = ({match}) => {
                                                 </div>
                                                 <div className="" style={{wordWrap: 'break-word',padding:'20px'}}>
 
-                                                  
-                                                 
-                                         
+
+
+
                                                     <Link to={"/proyecto-datos-generales/"} className="btn btn-danger block" >
                                              <h5>DIAGNOSTICO TECNICO LEGAL</h5>
-                                                    
+
                                                     </Link>
                                                 </div>
                                             </div>
@@ -309,7 +309,7 @@ const Procesos = ({match}) => {
 
                                 </div>
                             </div>
-                          
+
                         </form>
                     </div>
                 </div>

@@ -9,7 +9,7 @@ const RouteMod03GestionProyectos =
         {path: "/proyecto-add", component: ProyectoAdd},
         {path: "/proyecto-edit/:codigo", component: ProyectoEdit},
         {path: "/proyecto-del", component: ProyectoDel},
-        {path: "/list-proyectos", component: listProyectos},
+        {path: "/gestionpredials", component: listProyectos},
     ]
 
 

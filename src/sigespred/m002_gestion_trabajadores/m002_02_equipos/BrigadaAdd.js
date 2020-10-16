@@ -24,17 +24,9 @@ async function eliminarIntegranteServer(id) {
 const BrigadaAdd = ({history, match}) => {
     /*================OBTENIENDO LOS PARAMETROS DE LA URL =============*/
     const {idequipo} = match.params;
-
-    const [mintegrante, SetMintegrante] = useState(false);
-
     /*================DECLARANDO LOS ESTADOS DEL COMPONENTE =============*/
-    // const [rolState, guardarRolState] = useState('');
-
-
+    const [mintegrante, SetMintegrante] = useState(false);
     /*================DECLARANDO LOS REF DEL COMPONENTE==================================*/
-    //const apellidosRef = useRef('');
-
-
     /*================VINCULADO A FUNCIONES LOCALES LOS ACTIONS===============*/
     const dispatch = useDispatch();
     const detalle_equipo_comp = (equipo_id) => dispatch(detalle_equipo(equipo_id));
@@ -47,14 +39,10 @@ const BrigadaAdd = ({history, match}) => {
         async function mostrarDetalleEquipo() {
             try {
                 await detalle_equipo_comp(idequipo);
-                console.log('5555555555555555555555555555555555555555555555555555555555555');
-                console.log(state_detalle_equipo);
-
             } catch (error) {
                 console.log(error);
             }
         }
-
         mostrarDetalleEquipo();
 
     }, []);

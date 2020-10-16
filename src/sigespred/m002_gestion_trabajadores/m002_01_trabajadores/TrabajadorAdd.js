@@ -10,7 +10,7 @@ import {agregar, setcontinuarAgregar} from '../../../actions/trabajador/Actions'
 
 
 import {useDispatch, useSelector} from 'react-redux';
-import UploadFile from "../../../components/helpers/uploaders/Upload";
+import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
 import {serverFile} from "../../../config/axios";
 
 const {$} = window;
@@ -73,7 +73,7 @@ const TrabajadorAdd = ({history}) => {
                 [e.target.name]: e.target.value
             });
         }
-    
+
     }
 
         /*Guardando la foto del trbajador*/
@@ -81,10 +81,21 @@ const TrabajadorAdd = ({history}) => {
             // alert(JSON.stringify(pmd))
             set_trabajador({
                 ...trabajador,
-                "foto": pmd.filename
+                "foto": pmd.path
             });
         }
         // const {foto} = this.state;
+    /*Guardando la foto del trbajador*/
+    const eliminarFotoPortada = () => {
+        // alert(JSON.stringify(pmd))
+        set_trabajador({
+            ...trabajador,
+            "foto": ''
+        });
+    }
+
+
+
         return (
             <div>
 
@@ -122,9 +133,9 @@ const TrabajadorAdd = ({history}) => {
                                                 <form className="md-form">
 
 
-                                                    <UploadFile key="upload_portada_imagen" file={trabajador.foto}
+                                                    <UploadMemo key="upload_portada_imagen" file={{urlDocumento:''}}
                                                                 accept={'.jpg,.png,.gif'}
-                                                                setFile={saveFotoPortada}></UploadFile>
+                                                                setFile={saveFotoPortada} folderSave={"FotosUsuarios"} eliminar={eliminarFotoPortada}></UploadMemo>
 
                                                 </form>
                                             </center>
@@ -255,7 +266,7 @@ const TrabajadorAdd = ({history}) => {
                                         <input id="telefonos" required className="form-control input-sm" type="text"
                                                title="Ingrese formato de telefono 999999999" name="nroscontacto"
                                                onChange={handleInputChange}
-                                            
+
                                                autoComplete="off"
                                                value={trabajador.nroscontacto}
                                                placeholder="Ingrese los telefonos de contacto del Trabajador.">
@@ -360,4 +371,4 @@ const TrabajadorAdd = ({history}) => {
     }
 
 
-    export default TrabajadorAdd; 
+    export default TrabajadorAdd;

@@ -15,6 +15,7 @@ export function deleteToken() {
 }
 
 export const login = ({token, usuario }) => {
+
     if(!token || !usuario){
         return null
     }

@@ -17,11 +17,11 @@ class Header extends Component {
                                 <span className="icon-bar"></span>
                             </button>
                             <Link to={`/`} href="#" className="navbar-brand" title={"Sistema de Gestion de Predios"}>
-                                <b> 
-                                  
-                                    SIGESPRED  <span className="text-danger">MTC</span>
+                                <b>
+
+                                    PLATAFORMA DE GESTIÓN PREDIAL  <span className="text-danger">DDP MTC</span>
                                 </b>
-                                
+
                             </Link>
                         </div>
                         <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
@@ -53,16 +53,16 @@ class Header extends Component {
                                         <img src='/img/m_cuadro.svg' height={'25'}></img><br></br><b>Cuadro Control</b></Link>
                                     </center>
                                 </li>
-                              
-                               
+
+
                               <DrpAministrativo/>
-                             
+
                             </ul>
-                           
+
                         </nav>
                     </div>
                 </header>
-            
+
 
 
         );
