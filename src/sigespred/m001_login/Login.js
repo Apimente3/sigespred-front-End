@@ -47,7 +47,7 @@ const Login = ({}) => {
     }, []);
 
 
-    async function login(dni, contrasenia) {
+    async function login(dni, password) {
         try {
             const {data} = await axios.post('/login', {
                 dni,
