@@ -13,8 +13,8 @@ import {initAxiosInterceptors} from "../../config/axios";
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
-import ComboData from "../../components/helpers/ComboData";
-import  {helperGetListProyectos, helperGetListTipoPlano, helperGetListDepartamento, helperGetListProvincia} from "../../components/helpers/LoadMaestros";
+import ComboOptions from "../../components/helpers/ComboOptions";
+import * as helperGets from "../../components/helpers/LoadMaestros";
 
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
 
@@ -31,29 +31,52 @@ async function getListProyectos(busqueda) {
 }
 
 
-/*Lista los planos de acuerdo a una busqueda*/
-async function getListPlanos(busqueda = '') {
-    const {data: planos} = await Axios.get(`/plano/buscar`);
-    return {planos};
-    
-    // const {data: proyectos} = await Axios.get(`/list-proyectos?busqueda=` + busqueda);
-    // const {data: resumen} = await Axios.get(`/resumen-proyectos`);
-    // return {proyectos, resumen};
-}
-
-
-function alertTest(){
-    alert('por aqui se paso');
-}
-
 const Planos = ({history}) => {
-    const resListaProyectos = useAsync(helperGetListProyectos, []);
-    const resListaTipoPlano = useAsync(helperGetListTipoPlano, [""]);
-    const resListaDepartmento = useAsync(helperGetListDepartamento, []);
-    const resListaProvincia = useAsync(helperGetListProvincia,["02"]);
+    const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
+    const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, []);
+    const resListaDepartmento = useAsync(helperGets.helperGetListDepartamento, []);
+    const resListaProvincia = useAsync(helperGets.helperGetListProvincia,[]);
+    const resListaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
 
-    const [loadingProv, setLoadingProv] = useState(true);
-    const [filtros, setfiltros] = useState('');
+    const [filtros, set_filtros] = useState('');
+    const [dataProv, set_dataProv] = useState(null);
+    const [dataDist, set_dataDist] = useState(null);
+    
+
+    function handleChangeDepartmento(e) {
+        if(!resListaProvincia.loading){
+            let data = resListaProvincia.result;
+            let provList = data[Object.keys(data)[0]].filter( o => o.id_dpto === e.target.value);
+            set_dataProv({data: provList});
+            set_dataDist(null);
+        }
+    }
+
+    function handleChangeProvincia(e) {
+        if(!resListaDistrito.loading){
+            let data = resListaDistrito.result;
+            let distList = data[Object.keys(data)[0]].filter( o => o.id_prov === e.target.value);
+            set_dataDist({data: distList});
+        }
+    }
+
+
+    // function handleInputChange(e) {
+    //     //console.log(plano);
+    //     if (['nroexpediente'].includes(e.target.name)) {
+    //         set_plano({
+    //             ...plano,
+    //             [e.target.name]: e.target.value.toUpperCase()
+    //         });
+    //     }else{
+    //         set_plano({
+    //             ...plano,
+    //             [e.target.name]: e.target.value
+    //         });
+    //     }
+    //     //console.log(plano);
+    // }
+    
 
     const definirFiltro=()=>{
         let valFiltro = '';
@@ -79,22 +102,9 @@ const Planos = ({history}) => {
 
     const [resumen, set_resumen] = useState([]);
     const [busqueda, set_busqueda] = useState("");
-    
-    const buscarProyecto =async (e)=>{
-        e.preventDefault()
-        let {proyectos, resumen} = await getListProyectos(busqueda);
-        set_proyectos(proyectos);
-    }
 
     const setBusqueda =async (e)=>{
        set_busqueda(e.target.value)
-    }
-    
-    const filtroCategoria=async (busqueda)=>{
-  
-            let {proyectos} = await getListProyectos(busqueda);
-            set_proyectos(proyectos);
-       
     }
 
     const descarxls=()=>{
@@ -110,21 +120,6 @@ const Planos = ({history}) => {
         return false;
     }
 
-    const cargarprovincia = () => {
-        let departamentoId = $('#departamento').val();
-        if (departamentoId){
-            setLoadingProv(false);
-            resListaProvincia.result = helperGetListProvincia(departamentoId);
-            console.log(resListaProvincia.value);
-        } else {
-            setLoadingProv(true);
-        }
-        console.log('I have been clicked')
-        console.log($('#departamento').val());
-        definirFiltro();
-      }
-
-
     return (
         <div>
             {/* <Header></Header> */}
@@ -138,7 +133,6 @@ const Planos = ({history}) => {
                     </ul>
                 </div>
                 <div className="padding-md container">
-                    <form>
                         <fieldset className={'fielsettext'}>
                             <legend align="mtop-25 center fielsettext "> <label className={'titleform'}>LISTADO DE PLANOS</label>
                                 <Link to={`/plano-add`} className="btn btn-danger pull-right btn-sm fullborder">
@@ -149,8 +143,6 @@ const Planos = ({history}) => {
                             </legend>
 
                         </fieldset>
-
-                    </form>
                     <div className="row">
                         <div className="col-md-12">
                             <div className="panel panel-default">
@@ -169,11 +161,14 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Proyecto</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    {resListaProyectos.error
-                                                    ? "Failed to load resource A"
-                                                    : resListaProyectos.loading
-                                                    ? "Loading A..."
-                                                    : <ComboData id="proyecto" name="proyecto" data={resListaProyectos.result} valorkey="id" valornombre="denominacion" nombrefuncion={definirFiltro}/>}
+                                                    <select className="form-control" id="proyectoid" name="proyectoid">
+                                                        <option value="">--SELECCIONE--</option>
+                                                        {resListaProyectos.error
+                                                        ? "Se produjo un error cargando los tipos de plano"
+                                                        : resListaProyectos.loading
+                                                        ? "Cargando..."
+                                                        : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion" />}
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div className="row mb-3">
@@ -263,11 +258,14 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Tipo de Plano</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    {resListaTipoPlano.error
-                                                    ? "Failed to load resource A"
-                                                    : resListaTipoPlano.loading
-                                                    ? "Loading A..."
-                                                    : <ComboData id="tipoplano" name="tipoplano" data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
+                                                    <select className="form-control" id="tipoplanoid" name="tipoplanoid">
+                                                        <option value="">--SELECCIONE--</option>
+                                                        {resListaTipoPlano.error
+                                                        ? "Se produjo un error cargando los tipos de plano"
+                                                        : resListaTipoPlano.loading
+                                                        ? "Cargando..."
+                                                        : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div className="row mb-3">
@@ -276,12 +274,8 @@ const Planos = ({history}) => {
                                                 </div>
                                                 
                                                 <div className="col-md-4">
-                                                    <select id="tramo" className="form-control" name="rol">
-                                                        <option value="0">--SELECCIONE--</option>
-                                                        <option value="RURAL">AQUISICION DE PREDIOS</option>
-                                                        <option value="RURAL">LIBERACION DE INTERFERENCIAS</option>
-                                                        <option value="RURAL">PAGO DE MEJORAS</option>
-                                                        <option value="RURAL">TRANFERENCIA INTERESTATALES</option>
+                                                    <select className="form-control"  id="tramoid" name="tramoid">
+                                                        <option value="">--SELECCIONE--</option>
                                                     </select>
                                                 </div>
                                                 <div className="col-md-2">
@@ -297,25 +291,23 @@ const Planos = ({history}) => {
                                                 </div>
                                                 
                                                 <div className="col-md-4">
+                                                    <select className="form-control" id="departamentoid" name="departamentoid" onChange={handleChangeDepartmento}>
+                                                    <option value="">--SELECCIONE--</option>
                                                     {resListaDepartmento.error
-                                                    ? "Failed to load resource A"
+                                                    ? "Se produjo un error cargando los tipos de plano"
                                                     : resListaDepartmento.loading
-                                                    ? "Loading A..."
-                                                    : <ComboData id="departamento" name="departamento" data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" nombrefuncion={cargarprovincia}/>}
+                                                    ? "Cargando..."
+                                                    : <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />}
+                                                </select>
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label">Provincia</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    {loadingProv 
-                                                    ?"Cargando Provincias..." 
-                                                    : "Listas"}
-                                                    
-                                                    {resListaProvincia.error
-                                                    ? "Failed to load resource A"
-                                                    : resListaProvincia.loading
-                                                    ? "Loading A..."
-                                                    : <ComboData id="provincia" name="provincia" data={resListaProvincia.result} valorkey="id_prov" valornombre="nombre"/>}
+                                                    <select id="provinciaid" name="provinciaid" className="form-control" onChange={handleChangeProvincia}>
+                                                        <option value="0">--SELECCIONE--</option>
+                                                        <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div className="row mb-3">
@@ -323,14 +315,10 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Distrito</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select id="distrito" className="form-control" name="rol">
+                                                    <select id="distritoid" name="distritoid" className="form-control">
                                                         <option value="0">--SELECCIONE--</option>
-                                                        <option value="RURAL">AQUISICION DE PREDIOS</option>
-                                                        <option value="RURAL">LIBERACION DE INTERFERENCIAS</option>
-                                                        <option value="RURAL">PAGO DE MEJORAS</option>
-                                                        <option value="RURAL">TRANFERENCIA INTERESTATALES</option>
+                                                        <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
                                                     </select>
-                                                    
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label"></label>
@@ -356,24 +344,6 @@ const Planos = ({history}) => {
         </div>
     );
 
-}
-
-
-const ItemResumen = ({filtroCategoria,item}) => {
-    
-    const {denominacion, count, icono} = item;
-    let categoria=denominacion;
-    return (<>
-        <a href="#" className="shortcut-link" onClick={()=>{filtroCategoria(categoria)}}>
-					<span className="shortcut-icon">
-						<label style={{fontSize: '30px'}} htmlFor="" dangerouslySetInnerHTML={{__html: icono}}></label>
-						<span className="shortcut-alert" style={{left: '30px'}}>
-                            {count}
-						</span>	
-					</span>
-            <span className="text" >{denominacion}</span>
-        </a>
-    </>)
 }
 
 export default Planos;

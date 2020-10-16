@@ -17,9 +17,22 @@ export const helperGetListTipoPlano = async (busqueda = '') => {
     return {departamentos};
 }
 
-export const helperGetListProvincia = async(params= '01') => {
-    const {data:provincias} = await Axios.get(`/provincia?departamentoid=${params}`);
-    return {provincias};
+export const helperGetListProvincia = async(params) => {
+    if (params) {
+        const {data:provincias} = await Axios.get(`/provincia?departamentoid=${params}`);
+        return {provincias};
+    }
+        const {data:provincias} = await Axios.get(`/provincia`);
+        return {provincias};
+}
+
+export const helperGetListDistrito = async(params) => {
+    if (params) {
+        const {data:distritos} = await Axios.get(`/distrito?provinciaid=${params}`);
+        return {distritos};
+    }
+        const {data:distritos} = await Axios.get(`/distrito`);
+        return {distritos};
 }
 
 export const helperGetListDetalle = async(params) => {

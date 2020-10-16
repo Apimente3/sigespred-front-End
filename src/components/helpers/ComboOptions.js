@@ -2,7 +2,13 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 
 const ComboOptions = ({data, valorkey, valornombre}) => {
-    let varData = data[Object.keys(data)[0]];
+    let varData = null;
+
+    if (data) {
+        varData = data[Object.keys(data)[0]];
+    }
+    
+    if (varData) {
         return (
             <>
                 {varData.map((value) =>  
@@ -10,8 +16,16 @@ const ComboOptions = ({data, valorkey, valornombre}) => {
                         {value[`${valornombre}`].toString()}
                     </option>
                 )}
+
             </>
-        );    
+        );
+    } else {
+        return (
+            <>
+            </>
+        );
+    }
+
 };
 
 // Checkbox.propTypes = {

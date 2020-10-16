@@ -18,18 +18,17 @@ import {serverFile} from "../../config/axios";
 const {$} = window;
 
 const PlanoAdd = ({history}) => {
-    const [plano, set_plano] = useState({observaciones: 'Nuevo Registro'});
+    const [plano, set_plano] = useState({foto: 'img/userblank.jpg', observaciones: 'Nuevo Registro'});
     const resListaTipoPlano = useAsync(helperGetListTipoPlano, [""]);
     const resListaProyectos = useAsync(helperGetListProyectos, []);
     const resListaAnios = useAsync(helperGetListDetalle, [PARAMS.LISTASIDS.ANIO]);
 
     const limpiarForm = () => {
-        set_plano({observaciones: 'Nuevo Registro'})
+        set_plano({foto: 'img/userblank.jpg', observaciones: 'Nuevo Registro'})
     }
 
-
     function handleInputChange(e) {
-        console.log(plano);
+        //console.log(plano);
         if (['nroexpediente'].includes(e.target.name)) {
             set_plano({
                 ...plano,
@@ -41,10 +40,20 @@ const PlanoAdd = ({history}) => {
                 [e.target.name]: e.target.value
             });
         }
-        console.log(plano);
+        //console.log(plano);
     }
 
-        
+    const saveArchivo = (pmd) => {
+        // alert(JSON.stringify(pmd))
+        set_plano({
+            ...plano,
+            "foto": pmd.filename
+        });
+        console.log('archivo');
+        console.log(JSON.stringify(pmd));
+        console.log(plano);
+        console.log('archivo fin');
+    }   
 
 
 
@@ -316,8 +325,8 @@ const PlanoAdd = ({history}) => {
                                                 <label className="control-label">Referencia Geográfica</label>
                                             </div>
                                             <div className="col-md-8">
-                                                <form className="md-form">
-                                                    <UploadFile key="plano_digital" file={trabajador.foto}
+                                                <form>
+                                                    <UploadFile key="refgeo" file={trabajador.foto}
                                                         accept={'.jpg,.png,.gif'}
                                                         setFile={saveFotoPortada}></UploadFile>
                                                 </form>
@@ -334,9 +343,10 @@ const PlanoAdd = ({history}) => {
                                             </div>
                                             <div className="col-md-8">
                                                 <form className="md-form">
-                                                    <UploadFile key="plano_digital" file={trabajador.foto}
-                                                        accept={'.jpg,.png,.gif'}
-                                                        setFile={saveFotoPortada}></UploadFile>
+                                                <UploadFile key="upload_portada_imagen" file={plano.foto}
+                                                            accept={'.jpg,.png,.gif'}
+                                                            setFile={saveArchivo}></UploadFile>
+
                                                 </form>
                                             </div>
                                         </div>
@@ -346,7 +356,7 @@ const PlanoAdd = ({history}) => {
                                             </div>
                                             <div className="col-md-8">
                                                 <form className="md-form">
-                                                    <UploadFile key="plano_digital" file={trabajador.foto}
+                                                    <UploadFile key="memoria_digital" file={trabajador.foto}
                                                         accept={'.jpg,.png,.gif'}
                                                         setFile={saveFotoPortada}></UploadFile>
                                                 </form>
