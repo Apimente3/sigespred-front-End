@@ -17,6 +17,4 @@ export default [
     ...RouteMod04PeticionGestionPredial,
     ...RouteMod05Predios,
     ...RouteMod06ProcesoAdquisicionExpropiacion
-
-
 ]

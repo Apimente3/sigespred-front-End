@@ -5,7 +5,7 @@ import {toastr} from "react-redux-toastr";
 import UploadFile from "../../components/helpers/uploaders/UploadExpFiles";
 import {initAxiosInterceptors} from "../../config/axios";
 
-import ReactDataGrid from "react-data-grid";
+
 import createRowData from "./CreateRowData"
 
 const Axios = initAxiosInterceptors();
@@ -71,10 +71,10 @@ const Procesos = ({match}) => {
             alert(e.error)
         }
     }
-    
-    
+
+
     /*Creacion de tabla as*/
-    
+
     const columns=[
         {key:'id',name:"ID",editable:true}
     ]

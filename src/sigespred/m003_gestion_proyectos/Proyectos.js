@@ -1,5 +1,5 @@
+//region Importaciones
 import React, {useEffect, useState} from 'react';
-
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import Header from "../../sigespred/m000_common/headers/Header";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
@@ -7,7 +7,7 @@ import Proyecto from "./Proyecto";
 import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
-
+//endregion
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
 /*Lista los proyectos de acuerdo a una busqueda*/
@@ -26,17 +26,16 @@ const Proyectos = ({history}) => {
     useEffect(() => {
         async function init() {
             try {
-                let {proyectos, resumen} = await getListProyectos();
-                set_proyectos(proyectos);
-                set_resumen(resumen);
+               // let {proyectos, resumen} = await getlistgestionoredual();
+                set_proyectos([]);
+                set_resumen([]);
             }
             catch (error) {
             }
         }
-
         init();
     }, []);
-    
+
     const buscarProyecto =async (e)=>{
         e.preventDefault()
         let {proyectos, resumen} = await getListProyectos(busqueda);
@@ -46,12 +45,12 @@ const Proyectos = ({history}) => {
     const setBusqueda =async (e)=>{
        set_busqueda(e.target.value)
     }
-    
+
     const filtroCategoria=async (busqueda)=>{
-  
+
             let {proyectos} = await getListProyectos(busqueda);
             set_proyectos(proyectos);
-       
+
     }
 
     const descarxls=()=>{
@@ -103,11 +102,11 @@ const Proyectos = ({history}) => {
                             <form>
                                 <div className="form-group">
                                     <div className="row">
-                                        <div>    
+                                        <div>
                                             <form onSubmit={buscarProyecto}>
                                             <div className="col-md-8">
                                                 <div className="input-group">
-                                                
+
                                                     <input type="text" className="form-control "
                                                            placeholder="Ingrese el nombre del Proyecto."
                                                            value={busqueda}
@@ -161,7 +160,7 @@ const Proyectos = ({history}) => {
 
 
 const ItemResumen = ({filtroCategoria,item}) => {
-    
+
     const {denominacion, count, icono} = item;
     let categoria=denominacion;
     return (<>
@@ -170,7 +169,7 @@ const ItemResumen = ({filtroCategoria,item}) => {
 						<label style={{fontSize: '30px'}} htmlFor="" dangerouslySetInnerHTML={{__html: icono}}></label>
 						<span className="shortcut-alert" style={{left: '30px'}}>
                             {count}
-						</span>	
+						</span>
 					</span>
             <span className="text" >{denominacion}</span>
         </a>

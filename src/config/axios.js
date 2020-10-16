@@ -1,8 +1,7 @@
 import Axios from 'axios';
-
 const TOKEN_KEY = 'SIGESPRED_TOKEN';
-const BASE_URL = 'http://localhost:8000/api';
-export const serverFile='http://localhost:7000/files/';
+const BASE_URL = 'http://localhost:8000/api/';
+export const serverFile='http://localhost:8000/';
 
 
 export function filepath(file) {
@@ -17,9 +16,7 @@ const clienteAxios = () => {
 }
 
 export function initAxiosInterceptors() {
-
     const axios = clienteAxios();
-
     axios.interceptors.request.use(function (config) {
         const token = getToken();
         if (token) {
@@ -27,7 +24,6 @@ export function initAxiosInterceptors() {
         }
         return config;
     });
-
     axios.interceptors.response.use(
         function (response) {
             return response;
@@ -51,7 +47,6 @@ export const setToken = (token) => {
 }
 
 export const getToken = () => {
- //   alert(localStorage.getItem(TOKEN_KEY))
     return localStorage.getItem(TOKEN_KEY);
 }
 

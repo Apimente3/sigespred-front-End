@@ -4,20 +4,19 @@ import {toastr} from "react-redux-toastr";
 
 const Axios = initAxiosInterceptors();
 
-const Upload = ({file, setFile,eliminar, accept = "*"}) => {
+const Upload = ({urlDocumentoInit,originalNameInit, setFile, eliminar, accept = "*"}) => {
 
     const [subiendoImagen, setSubiendoImagen] = useState('ninguno');
     const [porcentajeSubida, setPorcentajeSubida] = useState(0);
-    const [urlDocumento, setUrlDocumento] = useState(file.urlDocumento || '');
-    const [originalName, setoriginalName] = useState(file.originalName);
+    const [urlDocumento, setUrlDocumento] = useState(urlDocumentoInit || '');
+    const [originalName, setoriginalName] = useState(originalNameInit);
 
     useEffect(() => {
         const init = async () => {
-            setSubiendoImagen(urlDocumento.length == 0 ?'ninguno' : 'subido'  );
+            setSubiendoImagen(urlDocumento.length == 0 ? 'ninguno' : 'subido');
         };
         init();
     }, []);
-
 
     async function handleImagenSeleccionada(e) {
         try {

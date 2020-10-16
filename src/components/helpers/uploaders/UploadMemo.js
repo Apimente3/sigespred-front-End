@@ -4,7 +4,7 @@ import {toastr} from "react-redux-toastr";
 
 const Axios = initAxiosInterceptors();
 
-const UploadMemo = memo(({file, setFile,eliminar, accept = "*"}) => {
+const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*"}) => {
     //alert(JSON.stringify(file))
 
     const [subiendoImagen, setSubiendoImagen] = useState('ninguno');
@@ -38,13 +38,13 @@ const UploadMemo = memo(({file, setFile,eliminar, accept = "*"}) => {
                 }
             };
             setSubiendoImagen('cargando')
-            const {data} = await Axios.post('/fileupload', formData, config);
+            const {data} = await Axios.post('/fileupload?folder='+folderSave, formData, config);
             //const {filename,id,path,usuareg_id}=data;          ​
 
             let filesaved = data;
 
-            setUrlDocumento(data.filename)
-            setoriginalName(data.path)
+            setUrlDocumento(data.path)
+            setoriginalName(data.filename)
 
             setFile(filesaved)
 

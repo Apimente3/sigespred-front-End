@@ -3,8 +3,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {initAxiosInterceptors} from "../../../config/axios";
 import {agregar_equipo, agregar_integrante, detalle_equipo, listar_equipos} from "../../../actions/equipos/Actions";
 import {toastr} from "react-redux-toastr";
-import Select2 from 'react-select2-wrapper';
-import 'react-select2-wrapper/css/select2.css';
+
+
 
 import Autocomplete from '../../../components/helpers/Autocomplete';
 
@@ -36,12 +36,12 @@ const MIntegrante = ({closeModalAddIntegrante,equipo_id}) => {
     const [integrante, setIntegrante] = useState([]);
 
     const [asd, asdasd] = useState(false);
-    
+
     /*INGRESANDO A LOS ACTIOS DEL REDUX*/
 
     const dispatch = useDispatch();
     const detalle_equipo_comp = (equipo_id) => dispatch(detalle_equipo(equipo_id));
-    
+
 
     const agregar_integrante_action = (integrante) => dispatch(agregar_integrante(integrante));
     /*Efecto para realizar el cargo de los resposablmes*/
@@ -64,8 +64,8 @@ const MIntegrante = ({closeModalAddIntegrante,equipo_id}) => {
         cargarResponsables();
 
     }, [asd, setResposables]);
-    
-    
+
+
 /**/
 
     function handleInputChange(e) {
@@ -95,7 +95,7 @@ const MIntegrante = ({closeModalAddIntegrante,equipo_id}) => {
             if(!integrante.tipointegrante_id ||integrante.tipointegrante_id==0 ){
                 throw {error: " Seleccione un Tipo de Integrante "}
             }
-            
+
           //  alert(equipo_id)
 
         /* await  setIntegrante({
@@ -109,7 +109,7 @@ const MIntegrante = ({closeModalAddIntegrante,equipo_id}) => {
             });
             detalle_equipo_comp(equipo_id);
             closeModalAddIntegrante()
-            
+
             //listar_equipos_action('');
            // closeModal();
         }catch (e) {
@@ -121,12 +121,12 @@ const MIntegrante = ({closeModalAddIntegrante,equipo_id}) => {
             }
 
         }
-        
-        
-        
-        
-      
-    
+
+
+
+
+
+
     }
 
 

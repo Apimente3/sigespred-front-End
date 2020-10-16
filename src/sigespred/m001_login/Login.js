@@ -1,18 +1,22 @@
+//region Importaciones de Librerias
 import '../../styles/login.css'
 import React, {useState, useEffect} from 'react';
 import HeaderLogin from './HeaderLogin';
 import ErrorMessage from './ErrorMessage';
-import {Route, Redirect} from 'react-router-dom';
+import { useHistory } from "react-router-dom"
 
 /*Importando los Axios configurado*/
 import {initAxiosInterceptors,} from '../../config/axios';
 import {login as LoginSession, getToken} from '../../utils';
 import Boton from "../../components/helpers/Boton";
+//endregion
 
 const axios = initAxiosInterceptors();
 
-const Login = ({history}) => {
-    
+const Login = ({}) => {
+
+    let history = useHistory();
+
     const [auhtError, setAuhtError] = useState(false); // no sabemos si hay un usuario autenticado
     const [error, setError] = useState(null); // no sabemos si hay un usuario autenticado
     const [procesando, setProcesando] = useState(false); // no sabemos si hay un usuario autenticado
@@ -22,18 +26,14 @@ const Login = ({history}) => {
     });
 
     /**/
-    
-    
-    useEffect(() => {
 
+
+    useEffect(() => {
         async function cargarUsuario() {
-            debugger
             let token = getToken()
             if (!token) {
-                // setAuhtError(false);
                 console.log('No inicio session')
             }
-
             try {
                 const trabajador = await axios.post('/quiensoy', {token: token});
                 if (trabajador) {
@@ -43,7 +43,6 @@ const Login = ({history}) => {
                 console.log(error);
             }
         }
-
         cargarUsuario();
     }, []);
 
@@ -52,29 +51,13 @@ const Login = ({history}) => {
         try {
             const {data} = await axios.post('/login', {
                 dni,
-                password
+               contrasenia: password
             });
             if (LoginSession(data)) {
-                history.push('/list-proyectos');
+                history.push('/gestionpredials');
                 setAuhtError(false)
             }else{
-                
             }
-            
-        }
-        catch (e) {
-            console.log(e.response)
-            setAuhtError(true)
-            setError(e.response.data);
-        }
-    }
-
-    async function login2(dni, password) {
-        try {
-          
-
-                history.push('/predios-list');
-            
         }
         catch (e) {
             console.log(e.response)
@@ -158,4 +141,3 @@ const Login = ({history}) => {
 };
 
 export default Login;
-
