@@ -294,7 +294,7 @@ const Planos = ({history}) => {
                                                     <select className="form-control" id="departamentoid" name="departamentoid" onChange={handleChangeDepartmento}>
                                                     <option value="">--SELECCIONE--</option>
                                                     {resListaDepartmento.error
-                                                    ? "Se produjo un error cargando los tipos de plano"
+                                                    ? "Se produjo un error cargando los departamentos"
                                                     : resListaDepartmento.loading
                                                     ? "Cargando..."
                                                     : <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />}

@@ -31,5 +31,7 @@ export const LISTASIDS = {
         GENERO: 1,
         TIPODOC: 2,
         ESTADOPREG: 3, 
-        ANIO: 4
+        ANIO: 4,
+        PROCESOSGPRED: 5,
+        ESTADOPLANO: 6,
     }
