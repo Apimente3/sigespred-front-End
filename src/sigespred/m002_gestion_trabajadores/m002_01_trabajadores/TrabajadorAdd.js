@@ -81,7 +81,7 @@ const TrabajadorAdd = ({history}) => {
             // alert(JSON.stringify(pmd))
             set_trabajador({
                 ...trabajador,
-                "foto": pmd.filename
+                "foto": pmd.path
             });
         }
         // const {foto} = this.state;
@@ -133,7 +133,7 @@ const TrabajadorAdd = ({history}) => {
                                                 <form className="md-form">
 
 
-                                                    <UploadMemo key="upload_portada_imagen" file={{urlDocumento:trabajador.foto}}
+                                                    <UploadMemo key="upload_portada_imagen" file={{urlDocumento:''}}
                                                                 accept={'.jpg,.png,.gif'}
                                                                 setFile={saveFotoPortada} folderSave={"FotosUsuarios"} eliminar={eliminarFotoPortada}></UploadMemo>
 
