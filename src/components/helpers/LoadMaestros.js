@@ -42,3 +42,8 @@ export const helperGetListDetalle = async(params) => {
     }
     return [];
 }
+
+export const helperGetListaLocadores = async(params) => {
+    const {data} = await Axios.get(`/autousuario`);
+    return data;
+}

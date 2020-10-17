@@ -8,6 +8,7 @@ import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
 import {agregar, setcontinuarAgregar} from '../../actions/trabajador/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
+import Autocomplete from '../../components/helpers/Autocomplete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 
@@ -28,6 +29,7 @@ const PlanoAdd = ({history}) => {
     const resListaProvincia = useAsync(helperGets.helperGetListProvincia,[]);
     const resListaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
     const resListaEstadosPlano = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.ESTADOPLANO]);
+    const resListaSolicitantes = useAsync(helperGets.helperGetListaLocadores, []);
 
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
@@ -98,6 +100,14 @@ const PlanoAdd = ({history}) => {
         });
     }
 
+    function setSolicitante(idLocador) {
+        set_plano({
+            ...plano,
+            profesionalid: idLocador
+        });
+        console.log(plano);
+    }
+
 
 
     
@@ -118,6 +128,10 @@ const PlanoAdd = ({history}) => {
 
     const registrar = async e => {
         e.preventDefault();
+
+        console.log('ches');
+        return;
+
         $('#btnguardar').button('loading');
         try {
 
@@ -132,24 +146,16 @@ const PlanoAdd = ({history}) => {
                 onCancel: () => history.push('/list-trabajadores')
             };
             toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
-
-
         }
         catch (e) {
             alert(e.message)
         }
-
-
     }
 
         return (
             <div>
-
-
                 {/* <Header/> */}
                 <SidebarAdm/>
-
-
                 <form onSubmit={registrar}>
                     <div className="container mtop-20">
                         <fieldset className={'fielsettext'}>
@@ -223,9 +229,10 @@ const PlanoAdd = ({history}) => {
                                                 <select className="form-control" id="periodoid" name="periodoid" 
                                                 required
                                                 title="El Año es requerido"
+                                                autoComplete = "off"
                                                 onChange={handleInputChange}
                                                 >
-                                                    <option value="0">--SELECCIONE--</option>
+                                                    <option value="">--SELECCIONE--</option>
                                                     {resListaAnios.error
                                                     ? "Se produjo un error cargando los años"
                                                     : resListaAnios.loading
@@ -244,7 +251,7 @@ const PlanoAdd = ({history}) => {
                                                 title="El Proceso es requerido"
                                                 onChange={handleInputChange}
                                                 >
-                                                    <option value="0">--SELECCIONE--</option>
+                                                    <option value="">--SELECCIONE--</option>
                                                     {resListaProcesos.error
                                                     ? "Se produjo un error cargando los procesos"
                                                     : resListaProcesos.loading
@@ -262,10 +269,12 @@ const PlanoAdd = ({history}) => {
                                             <div className="col-md-4 text-right">
                                                 <label className="control-label">Profesional Solicitante</label>
                                             </div>
-                                            <div className="col-md-8">
-                                                <select id="profesional" name="profesional" className="form-control" onChange={handleInputChange}>
-                                                    <option value="0">--SELECCIONE--</option>
-                                                </select>
+                                            <div className="col-md-8" style={{"font-size": "13px"}}>
+                                                {resListaSolicitantes.error
+                                                ? "Se produjo un error cargando los locadores"
+                                                : resListaSolicitantes.loading
+                                                ? "Cargando..."
+                                                : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
                                             </div>
                                         </div>
                                         <div className="row mt-3">

@@ -58,7 +58,7 @@ const Autocomplete = ({listaDatos, callabck}) => {
                             <ul className="dropdown-menu">
                                 {
                                     list.map(row =>
-                                        <li ><a href="#" value={row.id} onClick={saveInput}>
+                                        <li key={row.id} ><a href="#" value={row.id} onClick={saveInput}>
                                             {row.value}
                                         </a></li>
                                     )
@@ -73,8 +73,7 @@ const Autocomplete = ({listaDatos, callabck}) => {
                 </div>)
                 :
                 <>
-                    <br/>
-                    <h5>{rowSelect.value}</h5>   <a href="#" onClick={limpiar}  className="btn btn-xs btn-default"><i 
+                    {rowSelect.value}<a href="#" onClick={limpiar}  className="btn btn-xs btn-default"><i 
                                                                                           className="fa fa-close"></i>
                 </a>
                 </>
