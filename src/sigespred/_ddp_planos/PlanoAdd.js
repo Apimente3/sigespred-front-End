@@ -6,7 +6,8 @@ import {Link} from "react-router-dom";
 import FileBase64 from 'react-file-base64';
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
-import {agregar, setcontinuarAgregar} from '../../actions/trabajador/Actions';
+//import {agregar, setcontinuarAgregar} from '../../actions/trabajador/Actions';
+import {agregar} from '../../actions/_ddp_plano/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
@@ -116,34 +117,27 @@ const PlanoAdd = ({history}) => {
     
     const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'});
     const dispatch = useDispatch();
-    const agregarTrabajadorComp = (trabajador) => dispatch(agregar(trabajador));
-    const setcontinuarAgregarComp = (estado) => dispatch(setcontinuarAgregar(estado));
+    const agregarPlanoComp = (plano) => dispatch(agregar(plano));
 
-    useEffect(() => {
-        $('[data-toggle="tooltip"]').tooltip()
-        setcontinuarAgregarComp(true)
-    }, []);
+    // const setcontinuarAgregarComp = (estado) => dispatch(setcontinuarAgregar(estado));
+
+    // useEffect(() => {
+    //     $('[data-toggle="tooltip"]').tooltip()
+    //     setcontinuarAgregarComp(true)
+    // }, []);
 
 
 
     const registrar = async e => {
         e.preventDefault();
-
-        console.log('ches');
-        return;
-
         $('#btnguardar').button('loading');
         try {
-
-            await agregarTrabajadorComp(trabajador);
+            await agregarPlanoComp(plano);
 
             $('#btnguardar').button('reset');
-
-            // let person =  window.confirm("¿Desea seguir registrando ?");
-
             const toastrConfirmOptions = {
                 onOk: () => limpiarForm(),
-                onCancel: () => history.push('/list-trabajadores')
+                onCancel: () => history.push('/planos')
             };
             toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
         }

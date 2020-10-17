@@ -78,16 +78,16 @@ const gridcolumnModel = [
         frozen:true
     },
 
-    {
-        "name": "gestionpredialid",
-        "index": "gestionpredialid",
-        "align": "left",
-        "width": 400,
-        "editable": false,
-        "search": false,
-        "hidden": true,
-        frozen:true
-    },
+    // {
+    //     "name": "gestionpredialid",
+    //     "index": "gestionpredialid",
+    //     "align": "left",
+    //     "width": 400,
+    //     "editable": false,
+    //     "search": false,
+    //     "hidden": true,
+    //     frozen:true
+    // },
 
     {
         "name": "denominacion",
@@ -100,15 +100,15 @@ const gridcolumnModel = [
         frozen:true
     },
 
-    {
-        "name": "profesionalid",
-        "index": "profesionalid",
-        "align": "left",
-        "width": 200,
-        "editable": true,
-        "search": false,
-        "hidden": false
-    },
+    // {
+    //     "name": "profesionalid",
+    //     "index": "profesionalid",
+    //     "align": "left",
+    //     "width": 200,
+    //     "editable": true,
+    //     "search": false,
+    //     "hidden": false
+    // },
 
     {
         "name": "profesional",
@@ -133,8 +133,8 @@ const gridcolumnModel = [
     },
 
     {
-        "name": "departamentoid",
-        "index": "departamentoid",
+        "name": "ubicacion",
+        "index": "ubicacion",
         "align": "left",
         "width": 200,
         "editable": true,
@@ -142,25 +142,35 @@ const gridcolumnModel = [
         "hidden": false
     },
 
-    {
-        "name": "provinciaid",
-        "index": "provinciaid",
-        "align": "left",
-        "width": 200,
-        "editable": true,
-        "search": false,
-        "hidden": false
-    },
+    // {
+    //     "name": "departamentoid",
+    //     "index": "departamentoid",
+    //     "align": "left",
+    //     "width": 200,
+    //     "editable": true,
+    //     "search": false,
+    //     "hidden": false
+    // },
 
-    {
-        "name": "distritoid",
-        "index": "distritoid",
-        "align": "left",
-        "width": 200,
-        "editable": true,
-        "search": false,
-        "hidden": false
-    },
+    // {
+    //     "name": "provinciaid",
+    //     "index": "provinciaid",
+    //     "align": "left",
+    //     "width": 200,
+    //     "editable": true,
+    //     "search": false,
+    //     "hidden": false
+    // },
+
+    // {
+    //     "name": "distritoid",
+    //     "index": "distritoid",
+    //     "align": "left",
+    //     "width": 200,
+    //     "editable": true,
+    //     "search": false,
+    //     "hidden": false
+    // },
 
     {
         "name": "digital",
@@ -184,8 +194,7 @@ const gridcolumnModel = [
     ]
 
 
-const gridcolNames = ["ID", "CÓDIGO DE PLANO", "GP. ID ", "PROYECTO", "PROFESIONAL ID", "PROFESIONAL", "FECHA DE CREACIÓN", "DEPARTAMENTO ID", "PROVINCIA ID"
-    , "DISTRITO ID", "DIGITAL", "ANTECEDENTES"];
+const gridcolNames = ["ID", "CÓDIGO DE PLANO", "PROYECTO", "PROFESIONAL", "FECHA DE CREACIÓN", "UBICACIÓN", "DIGITAL", "ANTECEDENTES"];
 
 
 const creteGrid = () => {
