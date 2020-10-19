@@ -9,8 +9,10 @@ import RoutePaginasGenerales from './RoutePaginasGenerales';
 import RouteMod06ProcesoAdquisicionExpropiacion from './RouteMod06ProcesoAdquisicionExpropiacion';
 
 import RouteModPlanos from './_ddp_RouteModPlanos';
+import RouteModPartidas from './_ddp_RouteModPartidas';
 
 export default [
+    ...RouteModPartidas,
     ...RouteModPlanos,
     ...RouteMod01Login,
     ...RouteGestionPredial,
