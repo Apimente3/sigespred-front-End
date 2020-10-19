@@ -263,7 +263,7 @@ const PlanoAdd = ({history}) => {
                                             <div className="col-md-4 text-right">
                                                 <label className="control-label">Profesional Solicitante</label>
                                             </div>
-                                            <div className="col-md-8" style={{"font-size": "13px"}}>
+                                            <div className="col-md-8" style={{fontSize: "13px"}}>
                                                 {resListaSolicitantes.error
                                                 ? "Se produjo un error cargando los locadores"
                                                 : resListaSolicitantes.loading

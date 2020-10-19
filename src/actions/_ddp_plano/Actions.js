@@ -2,6 +2,7 @@ import {initAxiosInterceptors} from '../../config/axios';
 
 import {
     AGREGAR_PLANO,
+    BUSCAR_PLANO,
 } from './types';
 
 // import {
@@ -18,6 +19,19 @@ const axios=initAxiosInterceptors();
 export const agregar = PLANO => async dispatch => {
     const response = await axios.post('/plano', PLANO);
     dispatch({type: AGREGAR_PLANO, payload: response});
+}
+
+export const buscarPlano = busqueda => async dispatch => {
+    let respuesta;
+    if(busqueda){
+        respuesta = await axios.get(`/plano/buscar?${busqueda}`);
+    } else {
+        respuesta = await axios.get(`/plano/buscar`);
+    }
+    dispatch({
+        type: BUSCAR_PLANO,
+        payload: respuesta.data
+    })
 }
 
 /*

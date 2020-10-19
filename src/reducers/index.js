@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+import planoReducers from './_planoReducers';
 import trabajadorReducers from './trabajadorReducers';
 import brigadaReducers from './brigadaReducers';
 import equipoReducers from './equipoReducers';
@@ -10,6 +11,7 @@ import proyectoReducers from "./proyectoReducers";
 import expedienteReducers from "./expedienteReducers";
 
 export default combineReducers({
+    plano: planoReducers,
     trabajador: trabajadorReducers,
     brigadista: brigadaReducers,
     equipo: equipoReducers,

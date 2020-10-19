@@ -3,49 +3,10 @@ import {initAxiosInterceptors} from "../../../config/axios";
 import {toastr} from "react-redux-toastr";
 
 const {$, jQuery, alasql} = window;
-
 //require("../grids/css.css")
 
-
 let $grid = $("#gridplano")
-const initDateEdit = function (elem, options) {
-    // we need get the value before changing the type
-    var orgValue = $(elem).val(),
-        cm = $(this).jqGrid("getColProp", options.name);
 
-    $(elem).attr("type", "date");
-    if ($(elem).prop("type") !== "date") {
-        // if type="date" is not supported call jQuery UI datepicker
-        $(elem).css({width: "8em"}).datepicker({
-            dateFormat: "mm/dd/yy",
-            autoSize: true,
-            changeYear: true,
-            changeMonth: true,
-            showButtonPanel: true,
-            showWeek: true
-        });
-    } else {
-        // convert date to ISO
-        $(elem).val($.jgrid.parseDate(cm.formatoptions.newformat, orgValue, "Y-m-d"))
-            .css("width", "");
-    }
-};
-const myBeforeSaveRow = function (options, rowid) {
-    var $self = $(this), $dates = $("#" + $.jgrid.jqID(rowid)).find("input[type=date]");
-    $dates.each(function () {
-        var $this = $(this),
-            id = $this.attr("id"),
-            colName = id.substr(rowid.length + 1),
-            cm = $self.jqGrid("getColProp", colName),
-            str;
-        if ($this.prop("type") === "date") {
-            // convert from iso to newformat
-            str = $.jgrid.parseDate("Y-m-d", $this.val(), cm.formatoptions.newformat);
-            $this.attr("type", "text");
-            $this.val(str);
-        }
-    });
-};
 const initDateSearch = function (elem) {
 
 };
@@ -77,18 +38,6 @@ const gridcolumnModel = [
         "hidden": false,
         frozen:true
     },
-
-    // {
-    //     "name": "gestionpredialid",
-    //     "index": "gestionpredialid",
-    //     "align": "left",
-    //     "width": 400,
-    //     "editable": false,
-    //     "search": false,
-    //     "hidden": true,
-    //     frozen:true
-    // },
-
     {
         "name": "denominacion",
         "index": "denominacion",
@@ -99,17 +48,6 @@ const gridcolumnModel = [
         "hidden": false,
         frozen:true
     },
-
-    // {
-    //     "name": "profesionalid",
-    //     "index": "profesionalid",
-    //     "align": "left",
-    //     "width": 200,
-    //     "editable": true,
-    //     "search": false,
-    //     "hidden": false
-    // },
-
     {
         "name": "profesional",
         "index": "profesional",
@@ -141,37 +79,6 @@ const gridcolumnModel = [
         "search": false,
         "hidden": false
     },
-
-    // {
-    //     "name": "departamentoid",
-    //     "index": "departamentoid",
-    //     "align": "left",
-    //     "width": 200,
-    //     "editable": true,
-    //     "search": false,
-    //     "hidden": false
-    // },
-
-    // {
-    //     "name": "provinciaid",
-    //     "index": "provinciaid",
-    //     "align": "left",
-    //     "width": 200,
-    //     "editable": true,
-    //     "search": false,
-    //     "hidden": false
-    // },
-
-    // {
-    //     "name": "distritoid",
-    //     "index": "distritoid",
-    //     "align": "left",
-    //     "width": 200,
-    //     "editable": true,
-    //     "search": false,
-    //     "hidden": false
-    // },
-
     {
         "name": "digital",
         "index": "digital",
@@ -193,11 +100,10 @@ const gridcolumnModel = [
     }
     ]
 
-
 const gridcolNames = ["ID", "CÓDIGO DE PLANO", "PROYECTO", "PROFESIONAL", "FECHA DE CREACIÓN", "UBICACIÓN", "DIGITAL", "ANTECEDENTES"];
 
 
-const creteGrid = () => {
+const createGrid = () => {
     let grid = $("#gridplano").jqGrid({
         datatype: "local",
         width: 500,
@@ -221,16 +127,6 @@ const creteGrid = () => {
         //   ondblClickRow: setSessionProyecto,
         rowList: [10, 20, 30],
         'cellsubmit': 'clientArray',
-        beforeSaveCell: function (rowid, cellname, value, iRow, iCol) {
-            try {
-                var rowData = {...jQuery('#gridplano').jqGrid('getRowData', rowid), [cellname]: value};
-                savechanges({[cellname]: value, id: rowData.id});
-                toastr.info('Se actualizao correctamente la tabla ', {"position": "bottom-center",});
-            } catch (e) {
-                toastr.info(JSON.stringify(e), {"position": "bottom-center",})
-            }
-        },
-
         afterSubmit: function (resp, postdata) {
             console.log(resp, postdata)
 
@@ -259,38 +155,25 @@ const cargarGrid = (response) => {
 
 const Axios = initAxiosInterceptors();
 
-async function getListPlanos(busqueda = '') {
-    const planos = await Axios.get(`/plano/buscar`);
-    return planos;
-}
-
-/*gUARDANDO LOS DATOS GENERADOS*/
-async function savechanges(expediente) {
-    // alert(JSON.stringify(expediente))
-    const {data} = await Axios.post(`/save_adquisicion_predial`, expediente);
-    return data
-}
-
-const GridPlano = () => {
-
-    /*Obteniendo la lista de los esquipos*/
+const GridPlano = (datos) => {
     useEffect(() => {
         const init = async () => {
-            await creteGrid();
-            let data = await getListPlanos();
-            await cargarGrid(data)
+            await createGrid();
+            let varData = datos[Object.keys(datos)[0]];
+            await cargarGrid({data:varData});
         }
         init()
 
     }, []);
-    return (
-        <>
-            <div className="panel panel-default table-responsive">
-                <table id="gridplano"></table>
-                <div id="pagerplano"></div>
-            </div>
-        </>
-    );
+    
+        return (
+            <>
+                <div className="panel panel-default table-responsive">
+                    <table id="gridplano"></table>
+                    <div id="pagerplano"></div>
+                </div>
+            </>
+        );
 };
 
 export default GridPlano;

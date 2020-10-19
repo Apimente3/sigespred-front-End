@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import moment from 'moment';
 import { useAsync } from "react-async-hook";
+import {useDispatch, useSelector} from 'react-redux';
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import Header from "../../sigespred/m000_common/headers/Header";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
@@ -15,8 +16,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
 import ComboOptions from "../../components/helpers/ComboOptions";
 import * as helperGets from "../../components/helpers/LoadMaestros";
-
+import { buscarPlano } from '../../actions/_ddp_plano/Actions';
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
+
 
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
@@ -39,8 +41,25 @@ const Planos = ({history}) => {
     const resListaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
 
     const [filtros, set_filtros] = useState('');
+    const [busquedaLocal, set_busquedaLocal] = useState(true);
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
+
+    const dispatch = useDispatch();
+    const buscarPlanosAction = (filtros) => dispatch(buscarPlano(filtros));
+    const planos = useSelector(state => state.plano.planos);
+
+    useEffect(() => {
+        async function initialLoad() {
+            try {
+                await buscarPlanosAction('');
+                set_busquedaLocal(false);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        initialLoad();
+    }, []);
     
 
     function handleChangeDepartmento(e) {
@@ -60,56 +79,58 @@ const Planos = ({history}) => {
         }
     }
 
-
-    // function handleInputChange(e) {
-    //     //console.log(plano);
-    //     if (['nroexpediente'].includes(e.target.name)) {
-    //         set_plano({
-    //             ...plano,
-    //             [e.target.name]: e.target.value.toUpperCase()
-    //         });
-    //     }else{
-    //         set_plano({
-    //             ...plano,
-    //             [e.target.name]: e.target.value
-    //         });
-    //     }
-    //     //console.log(plano);
-    // }
-    
-
-    const definirFiltro=()=>{
-        let valFiltro = '';
-        let valorCodPlano = $('#codplano').val().trim();
-        if (valorCodPlano){
-            valFiltro = `codplano=${valorCodPlano}`;
+    function handleInputChange(e) {
+        if (['codplano'].includes(e.target.name)) {
+            set_filtros({
+                ...filtros,
+                [e.target.name]: e.target.value.toUpperCase()
+            });
+        } else if (['departamentoid'].includes(e.target.name)) {
+            set_filtros({
+                ...filtros,
+                [e.target.name]: e.target.value.toUpperCase(),
+                ['provinciaid']: '',
+                ['distritoid']: ''
+            });
+        } else if (['provinciaid'].includes(e.target.name)) {
+            set_filtros({
+                ...filtros,
+                [e.target.name]: e.target.value.toUpperCase(),
+                ['distritoid']: ''
+            });
+        } else {
+            set_filtros({
+                ...filtros,
+                [e.target.name]: e.target.value
+            });
         }
-        let departamentoId = $('#departamento').val();
-        if (departamentoId){
-            valFiltro += valFiltro.length > 0 ?  `&departamentoid=${departamentoId}`: `departamentoid=${departamentoId}`;
-        }
-        let proyectoId = $('#proyecto').val();
-        if (proyectoId){
-            valFiltro += valFiltro.length > 0 ?  `&gestionpredialid=${proyectoId}`: `departamentoid=${proyectoId}`;
-        }
-        console.log(valFiltro);
+        console.log(filtros);
+        
     }
 
-    
+    const buscarPlanosFilter=async (e)=>{
+        let valorFiltros = '';
+        if (filtros) {
+            $.each(filtros, function(key, value){
+                if (value === "" || value === null){
+                    delete filtros[key];
+                }
+            });
+            valorFiltros = $.param(filtros);
+            console.log('valorFiltros');
+            console.log(valorFiltros);
+        }
 
-    const [planos, set_planos] = useState([]);
-    const [proyectos, set_proyectos] = useState([]);
-
-    const [resumen, set_resumen] = useState([]);
-    const [busqueda, set_busqueda] = useState("");
-
-    const setBusqueda =async (e)=>{
-       set_busqueda(e.target.value)
+        e.preventDefault();
+        set_busquedaLocal(true)
+        await buscarPlanosAction(valorFiltros);
+        set_busquedaLocal(false)
     }
-
+ 
+    // TODO: Revisar procedimiento de exportación
     const descarxls=()=>{
 
-        let listexportexcel = proyectos;
+        let listexportexcel = resListaProyectos;
         var resultgeojson = alasql(`SELECT *
                  FROM ? `, [listexportexcel])
         var opts = [{
@@ -155,13 +176,15 @@ const Planos = ({history}) => {
                                                 </div>
                                                 
                                                 <div className="col-md-4">
-                                                    <input type="text" className="form-control " id="codplano" name="codplano" placeholder="Código del plano" onBlur={definirFiltro}/>
+                                                    <input type="text" className="form-control " id="codplano" name="codplano" 
+                                                    placeholder="Código del plano" onBlur={handleInputChange}/>
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label">Proyecto</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select className="form-control" id="proyectoid" name="proyectoid">
+                                                    <select className="form-control" id="proyectoid" name="proyectoid" 
+                                                    onChange={handleInputChange}>
                                                         <option value="">--SELECCIONE--</option>
                                                         {resListaProyectos.error
                                                         ? "Se produjo un error cargando los tipos de plano"
@@ -234,10 +257,11 @@ const Planos = ({history}) => {
                                                     <label className="control-label">¿Contiene Dígital?</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select id="condigital" className="form-control" name="rol">
+                                                    <select className="form-control" id="contienedigital" name="contienedigital" 
+                                                    onChange={handleInputChange}>
                                                         <option value="">--SELECCIONE--</option>
                                                         <option value="true">Sí</option>
-                                                        <option value="falseL">No</option>
+                                                        <option value="false">No</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -246,7 +270,7 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Solicitante</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select id="profesional" className="form-control" name="rol">
+                                                    <select className="form-control" id="profesionalid" name="profesionalid">
                                                         <option value="0">--SELECCIONE--</option>
                                                         <option value="RURAL">AQUISICION DE PREDIOS</option>
                                                         <option value="RURAL">LIBERACION DE INTERFERENCIAS</option>
@@ -258,7 +282,8 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Tipo de Plano</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select className="form-control" id="tipoplanoid" name="tipoplanoid">
+                                                    <select className="form-control" id="tipoplanoid" name="tipoplanoid" 
+                                                    onChange={handleInputChange}>
                                                         <option value="">--SELECCIONE--</option>
                                                         {resListaTipoPlano.error
                                                         ? "Se produjo un error cargando los tipos de plano"
@@ -274,7 +299,8 @@ const Planos = ({history}) => {
                                                 </div>
                                                 
                                                 <div className="col-md-4">
-                                                    <select className="form-control"  id="tramoid" name="tramoid">
+                                                    <select className="form-control"  id="tramoid" name="tramoid" 
+                                                    onChange={handleInputChange}>
                                                         <option value="">--SELECCIONE--</option>
                                                     </select>
                                                 </div>
@@ -282,7 +308,7 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Subtramo</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                <input type="text" className="form-control " id="subtramo" name="subtramo" placeholder="Ingrese el subtramo"/>
+                                                <input type="text" className="form-control " id="subtramoid" name="subtramoid" placeholder="Ingrese el subtramo"/>
                                                 </div>
                                             </div>
                                             <div className="row mb-3">
@@ -291,7 +317,8 @@ const Planos = ({history}) => {
                                                 </div>
                                                 
                                                 <div className="col-md-4">
-                                                    <select className="form-control" id="departamentoid" name="departamentoid" onChange={handleChangeDepartmento}>
+                                                    <select className="form-control" id="departamentoid" name="departamentoid" 
+                                                    onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
                                                     <option value="">--SELECCIONE--</option>
                                                     {resListaDepartmento.error
                                                     ? "Se produjo un error cargando los departamentos"
@@ -304,7 +331,8 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Provincia</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select id="provinciaid" name="provinciaid" className="form-control" onChange={handleChangeProvincia}>
+                                                    <select className="form-control" id="provinciaid" name="provinciaid" 
+                                                    onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
                                                         <option value="0">--SELECCIONE--</option>
                                                         <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
                                                     </select>
@@ -315,7 +343,8 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Distrito</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select id="distritoid" name="distritoid" className="form-control">
+                                                    <select className="form-control" id="distritoid" name="distritoid" 
+                                                    onChange={handleInputChange}>
                                                         <option value="0">--SELECCIONE--</option>
                                                         <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
                                                     </select>
@@ -327,11 +356,25 @@ const Planos = ({history}) => {
                                                     
                                                 </div>
                                             </div>
+                                            <div className="row mb-3">
+                                                <div className="col-md-6"></div>
+                                                <div className="col-md-6 text-right">
+                                                    <button type="button" onClick={buscarPlanosFilter} className="btn btn-danger">
+                                                        <i className="fa fa-search"></i> Aplicar Filtro(s)
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
                                 <div>
-                                    <GridPlano/>
+                                {
+                                    (busquedaLocal)?
+                                        console.log('cargando datos de planos...')
+                                        :
+                                        <GridPlano datos={planos}/>
+                                    }
+                                    
                                 </div>
                             </div>
                         </div>
