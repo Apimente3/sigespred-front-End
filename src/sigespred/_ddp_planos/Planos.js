@@ -11,9 +11,7 @@ import PlanoNoEcontrado from "./PlanoNoEcontrado";
 import GridPlano from "../m000_common/grids/GridPlano";
 import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
-import DateRangePicker from 'react-bootstrap-daterangepicker';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-daterangepicker/daterangepicker.css';
+import DateRange from "../../components/helpers/DateRange";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import { buscarPlano } from '../../actions/_ddp_plano/Actions';
@@ -108,6 +106,10 @@ const Planos = ({history}) => {
         
     }
 
+    function handleRangoFechas() {
+        console.log('Aquí modificamos el valor de la fecha');
+    }
+
     const buscarPlanosFilter=async (e)=>{
         let valorFiltros = '';
         if (filtros) {
@@ -200,58 +202,7 @@ const Planos = ({history}) => {
                                                 </div>
                                                 
                                                 <div className="col-md-4">
-                                                <DateRangePicker initialSettings={{
-                                                    locale: {
-                                                      cancelLabel: 'Limpiar',
-                                                      applyLabel: 'Aplicar',
-                                                      weekLabel: 'S',
-                                                      customRangeLabel: 'Rango Personalizado',
-                                                      daysOfWeek: [ 'Do',
-                                                      'Lu',
-                                                      'Ma',
-                                                      'Mi',
-                                                      'Ju',
-                                                      'Vi',
-                                                      'Sá'],
-                                                      monthNames: [ 'Enero',
-                                                      'Febrero',
-                                                      'Marzo',
-                                                      'Abril',
-                                                      'Mayo',
-                                                      'Junio',
-                                                      'Julio',
-                                                      'Agosto',
-                                                      'Setiembre',
-                                                      'Octubre',
-                                                      'Noviembre',
-                                                      'Diciembre' ],
-                                                    },
-                                                    ranges: {
-                                                        Hoy: [moment().toDate(), moment().toDate()],
-                                                        Ayer: [
-                                                        moment().subtract(1, 'days').toDate(),
-                                                        moment().subtract(1, 'days').toDate(),
-                                                        ],
-                                                        'Últimos 7 días': [
-                                                        moment().subtract(6, 'days').toDate(),
-                                                        moment().toDate(),
-                                                        ],
-                                                        'Últimos 30 días': [
-                                                        moment().subtract(29, 'days').toDate(),
-                                                        moment().toDate(),
-                                                        ],
-                                                        'Este mes': [
-                                                        moment().startOf('month').toDate(),
-                                                        moment().endOf('month').toDate(),
-                                                        ],
-                                                        'Último mes': [
-                                                        moment().subtract(1, 'month').startOf('month').toDate(),
-                                                        moment().subtract(1, 'month').endOf('month').toDate(),
-                                                        ],
-                                                    },
-                                                    }}>
-                                                    <input id="fechacreacion" type="text" className="form-control" />
-                                                    </DateRangePicker>
+                                                <DateRange id="controlFecha" nombrefuncion={handleRangoFechas}></DateRange>
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label">¿Contiene Dígital?</label>
