@@ -34,7 +34,6 @@ const PlanoAdd = ({history}) => {
 
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
-    
 
     function handleChangeDepartmento(e) {
         if(!resListaProvincia.loading){
@@ -109,13 +108,6 @@ const PlanoAdd = ({history}) => {
         console.log(plano);
     }
 
-
-
-    
-    
-    
-    
-    const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'});
     const dispatch = useDispatch();
     const agregarPlanoComp = (plano) => dispatch(agregar(plano));
 
@@ -125,7 +117,6 @@ const PlanoAdd = ({history}) => {
     //     $('[data-toggle="tooltip"]').tooltip()
     //     setcontinuarAgregarComp(true)
     // }, []);
-
 
 
     const registrar = async e => {
@@ -415,13 +406,14 @@ const PlanoAdd = ({history}) => {
                         </div>
                         <hr></hr>
                         <div className="panel-body">
-                            <div className="form-group ">
+                            <div className="form-group">
                                 <div className="col-lg-offset-2 col-lg-10">
+                                    <Link to={`/planos`} className="btn btn-default btn-control">Cancelar
+                                    </Link>
                                     <button id="btnguardar" type="submit"
-                                            className="btn btn-danger btn-sm btn-control">Guardar
+                                            className="btn btn-danger btn-control">Guardar
                                     </button>
-                                    <Link to={`/planos`}
-                                            className="btn btn-default btn-sm btn-control">Cancelar</Link>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -430,7 +422,6 @@ const PlanoAdd = ({history}) => {
                 <FooterProcess/>
             </div>
         );
-
     }
 
     export default PlanoAdd; 

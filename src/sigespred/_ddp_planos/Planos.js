@@ -188,14 +188,9 @@ const Planos = ({history}) => {
                 </div>
                 <div className="padding-md container">
                         <fieldset className={'fielsettext'}>
-                            <legend align="mtop-25 center fielsettext "> <label className={'titleform'}>LISTADO DE PLANOS</label>
-                                <Link to={`/plano-add`} className="btn btn-danger pull-right btn-sm fullborder">
-                                    <i className="fa fa-plus"></i>  Agregar Plano</Link>
-                                <button type="button" onClick={descarxls} className="btn btn-default pull-right btn-sm fullborder">
-                                    <i className="fa fa-file-excel-o"></i> Descargar Excel
-                                </button>
+                            <legend align="mtop-25 center fielsettext ">
+                                <label className={'titleform'}>LISTADO DE PLANOS</label>
                             </legend>
-
                         </fieldset>
                     <div className="row">
                         <div className="col-md-12">
@@ -339,13 +334,27 @@ const Planos = ({history}) => {
                                             <div className="row mb-3">
                                                 <div className="col-md-6"></div>
                                                 <div className="col-md-6 text-right">
-                                                    <button type="button" onClick={buscarPlanosFilter} className="btn btn-danger">
+                                                    <button type="button" onClick={buscarPlanosFilter} className="btn btn-info">
                                                         <i className="fa fa-search"></i> Aplicar Filtro(s)
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </form>
+                                </div>
+                                <div className="mt-4 mb-1 form-group">
+                                    <div className="row">
+                                        <div className="col-md-6"></div>
+                                        <div className="col-md-6 text-right">
+                                            <button type="button" onClick={descarxls} className="btn btn-default fullborder">
+                                                <i className="fa fa-file-excel-o"></i> Descargar Excel
+                                            </button>
+                                            <Link to={`/plano-add`} className="btn btn-danger fullborder">
+                                                <i className="fa fa-plus-circle"></i>  Agregar Plano
+                                            </Link>
+                                            
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                 {

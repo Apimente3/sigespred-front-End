@@ -16,8 +16,7 @@ export const helperObtenerRangoFechas = (fechas, fortmatotexto = false) => {
                     var formattedInicio = fechaInicio.substr(6,4) + fechaInicio.substr(3,2) + fechaInicio.substr(0,2) ;
                     var formattedFin = fechaFin.substr(6,4) + fechaFin.substr(3,2) + fechaFin.substr(0,2) ;
                     return {fechainicio: formattedInicio, fechafin: formattedFin};
-                }
-                console.log('llego aqui');                
+                }     
                 return {fechainicio: fechaInicio, fechafin: fechaFin};
             } else {
                 console.log('El formata de las fechas es inválido.')

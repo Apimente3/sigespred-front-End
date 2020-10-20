@@ -10,6 +10,16 @@ let $grid = $("#gridplano")
 const initDateSearch = function (elem) {
 
 };
+
+function editPlano(idPlano){
+    console.log(idPlano);
+}
+
+window.editPlanoJqGrid=function (row_id) {
+    console.log('id');
+    console.log(row_id);
+}
+
 const numberTemplate = {
     formatter: "number", align: "right", sorttype: "number",
     editrules: {number: true, required: true},
@@ -20,8 +30,8 @@ const gridcolumnModel = [
     {
         "name": "id",
         "index": "id",
-        "align": "left",
-        "width": 60,
+        "align": "center",
+        "width": 45,
         "editable": false,
         "search": false,
         "hidden": false,
@@ -32,7 +42,7 @@ const gridcolumnModel = [
         "name": "codplano",
         "index": "codplano",
         "align": "left",
-        "width": 200,
+        "width": 205,
         "editable": false,
         "search": false,
         "hidden": false,
@@ -52,7 +62,7 @@ const gridcolumnModel = [
         "name": "profesional",
         "index": "profesional",
         "align": "left",
-        "width": 200,
+        "width": 120,
         "editable": true,
         "search": false,
         "hidden": false
@@ -61,8 +71,8 @@ const gridcolumnModel = [
     {
         "name": "fechacreacion",
         "index": "fechacreacion",
-        "align": "left",
-        "width": 200,
+        "align": "center",
+        "width": 110,
         "editable": true,
         "search": false,
         "hidden": false, sorttype: "date",
@@ -82,8 +92,8 @@ const gridcolumnModel = [
     {
         "name": "digital",
         "index": "digital",
-        "align": "left",
-        "width": 200,
+        "align": "center",
+        "width": 60,
         "editable": true,
         "search": false,
         "hidden": false
@@ -92,16 +102,22 @@ const gridcolumnModel = [
     {
         "name": "antecedente",
         "index": "antecedente",
-        "align": "left",
-        "width": 200,
+        "align": "center",
+        "width": 90,
         "editable": true,
         "search": false,
         "hidden": false
-    }
+    },
+
+    {   "name":"act",
+        "index":"act",
+        "align": "center",
+        "width":160,
+        "sortable":false
+    },
     ]
 
-const gridcolNames = ["ID", "CÓDIGO DE PLANO", "PROYECTO", "PROFESIONAL", "FECHA DE CREACIÓN", "UBICACIÓN", "DIGITAL", "ANTECEDENTES"];
-
+const gridcolNames = ["ID", "CÓDIGO DE PLANO", "PROYECTO", "PROFESIONAL", "FECHA DE CREACIÓN", "UBICACIÓN", "DIGITAL", "ANTECEDENTES", "ACCIONES"];
 
 const createGrid = () => {
     let grid = $("#gridplano").jqGrid({
@@ -135,6 +151,21 @@ const createGrid = () => {
         rownumbers: true,
         shrinkToFit: false,
         autowidth: true,
+        gridComplete: function(){
+            var ids = jQuery("#gridplano").jqGrid('getDataIDs');
+            for(var i=0;i < ids.length;i++){
+                var cl = ids[i];
+                let bdw = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-download fa-2x'></i></button>";
+                let bl = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-link fa-2x'></i></button>";
+                //let be = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-edit fa-2x'></i></button>";
+                let be = `<button class="btn" onclick="window.editPlanoJqGrid(${cl})" ><i class='fa fa-edit fa-2x'></i></button>`;
+                let bd = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-trash fa-2x'></i></button>"; 
+                let se = "<input style='height:22px;width:20px;' type='button' value='S' onclick=\"jQuery('#gridplano').saveRow('"+cl+"');\"  />"; 
+                let ce = "<input style='height:22px;width:20px;' type='button' value='C' onclick=\"jQuery('#gridplano').restoreRow('"+cl+"');\" />"; 
+                let concatBtn = bdw+bl+be+bd;
+                jQuery("#gridplano").jqGrid('setRowData',ids[i],{act:concatBtn});
+            }	
+        },
     });
 
     //$("#gridplano").jqGrid('filterToolbar', {stringResult: true, searchOnEnter: false, defaultSearch: "cn"});
