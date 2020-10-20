@@ -3,6 +3,7 @@ import moment from 'moment';
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-daterangepicker/daterangepicker.css';
+const {$} = window;
 
 const RangeDate = ({id, nombrefuncion}) => {
 
@@ -19,7 +20,7 @@ const RangeDate = ({id, nombrefuncion}) => {
     
     return (
         <>
-            <DateRangePicker onApply={handleApply} onCancel={handleCancel} onCallback={() => nombrefuncion()}
+            <DateRangePicker onApply={handleApply} onCancel={handleCancel}
             initialSettings={{
                 autoUpdateInput: false,
                 locale: {
@@ -49,31 +50,31 @@ const RangeDate = ({id, nombrefuncion}) => {
                 },
                 startDate: moment().subtract(29, 'days'),
                 endDate: moment(),
-                ranges: {
-                    Hoy: [moment().toDate(), moment().toDate()],
-                    Ayer: [
-                    moment().subtract(1, 'days').toDate(),
-                    moment().subtract(1, 'days').toDate(),
-                    ],
-                    'Últimos 7 días': [
-                    moment().subtract(6, 'days').toDate(),
-                    moment().toDate(),
-                    ],
-                    'Últimos 30 días': [
-                    moment().subtract(29, 'days').toDate(),
-                    moment().toDate(),
-                    ],
-                    'Este mes': [
-                    moment().startOf('month').toDate(),
-                    moment().endOf('month').toDate(),
-                    ],
-                    'Último mes': [
-                    moment().subtract(1, 'month').startOf('month').toDate(),
-                    moment().subtract(1, 'month').endOf('month').toDate(),
-                    ],
-                },
+                // ranges: {
+                //     Hoy: [moment().toDate(), moment().toDate()],
+                //     Ayer: [
+                //     moment().subtract(1, 'days').toDate(),
+                //     moment().subtract(1, 'days').toDate(),
+                //     ],
+                //     'Últimos 7 días': [
+                //     moment().subtract(6, 'days').toDate(),
+                //     moment().toDate(),
+                //     ],
+                //     'Últimos 30 días': [
+                //     moment().subtract(29, 'days').toDate(),
+                //     moment().toDate(),
+                //     ],
+                //     'Este mes': [
+                //     moment().startOf('month').toDate(),
+                //     moment().endOf('month').toDate(),
+                //     ],
+                //     'Último mes': [
+                //     moment().subtract(1, 'month').startOf('month').toDate(),
+                //     moment().subtract(1, 'month').endOf('month').toDate(),
+                //     ],
+                // },
                 }}>
-                <input id={id} name={id} type="text" className="form-control" />
+                <input id={id} name={id} type="text" className="form-control"/>
             </DateRangePicker>
         </>
     );

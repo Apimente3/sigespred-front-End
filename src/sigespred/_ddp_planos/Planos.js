@@ -13,7 +13,9 @@ import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
 import DateRange from "../../components/helpers/DateRange";
 import ComboOptions from "../../components/helpers/ComboOptions";
+import Autocomplete from '../../components/helpers/Autocomplete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
+import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import { buscarPlano } from '../../actions/_ddp_plano/Actions';
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
 
@@ -22,27 +24,20 @@ const Axios = initAxiosInterceptors();
 const {alasql}=window;
 const {$} = window;
 
-/*Lista los proyectos de acuerdo a una busqueda*/
-async function getListProyectos(busqueda) {
-
-    const {data:proyectos} = await Axios.get(`/gestionpredial`);
-    
-    return {proyectos};
-}
-
-
 const Planos = ({history}) => {
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, []);
     const resListaDepartmento = useAsync(helperGets.helperGetListDepartamento, []);
     const resListaProvincia = useAsync(helperGets.helperGetListProvincia,[]);
     const resListaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
+    const resListaSolicitantes = useAsync(helperGets.helperGetListaLocadores, []);
 
-    const [filtros, set_filtros] = useState('');
+    const [filtros, set_filtros] = useState({fechainicio: '',fechafin: ''});
     const [busquedaLocal, set_busquedaLocal] = useState(true);
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
 
+    const nombreCtrlRangoFecha = 'controlFecha';
     const dispatch = useDispatch();
     const buscarPlanosAction = (filtros) => dispatch(buscarPlano(filtros));
     const planos = useSelector(state => state.plano.planos);
@@ -106,11 +101,47 @@ const Planos = ({history}) => {
         
     }
 
-    function handleRangoFechas() {
-        console.log('Aquí modificamos el valor de la fecha');
+    function setSolicitante(idLocador) {
+        set_filtros({
+            ...filtros,
+            profesionalid: idLocador
+        });
+        console.log(filtros);
     }
 
     const buscarPlanosFilter=async (e)=>{
+        let valorRangoFechas = $("#" + nombreCtrlRangoFecha).val();
+
+        if (valorRangoFechas) {
+            let resultFechas = funcGlob.helperObtenerRangoFechas(valorRangoFechas, true);
+            if (resultFechas) {
+                set_filtros({
+                    ...filtros,
+                    fechainicio: resultFechas.fechainicio,
+                    fechafin: resultFechas.fechafin
+                });
+                $.each(filtros, function(key, value){
+                    if (key === "fechainicio"){
+                        filtros[key] = resultFechas.fechainicio;
+                    }
+                    if (key === "fechafin"){
+                        filtros[key] = resultFechas.fechafin;
+                    }
+                });
+            }
+        } else {
+            set_filtros({
+                ...filtros,
+                fechainicio: '',
+                fechafin: ''
+            });
+            $.each(filtros, function(key, value){
+                if (key === "fechainicio" || key === "fechafin"){
+                    delete filtros[key];
+                }
+            });
+        }
+        
         let valorFiltros = '';
         if (filtros) {
             $.each(filtros, function(key, value){
@@ -185,7 +216,7 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Proyecto</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select className="form-control" id="proyectoid" name="proyectoid" 
+                                                    <select className="form-control" id="gestionpredialid" name="gestionpredialid" 
                                                     onChange={handleInputChange}>
                                                         <option value="">--SELECCIONE--</option>
                                                         {resListaProyectos.error
@@ -202,7 +233,7 @@ const Planos = ({history}) => {
                                                 </div>
                                                 
                                                 <div className="col-md-4">
-                                                <DateRange id="controlFecha" nombrefuncion={handleRangoFechas}></DateRange>
+                                                <DateRange id={nombreCtrlRangoFecha} ></DateRange>
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label">¿Contiene Dígital?</label>
@@ -221,13 +252,11 @@ const Planos = ({history}) => {
                                                     <label className="control-label">Solicitante</label>
                                                 </div>
                                                 <div className="col-md-4">
-                                                    <select className="form-control" id="profesionalid" name="profesionalid">
-                                                        <option value="0">--SELECCIONE--</option>
-                                                        <option value="RURAL">AQUISICION DE PREDIOS</option>
-                                                        <option value="RURAL">LIBERACION DE INTERFERENCIAS</option>
-                                                        <option value="RURAL">PAGO DE MEJORAS</option>
-                                                        <option value="RURAL">TRANFERENCIA INTERESTATALES</option>
-                                                    </select>
+                                                    {resListaSolicitantes.error
+                                                    ? "Se produjo un error cargando los locadores"
+                                                    : resListaSolicitantes.loading
+                                                    ? "Cargando..."
+                                                    : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
                                                 </div>
                                                 <div className="col-md-2">
                                                     <label className="control-label">Tipo de Plano</label>
