@@ -1,6 +1,7 @@
 import {
     AGREGAR_PLANO,
-    BUSCAR_PLANO,
+    BUSCAR_PLANOS,
+    MOSTRAR_PLANO,
 } from '../actions/_ddp_plano/types';
 
 // cada reducer tiene su propio state
@@ -14,7 +15,7 @@ export default function(state = initialState, action) {
     console.log(action)
     
     switch(action.type) {
-        case BUSCAR_PLANO:
+        case BUSCAR_PLANOS:
             return {
                 ...state,
                 planos: action.payload,
@@ -25,6 +26,11 @@ export default function(state = initialState, action) {
                     ...state,
                     planos: [...state.planos, action.payload]
             }
+            case MOSTRAR_PLANO:
+                return {
+                    ...state,
+                    plano: action.payload
+                }
             default:
                 return state;
     }

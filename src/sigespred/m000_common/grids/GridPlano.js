@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
 import {initAxiosInterceptors} from "../../../config/axios";
 import {toastr} from "react-redux-toastr";
+import history from '../../../history';
 
 const {$, jQuery, alasql} = window;
-//require("../grids/css.css")
 
 let $grid = $("#gridplano")
 
@@ -11,13 +11,11 @@ const initDateSearch = function (elem) {
 
 };
 
-function editPlano(idPlano){
-    console.log(idPlano);
-}
 
 window.editPlanoJqGrid=function (row_id) {
-    console.log('id');
-    console.log(row_id);
+    history.push({pathname:'/plano-edit',
+                  search: `id=${row_id}`
+                });
 }
 
 const numberTemplate = {

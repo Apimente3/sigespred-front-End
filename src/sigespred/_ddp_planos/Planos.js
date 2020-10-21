@@ -16,7 +16,7 @@ import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
-import { buscarPlano } from '../../actions/_ddp_plano/Actions';
+import { listar } from '../../actions/_ddp_plano/Actions';
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
 
 
@@ -39,7 +39,7 @@ const Planos = ({history}) => {
 
     const nombreCtrlRangoFecha = 'controlFecha';
     const dispatch = useDispatch();
-    const buscarPlanosAction = (filtros) => dispatch(buscarPlano(filtros));
+    const buscarPlanosAction = (filtros) => dispatch(listar(filtros));
     const planos = useSelector(state => state.plano.planos);
 
     useEffect(() => {
