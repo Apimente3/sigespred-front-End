@@ -16,7 +16,6 @@ const {alasql}=window;
 
 const Trabajadores = ({history}) => {
 
-
     const [busqueda, setBusqueda] = useState('');
     const [busquedalocal, setBusquedalocal] = useState(true);
     const dispatch = useDispatch();
