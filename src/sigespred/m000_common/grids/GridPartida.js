@@ -93,7 +93,7 @@ const gridcolumnModel = [
         "name": "nropartida",
         "index": "nropartida",
         "align": "left",
-        "width": 180,
+        "width": 100,
         "editable": false,
         "search": false,
         "hidden": false,
@@ -104,7 +104,7 @@ const gridcolumnModel = [
         "name": "tramoid",
         "index": "tramoid",
         "align": "left",
-        "width": 200,
+        "width": 100,
         "editable": true,
         "search": false,
         "hidden": false
@@ -114,7 +114,16 @@ const gridcolumnModel = [
         "name": "subtramoid",
         "index": "subtramoid",
         "align": "left",
-        "width": 200,
+        "width": 100,
+        "editable": true,
+        "search": false,
+        "hidden": false
+    },
+    {
+        "name": "tipopredioid",
+        "index": "tipopredioid",
+        "align": "left",
+        "width": 150,
         "editable": true,
         "search": false,
         "hidden": false
@@ -154,7 +163,7 @@ const gridcolumnModel = [
     ]
 
 
-const gridcolNames = ["ID", "Nº PARTIDA", "TRAMO", "SUBTRAMO", "TIPO PREDIO", "FECHA ATENCION", "OBSERVACION", "ESTADO ATENCION"];
+const gridcolNames = ["ID", "DENOMINACION","Nº PARTIDA", "TRAMO", "SUBTRAMO", "TIPO PREDIO", "FECHA ATENCION", "OBSERVACION", "ESTADO ATENCION"];
 
 
 const createGrid = () => {
@@ -220,14 +229,14 @@ const cargarGrid = (response) => {
 const Axios = initAxiosInterceptors();
 
 async function getListPartidas(busqueda = '') {
-    const planos = await Axios.get(`/partidaregistral/buscar`);
-    return planos;
+    const partidas = await Axios.get(`/partidaregistral/buscar`);
+    return partidas;
 }
 
 /*gUARDANDO LOS DATOS GENERADOS*/
-async function savechanges(expediente) {
+async function savechanges(partida) {
     // alert(JSON.stringify(expediente))
-    const {data} = await Axios.post(`/save_adquisicion_predial`, expediente);
+    const {data} = await Axios.post(`/partidaregistral`, partida);
     return data
 }
 

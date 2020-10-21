@@ -5,20 +5,28 @@ import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
-
+import { useDispatch, useSelector } from "react-redux";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import GridPartida from "../m000_common/grids/GridPartida";
-
+import { buscarPartida } from "../../actions/_ddp_partida/Actions";
+import * as PARAMS from "../../config/parameters";
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
 const { $ } = window;
 
 export const Partida = () => {
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
+  const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle,  [PARAMS.LISTASIDS.TIPOPRED]);
+  
+  const [filtros, set_filtros] = useState("");
+  const [busquedaLocal, set_busquedaLocal] = useState(true);
+  const dispatch = useDispatch();
+  const buscarPartidaAction = (filtros) => dispatch(buscarPartida(filtros));
+  const planos = useSelector((state) => state.plano.planos);
 
   const definirFiltro = () => {
     let valFiltro = "";
@@ -33,6 +41,25 @@ export const Partida = () => {
   };
 
   const [proyectos, set_proyectos] = useState([]);
+
+  const buscarPartidasFilter = async (e) => {
+    let valorFiltros = "";
+    if (filtros) {
+      $.each(filtros, function(key, value) {
+        if (value === "" || value === null) {
+          delete filtros[key];
+        }
+      });
+      valorFiltros = $.param(filtros);
+      console.log("valorFiltros");
+      console.log(valorFiltros);
+    }
+
+    e.preventDefault();
+    set_busquedaLocal(true);
+    await buscarPartidaAction(valorFiltros);
+    set_busquedaLocal(false);
+  };
 
   const descarxls = () => {
     let listexportexcel = proyectos;
@@ -144,7 +171,7 @@ export const Partida = () => {
                             id="tramoid"
                             name="tramoid"
                           >
-                            <option value="">--SELECCIONE--</option>
+                         
                           </select>
                         </div>
                         <div className="col-md-2">
@@ -260,9 +287,29 @@ export const Partida = () => {
                             name="rol"
                           >
                             <option value="">--SELECCIONE--</option>
-                            <option value="true">URBANO</option>
-                            <option value="falseL">RURAL</option>
+                            {resListaTipoPredio.error ? (
+                              "Se produjo un error cargando los tipos de plano"
+                            ) : resListaTipoPredio.loading ? (
+                              "Cargando..."
+                            ) : (
+                              <ComboOptions
+                                data={resListaTipoPredio.result}
+                                valorkey="valorcodigo" valornombre="valortexto"
+                              />
+                            )}
                           </select>
+                        </div>
+                      </div>
+                      <div className="row mb-3">
+                        <div className="col-md-6"></div>
+                        <div className="col-md-6 text-right">
+                          <button
+                            type="button"
+                            onClick={buscarPartidasFilter}
+                            className="btn btn-danger"
+                          >
+                            <i className="fa fa-search"></i> Aplicar Filtro(s)
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -275,9 +322,6 @@ export const Partida = () => {
             </div>
           </div>
         </div>
-        {/* <div>
-          PARTIDA REGISTRAL---------------------------------------------------
-        </div> */}
       </div>
       <FooterProcess />
     </>
