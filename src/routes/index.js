@@ -10,8 +10,10 @@ import RouteMod06ProcesoAdquisicionExpropiacion from './RouteMod06ProcesoAdquisi
 
 import RouteModPlanos from './_ddp_RouteModPlanos';
 import RouteModPartidas from './_ddp_RouteModPartidas';
+import RouteModEquipo from './_ddp_RouteModEquipo';
 
 export default [
+    ...RouteModEquipo,
     ...RouteModPartidas,
     ...RouteModPlanos,
     ...RouteMod01Login,

@@ -39,8 +39,8 @@ class SidebarAdm extends Component {
 
                              
 
-                                <li menu="/brigadas-list">
-                                    <Link to={"/brigada-list"}>
+                                <li menu="/list-equipos2">
+                                    <Link to={"/list-equipos2"}>
                             <span className="menu-icon">
                         <img src="/img/brigadas.svg" className="btn-siderbar" ></img>
                     </span>
