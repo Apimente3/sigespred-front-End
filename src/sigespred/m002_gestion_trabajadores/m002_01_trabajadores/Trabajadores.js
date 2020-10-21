@@ -15,19 +15,18 @@ const {alasql}=window;
 
 
 const Trabajadores = ({history}) => {
-    
 
     const [busqueda, setBusqueda] = useState('');
     const [busquedalocal, setBusquedalocal] = useState(true);
     const dispatch = useDispatch();
     const buscarTrabajadorAction = (dni) => dispatch(buscarTrabajador(dni));
-    
+
     useEffect(() => {
         // Productos cuando el componente este listo
-        buscarTrabajadorAction('');
-        setBusquedalocal(false);
+      //  buscarTrabajadorAction('');
+       // setBusquedalocal(false);
     }, []);
-    
+
     const buscarTrabadorFilter=async (e)=>{
         e.preventDefault();
         setBusquedalocal(true)
@@ -37,9 +36,9 @@ const Trabajadores = ({history}) => {
 
     const trabajadores = useSelector(state => state.trabajador.trabajadors);
     const loading = useSelector(state => state.trabajador.cargando);
-    
+
     const descarxls=()=>{
-    
+
         let listexportexcel = trabajadores;
         var resultgeojson = alasql(`SELECT *
                  FROM ? `, [listexportexcel])
@@ -70,7 +69,6 @@ const Trabajadores = ({history}) => {
                             <Link to={'/brigada-list'} type="button" className="btn btn-default ">
                                 <i className="fa fa-users"></i> Equipos de Trabajo</Link>
                             <Link  to={'/list-trabajadores'} type="button" className="btn btn-default active ">  <i className="fa fa-user"></i>  Trabajadores </Link>
-
 
                         </div>
                     </center>
@@ -139,7 +137,7 @@ const Trabajadores = ({history}) => {
                                         </tr>
                                         </thead>
                                         <tbody>
-                                       
+
 
                                     {
                                         (busquedalocal)?
@@ -157,8 +155,8 @@ const Trabajadores = ({history}) => {
                                             </>
 
                                             :
-                                            
-                                        (trabajadores.length==0)? 
+
+                                        (trabajadores.length==0)?
                                             <TrabajadorNoEcontrado/>
                                             :
                                         trabajadores.map((trabajador,i) => (
@@ -172,7 +170,7 @@ const Trabajadores = ({history}) => {
                                         </tbody>
                                     </table>
                                 </ul>
-                               
+
                             </div>
                         </div>
                     </div>

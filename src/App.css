@@ -756,3 +756,10 @@ popup_align2 {
 .custom-popup {
     transform: scale(0.9) !important;
 }
+
+#main-container2 {
+    position: relative;
+    min-height: 800px;
+    padding-top: 65px;
+    margin-left: 265px;
+}

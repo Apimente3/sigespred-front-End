@@ -35,3 +35,8 @@ export const LISTASIDS = {
         PROCESOSGPRED: 5,
         ESTADOPLANO: 6,
     }
+
+export const FilesUsuario={
+    "fotosUsuario":"Usuario/Fotos",
+    "fotos":"Usuario/Fotos"
+}

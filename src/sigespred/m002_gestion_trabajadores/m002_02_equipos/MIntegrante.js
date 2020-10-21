@@ -8,7 +8,7 @@ import {toastr} from "react-redux-toastr";
 
 import Autocomplete from '../../../components/helpers/Autocomplete';
 
-import Autosuggest from 'react-autosuggest';
+//import Autosuggest from 'react-autosuggest';
 
 
 const Axios = initAxiosInterceptors();
