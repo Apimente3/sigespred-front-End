@@ -1,0 +1,2 @@
+export const AGREGAR_EQUIPO = 'AGREGAR_EQUIPO';
+export const BUSCAR_EQUIPO = 'BUSCAR_EQUIPO';
