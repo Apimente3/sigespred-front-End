@@ -12,6 +12,7 @@ import {agregar, setcontinuarAgregar} from '../../../actions/trabajador/Actions'
 import {useDispatch, useSelector} from 'react-redux';
 import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
 import {serverFile} from "../../../config/axios";
+import {FilesUsuario} from "../../../config/parameters";
 
 const {$} = window;
 
@@ -34,12 +35,10 @@ const TrabajadorAdd = ({history}) => {
 
     const registrar = async e => {
         e.preventDefault();
-        $('#btnguardar').button('loading');
+       // $('#btnguardar').button('loading');
         try {
-
             await agregarTrabajadorComp(trabajador);
-
-            $('#btnguardar').button('reset');
+           // $('#btnguardar').button('reset');
 
             // let person =  window.confirm("¿Desea seguir registrando ?");
 
@@ -54,8 +53,6 @@ const TrabajadorAdd = ({history}) => {
         catch (e) {
             alert(e.message)
         }
-
-
     }
 
 
@@ -135,7 +132,7 @@ const TrabajadorAdd = ({history}) => {
 
                                                     <UploadMemo key="upload_portada_imagen" file={{urlDocumento:''}}
                                                                 accept={'.jpg,.png,.gif'}
-                                                                setFile={saveFotoPortada} folderSave={"FotosUsuarios"} eliminar={eliminarFotoPortada}></UploadMemo>
+                                                                setFile={saveFotoPortada} folderSave={FilesUsuario} eliminar={eliminarFotoPortada}></UploadMemo>
 
                                                 </form>
                                             </center>
@@ -280,10 +277,10 @@ const TrabajadorAdd = ({history}) => {
                                         Fecha Fin Vigencia</label>
                                     <div className="col-lg-4">
                                         <input required className="form-control input-sm" type="date"
-                                               name="fech_vigencia"
+                                               name="fechvigenvia"
                                                onChange={handleInputChange}
                                                placeholder="Ingrese correo"
-                                               value={trabajador.fech_vigencia}
+                                               value={trabajador.fechvigenvia}
                                         ></input>
                                     </div>
                                     <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
@@ -328,7 +325,7 @@ const TrabajadorAdd = ({history}) => {
                                 </div>
 
 
-                                <hr></hr>
+                                {/*  <hr></hr>
 
 
                                 <div className="form-group ">
@@ -344,6 +341,7 @@ const TrabajadorAdd = ({history}) => {
                                     </div>
 
                                 </div>
+                                */}
                                 <div className="panel-body">
                                     <div className="form-group ">
                                         <div className="col-lg-offset-2 col-lg-10">

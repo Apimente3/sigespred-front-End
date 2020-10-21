@@ -30,12 +30,12 @@ export function initAxiosInterceptors() {
         },
         function (error) {
             console.log(error);
-            if (error.response.status === 401) {
+           /* if (error.response.status === 401) {
                 deleteToken();
                 window.location = '/login';
             } else {
                 return Promise.reject(error);
-            }
+            }*/
         }
     );
 

@@ -43,8 +43,8 @@ export const borrar = id => async dispatch => {
     })
 }
 
-export const agregar = TRABAJADOR => async dispatch => {
-    const response = await axios.post('/trabajadors', TRABAJADOR);
+export const agregar = trabajador => async dispatch => {
+    const response = await axios.post('/usuario', trabajador);
     dispatch({type: AGREGAR_TRABAJADOR, payload: response});
 }
 
@@ -53,7 +53,7 @@ export const setcontinuarAgregar = isagregar => async dispatch => {
 }
 
 export const editar = TRABAJADOR => async dispatch => {
-    
+
     console.log(TRABAJADOR)
     const respuesta = await axios.put(`/trabajadors/${TRABAJADOR.id}`, TRABAJADOR);
     dispatch({
@@ -63,8 +63,6 @@ export const editar = TRABAJADOR => async dispatch => {
 }
 
 export const setFoto = foto => async dispatch => {
-
-
     dispatch({
         type: SET_FOTO,
         payload: foto

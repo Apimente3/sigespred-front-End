@@ -26,3 +26,8 @@ export var tipourbanizacion_global=[{"tipourbanizacion":"AGR"},
     {"tipourbanizacion":"URB"},
     {"tipourbanizacion":"UV"},
     {"tipourbanizacion":"VILLA"}];
+
+export const FilesUsuario={
+    "fotosUsuario":"Usuario/Fotos",
+    "fotos":"Usuario/Fotos"
+}
