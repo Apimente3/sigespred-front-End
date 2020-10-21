@@ -7,7 +7,7 @@ const Breadcrumb = ({listbreadcrumb}) => {
             <div id="breadcrumb">
                 <ul className="breadcrumb">
                     { listbreadcrumb.map((bread,i)=>(
-                        <li><Link to={bread.link} href="#" key={i}> {bread.name}</Link></li>
+                        <li key={i}><Link to={bread.link} href="#" key={i}> {bread.name}</Link></li>
                     ))}
                 </ul>
             </div>
