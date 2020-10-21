@@ -30,7 +30,7 @@ export var tipourbanizacion_global=[{"tipourbanizacion":"AGR"},
 export const LISTASIDS = {
         GENERO: 1,
         TIPODOC: 2,
-        ESTADOPREG: 3, 
+        TIPOPRED: 3, 
         ANIO: 4,
         PROCESOSGPRED: 5,
         ESTADOPLANO: 6,

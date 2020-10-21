@@ -17,6 +17,8 @@ import Autocomplete from '../../components/helpers/Autocomplete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import { listar } from '../../actions/_ddp_plano/Actions';
+import * as PARAMS from "../../config/parameters";
+import { buscarPlano } from '../../actions/_ddp_plano/Actions';
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
 
 

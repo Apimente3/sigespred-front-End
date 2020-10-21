@@ -1,0 +1,2 @@
+export const AGREGAR_PARTIDA = 'AGREGAR_PARTIDA';
+ export const BUSCAR_PARTIDA = 'BUSCAR_PARTIDA';
