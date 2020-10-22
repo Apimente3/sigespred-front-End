@@ -11,7 +11,7 @@ import {
 // cada reducer tiene su propio state
 
 const initialState = {
-    trabajadors: [],
+    trabajadors: {"count":5,"rows":[]},
     trabajador: {},
     cargando:true,
     foto:''
@@ -19,7 +19,7 @@ const initialState = {
 
 export default function(state = initialState, action) {
     console.log(action)
-    
+
     switch(action.type) {
         case MOSTRAR_TRABAJADORS:
             return {
@@ -44,11 +44,11 @@ export default function(state = initialState, action) {
                 trabajadors: state.trabajadors.filter(trabajador => trabajador.id !== action.payload)
             }
         case AGREGAR_TRABAJADOR:
-         
+
             return {
                 ...state,
                 trabajadors: [...state.trabajadors, action.payload]
-                
+
             }
         case CONTINUAR_AGREGAR_TRABAJADOR:
             return {

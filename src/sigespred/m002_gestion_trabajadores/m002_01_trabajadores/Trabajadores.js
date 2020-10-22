@@ -1,45 +1,65 @@
 import React, {useEffect, useState} from 'react';
-
-import SidebarAdm from "../../m000_common/siderbars/SidebarAdm";
-import Header from "../../m000_common/headers/Header";
 import {Link} from "react-router-dom";
-import Trabajador from "./Trabajador";
+import Wraper from "../../m000_common/formContent/Wraper";
+import {LISTADO_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
+import {initAxiosInterceptors, serverFile} from '../../../config/axios';
+import TableTrabajador from "./TableTrabajador";
+import TrabajadorRow from "./TrabajadorRow";
+import Pagination from "react-js-pagination";
+const queryString = require('query-string');
+const {alasql} = window;
 
-import {useDispatch, useSelector} from 'react-redux';
-import { buscarTrabajador } from '../../../actions/trabajador/Actions';
-import TrabajadorNoEcontrado from "./TrabajadorNoEcontrado";
-import TrabajadorLoad from "./TrabajadorLoad";
-const {alasql}=window;
+const Axios = initAxiosInterceptors();
 
 
+
+
+async function buscarTrabajador(query) {
+   // alert(query)
+    const {data} = await Axios.get(`/usuario?`+ query);
+    return data;
+}
 
 
 const Trabajadores = ({history}) => {
 
     const [busqueda, setBusqueda] = useState('');
-    const [busquedalocal, setBusquedalocal] = useState(true);
-    const dispatch = useDispatch();
-    const buscarTrabajadorAction = (dni) => dispatch(buscarTrabajador(dni));
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const [totalItemsCount, settotalItemsCount] = useState(3);
+    const [activePage, setactivePage] = useState(1);
+    const [trabajadors, setTrabajadores] = useState({"count":5,"rows":[]});
+
 
     useEffect(() => {
-        // Productos cuando el componente este listo
-      //  buscarTrabajadorAction('');
-       // setBusquedalocal(false);
+        async function init() {
+            try {
+                let query =  await  queryString.stringify({busqueda, page, limit});
+                let trabajadores=await buscarTrabajador(query)
+                setTrabajadores(trabajadores)
+                settotalItemsCount(trabajadores.count)
+            } catch (error) {
+                alert('Ocurrio un error')
+                console.log(error);
+            }
+        }
+        init();
     }, []);
 
-    const buscarTrabadorFilter=async (e)=>{
+    const buscarTrabadorFilter = async (e) => {
+
         e.preventDefault();
-        setBusquedalocal(true)
-       await buscarTrabajadorAction(busqueda);
-        setBusquedalocal(false)
+        let query =  await  queryString.stringify({busqueda, page, limit});
+        let trabajadores=await buscarTrabajador(query)
+        setTrabajadores(trabajadores)
     }
 
-    const trabajadores = useSelector(state => state.trabajador.trabajadors);
-    const loading = useSelector(state => state.trabajador.cargando);
+    //const trabajadores = useSelector(state => state.trabajador.trabajadors);
+    //const loading = useSelector(state => state.trabajador.cargando);
 
-    const descarxls=()=>{
+    const descarxls = () => {
 
-        let listexportexcel = trabajadores;
+        let listexportexcel = trabajadors.rows;
         var resultgeojson = alasql(`SELECT *
                  FROM ? `, [listexportexcel])
         var opts = [{
@@ -50,136 +70,85 @@ const Trabajadores = ({history}) => {
         return false;
     }
 
+
+    const handlePageChange = async (pageNumber) => {
+        await setPage(pageNumber)
+        //alert(pageNumber)
+        setactivePage(pageNumber)
+        setPage(pageNumber)
+        console.log(`active page is ${pageNumber}`);
+        let query =  await  queryString.stringify({busqueda, page:pageNumber, limit});
+        let trabajadores=await buscarTrabajador(query)
+        setTrabajadores(trabajadores)
+
+    }
+
+    const cabecerasTabla = ["DNI", "Nombres", "Apellidos", "Telefonos", "Correos", "Acciones"]
+
     return (
-        <div>
-            <Header></Header>
-            <SidebarAdm/>
+        <>
+            <Wraper titleForm={"Listado de Trabajadores"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
 
-            <div>
-                <div id="breadcrumb">
-                    <ul className="breadcrumb">
-                        <li><i className="fa fa-home"></i><a href="#"> Proyectos</a></li>
-                        <li className="active">Busqueda de Proyectos</li>
-                    </ul>
-                </div>
-                <div className="padding-md container">
-                    <center>
-                        <div className="btn-group"style={{marginTop:'15px'}}>
+                <fieldset className={'fielsettext'}>
 
-                            <Link to={'/brigada-list'} type="button" className="btn btn-default ">
-                                <i className="fa fa-users"></i> Equipos de Trabajo</Link>
-                            <Link  to={'/list-trabajadores'} type="button" className="btn btn-default active ">  <i className="fa fa-user"></i>  Trabajadores </Link>
+                    <form onSubmit={buscarTrabadorFilter}>
 
-                        </div>
-                    </center>
-                    <form>
-                        <fieldset className={'fielsettext'}>
-                            <legend align="mtop-25 center fielsettext "> <label className={'titleform'}>LISTADO DE TRABAJADORES </label>
+                        <div className="row">
+
+                            <div className="col-md-6">
+                                <div className="input-group">
+                                    <input type="text" className="form-control "
+                                           placeholder="Nombre del Trabajador o DNI"
+                                           onChange={e => setBusqueda(e.target.value)}
+                                    ></input>
+                                    <span className="input-group-btn">
+                                                                <button className="btn btn-default " type="submit"><i
+                                                                    className="fa fa-search"></i></button>
+                                                            </span>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+
                                 <Link to={`/trabajador-add`} className="btn btn-danger pull-right btn-sm fullborder">
-                                    <i className="fa fa-plus"></i>  Agregar Trabajador</Link>
-                                <button type="button" onClick={descarxls} className="btn btn-default pull-right btn-sm fullborder">
+                                    <i className="fa fa-plus"></i> Agregar Trabajador</Link>
+                                <button type="button" onClick={descarxls}
+                                        className="btn btn-default pull-right btn-sm fullborder">
                                     <i className="fa fa-file-excel-o"></i> Descargar Excel
                                 </button>
-                            </legend>
-
-                        </fieldset>
-
-                    </form>
-                    <div className="row">
-
-                        <div className="col-md-12">
-
-
-                            <div className="panel panel-default">
-                                <div className="panel-heading">
-                                    <form onSubmit={e=>buscarTrabadorFilter(e)}>
-                                        <div className="form-group">
-                                            <div className="row">
-                                                <div>
-                                                    <div className="col-md-8">
-                                                        <div className="input-group">
-                                                            <input type="text" className="form-control "
-                                                                   placeholder="Nombre del Trabajador o DNI"
-                                                                   onChange={e=>setBusqueda(e.target.value)}
-                                                            ></input>
-                                                            <span className="input-group-btn">
-                                                                <button className="btn btn-default " type="submit" ><i
-                                                                className="fa fa-search"></i></button>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4">
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <ul className="list-group">
-
-                                    <table className="table table-bordered table-condensed table-hover table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th ></th>
-                                            <th >Nº</th>
-                                            <th >Nombres</th>
-                                            <th>Profesion</th>
-                                            <th>DNI</th>
-                                            <th>Rol</th>
-                                            <th>Telefonos</th>
-                                            <th className="pull-right">Acciones</th>
-                                            <th ></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-
-                                    {
-                                        (busquedalocal)?
-                                            <>
-                                                <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            <TrabajadorLoad/>
-                                            </>
-
-                                            :
-
-                                        (trabajadores.length==0)?
-                                            <TrabajadorNoEcontrado/>
-                                            :
-                                        trabajadores.map((trabajador,i) => (
-                                            <Trabajador num={i+1}
-                                                key={trabajador.id}
-                                                trabajador={trabajador}
-                                            />
-                                        ))
-                                    }
-
-                                        </tbody>
-                                    </table>
-                                </ul>
 
                             </div>
                         </div>
+
+
+                    </form>
+
+
+                </fieldset>
+
+
+                <div className="panel panel-default">
+                    <TableTrabajador cabecera={cabecerasTabla}>
+                       {trabajadors.rows.map((trabajador, i) => (
+                            <TrabajadorRow trabajador={trabajador}></TrabajadorRow>
+                        ))}
+                    </TableTrabajador>
+
+                    <div className="panel-footer clearfix pull-right">
+                        <Pagination
+                            activePage={activePage}
+                            itemsCountPerPage={limit}
+                            totalItemsCount={totalItemsCount}
+                            pageRangeDisplayed={3}
+                            onChange={handlePageChange}
+                        ></Pagination>
                     </div>
 
+
                 </div>
+            </Wraper>
 
-            </div>
 
-        </div>
+        </>
     );
 
 }

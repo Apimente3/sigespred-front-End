@@ -18,11 +18,12 @@ export const listar = () => async dispatch => {
         payload: respuesta
     })
 }
-export const buscarTrabajador = busqueda => async dispatch => {
-    const respuesta = await axios.get(`/trabajadors?dni=${busqueda}`);
+export const buscarTrabajador = query => async dispatch => {
+    const respuesta = await axios.get(`/usuario?`+query);
+    debugger
     dispatch({
         type: BUSCAR_TRABAJADOR,
-        payload: respuesta.data
+        payload: respuesta
     })
 }
 
