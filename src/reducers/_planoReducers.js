@@ -2,6 +2,7 @@ import {
     AGREGAR_PLANO,
     BUSCAR_PLANOS,
     MOSTRAR_PLANO,
+    EDITAR_PLANO
 } from '../actions/_ddp_plano/types';
 
 // cada reducer tiene su propio state
@@ -31,6 +32,8 @@ export default function(state = initialState, action) {
                     ...state,
                     plano: action.payload
                 }
+            case EDITAR_PLANO:
+                return state;
             default:
                 return state;
     }

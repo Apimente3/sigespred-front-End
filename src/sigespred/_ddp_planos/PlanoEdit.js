@@ -1,7 +1,4 @@
 import React, {useState, useEffect, useRef} from 'react';
-// import Header from "../m000_common/headers/Header";
-// import SidebarAdm from "../m000_common/siderbars/SidebarAdm";
-// import FooterProcess from "../m000_common/footers/FooterProcess";
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/Wraper";
 import {Link} from "react-router-dom";
@@ -9,7 +6,7 @@ import FileBase64 from 'react-file-base64';
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
 import { useLocation } from "react-router-dom";
-import {agregar, obtener} from '../../actions/_ddp_plano/Actions';
+import {editar, obtener} from '../../actions/_ddp_plano/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
@@ -25,25 +22,19 @@ const PlanoEdit = ({history}) => {
     const location = useLocation();
     let valorIdPlano = location.search.substr(location.search.indexOf("=") + 1);
    
-    //const editarTrabajadorComp = (trabajador) => dispatch(editar(trabajador));
+    const editarPlanoAction = (plano) => dispatch(editar(plano));
     const obtenerPlanoAction = (id) => dispatch(obtener(id));
-    const [planoEdit,set_planoEdit]= useState({});
+    const [planoEditado,set_planoEditado]= useState({});
     const planoEdicion = useSelector(state => state.plano.plano);
-
+    
     useEffect(() => {
         const getPlano=async (id)=>{
            await obtenerPlanoAction(id)
         }
         getPlano(valorIdPlano);
-        set_planoEdit(planoEdicion);
     }, []);
+    
 
-
-
-
-
-
-    const [plano, set_plano] = useState({observaciones: 'Nuevo Registro'});
     const [planoArchTmp, set_planoArchTmp] = useState({digital: '', memdescriptiva: ''});
     const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, [""]);
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
@@ -82,6 +73,13 @@ const PlanoEdit = ({history}) => {
             let provList = data[Object.keys(data)[0]].filter( o => o.id_dpto === e.target.value);
             set_dataProv({data: provList});
             set_dataDist(null);
+            planoEdicion['provinciaid'] = '';
+            planoEdicion['distritoid'] = '';
+            set_planoEditado({
+                ...planoEditado,
+                provinciaid: '',
+                distritoid: ''
+            });
         }
     }
 
@@ -90,27 +88,25 @@ const PlanoEdit = ({history}) => {
             let data = resListaDistrito.result;
             let distList = data[Object.keys(data)[0]].filter( o => o.id_prov === e.target.value);
             set_dataDist({data: distList});
+            planoEdicion['distritoid'] = '';
+            set_planoEditado({
+                ...planoEditado,
+                distritoid: ''
+            });
         }
     }
 
-    const limpiarForm = () => {
-        set_plano({observaciones: 'Nuevo Registro'})
-    }
-
     function handleInputChange(e) {
-        if (['nroexpediente'].includes(e.target.name)) {
-            set_plano({
-                ...plano,
-                [e.target.name]: e.target.value.toUpperCase()
-            });
-        }else{
-            set_plano({
-                ...plano,
+        
+        if(e.target.name){
+            planoEdicion[e.target.name] = e.target.value;
+            set_planoEditado({
+                ...planoEditado,
                 [e.target.name]: e.target.value
             });
         }
         //TODO: remover console
-        console.log(plano);
+        console.log(planoEdicion);
     }
 
     const saveArchivoDigital = (file) => {
@@ -142,36 +138,23 @@ const PlanoEdit = ({history}) => {
     }
 
     function setSolicitante(idLocador) {
-        set_plano({
-            ...plano,
+        planoEdicion['profesionalid'] = idLocador;
+        set_planoEditado({
+            ...planoEditado,
             profesionalid: idLocador
         });
-        console.log(plano);
     }
 
     const dispatch = useDispatch();
-    const agregarPlanoComp = (plano) => dispatch(agregar(plano));
-
-    // const setcontinuarAgregarComp = (estado) => dispatch(setcontinuarAgregar(estado));
-
-    // useEffect(() => {
-    //     $('[data-toggle="tooltip"]').tooltip()
-    //     setcontinuarAgregarComp(true)
-    // }, []);
-
-
-    const registrar = async e => {
+    
+    const actualizar = async e => {
         e.preventDefault();
+        toastr.success('Actualización de Plano', 'El plano fue actualizado correctamente.');
         $('#btnguardar').button('loading');
         try {
-            await agregarPlanoComp(plano);
-
+            await editarPlanoAction(planoEdicion);
             $('#btnguardar').button('reset');
-            const toastrConfirmOptions = {
-                onOk: () => limpiarForm(),
-                onCancel: () => history.push('/planos')
-            };
-            toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
+            history.push('/planos');
         }
         catch (e) {
             alert(e.message)
@@ -181,7 +164,7 @@ const PlanoEdit = ({history}) => {
         return (
             <>
             <Wraper titleForm={"Edición de Plano: " + planoEdicion.codplano} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
-                <form onSubmit={registrar}>
+                <form onSubmit={actualizar}>
                     <div className="form-group">
                         <div className="row">
                             <div className="col-md-6">
@@ -460,7 +443,7 @@ const PlanoEdit = ({history}) => {
                                 <Link to={`/planos`} className="btn btn-default btn-control">Cancelar
                                 </Link>
                                 <button id="btnguardar" type="submit"
-                                        className="btn btn-danger btn-control">Guardar
+                                        className="btn btn-danger btn-control">Actualizar
                                 </button>
                                 
                             </div>
