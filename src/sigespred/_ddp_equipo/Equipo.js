@@ -6,10 +6,11 @@ import { initAxiosInterceptors } from "../../config/axios";
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
 
-import DateRangePicker from "react-bootstrap-daterangepicker";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-daterangepicker/daterangepicker.css";
+// import DateRangePicker from "react-bootstrap-daterangepicker";
+// import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap-daterangepicker/daterangepicker.css";
 import ComboOptions from "../../components/helpers/ComboOptions";
+import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import GridEquipo from "../m000_common/grids/GridEquipo";
 
@@ -18,7 +19,7 @@ const { alasql } = window;
 const { $ } = window;
 
 export const Equipo = () => {
-  const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
+  const resListaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
 
   const definirFiltro = () => {
     let valFiltro = "";
@@ -82,13 +83,26 @@ export const Equipo = () => {
                           </label>
                         </div>
                         <div className="col-md-4">
-                          <input
-                            type="text"
-                            className="form-control "
-                            id="campofiltro"
-                            name="campofiltro"
-                            placeholder="Ingrese campo de filtro"
-                          />
+                          <select
+                            className="form-control"
+                            id="areaid"
+                            name="areaid"
+                          >
+                            <option value="">--SELECCIONE--</option>
+                            {resListaSubAreas.error ? (
+                              "Se produjo un error cargando las sub areas"
+                            ) : resListaSubAreas.loading ? (
+                              "Cargando..."
+                            ) : (
+                              <ComboOptionsGroup
+                                data={resListaSubAreas.result}
+                                valorkey="id"
+                                valornombre="nombre"
+                                valornombregrupo="nombre"
+                                grupojson="SubArea"
+                              />
+                            )}
+                          </select>
                         </div>
                       </div>
                     </div>

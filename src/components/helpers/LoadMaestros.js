@@ -47,3 +47,9 @@ export const helperGetListaLocadores = async(params) => {
     const {data} = await Axios.get(`/autousuario`);
     return data;
 }
+
+
+export const helperGetListaSubAreas = async(params) => {
+    const {data:areas} = await Axios.get(`/area`);
+    return {areas};
+}

@@ -2,8 +2,10 @@ import {initAxiosInterceptors} from '../../config/axios';
 
 import {
     AGREGAR_PLANO,
+    EDITAR_PLANO,
     BUSCAR_PLANOS,
     MOSTRAR_PLANO,
+    CONTINUAR_AGREGAR_PLANO
 } from './types';
 
 // import {
@@ -20,6 +22,20 @@ const axios=initAxiosInterceptors();
 export const agregar = PLANO => async dispatch => {
     const response = await axios.post('/plano', PLANO);
     dispatch({type: AGREGAR_PLANO, payload: response});
+}
+
+export const setcontinuarAgregar = isagregar => async dispatch => {
+    console.log(isagregar);
+    dispatch({type: CONTINUAR_AGREGAR_PLANO, payload: isagregar});
+}
+
+export const editar = PLANO => async dispatch => {
+    console.log('paso por aqui')
+    const response = await axios.put(`/plano/${PLANO.id}`, PLANO);
+    dispatch({
+        type: EDITAR_PLANO,
+        payload: response.data
+    })
 }
 
 export const listar = busqueda => async dispatch => {

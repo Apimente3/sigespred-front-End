@@ -1,16 +1,31 @@
+import { fireEvent } from '@testing-library/react';
 import React, {useEffect, useState} from 'react';
 
-
-const Autocomplete = ({listaDatos, callabck}) => {
-
+const Autocomplete = ({listaDatos, callabck, valorinit}) => {
 
     const [seleccionado, setSeleccionado] = useState(false);
     const [listinit, setListinit] = useState(listaDatos);
     const [list, setList] = useState(listaDatos);
     const [rowSelect, setRowSelect] = useState({});
+    const [fisrtLoad, setfisrtLoad] = useState(true);
 
-
-   
+    useEffect(() => {
+        async function initialLoad() {
+            try {
+                if (valorinit && fisrtLoad) {
+                    var found = await listaDatos.find(function (element) {
+                        return element.id == valorinit;
+                    });
+                    setRowSelect(found);
+                    setSeleccionado(true);
+                    setfisrtLoad(false);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        initialLoad();
+    }, []);
 
     const saveInput = async (e) => {
         let id = e.target.getAttribute('value');
@@ -29,9 +44,7 @@ const Autocomplete = ({listaDatos, callabck}) => {
                 return el.value.toLowerCase().indexOf(valor.toLowerCase()) > -1;
             })
         )
-        console.log(list)
     }
-
 
     const limpiar = (e) => {
 
@@ -41,14 +54,10 @@ const Autocomplete = ({listaDatos, callabck}) => {
         callabck(null)
     }
 
-
     return (
         <>
-
             {!seleccionado ?
-
                 (<div>
-
                     <input onChange={busquedaItems} type="email" className="form-control input-sm"
                            id="exampleInputEmail1"
                            placeholder=""/>
@@ -65,11 +74,7 @@ const Autocomplete = ({listaDatos, callabck}) => {
                                 }
                             </ul>
                         </div>
-
-
                     }
-
-
                 </div>)
                 :
                 <>
@@ -78,8 +83,6 @@ const Autocomplete = ({listaDatos, callabck}) => {
                 </a>
                 </>
             }
-
-
         </>
     );
 };
