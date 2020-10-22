@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react';
 import {initAxiosInterceptors} from "../../../config/axios";
 import {toastr} from "react-redux-toastr";
+import history from '../../../history';
 
 const {$, jQuery, alasql} = window;
 
-//require("../grids/css.css")
-
 
 let $grid = $("#gridpartida")
+
 const initDateEdit = function (elem, options) {
     // we need get the value before changing the type
     var orgValue = $(elem).val(),
@@ -49,6 +49,12 @@ const myBeforeSaveRow = function (options, rowid) {
 const initDateSearch = function (elem) {
 
 };
+
+window.editPartidaJqGrid=function (row_id) {
+    history.push({pathname:'/partida-edit',
+                  search: `id=${row_id}`
+                });
+}
 const numberTemplate = {
     formatter: "number", align: "right", sorttype: "number",
     editrules: {number: true, required: true},
@@ -159,11 +165,17 @@ const gridcolumnModel = [
         "editable": true,
         "search": false,
         "hidden": false
+    },
+    {   "name":"act",
+    "index":"act",
+    "align": "center",
+    "width":160,
+    "sortable":false
     }
     ]
 
 
-const gridcolNames = ["ID", "DENOMINACION","Nº PARTIDA", "TRAMO", "SUBTRAMO", "TIPO PREDIO", "FECHA ATENCION", "OBSERVACION", "ESTADO ATENCION"];
+const gridcolNames = ["ID", "DENOMINACION","Nº PARTIDA", "TRAMO", "SUBTRAMO", "TIPO PREDIO", "FECHA ATENCION", "OBSERVACION", "ESTADO ATENCION", "ACCIONES"];
 
 
 const createGrid = () => {
@@ -190,15 +202,15 @@ const createGrid = () => {
         //   ondblClickRow: setSessionProyecto,
         rowList: [10, 20, 30],
         'cellsubmit': 'clientArray',
-        beforeSaveCell: function (rowid, cellname, value, iRow, iCol) {
-            try {
-                var rowData = {...jQuery('#gridpartida').jqGrid('getRowData', rowid), [cellname]: value};
-                savechanges({[cellname]: value, id: rowData.id});
-                toastr.info('Se actualizao correctamente la tabla ', {"position": "bottom-center",});
-            } catch (e) {
-                toastr.info(JSON.stringify(e), {"position": "bottom-center",})
-            }
-        },
+        // beforeSaveCell: function (rowid, cellname, value, iRow, iCol) {
+        //     try {
+        //         var rowData = {...jQuery('#gridpartida').jqGrid('getRowData', rowid), [cellname]: value};
+        //         savechanges({[cellname]: value, id: rowData.id});
+        //         toastr.info('Se actualizao correctamente la tabla ', {"position": "bottom-center",});
+        //     } catch (e) {
+        //         toastr.info(JSON.stringify(e), {"position": "bottom-center",})
+        //     }
+        // },
 
         afterSubmit: function (resp, postdata) {
             console.log(resp, postdata)
@@ -208,6 +220,21 @@ const createGrid = () => {
         rownumbers: true,
         shrinkToFit: false,
         autowidth: true,
+        gridComplete: function(){
+            var ids = jQuery("#gridplano").jqGrid('getDataIDs');
+            for(var i=0;i < ids.length;i++){
+                var cl = ids[i];
+                let bdw = "<button class='btn' onclick=\"jQuery('#gridpartida').editRow('"+cl+"');\"><i class='fa fa-download fa-2x'></i></button>";
+                let bl = "<button class='btn' onclick=\"jQuery('#gridpartida').editRow('"+cl+"');\"><i class='fa fa-link fa-2x'></i></button>";
+                //let be = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-edit fa-2x'></i></button>";
+                let be = `<button class="btn" onclick="window.editPartidaJqGrid(${cl})" ><i class='fa fa-edit fa-2x'></i></button>`;
+                let bd = "<button class='btn' onclick=\"jQuery('#gridpartida').editRow('"+cl+"');\"><i class='fa fa-trash fa-2x'></i></button>"; 
+                let se = "<input style='height:22px;width:20px;' type='button' value='S' onclick=\"jQuery('#gridpartida').saveRow('"+cl+"');\"  />"; 
+                let ce = "<input style='height:22px;width:20px;' type='button' value='C' onclick=\"jQuery('#gridpartida').restoreRow('"+cl+"');\" />"; 
+                let concatBtn = bdw+bl+be+bd;
+                jQuery("#gridpartida").jqGrid('setRowData',ids[i],{act:concatBtn});
+            }	
+        },
     });
 
     //$("#gridpartida").jqGrid('filterToolbar', {stringResult: true, searchOnEnter: false, defaultSearch: "cn"});
@@ -240,7 +267,7 @@ async function savechanges(partida) {
     return data
 }
 
-const GridPartida = () => {
+const GridPartida = (datos) => {
 
     /*Obteniendo la lista de los esquipos*/
     useEffect(() => {

@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f33408e-9338-484c-96b0-504a92e0d08d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TableTrabajador.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorRow.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/actions/trabajador/Actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/actions/trabajador/Actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/breadcrums.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/breadcrums.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/reducers/trabajadorReducers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/reducers/trabajadorReducers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorEdit.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorEdit.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/helpers/FuncionesGlobales.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/helpers/FuncionesGlobales.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_partidas/Partida.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_partidas/Partida.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_planos/PlanoAdd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_planos/PlanoAdd.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_planos/PlanoEdit.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_planos/PlanoEdit.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_planos/Planos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_planos/Planos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/m000_common/grids/GridPartida.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m000_common/grids/GridPartida.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/m000_common/grids/GridPlano.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m000_common/grids/GridPlano.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajadores.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajadores.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -77,6 +78,7 @@
     <session id="1709242">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
+          <entry key="gitignore" value="1" />
           <entry key="js" value="43" />
           <entry key="ts" value="1" />
         </counts>
@@ -84,17 +86,20 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JavaScript" value="43" />
+          <entry key="PLAIN_TEXT" value="1" />
           <entry key="TypeScript" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="1349" />
+          <entry key="js" value="1366" />
+          <entry key="txt" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JavaScript" value="1349" />
+          <entry key="JavaScript" value="1366" />
+          <entry key="PLAIN_TEXT" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
@@ -113,11 +118,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="193">
-              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+            <state relative-caret-position="-810">
+              <caret line="40" column="34" lean-forward="true" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
               <folding>
                 <element signature="e#0#57#0" expanded="true" />
               </folding>
@@ -145,15 +150,6 @@
               <folding>
                 <element signature="e#0#207#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/actions/trabajador/types.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -203,13 +199,18 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajadores.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="131" column="37" selection-start-line="131" selection-start-column="37" selection-end-line="131" selection-end-column="37" />
+            <state relative-caret-position="427">
+              <caret line="133" selection-start-line="133" selection-end-line="133" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -262,8 +263,8 @@
       <find>buscarTrabajadorAction</find>
       <find>trabajadores</find>
       <find>activePage</find>
-      <find>FilesUsuario</find>
       <find>option</find>
+      <find>FilesUsuario</find>
       <find>settotalItemsCount</find>
     </findStrings>
     <dirStrings>
@@ -272,6 +273,7 @@
     </dirStrings>
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
@@ -302,10 +304,10 @@
         <option value="$PROJECT_DIR$/src/actions/trabajador/Actions.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TableTrabajador.js" />
         <option value="$PROJECT_DIR$/src/config/breadcrums.js" />
-        <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajadores.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorRow.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorEdit.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js" />
+        <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajadores.js" />
       </list>
     </option>
   </component>
@@ -327,7 +329,7 @@
       <path value="$PROJECT_DIR$/src/libraries/Leaflet.fullscreen/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="226" />
     <option name="y" value="75" />
     <option name="width" value="1362" />
@@ -484,15 +486,30 @@
       <workItem from="1585455776656" duration="8082000" />
       <workItem from="1585485969747" duration="1865000" />
       <workItem from="1585703362234" duration="636000" />
-      <workItem from="1603368437483" duration="17202000" />
+      <workItem from="1603368437483" duration="18053000" />
     </task>
+    <task id="LOCAL-00001" summary="Trabajador">
+      <created>1603396622842</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1603396622842</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Trabajador">
+      <created>1603396632687</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1603396632687</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63389000" />
+    <option name="totallyTimeSpent" value="64240000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14172813" />
@@ -523,10 +540,11 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Trabajador" />
+    <option name="LAST_COMMIT_MESSAGE" value="Trabajador" />
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/config.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/history.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -817,16 +835,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajadores.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="131" column="37" selection-start-line="131" selection-start-column="37" selection-end-line="131" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorRow.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -859,13 +867,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+        <state relative-caret-position="-810">
+          <caret line="40" column="34" lean-forward="true" selection-start-line="40" selection-start-column="34" selection-end-line="40" selection-end-column="34" />
           <folding>
             <element signature="e#0#57#0" expanded="true" />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajadores.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="133" selection-start-line="133" selection-end-line="133" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

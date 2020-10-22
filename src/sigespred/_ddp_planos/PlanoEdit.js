@@ -165,285 +165,276 @@ const PlanoEdit = ({history}) => {
             <>
             <Wraper titleForm={"Edición de Plano: " + planoEdicion.codplano} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
                 <form onSubmit={actualizar}>
-                    <div className="form-group">
-                        <div className="row">
-                            <div className="col-md-6">
-                                <fieldset>
-                                    <legend>Datos de Codificación</legend>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label"><span className="obligatorio">* </span>Tipo de Plano</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            {resListaTipoPlano.error
-                                            ? "Se produjo un error cargando los tipos de plano"
-                                            : resListaTipoPlano.loading
-                                            ? "Cargando..."
-                                            :
-                                            <select className="form-control" id="tipoplanoid" name="tipoplanoid"
-                                            readOnly
-                                            value={planoEdicion.tipoplanoid}
-                                            >
-                                                <option value="">--SELECCIONE--</option>
-                                                    <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />
-                                            </select>}
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label"><span className="obligatorio">* </span>Proyecto</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            {resListaProyectos.error
-                                                ? "Se produjo un error cargando los proyectos"
-                                                : resListaProyectos.loading
-                                                ? "Cargando..."
-                                                :
-                                                <select className="form-control" id="gestionpredialid" name="gestionpredialid" 
-                                                readOnly
-                                                value={planoEdicion.gestionpredialid}
-                                                >
-                                                    <option value="">--SELECCIONE--</option>
-                                                        <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>
-                                                </select>}
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label"><span className="obligatorio">* </span>Nro. de Expediente</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            {/* <input type="text" className="form-control " id="codplano" name="codplano" placeholder="Código del plano" onBlur={definirFiltro}/> */}
-                                            <input type="text" className="form-control " id="nroexpediente" name="nroexpediente" 
-                                            readOnly
-                                            value={planoEdicion.nroexpediente || ''}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label"><span className="obligatorio">* </span>Año</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            {resListaAnios.error
-                                                ? "Se produjo un error cargando los años"
-                                                : resListaAnios.loading
-                                                ? "Cargando..."
-                                                :
-                                                <select className="form-control" id="periodoid" name="periodoid" 
-                                                readOnly
-                                                value={planoEdicion.periodoid}
-                                                >
-                                                <option value="">--SELECCIONE--</option>
-                                                
-                                                <ComboOptions data={resListaAnios.result} valorkey="valorcodigo" valornombre="valortexto" />
-                                                </select>}
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label"><span className="obligatorio">* </span>Proceso</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            {resListaProcesos.error
-                                                ? "Se produjo un error cargando los procesos"
-                                                : resListaProcesos.loading
-                                                ? "Cargando..."
-                                                :
-                                                <select className="form-control" id="procesoid" name="procesoid"
-                                                readOnly
-                                                value={planoEdicion.procesoid}
-                                                >
-                                                    <option value="">--SELECCIONE--</option>
-                                                    <ComboOptions data={resListaProcesos.result} valorkey="valorcodigo" valornombre="valortexto" />
-                                                </select>}
-                                        </div>
-                                    </div>
-                                </fieldset>
+                    <div className="form-group col-lg-6">
+                        <fieldset className="mleft-20">
+                            <legend>Datos de Codificación</legend>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    <span className="obligatorio">* </span>Tipo de Plano
+                                </label>
+                                <div className="col-lg-8">
+                                    {resListaTipoPlano.error
+                                    ? "Se produjo un error cargando los tipos de plano"
+                                    : resListaTipoPlano.loading
+                                    ? "Cargando..."
+                                    :
+                                    <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid"
+                                    readOnly
+                                    value={planoEdicion.tipoplanoid}
+                                    >
+                                        <option value="">--SELECCIONE--</option>
+                                        <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />
+                                    </select>}
+                                </div>
                             </div>
-                            <div className="col-md-6">
-                                <fieldset>
-                                    <legend>Datos Generales</legend>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Profesional Solicitante</label>
-                                        </div>
-                                        <div className="col-md-8" style={{fontSize: "13px"}}>
-                                            {resListaSolicitantes.error
-                                            ? "Se produjo un error cargando los locadores"
-                                            : resListaSolicitantes.loading
-                                            ? "Cargando..."
-                                            : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} valorinit={planoEdicion.profesionalid}/>}
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Estado del Plano</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select id="estadoid" name="estadoid" className="form-control" 
-                                            value={planoEdicion.estadoid || ''}
-                                            onChange={handleInputChange}>
-                                                <option value="">--SELECCIONE--</option>
-                                                {resListaEstadosPlano.error
-                                                ? "Se produjo un error cargando los estados de plano"
-                                                : resListaEstadosPlano.loading
-                                                ? "Cargando..."
-                                                : <ComboOptions data={resListaEstadosPlano.result} valorkey="valorcodigo" valornombre="valortexto" />}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Plano Antecedente</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            {/* <input type="text" className="form-control " id="codplano" name="codplano" placeholder="Código del plano" onBlur={definirFiltro}/> */}
-                                            <input type="text" className="form-control" id="antecedente" name="antecedente" readOnly onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Fecha de Creación</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control" 
-                                            value={planoEdicion.fechacreacion || ''}
-                                            onChange={handleInputChange} />
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Observaciones</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <input type="text" className="form-control" id="observaciones" name="observaciones" 
-                                            value={planoEdicion.observaciones || ''}
-                                            onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                </fieldset>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    <span className="obligatorio">* </span>Proyecto
+                                </label>
+                                <div className="col-lg-8">
+                                    {resListaProyectos.error
+                                    ? "Se produjo un error cargando los proyectos"
+                                    : resListaProyectos.loading
+                                    ? "Cargando..."
+                                    :
+                                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                                    readOnly
+                                    value={planoEdicion.gestionpredialid}
+                                    >
+                                        <option value="">--SELECCIONE--</option>
+                                        <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>
+                                    </select>}
+                                </div>
                             </div>
-                        </div>
-                        <div className="row mt-5">
-                            <div className="col-md-6">
-                                <fieldset>
-                                    <legend>Ubicación</legend>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Tramo</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select id="tramo" name="tramo" className="form-control" onChange={handleInputChange}>
-                                                <option value="">--SELECCIONE--</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Subtramo</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <input type="text" className="form-control" id="subtramoid" name="subtramoid" 
-                                            value={planoEdicion.subtramoid || ''}
-                                            onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Departamento</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                                {resListaDepartmento.error
-                                                ? "Se produjo un error cargando los departamentos"
-                                                : resListaDepartmento.loading
-                                                ? "Cargando..."
-                                                :
-                                                <select className="form-control" id="departamentoid" name="departamentoid" 
-                                                value={planoEdicion.departamentoid}
-                                                onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
-                                                    <option value="">--SELECCIONE--</option>
-                                                    <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />
-                                                </select>}
-                                                {resListaDepartmento.result && (
-                                                    setProvinciaDistrito(planoEdicion.departamentoid)
-                                                )}
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Provincia</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select id="provinciaid" name="provinciaid" className="form-control" 
-                                            value={planoEdicion.provinciaid}
-                                            onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
-                                                <option value="">--SELECCIONE--</option>
-                                                <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Distrito</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <select id="distritoid" name="distritoid" className="form-control"
-                                            value={planoEdicion.distritoid}
-                                            onChange={handleInputChange}>
-                                                <option value="">--SELECCIONE--</option>
-                                                <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Referencia Geográfica</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <UploadMemo key="refgeografica" file={{urlDocumento:''}}
-                                                accept={'.jpg,.png,.gif'}
-                                                setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
-                                        </div>
-                                    </div>
-                                </fieldset>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    <span className="obligatorio">* </span>Nro. de Expediente
+                                </label>
+                                <div className="col-lg-8">
+                                    <input type="text" className="form-control input-sm" id="nroexpediente" name="nroexpediente" 
+                                    readOnly
+                                    value={planoEdicion.nroexpediente || ''}
+                                    />
+                                </div>
                             </div>
-                            <div className="col-md-6">
-                                <fieldset>
-                                    <legend>Archivos</legend>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Plano Dígital</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <UploadMemo key="planodigitaltmp" file={{urlDocumento:''}}
-                                                accept={'.jpg,.png,.gif'}
-                                                setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
-                                        </div>
-                                    </div>
-                                    <div className="row mt-3">
-                                        <div className="col-md-4 text-right">
-                                            <label className="control-label">Memoría Descriptiva</label>
-                                        </div>
-                                        <div className="col-md-8">
-                                            <UploadMemo key="memdescriptivatmp" file={{urlDocumento:''}}
-                                                accept={'.jpg,.png,.gif'}
-                                                setFile={saveArchivoMemoria} folderSave={"FotosUsuarios"} eliminar={deleteArchivoMemoria}></UploadMemo>
-                                        </div>
-                                    </div>
-                                </fieldset>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    <span className="obligatorio">* </span>Año
+                                </label>
+                                <div className="col-lg-8">
+                                    {resListaAnios.error
+                                    ? "Se produjo un error cargando los años"
+                                    : resListaAnios.loading
+                                    ? "Cargando..."
+                                    :
+                                    <select className="form-control input-sm" id="periodoid" name="periodoid" 
+                                    readOnly
+                                    value={planoEdicion.periodoid}
+                                    >
+                                        <option value="">--SELECCIONE--</option>
+                                        <ComboOptions data={resListaAnios.result} valorkey="valorcodigo" valornombre="valortexto" />
+                                    </select>}
+                                </div>
                             </div>
-                        </div>
-                    
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    <span className="obligatorio">* </span>Proceso
+                                </label>
+                                <div className="col-lg-8">
+                                    {resListaProcesos.error
+                                    ? "Se produjo un error cargando los procesos"
+                                    : resListaProcesos.loading
+                                    ? "Cargando..."
+                                    :
+                                    <select className="form-control input-sm" id="procesoid" name="procesoid"
+                                    readOnly
+                                    value={planoEdicion.procesoid}
+                                    >
+                                        <option value="">--SELECCIONE--</option>
+                                        <ComboOptions data={resListaProcesos.result} valorkey="valorcodigo" valornombre="valortexto" />
+                                    </select>}
+                                </div>
+                            </div>
+                        </fieldset>
                     </div>
-                    <hr></hr>
+                    <div className="form-group col-lg-6">
+                        <fieldset className="mleft-20">
+                            <legend>Datos Generales</legend>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Profesional Solicitante
+                                </label>
+                                <div className="col-lg-8">
+                                    {resListaSolicitantes.error
+                                    ? "Se produjo un error cargando los locadores"
+                                    : resListaSolicitantes.loading
+                                    ? "Cargando..."
+                                    : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} valorinit={planoEdicion.profesionalid}/>}
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Estado del Plano
+                                </label>
+                                <div className="col-lg-8">
+                                    <select id="estadoid" name="estadoid" className="form-control input-sm" 
+                                    value={planoEdicion.estadoid || ''}
+                                    onChange={handleInputChange}>
+                                        <option value="">--SELECCIONE--</option>
+                                        {resListaEstadosPlano.error
+                                        ? "Se produjo un error cargando los estados de plano"
+                                        : resListaEstadosPlano.loading
+                                        ? "Cargando..."
+                                        : <ComboOptions data={resListaEstadosPlano.result} valorkey="valorcodigo" valornombre="valortexto" />}
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Plano Antecedente
+                                </label>
+                                <div className="col-lg-8">
+                                    <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" readOnly onChange={handleInputChange}/>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Fecha de Creación
+                                </label>
+                                <div className="col-lg-8">
+                                    <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion input-sm" className="form-control" 
+                                    value={planoEdicion.fechacreacion || ''}
+                                    onChange={handleInputChange} />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Observaciones
+                                </label>
+                                <div className="col-lg-8">
+                                    <input type="text" className="form-control input-sm" id="observaciones" name="observaciones" 
+                                        value={planoEdicion.observaciones || ''}
+                                        onChange={handleInputChange}/>
+                                </div>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                    <div className="form-group col-lg-6">
+                        <fieldset className="mleft-20">
+                            <legend>Ubicación</legend>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Tramo
+                                </label>
+                                <div className="col-lg-8">
+                                    <select id="tramo" name="tramo" className="form-control input-sm" onChange={handleInputChange}>
+                                        <option value="">--SELECCIONE--</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Subtramo
+                                </label>
+                                <div className="col-lg-8">
+                                    <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" 
+                                    value={planoEdicion.subtramoid || ''}
+                                    onChange={handleInputChange}/>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Departamento
+                                </label>
+                                <div className="col-lg-8">
+                                    {resListaDepartmento.error
+                                    ? "Se produjo un error cargando los departamentos"
+                                    : resListaDepartmento.loading
+                                    ? "Cargando..."
+                                    :
+                                    <select className="form-control input-sm" id="departamentoid" name="departamentoid" 
+                                    value={planoEdicion.departamentoid}
+                                    onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
+                                        <option value="">--SELECCIONE--</option>
+                                        <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />
+                                    </select>}
+                                    {resListaDepartmento.result && (
+                                        setProvinciaDistrito(planoEdicion.departamentoid)
+                                    )}
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Provincia
+                                </label>
+                                <div className="col-lg-8">
+                                    <select id="provinciaid" name="provinciaid" className="form-control input-sm" 
+                                    value={planoEdicion.provinciaid}
+                                    onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
+                                        <option value="">--SELECCIONE--</option>
+                                        <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Distrito
+                                </label>
+                                <div className="col-lg-8">
+                                    <select id="distritoid" name="distritoid" className="form-control input-sm"
+                                    value={planoEdicion.distritoid}
+                                    onChange={handleInputChange}>
+                                        <option value="">--SELECCIONE--</option>
+                                        <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Referencia Geográfica
+                                </label>
+                                <div className="col-lg-8">
+                                    <UploadMemo key="refgeografica" file={{urlDocumento:''}}
+                                    accept={'.jpg,.png,.gif'}
+                                    setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div className="form-group col-lg-6">
+                        <fieldset className="mleft-20">
+                            <legend>Archivos</legend>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Plano Dígital
+                                </label>
+                                <div className="col-lg-8">
+                                    <UploadMemo key="planodigitaltmp" file={{urlDocumento:''}}
+                                    accept={'.jpg,.png,.gif'}
+                                    setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    Memoría Descriptiva
+                                </label>
+                                <div className="col-lg-8">
+                                    <UploadMemo key="memdescriptivatmp" file={{urlDocumento:''}}
+                                    accept={'.jpg,.png,.gif'}
+                                    setFile={saveArchivoMemoria} folderSave={"FotosUsuarios"} eliminar={deleteArchivoMemoria}></UploadMemo>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
                     <div className="panel-body">
                         <div className="form-group">
-                            <div className="col-lg-offset-2 col-lg-10">
-                                <Link to={`/planos`} className="btn btn-default btn-control">Cancelar
+                            <div className="col-lg-offset-8 col-lg-4">
+                                <Link to={`/planos`} className="btn btn-default btn-sm btn-control">Cancelar
                                 </Link>
                                 <button id="btnguardar" type="submit"
-                                        className="btn btn-danger btn-control">Actualizar
+                                        className="btn btn-danger btn-sm btn-control">Actualizar
                                 </button>
                                 
                             </div>

@@ -70,7 +70,7 @@ const gridcolumnModel = [
         "name": "fechacreacion",
         "index": "fechacreacion",
         "align": "center",
-        "width": 110,
+        "width": 130,
         "editable": true,
         "search": false,
         "hidden": false, sorttype: "date",
@@ -110,7 +110,7 @@ const gridcolumnModel = [
     {   "name":"act",
         "index":"act",
         "align": "center",
-        "width":160,
+        "width":180,
         "sortable":false
     },
     ]
@@ -153,11 +153,11 @@ const createGrid = () => {
             var ids = jQuery("#gridplano").jqGrid('getDataIDs');
             for(var i=0;i < ids.length;i++){
                 var cl = ids[i];
-                let bdw = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-download fa-2x'></i></button>";
-                let bl = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-link fa-2x'></i></button>";
+                let bdw = "<button class='btn mr-1' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-download'></i></button>&nbsp";
+                let bl = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-link'></i></button>&nbsp";
                 //let be = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-edit fa-2x'></i></button>";
-                let be = `<button class="btn" onclick="window.editPlanoJqGrid(${cl})" ><i class='fa fa-edit fa-2x'></i></button>`;
-                let bd = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-trash fa-2x'></i></button>"; 
+                let be = `<button class="btn" onclick="window.editPlanoJqGrid(${cl})" ><i class='fa fa-edit'></i></button>&nbsp`;
+                let bd = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-trash'></i></button>"; 
                 let se = "<input style='height:22px;width:20px;' type='button' value='S' onclick=\"jQuery('#gridplano').saveRow('"+cl+"');\"  />"; 
                 let ce = "<input style='height:22px;width:20px;' type='button' value='C' onclick=\"jQuery('#gridplano').restoreRow('"+cl+"');\" />"; 
                 let concatBtn = bdw+bl+be+bd;

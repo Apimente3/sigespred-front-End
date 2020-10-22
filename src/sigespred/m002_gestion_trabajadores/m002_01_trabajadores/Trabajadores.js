@@ -88,13 +88,9 @@ const Trabajadores = ({history}) => {
     return (
         <>
             <Wraper titleForm={"Listado de Trabajadores"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
-
                 <fieldset className={'fielsettext'}>
-
                     <form onSubmit={buscarTrabadorFilter}>
-
                         <div className="row">
-
                             <div className="col-md-6">
                                 <div className="input-group">
                                     <input type="text" className="form-control "
@@ -108,31 +104,22 @@ const Trabajadores = ({history}) => {
                                 </div>
                             </div>
                             <div className="col-md-6">
-
                                 <Link to={`/trabajador-add`} className="btn btn-danger pull-right btn-sm fullborder">
                                     <i className="fa fa-plus"></i> Agregar Trabajador</Link>
                                 <button type="button" onClick={descarxls}
                                         className="btn btn-default pull-right btn-sm fullborder">
                                     <i className="fa fa-file-excel-o"></i> Descargar Excel
                                 </button>
-
                             </div>
                         </div>
-
-
                     </form>
-
-
                 </fieldset>
-
-
                 <div className="panel panel-default">
                     <TableTrabajador cabecera={cabecerasTabla}>
                        {trabajadors.rows.map((trabajador, i) => (
                             <TrabajadorRow trabajador={trabajador}></TrabajadorRow>
                         ))}
                     </TableTrabajador>
-
                     <div className="panel-footer clearfix pull-right">
                         <Pagination
                             activePage={activePage}
@@ -142,12 +129,8 @@ const Trabajadores = ({history}) => {
                             onChange={handlePageChange}
                         ></Pagination>
                     </div>
-
-
                 </div>
             </Wraper>
-
-
         </>
     );
 
