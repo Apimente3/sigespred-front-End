@@ -7,8 +7,8 @@ import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
 import DateRange from "../../components/helpers/DateRange";
 import { useDispatch, useSelector } from "react-redux";
- import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-daterangepicker/daterangepicker.css";
+//import "bootstrap/dist/css/bootstrap.css";
+//import "bootstrap-daterangepicker/daterangepicker.css";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import GridPartida from "../m000_common/grids/GridPartida";
@@ -204,7 +204,7 @@ export const Partida = () => {
                         </div>
 
                         <div className="col-md-4">
-                          <DateRange id={nombreCtrlRangoFecha} ></DateRange>
+                          {/* <DateRange id={nombreCtrlRangoFecha} ></DateRange> */}
                         </div>
                         <div className="col-md-2">
                           <label className="control-label">Tipo Predio</label>
