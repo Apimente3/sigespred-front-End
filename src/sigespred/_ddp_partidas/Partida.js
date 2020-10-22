@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
+import DateRange from "../../components/helpers/DateRange";
 import { useDispatch, useSelector } from "react-redux";
-import DateRangePicker from "react-bootstrap-daterangepicker";
-import "bootstrap/dist/css/bootstrap.css";
+ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import * as helperGets from "../../components/helpers/LoadMaestros";
@@ -27,6 +27,7 @@ export const Partida = () => {
   const dispatch = useDispatch();
   const buscarPartidaAction = (filtros) => dispatch(buscarPartida(filtros));
   const planos = useSelector((state) => state.plano.planos);
+  const nombreCtrlRangoFecha = 'controlFecha';
 
   const definirFiltro = () => {
     let valFiltro = "";
@@ -43,6 +44,10 @@ export const Partida = () => {
   const [proyectos, set_proyectos] = useState([]);
 
   const buscarPartidasFilter = async (e) => {
+    let valorRangoFechas = $("#" + nombreCtrlRangoFecha).val();
+    if (valorRangoFechas) {
+
+    }
     let valorFiltros = "";
     if (filtros) {
       $.each(filtros, function(key, value) {
@@ -171,7 +176,10 @@ export const Partida = () => {
                             id="tramoid"
                             name="tramoid"
                           >
-                         
+                         <option value="">--SELECCIONE--</option>
+                         <option value="1">TRAMO 01</option>
+                         <option value="2">TRAMO 02</option>
+                         <option value="3">TRAMO 03</option>
                           </select>
                         </div>
                         <div className="col-md-2">
@@ -196,86 +204,7 @@ export const Partida = () => {
                         </div>
 
                         <div className="col-md-4">
-                          <DateRangePicker
-                            initialSettings={{
-                              locale: {
-                                cancelLabel: "Limpiar",
-                                applyLabel: "Aplicar",
-                                weekLabel: "S",
-                                customRangeLabel: "Rango Personalizado",
-                                daysOfWeek: [
-                                  "Do",
-                                  "Lu",
-                                  "Ma",
-                                  "Mi",
-                                  "Ju",
-                                  "Vi",
-                                  "Sá",
-                                ],
-                                monthNames: [
-                                  "Enero",
-                                  "Febrero",
-                                  "Marzo",
-                                  "Abril",
-                                  "Mayo",
-                                  "Junio",
-                                  "Julio",
-                                  "Agosto",
-                                  "Setiembre",
-                                  "Octubre",
-                                  "Noviembre",
-                                  "Diciembre",
-                                ],
-                              },
-                              ranges: {
-                                Hoy: [moment().toDate(), moment().toDate()],
-                                Ayer: [
-                                  moment()
-                                    .subtract(1, "days")
-                                    .toDate(),
-                                  moment()
-                                    .subtract(1, "days")
-                                    .toDate(),
-                                ],
-                                "Últimos 7 días": [
-                                  moment()
-                                    .subtract(6, "days")
-                                    .toDate(),
-                                  moment().toDate(),
-                                ],
-                                "Últimos 30 días": [
-                                  moment()
-                                    .subtract(29, "days")
-                                    .toDate(),
-                                  moment().toDate(),
-                                ],
-                                "Este mes": [
-                                  moment()
-                                    .startOf("month")
-                                    .toDate(),
-                                  moment()
-                                    .endOf("month")
-                                    .toDate(),
-                                ],
-                                "Último mes": [
-                                  moment()
-                                    .subtract(1, "month")
-                                    .startOf("month")
-                                    .toDate(),
-                                  moment()
-                                    .subtract(1, "month")
-                                    .endOf("month")
-                                    .toDate(),
-                                ],
-                              },
-                            }}
-                          >
-                            <input
-                              id="fechacreacion"
-                              type="text"
-                              className="form-control"
-                            />
-                          </DateRangePicker>
+                          <DateRange id={nombreCtrlRangoFecha} ></DateRange>
                         </div>
                         <div className="col-md-2">
                           <label className="control-label">Tipo Predio</label>
@@ -306,7 +235,7 @@ export const Partida = () => {
                           <button
                             type="button"
                             onClick={buscarPartidasFilter}
-                            className="btn btn-danger"
+                            className="btn btn-info"
                           >
                             <i className="fa fa-search"></i> Aplicar Filtro(s)
                           </button>
