@@ -13,10 +13,10 @@ import RouteModPartidas from './_ddp_RouteModPartidas';
 import RouteModEquipo from './_ddp_RouteModEquipo';
 
 export default [
+    ...RouteMod01Login,
     ...RouteModEquipo,
     ...RouteModPartidas,
     ...RouteModPlanos,
-    ...RouteMod01Login,
     ...RouteGestionPredial,
     ...RouteMod02GestionTrabajadores,
     ...RouteMod03GestionProyectos,

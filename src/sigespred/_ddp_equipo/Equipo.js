@@ -6,9 +6,9 @@ import { initAxiosInterceptors } from "../../config/axios";
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
 
-import DateRangePicker from "react-bootstrap-daterangepicker";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-daterangepicker/daterangepicker.css";
+// import DateRangePicker from "react-bootstrap-daterangepicker";
+// import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap-daterangepicker/daterangepicker.css";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
 import * as helperGets from "../../components/helpers/LoadMaestros";

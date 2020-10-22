@@ -6,9 +6,9 @@ import { initAxiosInterceptors } from "../../config/axios";
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
 import { useDispatch, useSelector } from "react-redux";
-import DateRangePicker from "react-bootstrap-daterangepicker";
-import "bootstrap/dist/css/bootstrap.css";
-import "bootstrap-daterangepicker/daterangepicker.css";
+// import DateRangePicker from "react-bootstrap-daterangepicker";
+// import "bootstrap/dist/css/bootstrap.css";
+// import "bootstrap-daterangepicker/daterangepicker.css";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import GridPartida from "../m000_common/grids/GridPartida";
@@ -196,7 +196,7 @@ export const Partida = () => {
                         </div>
 
                         <div className="col-md-4">
-                          <DateRangePicker
+                          {/* <DateRangePicker
                             initialSettings={{
                               locale: {
                                 cancelLabel: "Limpiar",
@@ -275,7 +275,7 @@ export const Partida = () => {
                               type="text"
                               className="form-control"
                             />
-                          </DateRangePicker>
+                          </DateRangePicker> */}
                         </div>
                         <div className="col-md-2">
                           <label className="control-label">Tipo Predio</label>

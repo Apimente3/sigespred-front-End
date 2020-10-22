@@ -5,6 +5,7 @@ import {
     EDITAR_PLANO,
     BUSCAR_PLANOS,
     MOSTRAR_PLANO,
+    CONTINUAR_AGREGAR_PLANO
 } from './types';
 
 // import {
@@ -21,6 +22,11 @@ const axios=initAxiosInterceptors();
 export const agregar = PLANO => async dispatch => {
     const response = await axios.post('/plano', PLANO);
     dispatch({type: AGREGAR_PLANO, payload: response});
+}
+
+export const setcontinuarAgregar = isagregar => async dispatch => {
+    console.log(isagregar);
+    dispatch({type: CONTINUAR_AGREGAR_PLANO, payload: isagregar});
 }
 
 export const editar = PLANO => async dispatch => {
