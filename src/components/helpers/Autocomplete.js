@@ -8,6 +8,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
     const [list, setList] = useState(listaDatos);
     const [rowSelect, setRowSelect] = useState({});
     const [fisrtLoad, setfisrtLoad] = useState(true);
+    const [valorBuscar, setValorBuscar] = useState('');
 
     useEffect(() => {
         async function initialLoad() {
@@ -39,6 +40,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
 
     const busquedaItems = (e) => {
         let valor = e.target.value;
+        setValorBuscar(valor);
         setList(
             listaDatos.filter(function (el) {
                 return el.value.toLowerCase().indexOf(valor.toLowerCase()) > -1;
@@ -47,7 +49,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
     }
 
     const limpiar = (e) => {
-
+        setValorBuscar('');
         setSeleccionado(false)
         setRowSelect({})
        
@@ -56,13 +58,12 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
 
     return (
         <>
-            {!seleccionado ?
+            {(!seleccionado) ?
                 (<div>
                     <input onChange={busquedaItems} type="email" className="form-control input-sm"
                            id="exampleInputEmail1"
                            placeholder=""/>
-
-                    {list.length == 0 || list.length == listinit.length ? null :
+                    {!valorBuscar || list.length == 0 || list.length == listinit.length ? null :
                         <div className="btn-group open">
                             <ul className="dropdown-menu">
                                 {
@@ -78,8 +79,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
                 </div>)
                 :
                 <>
-                    {rowSelect.value}<a href="#" onClick={limpiar}  className="btn btn-xs btn-default"><i 
-                                                                                          className="fa fa-close"></i>
+                    {rowSelect.value} <a href="#" onClick={limpiar}  className="btn btn-xs btn-default"><i className="fa fa-close"></i>
                 </a>
                 </>
             }
