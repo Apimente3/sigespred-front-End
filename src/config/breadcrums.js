@@ -20,3 +20,9 @@ export const REGISTRO_PLANO_BREADCRUM = [
     {link: "planos", name: "Listado de Planos"},
     {link: "plano-edit", name: "Editar Plano"}
 ]
+
+export const REGISTRO_PARTIDA_BREADCRUM = [
+    {link: "partida-add", name: "Agregar Partida"},
+    {link: "partidas", name: "Listado de Partidas"},
+    {link: "partida-edit", name: "Editar Partida"}
+]
