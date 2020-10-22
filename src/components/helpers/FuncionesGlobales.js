@@ -26,3 +26,20 @@ export const helperObtenerRangoFechas = (fechas, fortmatotexto = false) => {
     }
     return '';
 }
+
+export const helperValidarFecha = (fecha, fortmatotexto = false) => {
+
+    if(fecha){
+        if (moment(fecha,'YYYY-MM-DD', true).isValid()){
+            if(fortmatotexto){
+                var formattedDate = fecha.replace(/-/g, "");
+                return formattedDate;
+            }
+        
+        } else {
+            console.log('El formata de las fechas es inválido.')
+        }
+    }
+    return '';
+}
+    

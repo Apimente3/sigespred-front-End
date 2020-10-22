@@ -2,27 +2,17 @@ import React, {useEffect, useState} from 'react';
 import moment from 'moment';
 import { useAsync } from "react-async-hook";
 import {useDispatch, useSelector} from 'react-redux';
-import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
-import Header from "../../sigespred/m000_common/headers/Header";
-import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
-import Plano from "./Plano";
-import PlanoLoad from "./PlanoLoad";
-import PlanoNoEcontrado from "./PlanoNoEcontrado";
 import GridPlano from "../m000_common/grids/GridPlano";
 import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
-import DateRange from "../../components/helpers/DateRange";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import { listar } from '../../actions/_ddp_plano/Actions';
-import * as PARAMS from "../../config/parameters";
-import { buscarPlano } from '../../actions/_ddp_plano/Actions';
-import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
+import Wraper from "../m000_common/formContent/Wraper";
+import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
 
-
-const Axios = initAxiosInterceptors();
 const {alasql}=window;
 const {$} = window;
 
@@ -34,10 +24,11 @@ const Planos = ({history}) => {
     const resListaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
     const resListaSolicitantes = useAsync(helperGets.helperGetListaLocadores, []);
 
-    const [filtros, set_filtros] = useState({fechainicio: '',fechafin: ''});
+    const [filtros, set_filtros] = useState({});
     const [busquedaLocal, set_busquedaLocal] = useState(true);
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
+    const [contentMessage, set_contentMessage] = useState('');
 
     const nombreCtrlRangoFecha = 'controlFecha';
     const dispatch = useDispatch();
@@ -84,14 +75,14 @@ const Planos = ({history}) => {
             set_filtros({
                 ...filtros,
                 [e.target.name]: e.target.value.toUpperCase(),
-                ['provinciaid']: '',
-                ['distritoid']: ''
+                provinciaid: '',
+                distritoid: ''
             });
         } else if (['provinciaid'].includes(e.target.name)) {
             set_filtros({
                 ...filtros,
                 [e.target.name]: e.target.value.toUpperCase(),
-                ['distritoid']: ''
+                distritoid: ''
             });
         } else {
             set_filtros({
@@ -112,38 +103,39 @@ const Planos = ({history}) => {
     }
 
     const buscarPlanosFilter=async (e)=>{
-        let valorRangoFechas = $("#" + nombreCtrlRangoFecha).val();
 
-        if (valorRangoFechas) {
-            let resultFechas = funcGlob.helperObtenerRangoFechas(valorRangoFechas, true);
-            if (resultFechas) {
+        if ((filtros.fechainicio && !filtros.fechafin) || (!filtros.fechainicio && filtros.fechafin)){
+            set_contentMessage('El filtro Fecha de Creación, debe tener un inicio y fin');
+            return;
+        } else {
+            set_contentMessage('');
+        }
+
+        if (filtros.fechainicio && filtros.fechafin){
+            let resultFechaInicio = funcGlob.helperValidarFecha(filtros.fechainicio, true);
+            let resultFechaFin = funcGlob.helperValidarFecha(filtros.fechafin, true);
+            
+            if (resultFechaFin < resultFechaInicio) {
+                set_contentMessage('La Fecha de Creación de inicio no puede ser mayor a la de fin');
+                return;
+            } else {
                 set_filtros({
                     ...filtros,
-                    fechainicio: resultFechas.fechainicio,
-                    fechafin: resultFechas.fechafin
+                    fechainicio: resultFechaInicio,
+                    fechafin: resultFechaFin
                 });
                 $.each(filtros, function(key, value){
                     if (key === "fechainicio"){
-                        filtros[key] = resultFechas.fechainicio;
+                        filtros[key] = resultFechaInicio;
                     }
                     if (key === "fechafin"){
-                        filtros[key] = resultFechas.fechafin;
+                        filtros[key] = resultFechaFin;
                     }
                 });
+
             }
-        } else {
-            set_filtros({
-                ...filtros,
-                fechainicio: '',
-                fechafin: ''
-            });
-            $.each(filtros, function(key, value){
-                if (key === "fechainicio" || key === "fechafin"){
-                    delete filtros[key];
-                }
-            });
         }
-        
+
         let valorFiltros = '';
         if (filtros) {
             $.each(filtros, function(key, value){
@@ -177,205 +169,173 @@ const Planos = ({history}) => {
     }
 
     return (
-        <div>
-            {/* <Header></Header> */}
-            <SidebarAdm/>
-
-            <div>
-                <div id="breadcrumb">
-                    <ul className="breadcrumb">
-                        <li><i className="fa fa-home"></i><a href="#"> Planos</a></li>
-                        <li className="active">Búsqueda de Planos</li>
-                    </ul>
-                </div>
-                <div className="padding-md container">
-                        <fieldset className={'fielsettext'}>
-                            <legend align="mtop-25 center fielsettext ">
-                                <label className={'titleform'}>LISTADO DE PLANOS</label>
-                            </legend>
-                        </fieldset>
-                    <div className="row">
-                        <div className="col-md-12">
-                            <div className="panel panel-default">
-                                <div className="panel-heading">
-                                    <form >
-                                        <div className="form-group">
-                                            <div className="row mb-3">
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Código de Plano</label>
-                                                </div>
-                                                
-                                                <div className="col-md-4">
-                                                    <input type="text" className="form-control " id="codplano" name="codplano" 
-                                                    placeholder="Código del plano" onBlur={handleInputChange}/>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Proyecto</label>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <select className="form-control" id="gestionpredialid" name="gestionpredialid" 
-                                                    onChange={handleInputChange}>
-                                                        <option value="">--SELECCIONE--</option>
-                                                        {resListaProyectos.error
-                                                        ? "Se produjo un error cargando los tipos de plano"
-                                                        : resListaProyectos.loading
-                                                        ? "Cargando..."
-                                                        : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion" />}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Fecha de Creación</label>
-                                                </div>
-                                                
-                                                <div className="col-md-4">
-                                                <DateRange id={nombreCtrlRangoFecha} ></DateRange>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <label className="control-label">¿Contiene Dígital?</label>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <select className="form-control" id="contienedigital" name="contienedigital" 
-                                                    onChange={handleInputChange}>
-                                                        <option value="">--SELECCIONE--</option>
-                                                        <option value="true">Sí</option>
-                                                        <option value="false">No</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Solicitante</label>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    {resListaSolicitantes.error
-                                                    ? "Se produjo un error cargando los locadores"
-                                                    : resListaSolicitantes.loading
-                                                    ? "Cargando..."
-                                                    : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Tipo de Plano</label>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <select className="form-control" id="tipoplanoid" name="tipoplanoid" 
-                                                    onChange={handleInputChange}>
-                                                        <option value="">--SELECCIONE--</option>
-                                                        {resListaTipoPlano.error
-                                                        ? "Se produjo un error cargando los tipos de plano"
-                                                        : resListaTipoPlano.loading
-                                                        ? "Cargando..."
-                                                        : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Tramo</label>
-                                                </div>
-                                                
-                                                <div className="col-md-4">
-                                                    <select className="form-control"  id="tramoid" name="tramoid" 
-                                                    onChange={handleInputChange}>
-                                                        <option value="">--SELECCIONE--</option>
-                                                    </select>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Subtramo</label>
-                                                </div>
-                                                <div className="col-md-4">
-                                                <input type="text" className="form-control " id="subtramoid" name="subtramoid" placeholder="Ingrese el subtramo"/>
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Departamento</label>
-                                                </div>
-                                                
-                                                <div className="col-md-4">
-                                                    <select className="form-control" id="departamentoid" name="departamentoid" 
-                                                    onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
-                                                    <option value="">--SELECCIONE--</option>
-                                                    {resListaDepartmento.error
-                                                    ? "Se produjo un error cargando los departamentos"
-                                                    : resListaDepartmento.loading
-                                                    ? "Cargando..."
-                                                    : <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />}
-                                                </select>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Provincia</label>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <select className="form-control" id="provinciaid" name="provinciaid" 
-                                                    onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
-                                                        <option value="0">--SELECCIONE--</option>
-                                                        <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-md-2">
-                                                    <label className="control-label">Distrito</label>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    <select className="form-control" id="distritoid" name="distritoid" 
-                                                    onChange={handleInputChange}>
-                                                        <option value="0">--SELECCIONE--</option>
-                                                        <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
-                                                    </select>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <label className="control-label"></label>
-                                                </div>
-                                                <div className="col-md-4">
-                                                    
-                                                </div>
-                                            </div>
-                                            <div className="row mb-3">
-                                                <div className="col-md-6"></div>
-                                                <div className="col-md-6 text-right">
-                                                    <button type="button" onClick={buscarPlanosFilter} className="btn btn-info">
-                                                        <i className="fa fa-search"></i> Aplicar Filtro(s)
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div className="mt-4 mb-1 form-group">
-                                    <div className="row">
-                                        <div className="col-md-6"></div>
-                                        <div className="col-md-6 text-right">
-                                            <button type="button" onClick={descarxls} className="btn btn-default fullborder">
-                                                <i className="fa fa-file-excel-o"></i> Descargar Excel
-                                            </button>
-                                            <Link to={`/plano-add`} className="btn btn-danger fullborder">
-                                                <i className="fa fa-plus-circle"></i>  Agregar Plano
-                                            </Link>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                {
-                                    (busquedaLocal)?
-                                        console.log('cargando datos de planos...')
-                                        :
-                                        <GridPlano datos={planos}/>
-                                    }
-                                    
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+        <>
+        <Wraper titleForm={"Listado de Planos"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
+            <div className="form-group">
+                <label className="col-lg-2 control-label">Código de Plano</label>
+                <div className="col-lg-4">
+                    <input type="text" className="form-control input-sm" id="codplano" name="codplano" 
+                    placeholder="Código del plano" onBlur={handleInputChange}/>
                 </div>
 
+                <label className="col-lg-2 control-label">Proyecto</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                    onChange={handleInputChange}>
+                        <option value="">--SELECCIONE--</option>
+                        {resListaProyectos.error
+                        ? "Se produjo un error cargando los tipos de plano"
+                        : resListaProyectos.loading
+                        ? "Cargando..."
+                        : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion" />}
+                    </select>
+                </div>
             </div>
-            <FooterProcess/>
-        </div>
+            <div className="form-group">
+                <label className="col-lg-2 control-label">Fecha de Creación - Inicio</label>
+                <div className="col-lg-4">
+                    <input className="form-control input-sm" type="date"
+                    id="fechainicio"
+                    name="fechainicio"
+                    placeholder="Ingrese fecha inicio"
+                    onChange={handleInputChange}
+                    ></input>
+                </div>
+
+                <label className="col-lg-2 control-label">Fecha de Creación - Fin</label>
+                <div className="col-lg-4">
+                    <input className="form-control input-sm" type="date"
+                    id="fechafin"
+                    name="fechafin"
+                    placeholder="Ingrese fecha inicio"
+                    onChange={handleInputChange}
+                    ></input>
+                </div>
+            </div>
+
+            <div className="form-group">
+                <label className="col-lg-2 control-label">¿Contiene Dígital?</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="contienedigital" name="contienedigital" 
+                    onChange={handleInputChange}>
+                        <option value="">--SELECCIONE--</option>
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+
+                <label className="col-lg-2 control-label">Solicitante</label>
+                <div className="col-lg-4">
+                    {resListaSolicitantes.error
+                    ? "Se produjo un error cargando los locadores"
+                    : resListaSolicitantes.loading
+                    ? "Cargando..."
+                    : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
+                </div>
+            </div>
+
+            <div className="form-group">
+                <label className="col-lg-2 control-label">Tramo</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm"  id="tramoid" name="tramoid" 
+                    onChange={handleInputChange}>
+                        <option value="">--SELECCIONE--</option>
+                    </select>
+                </div>
+
+                <label className="col-lg-2 control-label">Subtramo</label>
+                <div className="col-lg-4">
+                    <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" placeholder="Ingrese el subtramo"/>
+                </div>
+            </div>
+
+            <div className="form-group">
+                <label className="col-lg-2 control-label">Tipo de Plano</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid" 
+                    onChange={handleInputChange}>
+                        <option value="">--SELECCIONE--</option>
+                        {resListaTipoPlano.error
+                        ? "Se produjo un error cargando los tipos de plano"
+                        : resListaTipoPlano.loading
+                        ? "Cargando..."
+                        : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
+                    </select>
+                </div>
+                <label className="col-lg-2 control-label">Departamento</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="departamentoid" name="departamentoid" 
+                        onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
+                        <option value="">--SELECCIONE--</option>
+                        {resListaDepartmento.error
+                        ? "Se produjo un error cargando los departamentos"
+                        : resListaDepartmento.loading
+                        ? "Cargando..."
+                        : <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />}
+                    </select>
+                </div>
+            </div>
+
+            <div className="form-group">
+                <label className="col-lg-2 control-label">Provincia</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="provinciaid" name="provinciaid" 
+                    onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
+                        <option value="0">--SELECCIONE--</option>
+                        <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
+                    </select>
+                </div>
+                <label className="col-lg-2 control-label">Distrito</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="distritoid" name="distritoid" 
+                    onChange={handleInputChange}>
+                        <option value="0">--SELECCIONE--</option>
+                        <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
+                    </select>
+                </div>
+            </div>
+            <div className="form-group">
+                <div className="row mb-3">
+                    <div className="col-lg-6 text-center">
+                    {contentMessage && (
+                        <label className="alert alert-danger">{contentMessage}</label>
+                    )}  
+                    </div>
+                    <div className="col-lg-6 text-right">
+                        <button type="button" onClick={buscarPlanosFilter} className="btn btn-info  btn-sm  fullborder">
+                            <i className="fa fa-search"></i> Aplicar Filtro(s)
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className="mt-4 form-group">
+                <div className="row">
+                    <div className="col-md-6"></div>
+                    <div className="col-md-6 text-right">
+                        <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
+                            <i className="fa fa-file-excel-o"></i> Descargar Excel
+                        </button>
+                        <Link to={`/plano-add`} className="btn btn-danger btn-sm fullborder">
+                            <i className="fa fa-plus-circle"></i>  Agregar Plano
+                        </Link>
+                        
+                    </div>
+                </div>
+            </div>
+            <div className="form-group">
+                <div className="row">
+                    <div className="col-md-12">
+                            {
+                                (busquedaLocal)?
+                                    console.log('cargando datos de planos...')
+                                    :
+                                    <GridPlano datos={planos}/>
+                                }              
+                    </div>
+                </div>
+            </div>
+        </Wraper>
+        </>
     );
 
 }
