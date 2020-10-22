@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,createContext} from 'react';
 import {Link} from "react-router-dom";
 import Wraper from "../../m000_common/formContent/Wraper";
 import {LISTADO_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
@@ -23,12 +23,21 @@ async function buscarTrabajador(query) {
 
 const Trabajadores = ({history}) => {
 
+
+    const WizardContext = createContext();
+
     const [busqueda, setBusqueda] = useState('');
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [totalItemsCount, settotalItemsCount] = useState(3);
     const [activePage, setactivePage] = useState(1);
     const [trabajadors, setTrabajadores] = useState({"count":5,"rows":[]});
+
+
+    const context = {
+        nropagina:1
+
+    };
 
 
     useEffect(() => {
@@ -83,11 +92,12 @@ const Trabajadores = ({history}) => {
 
     }
 
-    const cabecerasTabla = ["DNI", "Nombres", "Apellidos", "Telefonos", "Correos", "Acciones"]
+    const cabecerasTabla = ["#","DNI", "Nombres", "Apellidos", "Telefonos", "Correos", "Acciones"]
 
     return (
         <>
-            <Wraper titleForm={"Listado de Trabajadores"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
+            <WizardContext.Provider value={context}>
+             <Wraper titleForm={"Listado de Trabajadores"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
                 <fieldset className={'fielsettext'}>
                     <form onSubmit={buscarTrabadorFilter}>
                         <div className="row">
@@ -117,7 +127,7 @@ const Trabajadores = ({history}) => {
                 <div className="panel panel-default">
                     <TableTrabajador cabecera={cabecerasTabla}>
                        {trabajadors.rows.map((trabajador, i) => (
-                            <TrabajadorRow trabajador={trabajador}></TrabajadorRow>
+                            <TrabajadorRow nro={i} trabajador={trabajador}></TrabajadorRow>
                         ))}
                     </TableTrabajador>
                     <div className="panel-footer clearfix pull-right">
@@ -131,6 +141,7 @@ const Trabajadores = ({history}) => {
                     </div>
                 </div>
             </Wraper>
+            </WizardContext.Provider>
         </>
     );
 

@@ -60,6 +60,7 @@ const Login = ({}) => {
             }
         }
         catch (e) {
+
             console.log(e.response)
             setAuhtError(true)
             setError(e.response.data);
@@ -108,7 +109,7 @@ const Login = ({}) => {
                             <div className="form-group">
                                 <label className="login-label">DNI</label>
                                 <input name="dni" required type="number" placeholder="DNI" maxlength="8"
-                                       className="form-control input-sm bounceIn animation-delay2 input-login-user"
+                                       className="form-control input-sm  animation-delay2 input-login-user"
                                        onChange={handleInputChange}
                                        value={emailYPassword.email}
                                        title="Ingrese un DNI de 8 Digitos"
@@ -117,7 +118,7 @@ const Login = ({}) => {
                             <div className="form-group">
                                 <label className="login-label">Contraseña</label>
                                 <input name="password" required type="password" placeholder="Contraseña"
-                                       className="form-control input-sm bounceIn animation-delay4 input-login"
+                                       className="form-control input-sm  animation-delay4 input-login"
                                        onChange={handleInputChange}
                                        value={emailYPassword.email}
                                 ></input>

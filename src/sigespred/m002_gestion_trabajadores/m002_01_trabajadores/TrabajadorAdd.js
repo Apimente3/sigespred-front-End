@@ -18,7 +18,6 @@ const {$} = window;
 
 
 /*Para registrar el trabajador*/
-
 async function addTrabajador(usuario) {
     const {data} = await Axios.post(`/usuario`,usuario);
     return data;
@@ -43,15 +42,8 @@ const TrabajadorAdd = ({history}) => {
         // $('#btnguardar').button('loading');
         try {
             await addTrabajador(trabajador);
-
-
-            const toastrConfirmOptions = {
-                onOk: () => limpiarForm(),
-                onCancel: () => history.push('/list-trabajadores')
-            };
-            toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
-
-
+            toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'})
+            history.push('/list-trabajadores')
         }
         catch (e) {
             alert(e.message)
@@ -96,7 +88,6 @@ const TrabajadorAdd = ({history}) => {
 
     return (
         <Wraper titleForm={"Registro de Trabajador"} listbreadcrumb={REGISTRO_TRABAJADOR_BREADCRUM}>
-
             <form onSubmit={registrar}>
                 <div className="form-group">
                     <label className="col-lg-2 control-label"><span className="obligatorio">* </span>

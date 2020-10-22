@@ -9,10 +9,17 @@ export const ACTUALIZAR_TRABAJADOR_BREADCRUM = [
     {link: "../list-trabajadores", name: "Listado de Trabajadores"},
     {link: "trabajador-add", name: "Actualizar Trabajador"}
 ]
+
+export const ELIMINAR_TRABAJADOR_BREADCRUM = [
+    {link: "/", name: "Gestion Predial"},
+    {link: "../list-trabajadores", name: "Listado de Trabajadores"},
+    {link: "#", name: "Eliminar Trabajador"}
+]
+
+
 export const LISTADO_TRABAJADOR_BREADCRUM = [
     {link: "trabajador-add", name: "Gestion Predial"},
-    {link: "list-trabajadores", name: "Listado de Trabajadores"},
-    {link: "trabajador-add", name: "Agregar Trabajador"}
+    {link: "list-trabajadores", name: "Listado de Trabajadores"}
 ]
 
 export const REGISTRO_PLANO_BREADCRUM = [

@@ -26,7 +26,6 @@ export const login = ({token, usuario }) => {
 }
 
 export const logout = () => {
-
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USUARIO);
 }
@@ -40,6 +39,5 @@ export const isLogin = () => {
     if (localStorage.getItem(TOKEN_KEY)) {
         return true;
     }
-
     return false;
 }

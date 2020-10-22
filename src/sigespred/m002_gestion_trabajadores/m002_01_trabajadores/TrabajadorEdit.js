@@ -69,11 +69,8 @@ const TrabajadorEdit = ({history, match}) => {
 
             // let person =  window.confirm("¿Desea seguir registrando ?");
             updateTrabajador(trabajador)
-            const toastrConfirmOptions = {
-                onOk: () => limpiarForm(),
-                onCancel: () => history.push('/list-trabajadores')
-            };
-            toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
+            toastr.success('Actualizacion Correcta', 'Se actualizo correctamente.', {position: 'top-right'})
+            history.push('/list-trabajadores')
 
 
         }

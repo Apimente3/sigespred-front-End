@@ -1,16 +1,17 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-const TrabajadorRow = ({trabajador}) => {
+const TrabajadorRow = ({trabajador,nro}) => {
 
     return (
         <>
             <tr>
+                <td>{nro+1}</td>
                 <td>{trabajador.dni}</td>
                 <td>{trabajador.nombres}</td>
                 <td>{trabajador.apellidos}</td>
-                <td>{trabajador.telefono}</td>
-                <td>{trabajador.correos}</td>
+                <td>{trabajador.telefonos}</td>
+                <td>{trabajador.correo}</td>
 
                 <td>
                     <div className="btn-group pull-right">

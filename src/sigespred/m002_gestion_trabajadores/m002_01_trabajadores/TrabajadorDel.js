@@ -1,75 +1,152 @@
-import React from 'react';
-import SidebarAdm from "../../m000_common/siderbars/SidebarAdm";
-import Header from "../../m000_common/headers/Header";
+
+import React, {useState, useEffect, useRef} from 'react';
+import {ELIMINAR_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
+import Wraper from "../../m000_common/formContent/Wraper";
 import {Link} from "react-router-dom";
-import FooterProcess from "../../m000_common/footers/FooterProcess";
+import {toastr} from 'react-redux-toastr'
+import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
+import {FilesUsuario} from "../../../config/parameters";
+import {initAxiosInterceptors, serverFile} from '../../../config/axios';
+const Axios = initAxiosInterceptors();
 
-const TrabajadorDel = () => {
+const {$} = window;
+
+/*Obtiene la solcitud de polygonos*/
+async function getTrabajador(id) {
+    const {data} = await Axios.get(`/usuario/${id}`);
+    return data;
+}
+
+
+/*Obtiene la solcitud de polygonos*/
+async function deleteTrabajador(usuario) {
+    const {data} = await Axios.delete(`/usuario/${usuario.id}`,usuario);
+    return data;
+}
+
+
+
+const TrabajadorDel = ({history, match}) => {
+
+    const {id} = match.params;
+    const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro',rol:3});
+    const [detalletrabajador, setdetalltreasd] = useState([]);
+
+
+    useEffect(() => {
+        async function init() {
+            try {
+                let traba = await getTrabajador(id)
+                delete traba.contrasenia
+                traba.contrasenia="****"
+                set_trabajador(traba)
+            } catch (error) {
+                alert('Ocurrio un error')
+                console.log(error);
+            }
+        }
+        init();
+    }, []);
+
+    const limpiarForm = () => {
+        set_trabajador({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'})
+    }
+
+
+
+
+    const eliminar = async e => {
+        e.preventDefault();
+        $('#btnguardar').button('loading');
+        try {
+            //   await agregarTrabajadorComp(trabajador);
+            // $('#btnguardar').button('reset');
+
+            // let person =  window.confirm("¿Desea seguir registrando ?");
+
+            const toastrConfirmOptions = {
+                onOk: () => deleteTrabajador(trabajador),
+                onCancel: () => history.push('/list-trabajadores')
+            };
+            toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
+
+
+        }
+        catch (e) {
+            alert(e.message)
+        }
+    }
+
+
+    function handleInputChange(e) {
+        if (['nombres', 'apellidos', 'direccion', 'cargo'].includes(e.target.name)) {
+            set_trabajador({
+                ...trabajador,
+                [e.target.name]: e.target.value.toUpperCase()
+            });
+        } else {
+            set_trabajador({
+                ...trabajador,
+                [e.target.name]: e.target.value
+            });
+        }
+
+    }
+
+
+
+    // const {foto} = this.state;
     return (
-        <div>
-            <SidebarAdm/>
-            <form action="">
+        <Wraper titleForm={"Eliminacion del Trabajador"} listbreadcrumb={ELIMINAR_TRABAJADOR_BREADCRUM}>
+            <form onSubmit={eliminar}>
 
-                <Header></Header>
-                <div className="container mtop-20">
-                    <h4 className="headline ">
-                        Eliminacion del Trabajador
-                        <span className="line"></span>
-                    </h4>
+                <div className="form-group">
+                    <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                        DNI</label>
+                    <div className="col-lg-4">
+                        <input required type="text" className="form-control input-sm "
+                               name="dni"
+                               onChange={handleInputChange}
+                               value={trabajador.dni}
+                               title="El DNI debe ser numerico y tener 8 digitos"
+                               placeholder="Ingrese DNI de Trabajador" pattern="\d\d\d\d\d\d\d\d"
+                               maxLength={8}
+                               autoComplete="off"
 
-                    <div className="panel panel-default form-horizontal no-margin form-border">
-                        <div className="panel-heading">
-                            <h5><i className="fa fa-trash-o" aria-hidden="true"></i> Eliminacion Trabajador</h5>
-                        </div>
-                        <div className="panel-body">
-                            <form action="" >
+                        >
+                        </input>
 
-                                <div className="form-group">
-                                    <label className="col-lg-2 control-label"><span
-                                        className="obligatorio">* </span> Nº
-                                        DNI de Trabajador</label>
-                                    <div className="col-lg-6">
-                                        <input required className="form-control input-sm" type="text"
-                                               placeholder="Confirme el codigo del Solicitud a ELIMINAR"></input>
-                                    </div>
-                                </div>
-
-
-                                <div className="form-group ">
-                                    <label className="col-lg-2 control-label">Motivo de Eliminacion </label>
-                                    <div className="col-lg-6">
-                                <textarea required className="form-control input-sm"
-                                          placeholder="Ingrese el Motivo de la Eliminacion">
-                                  
-                                </textarea>
-                                    </div>
-
-                                </div>
-                                <hr></hr>
-                                <div className="panel-body">
-                                    <div className="form-group ">
-                                        <div className="col-lg-offset-2 col-lg-10">
-                                            <button id="btnguardar" type="submit"
-                                                    className="btn btn-danger btn-sm btn-control">Eliminar
-                                            </button>
-                                            <Link to={`/list-trabajadores`}
-                                                  className="btn btn-default btn-sm btn-control">Cancelar</Link>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
                     </div>
+                    <div className="col-lg-1">
+                        <a className="btn btn-default btn-sm dropdown-toggle pull-left"
+                           data-toggle="dropdown" data-toggle="tooltip"
+                           data-original-title={`Permite Sincronizar con la RENIEC`}>
+                            <i className="fa fa-refresh"></i></a>
+                    </div>
+
                 </div>
-                <div className="row margin-button-form "></div>
+
+                <div className="panel-body">
+                    <div className="form-group ">
+                        <div className="col-lg-offset-2 col-lg-10">
+                            <Link to={`/list-trabajadores`}
+                                  className="btn btn-default btn-sm btn-control">Cancelar</Link>
+                            <button id="btnguardar" type="submit"
+                                    className="btn btn-danger btn-sm btn-control">Eliminar
+                            </button>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </form>
-            <FooterProcess/>
-        </div>
+        </Wraper>
     );
-};
+
+}
+
 
 export default TrabajadorDel;
