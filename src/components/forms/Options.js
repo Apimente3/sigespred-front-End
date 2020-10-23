@@ -1,10 +1,10 @@
 import React from 'react';
 
-const Options = ({options}) => {
+const Options = ({options,index,valor}) => {
     return (
         <>
             { options.map((option,i)=>(
-                <option key={i+1} value={option.value}>{option.text}</option>
+                <option key={i+1} value={option[index]}>{option[valor]}</option>
             ))}
         </>
     );
