@@ -108,7 +108,8 @@ legend {
     height: 25px;
 }
 .tableInside td, .tableInside th {
-    padding-left: 5px;
+    padding: 4px;
+     text-align: center;
 }
 
 .borderreumenes {

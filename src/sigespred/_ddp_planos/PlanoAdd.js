@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import moment from 'moment';
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/Wraper";
 import {Link} from "react-router-dom";
@@ -34,10 +35,14 @@ const PlanoAdd = ({history,  match}) => {
 
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
+    const [listaArchivos, set_listaArchivos] = useState([]);
     const [valAncedente, setValAntecedente] = useState('');
+    const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
+    const [reiniciarValMemoria, setReiniciarValMemoria] = useState(false);
+    
 
     const {ante} = match.params;
-
+    
     if(ante && !valAncedente){
         setValAntecedente(ante);
     }
@@ -80,6 +85,7 @@ const PlanoAdd = ({history,  match}) => {
     }
 
     const saveArchivoDigital = (file) => {
+        setReiniciarValDigital(false);
         set_planoArchTmp({
             ...planoArchTmp,
             "digital": file.path
@@ -87,9 +93,10 @@ const PlanoAdd = ({history,  match}) => {
     }
 
     const saveArchivoMemoria = (file) => {
+        setReiniciarValMemoria(false);
         set_planoArchTmp({
             ...planoArchTmp,
-            "memdescriptiva": file.path
+            "memoria": file.path
         });
     }
 
@@ -103,8 +110,43 @@ const PlanoAdd = ({history,  match}) => {
     const deleteArchivoMemoria = () => {
         set_planoArchTmp({
             ...planoArchTmp,
-            "memdescriptiva": ''
+            "memoria": ''
         });
+    }
+
+    const handleChangeLamina = (e) => {
+        var uidDate = moment().format("YYYYMMDDHHmmss");
+        set_planoArchTmp({
+            ...planoArchTmp,
+            "lamina": e.target.value,
+            "laminaid": uidDate,
+        });
+    }
+
+    const actualizarLista = () => {
+        
+        if (planoArchTmp.lamina && planoArchTmp.digital) {
+            set_listaArchivos(listaArchivos => [...listaArchivos, planoArchTmp]);
+            set_planoArchTmp({
+                ...planoArchTmp,
+                "lamina": '',
+                "laminaid": '',
+                "digital": '',
+                "memoría": ''
+            });
+            setReiniciarValDigital(true);
+            setReiniciarValMemoria(true);
+        } else {
+            console.log('here');
+        }
+
+    }
+
+    const removerDeLista = (idLamina) => {
+        var data = $.grep(listaArchivos, function(e){ 
+            return e.laminaid != idLamina; 
+       });
+       set_listaArchivos(data);
     }
 
     function setSolicitante(idLocador) {
@@ -359,23 +401,38 @@ const PlanoAdd = ({history,  match}) => {
                         <fieldset className="mleft-20">
                             <legend>Archivos</legend>
                             <div className="form-group">
-                                <label className="col-lg-4 control-label">Plano Dígital</label>
+                                <label className="col-lg-4 control-label">Descripcion de Lámina</label>
                                 <div className="col-lg-8">
+                                    <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam" 
+                                    value = {planoArchTmp.lamina || ''}
+                                    onChange={handleChangeLamina}/>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">Plano Dígital</label>
+                                <div className="col-lg-6">
                                     <UploadMemo key="planodigitaltmp" file={{urlDocumento:''}}
-                                    accept={'.jpg,.png,.gif'}
+                                    accept={'.jpg,.png,.gif'} resetContenido={reiniciarValDigital}
                                     setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
                             </div>
                             <div className="form-group">
                                 <label className="col-lg-4 control-label">Memoría Descriptiva</label>
-                                <div className="col-lg-8">
+                                <div className="col-lg-6">
                                     <UploadMemo key="memdescriptivatmp" file={{urlDocumento:''}}
-                                    accept={'.jpg,.png,.gif'}
+                                    accept={'.jpg,.png,.gif'} resetContenido={reiniciarValMemoria}
                                     setFile={saveArchivoMemoria} folderSave={"FotosUsuarios"} eliminar={deleteArchivoMemoria}></UploadMemo>
+                                </div>
+                                <div className="col-lg-2">
+                                <a className="btn btn-default btn-sm dropdown-toggle pull-left"
+                                    title="Agregar a la lista"
+                                    onClick={actualizarLista}
+                                    >
+                                    <i className="fa fa-archive fa-2x"></i></a>
                                 </div>
                             </div>
                             <div className="form-group">
-                                <SubLista cabecera={cabeceraArchivos}/>
+                                <SubLista data={listaArchivos} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
                             </div>
                         </fieldset>
                     </div>

@@ -1,12 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-const SubListaDelete = ({jsondata, nombreobjeto, cabecera, mostrarcontador}) => {
-    let usarContador = false;
-
-    if (mostrarcontador){
-        usarContador = mostrarcontador;
-    }
+const SubListaDelete = ({data, cabecera, deleterow}) => {
 
     const sampleJSON = [
         {
@@ -21,6 +16,10 @@ const SubListaDelete = ({jsondata, nombreobjeto, cabecera, mostrarcontador}) => 
           }
         ];
 
+    const removerElemento = (idelem) => {
+        deleterow(idelem)
+    }
+
     return (
         <>
                 <table className="tableInside">
@@ -34,9 +33,9 @@ const SubListaDelete = ({jsondata, nombreobjeto, cabecera, mostrarcontador}) => 
                     </thead>
                     <tbody>
                     {
-                        sampleJSON.map((object, i) => (
-                        <tr>
-                            <td>
+                        data.map((object, i) => (
+                        <tr key={object.laminaid}>
+                            <td key={`td_${i}_${object.laminaid}`}>
                                 <span>{object.lamina}</span>
                             </td>
                             <td>
@@ -46,7 +45,12 @@ const SubListaDelete = ({jsondata, nombreobjeto, cabecera, mostrarcontador}) => 
                                 <span>{object.memoria}</span>
                             </td>
                             <td>
-
+                                <a className="btn btn-default btn-sm dropdown-toggle pull-left"
+                                    title="Agregar a la lista"
+                                    onClick={() => removerElemento(object.laminaid)}
+                                    >
+                                    <i className="fa fa-trash"></i>
+                                </a>
                             </td>
                         </tr>
                         ))

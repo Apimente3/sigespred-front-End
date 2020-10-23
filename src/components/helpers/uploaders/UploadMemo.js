@@ -4,13 +4,14 @@ import {toastr} from "react-redux-toastr";
 
 const Axios = initAxiosInterceptors();
 
-const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*"}) => {
+const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*", resetContenido=false}) => {
     //alert(JSON.stringify(file))
 
     const [subiendoImagen, setSubiendoImagen] = useState('ninguno');
     const [porcentajeSubida, setPorcentajeSubida] = useState(0);
     const [urlDocumento, setUrlDocumento] = useState(file.urlDocumento || '');
     const [originalName, setoriginalName] = useState(file.originalName);
+    const [resetDone, setResetDone] = useState(false);
 
     useEffect(() => {
         const init = async () => {
@@ -18,7 +19,12 @@ const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*"}) => {
         };
         init();
     }, []);
-
+        
+    if (resetContenido && !resetDone) {
+        setSubiendoImagen('ninguno');
+        setUrlDocumento('');
+        setResetDone(true);
+    }
 
     async function handleImagenSeleccionada(e) {
         try {
@@ -50,7 +56,8 @@ const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*"}) => {
 
             setSubiendoImagen(false);
             setPorcentajeSubida(0);
-            setSubiendoImagen('subido')
+            setSubiendoImagen('subido');
+            setResetDone(false);
             toastr.info('¡ Correcto !', 'Se subio correctamente el Documento', {position: 'top-right'})
 
         } catch (error) {
@@ -91,13 +98,15 @@ const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*"}) => {
 
                 {subiendoImagen == 'subido' || urlDocumento.length > 0 ? (
                     <>
-                        <label style={{color: '#000'}}>{originalName}</label>
+                        <label className="col-lg-8" style={{color: '#000'}}>{originalName}</label>
                         <div className="col-lg-2">
                             <a href={serverFile + urlDocumento} target="_blank"
                                className="btn btn-default btn-sm dropdown-toggle pull-left"
                                data-toggle="dropdown" data-toggle="tooltip"
                                data-original-title={`Descargar`}>
                                 <i className="fa fa-download"></i></a>
+                        </div>
+                        <div className="col-lg-2">
                             <a onClick={eliminarFilesubido}
                                className="btn btn-default btn-sm dropdown-toggle pull-left"
                                data-toggle="dropdown" data-toggle="tooltip"
