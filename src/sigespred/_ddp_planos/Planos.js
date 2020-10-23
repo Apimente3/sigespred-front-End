@@ -3,6 +3,8 @@ import moment from 'moment';
 import { useAsync } from "react-async-hook";
 import {useDispatch, useSelector} from 'react-redux';
 import GridPlano from "../m000_common/grids/GridPlano";
+import TablePlano from "./TablePlano";
+import PlanoRow from "./PlanoRow";
 import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
 import ComboOptions from "../../components/helpers/ComboOptions";
@@ -30,7 +32,6 @@ const Planos = ({history}) => {
     const [dataDist, set_dataDist] = useState(null);
     const [contentMessage, set_contentMessage] = useState('');
 
-    const nombreCtrlRangoFecha = 'controlFecha';
     const dispatch = useDispatch();
     const buscarPlanosAction = (filtros) => dispatch(listar(filtros));
     const planos = useSelector(state => state.plano.planos);
@@ -168,6 +169,7 @@ const Planos = ({history}) => {
         return false;
     }
 
+    const cabecerasTabla = ["#","ID", "Código del Plano", "Proyecto", "Profesional", "Fecha de Creación", "Ubicación","Digital", "Antecedente","Acciones"]
     return (
         <>
         <Wraper titleForm={"Listado de Planos"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
@@ -333,6 +335,28 @@ const Planos = ({history}) => {
                                 }              
                     </div>
                 </div>
+            </div>
+
+            <div className="panel panel-default">
+                {
+                (busquedaLocal)?
+                    console.log('cargando datos de planos...')
+                    :
+                    <TablePlano cabecera={cabecerasTabla}>
+                       {planos.map((plano, i) => (
+                            <PlanoRow nro={i} plano={plano}></PlanoRow>
+                        ))}
+                    </TablePlano>
+                    /* <div className="panel-footer clearfix pull-right">
+                        <Pagination
+                            activePage={activePage}
+                            itemsCountPerPage={limit}
+                            totalItemsCount={totalItemsCount}
+                            pageRangeDisplayed={3}
+                            onChange={handlePageChange}
+                        ></Pagination>
+                    </div> */
+                }
             </div>
         </Wraper>
         </>

@@ -84,6 +84,33 @@ legend {
     border-bottom: 1px solid #e5e5e5;
 }
 
+.tableInside {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 20px;
+    margin-left: 30px;
+    font-size: 12px;
+    line-height: inherit;
+    border-collapse: collapse;
+    border-radius: 0.5em;
+    overflow: hidden;
+    background-color: #F3F3F3;
+}
+.tableInside thead>tr {
+    background-color: #F76377;
+    color: #ffffff;
+}
+.tableInside thead>tr>th {
+    border-color:#eee
+}
+
+.tableInside tr {
+    height: 25px;
+}
+.tableInside td, .tableInside th {
+    padding-left: 5px;
+}
+
 .borderreumenes {
     border-style: dotted;
     border: .5px dashed red;
@@ -538,6 +565,10 @@ legend {
 
 .mleft-20 {
     margin-left: 20px;
+}
+
+.mright-5 {
+    margin-right: 5px;
 }
 
 .footer {

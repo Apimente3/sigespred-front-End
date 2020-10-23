@@ -5,9 +5,11 @@ import {Link} from "react-router-dom";
 import FileBase64 from 'react-file-base64';
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
+import { useLocation, withRouter } from "react-router-dom";
 import {agregar, setcontinuarAgregar} from '../../actions/_ddp_plano/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
+import SubLista from './SubListaDelete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 
@@ -17,7 +19,7 @@ import {serverFile} from "../../config/axios";
 
 const {$} = window;
 
-const PlanoAdd = ({history}) => {
+const PlanoAdd = ({history,  match}) => {
     const [plano, set_plano] = useState({observaciones: ''});
     const [planoArchTmp, set_planoArchTmp] = useState({digital: '', memdescriptiva: ''});
     const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, [""]);
@@ -32,6 +34,13 @@ const PlanoAdd = ({history}) => {
 
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
+    const [valAncedente, setValAntecedente] = useState('');
+
+    const {ante} = match.params;
+
+    if(ante && !valAncedente){
+        setValAntecedente(ante);
+    }
 
     function handleChangeDepartmento(e) {
         if(!resListaProvincia.loading){
@@ -133,6 +142,8 @@ const PlanoAdd = ({history}) => {
             alert(e.message)
         }
     }
+
+    const cabeceraArchivos = ["Lámina","Plano Digital", "Mem. Descriptiva", "Eliminar"];
 
         return (
             <>
@@ -264,7 +275,10 @@ const PlanoAdd = ({history}) => {
                             <div className="form-group">
                                 <label className="col-lg-4 control-label">Plano Antecedente</label>
                                 <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" readOnly onChange={handleInputChange}/>
+                                    <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
+                                    value={valAncedente}
+                                    readOnly 
+                                    onChange={handleInputChange}/>
                                 </div>
                             </div>
                             <div className="form-group">
@@ -360,9 +374,12 @@ const PlanoAdd = ({history}) => {
                                     setFile={saveArchivoMemoria} folderSave={"FotosUsuarios"} eliminar={deleteArchivoMemoria}></UploadMemo>
                                 </div>
                             </div>
+                            <div className="form-group">
+                                <SubLista cabecera={cabeceraArchivos}/>
+                            </div>
                         </fieldset>
                     </div>
-
+                    
                     <div className="panel-body">
                         <div className="form-group">
                             <div className="col-lg-offset-8 col-lg-4">

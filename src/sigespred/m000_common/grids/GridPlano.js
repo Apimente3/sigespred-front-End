@@ -4,8 +4,8 @@ import {toastr} from "react-redux-toastr";
 import history from '../../../history';
 
 const {$, jQuery, alasql} = window;
-
 let $grid = $("#gridplano")
+const Axios = initAxiosInterceptors();
 
 const initDateSearch = function (elem) {
 
@@ -13,10 +13,40 @@ const initDateSearch = function (elem) {
 
 
 window.editPlanoJqGrid=function (row_id) {
-    history.push({pathname:'/plano-edit',
-                  search: `id=${row_id}`
+    history.push({pathname:`/plano-edit/${row_id}`});
+}
+
+window.addLinkedPlano=function (codplano) {
+    history.push({pathname:`/plano-add/${codplano}`,
+                  //search: `codigo=${codplano}`
+                  //state: { params: {codigo: codplano} }
                 });
 }
+
+window.deletePlano = function(row_id, codplano){
+    console.log(codplano);
+    try {
+        const toastrConfirmOptions = {
+            onOk: () => ejecutarEliminar(row_id),
+            //onCancel: () => history.push('/planos')
+        };
+        toastr.confirm(`¿Desea eliminar el plano: ${codplano}?`, toastrConfirmOptions);
+    }
+    catch (e) {
+        alert(e.message)
+    }
+}
+
+const ejecutarEliminar = (id) => {
+    Axios.delete(`/plano/${id}`)
+    .then(() => {
+      history.push('/planos');
+    })
+    .catch(error => {
+        console.log(error)
+    });
+}
+
 
 const numberTemplate = {
     formatter: "number", align: "right", sorttype: "number",
@@ -110,7 +140,7 @@ const gridcolumnModel = [
     {   "name":"act",
         "index":"act",
         "align": "center",
-        "width":180,
+        "width":185,
         "sortable":false
     },
     ]
@@ -145,21 +175,18 @@ const createGrid = () => {
             console.log(resp, postdata)
 
         },
-        viewrecords: true,
         rownumbers: true,
         shrinkToFit: false,
         autowidth: true,
         gridComplete: function(){
             var ids = jQuery("#gridplano").jqGrid('getDataIDs');
             for(var i=0;i < ids.length;i++){
-                var cl = ids[i];
-                let bdw = "<button class='btn mr-1' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-download'></i></button>&nbsp";
-                let bl = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-link'></i></button>&nbsp";
-                //let be = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-edit fa-2x'></i></button>";
-                let be = `<button class="btn" onclick="window.editPlanoJqGrid(${cl})" ><i class='fa fa-edit'></i></button>&nbsp`;
-                let bd = "<button class='btn' onclick=\"jQuery('#gridplano').editRow('"+cl+"');\"><i class='fa fa-trash'></i></button>"; 
-                let se = "<input style='height:22px;width:20px;' type='button' value='S' onclick=\"jQuery('#gridplano').saveRow('"+cl+"');\"  />"; 
-                let ce = "<input style='height:22px;width:20px;' type='button' value='C' onclick=\"jQuery('#gridplano').restoreRow('"+cl+"');\" />"; 
+                var cl = ids[i];                
+                var codplano = jQuery("#gridplano").jqGrid ('getRowData', cl).codplano;
+                let bdw = `<button class="btn mright-5" onclick="alert('pendiente')"><i class="fa fa-download"></i></button>`;
+                let bl = `<button class="btn mright-5" title="Refenciar al plano en uno nuevo" onclick="window.addLinkedPlano('${codplano}')"><i class="fa fa-link"></i></button>`;
+                let be = `<button class="btn mright-5" title="Editar plano" onclick="window.editPlanoJqGrid(${cl})" ><i class='fa fa-edit'></i></button>`;
+                let bd = `<button class="btn" onclick="window.deletePlano(${cl},'${codplano}')"><i class="fa fa-trash"></i></button>`;
                 let concatBtn = bdw+bl+be+bd;
                 jQuery("#gridplano").jqGrid('setRowData',ids[i],{act:concatBtn});
             }	
@@ -181,8 +208,6 @@ const cargarGrid = (response) => {
         jQuery("#gridplano").jqGrid('setGridParam', response).trigger('reloadGrid');
     }
 }
-
-const Axios = initAxiosInterceptors();
 
 const GridPlano = (datos) => {
     useEffect(() => {

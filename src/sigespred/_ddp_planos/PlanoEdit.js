@@ -18,20 +18,19 @@ import {serverFile} from "../../config/axios";
 
 const {$} = window;
 
-const PlanoEdit = ({history}) => {
-    const location = useLocation();
-    let valorIdPlano = location.search.substr(location.search.indexOf("=") + 1);
-   
+const PlanoEdit = ({history, match}) => {
+
+    const {id} = match.params;
     const editarPlanoAction = (plano) => dispatch(editar(plano));
-    const obtenerPlanoAction = (id) => dispatch(obtener(id));
+    const obtenerPlanoAction = (idplano) => dispatch(obtener(idplano));
     const [planoEditado,set_planoEditado]= useState({});
     const planoEdicion = useSelector(state => state.plano.plano);
     
     useEffect(() => {
-        const getPlano=async (id)=>{
-           await obtenerPlanoAction(id)
+        const getPlano=async (idplano)=>{
+           await obtenerPlanoAction(idplano)
         }
-        getPlano(valorIdPlano);
+        getPlano(id);
     }, []);
     
 
