@@ -99,7 +99,28 @@ const TrabajadorDel = ({history, match}) => {
     return (
         <Wraper titleForm={"Eliminacion del Trabajador"} listbreadcrumb={ELIMINAR_TRABAJADOR_BREADCRUM}>
             <form onSubmit={eliminar}>
+                <div className="form-group">
+                <div className="col-xs-6 col-sm-12 col-md-6">
+                    <strong className="font-16">¿Desea eliminar al trabajador {trabajador.nombres}  {trabajador.apellidos}?</strong>
+                    <small className="block text-muted">
+                       DNI : {trabajador.dni}
+                    </small>
 
+                </div>
+                </div>
+
+                <div className="form-group">
+                    <label className="col-lg-2 control-label">
+
+                    </label>
+                    <div className="col-lg-4">
+                        <span className="obligatorio">Ingrese su DNI para verificar la eliminación</span>
+
+
+                    </div>
+
+
+                </div>
                 <div className="form-group">
                     <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                         DNI</label>
@@ -107,9 +128,9 @@ const TrabajadorDel = ({history, match}) => {
                         <input required type="text" className="form-control input-sm "
                                name="dni"
                                onChange={handleInputChange}
-                               value={trabajador.dni}
+                               value={""}
                                title="El DNI debe ser numerico y tener 8 digitos"
-                               placeholder="Ingrese DNI de Trabajador" pattern="\d\d\d\d\d\d\d\d"
+                               placeholder={trabajador.dni} pattern="\d\d\d\d\d\d\d\d"
                                maxLength={8}
                                autoComplete="off"
 

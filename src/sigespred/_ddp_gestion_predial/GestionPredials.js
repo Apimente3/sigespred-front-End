@@ -1,10 +1,10 @@
 import React, {useEffect, useState,createContext} from 'react';
 import {Link} from "react-router-dom";
-import Wraper from "../../m000_common/formContent/Wraper";
-import {LISTADO_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
-import {initAxiosInterceptors, serverFile} from '../../../config/axios';
-import TableTrabajador from "./TableTrabajador";
-import TrabajadorRow from "./TrabajadorRow";
+import Wraper from "../m000_common/formContent/WraperLarge";
+import {LISTADO_TRABAJADOR_BREADCRUM} from "../../config/breadcrums";
+import {initAxiosInterceptors, serverFile} from '../../config/axios';
+import TableTrabajador from "./Table";
+import TrabajadorRow from "./Row";
 import Pagination from "react-js-pagination";
 const queryString = require('query-string');
 const {alasql} = window;
@@ -15,13 +15,13 @@ const Axios = initAxiosInterceptors();
 
 
 async function buscarTrabajador(query) {
-   // alert(query)
-    const {data} = await Axios.get(`/usuario?`+ query);
+    // alert(query)
+    const {data} = await Axios.get(`/gestionpredialpaginate?`+ query);
     return data;
 }
 
 
-const Trabajadores = ({history}) => {
+const GestionPredials = ({history}) => {
 
 
     const WizardContext = createContext();
@@ -92,55 +92,55 @@ const Trabajadores = ({history}) => {
 
     }
 
-    const cabecerasTabla = ["DNI", "Nombres", "Apellidos", "Telefonos", "Correos", "Acciones"]
+    const cabecerasTabla = ["TIPO DE INFRAESTRUCTURA", "INFRAESTRUCTURA", "ABREVIATURA", "GESTION DE PREDIAL", "NRO DOCUMENTO", "Acciones"]
 
     return (
         <>
             <WizardContext.Provider value={context}>
-             <Wraper titleForm={"Listado de Trabajadores"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
-                <fieldset className={'fielsettext'}>
-                    <form onSubmit={buscarTrabadorFilter}>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <div className="input-group">
-                                    <input type="text" className="form-control "
-                                           placeholder="Nombre del Trabajador o DNI"
-                                           onChange={e => setBusqueda(e.target.value)}
-                                    ></input>
-                                    <span className="input-group-btn">
+                <Wraper titleForm={"Listado de Gestion Prediales"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
+                    <fieldset className={'fielsettext'}>
+                        <form onSubmit={buscarTrabadorFilter}>
+                            <div className="row">
+                                <div className="col-md-6">
+                                    <div className="input-group">
+                                        <input type="text" className="form-control "
+                                               placeholder="Nombre del Proyecto"
+                                               onChange={e => setBusqueda(e.target.value)}
+                                        ></input>
+                                        <span className="input-group-btn">
                                                                 <button className="btn btn-default " type="submit"><i
                                                                     className="fa fa-search"></i></button>
                                                             </span>
+                                    </div>
+                                </div>
+                                <div className="col-md-6">
+                                    <Link to={`/gestionpredial-add`} className="btn btn-danger pull-right btn-sm fullborder btn-control">
+                                        <i className="fa fa-plus"></i> Agregar </Link>
+                                    <button type="button" onClick={descarxls}
+                                            className="btn btn-default pull-right btn-sm fullborder">
+                                        <i className="fa fa-file-excel-o"></i> Descargar Excel
+                                    </button>
                                 </div>
                             </div>
-                            <div className="col-md-6">
-                                <Link to={`/trabajador-add`} className="btn btn-danger pull-right btn-sm fullborder">
-                                    <i className="fa fa-plus"></i> Agregar Trabajador</Link>
-                                <button type="button" onClick={descarxls}
-                                        className="btn btn-default pull-right btn-sm fullborder">
-                                    <i className="fa fa-file-excel-o"></i> Descargar Excel
-                                </button>
-                            </div>
+                        </form>
+                    </fieldset>
+                    <div className="panel panel-default">
+                        <TableTrabajador cabecera={cabecerasTabla}>
+                            {trabajadors.rows.map((trabajador, i) => (
+                                <TrabajadorRow nro={i} trabajador={trabajador}></TrabajadorRow>
+                            ))}
+                        </TableTrabajador>
+                        <div className="panel-footer clearfix pull-right">
+                            <Pagination
+                                activePage={activePage}
+                                itemsCountPerPage={limit}
+                                totalItemsCount={totalItemsCount}
+                                pageRangeDisplayed={3}
+                                onChange={handlePageChange}
+                            ></Pagination>
                         </div>
-                    </form>
-                </fieldset>
-                <div className="panel panel-default">
-                    <TableTrabajador cabecera={cabecerasTabla}>
-                       {trabajadors.rows.map((trabajador, i) => (
-                            <TrabajadorRow nro={i} trabajador={trabajador}></TrabajadorRow>
-                        ))}
-                    </TableTrabajador>
-                    <div className="panel-footer clearfix pull-right">
-                        <Pagination
-                            activePage={activePage}
-                            itemsCountPerPage={limit}
-                            totalItemsCount={totalItemsCount}
-                            pageRangeDisplayed={3}
-                            onChange={handlePageChange}
-                        ></Pagination>
                     </div>
-                </div>
-            </Wraper>
+                </Wraper>
             </WizardContext.Provider>
         </>
     );
@@ -148,4 +148,4 @@ const Trabajadores = ({history}) => {
 }
 
 
-export default Trabajadores;
+export default GestionPredials;

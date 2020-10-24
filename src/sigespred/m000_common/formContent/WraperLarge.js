@@ -18,7 +18,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
                 <div className="padding-md">
                     <div className="row">
                         <div className="col-md-12">
-                            <div className="panel panel-default">
+                            <div className="panel panel-default  form-horizontal">
                                 <div className="panel-heading" >{titleForm}</div>
                                 <div className="panel-body">
                                     {children}

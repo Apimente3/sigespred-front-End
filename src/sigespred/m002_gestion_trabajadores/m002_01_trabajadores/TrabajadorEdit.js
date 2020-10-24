@@ -7,6 +7,7 @@ import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
 
 import {FilesUsuario} from "../../../config/parameters";
 import {initAxiosInterceptors, serverFile} from '../../../config/axios';
+import FormFooter from "../../../components/forms/FormFooter";
 const Axios = initAxiosInterceptors();
 
 const {$} = window;
@@ -321,21 +322,16 @@ const TrabajadorEdit = ({history, match}) => {
                         ></input>
                     </div>
                 </div>
-                <div className="panel-body">
-                    <div className="form-group ">
-                        <div className="col-lg-offset-2 col-lg-10">
-                            <Link to={`/list-trabajadores`}
-                                  className="btn btn-default btn-sm btn-control">Cancelar</Link>
-                            <button id="btnguardar" type="submit"
-                                    className="btn btn-danger btn-sm btn-control">Guardar
-                            </button>
 
+                <FormFooter>
+                    <Link to={`/list-trabajadores`}
+                          className="btn btn-default btn-sm btn-control">Cancelar</Link>
+                    <button id="btnguardar" type="submit"
+                            className="btn btn-danger btn-sm btn-control">Actualizar
+                    </button>
 
-                        </div>
+                </FormFooter>
 
-                    </div>
-
-                </div>
 
             </form>
         </Wraper>

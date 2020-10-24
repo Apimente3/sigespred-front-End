@@ -6,11 +6,11 @@ const TrabajadorRow = ({trabajador,nro}) => {
     return (
         <>
             <tr>
+                <td>{trabajador.tipoinfraestructura}</td>
+                <td>{trabajador.infraestructura}</td>
+                <td>{trabajador.abreviatura}</td>
+                <td>{trabajador.denominacion}</td>
 
-                <td>{trabajador.dni}</td>
-                <td>{trabajador.nombres}</td>
-                <td>{trabajador.apellidos}</td>
-                <td>{trabajador.telefonos}</td>
                 <td>{trabajador.correo}</td>
 
                 <td>

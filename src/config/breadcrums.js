@@ -1,13 +1,13 @@
 export const REGISTRO_TRABAJADOR_BREADCRUM = [
     {link: "trabajador-add", name: "Gestion Predial"},
     {link: "list-trabajadores", name: "Listado de Trabajadores"},
-    {link: "trabajador-add", name: "Agregar Trabajador"}
+    {link: "#", name: "Agregar Trabajador"}
 ]
 
 export const ACTUALIZAR_TRABAJADOR_BREADCRUM = [
     {link: "trabajador-add", name: "Gestion Predial"},
     {link: "../list-trabajadores", name: "Listado de Trabajadores"},
-    {link: "trabajador-add", name: "Actualizar Trabajador"}
+    {link: "#", name: "Actualizar Trabajador"}
 ]
 
 export const ELIMINAR_TRABAJADOR_BREADCRUM = [
@@ -33,3 +33,13 @@ export const REGISTRO_PARTIDA_BREADCRUM = [
     {link: "partidas", name: "Listado de Partidas"},
     {link: "partida-edit", name: "Editar Partida"}
 ]
+
+//region Gestion Predial
+
+export const REGISTRO_GESTIONPREDIAL_BREADCRUM = [
+    {link: "../../", name: "Gestion Predial"},
+    {link: "gestionpredial", name: "Listado de Gestión Predial"},
+    {link: "#", name: "Registro Gestión Predial"}
+]
+
+//endregion

@@ -11,6 +11,21 @@ import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
 import {FilesUsuario} from "../../../config/parameters";
 
 import {initAxiosInterceptors, serverFile} from '../../../config/axios';
+import {
+    Form,
+    FormGroup,
+    Row6,
+    Row12,
+    RowForm,
+    Select,
+    Input,
+    Options,
+    FormControl,
+    InputInline,
+    FormFooter
+} from "../../../components/forms";
+
+
 const Axios = initAxiosInterceptors();
 
 const {$} = window;
@@ -88,6 +103,7 @@ const TrabajadorAdd = ({history}) => {
 
     return (
         <Wraper titleForm={"Registro de Trabajador"} listbreadcrumb={REGISTRO_TRABAJADOR_BREADCRUM}>
+
             <form onSubmit={registrar}>
                 <div className="form-group">
                     <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
@@ -291,21 +307,15 @@ const TrabajadorAdd = ({history}) => {
                         ></input>
                     </div>
                 </div>
-                <div className="panel-body">
-                    <div className="form-group ">
-                        <div className="col-lg-offset-2 col-lg-10">
-                            <Link to={`/list-trabajadores`}
-                                  className="btn btn-default btn-sm btn-control">Cancelar</Link>
-                            <button id="btnguardar" type="submit"
-                                    className="btn btn-danger btn-sm btn-control">Guardar
-                            </button>
+                <FormFooter>
+                    <Link to={`/list-trabajadores`}
+                          className="btn btn-default btn-sm btn-control">Cancelar</Link>
+                    <button id="btnguardar" type="submit"
+                            className="btn btn-danger btn-sm btn-control">Registrar
+                    </button>
 
+                </FormFooter>
 
-                        </div>
-
-                    </div>
-
-                </div>
 
             </form>
         </Wraper>
