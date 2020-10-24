@@ -187,7 +187,8 @@ const createGrid = () => {
                 let bl = `<button class="btn mright-5" title="Refenciar al plano en uno nuevo" onclick="window.addLinkedPlano('${codplano}')"><i class="fa fa-link"></i></button>`;
                 let be = `<button class="btn mright-5" title="Editar plano" onclick="window.editPlanoJqGrid(${cl})" ><i class='fa fa-edit'></i></button>`;
                 let bd = `<button class="btn" onclick="window.deletePlano(${cl},'${codplano}')"><i class="fa fa-trash"></i></button>`;
-                let concatBtn = bdw+bl+be+bd;
+                //let concatBtn = bdw+bl+be+bd;
+                let concatBtn = bl+be+bd;
                 jQuery("#gridplano").jqGrid('setRowData',ids[i],{act:concatBtn});
             }	
         },

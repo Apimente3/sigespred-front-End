@@ -337,7 +337,7 @@ const Planos = ({history}) => {
                 </div>
             </div>
 
-            <div className="panel panel-default">
+            {/* <div className="panel panel-default">
                 {
                 (busquedaLocal)?
                     console.log('cargando datos de planos...')
@@ -347,17 +347,8 @@ const Planos = ({history}) => {
                             <PlanoRow nro={i} plano={plano}></PlanoRow>
                         ))}
                     </TablePlano>
-                    /* <div className="panel-footer clearfix pull-right">
-                        <Pagination
-                            activePage={activePage}
-                            itemsCountPerPage={limit}
-                            totalItemsCount={totalItemsCount}
-                            pageRangeDisplayed={3}
-                            onChange={handlePageChange}
-                        ></Pagination>
-                    </div> */
                 }
-            </div>
+            </div> */}
         </Wraper>
         </>
     );

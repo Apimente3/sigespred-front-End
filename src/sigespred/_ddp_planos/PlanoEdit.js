@@ -20,7 +20,6 @@ const axios=initAxiosInterceptors();
 
 const obtenerPlano = async(id) => {
     const {data} = await axios.get(`/plano?id=${id}`);
-    console.log(data);
     return data
 }
 
@@ -115,7 +114,6 @@ const PlanoEdit = ({history, match}) => {
         }
         //TODO: remover console
         console.log(planoEdicion);
-        console.log(listaArchivos);
     }
 
     const saveArchivoDigital = (file) => {
@@ -350,7 +348,9 @@ const PlanoEdit = ({history, match}) => {
                                     Plano Antecedente
                                 </label>
                                 <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" readOnly onChange={handleInputChange}/>
+                                    <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
+                                    value={planoEdicion.antecedente}
+                                    readOnly onChange={handleInputChange}/>
                                 </div>
                             </div>
                             <div className="form-group">
@@ -446,7 +446,7 @@ const PlanoEdit = ({history, match}) => {
                                     </select>
                                 </div>
                             </div>
-                            <div className="form-group">
+                            {/* <div className="form-group">
                                 <label className="col-lg-4 control-label">
                                     Referencia Geográfica
                                 </label>
@@ -455,7 +455,7 @@ const PlanoEdit = ({history, match}) => {
                                     accept={'.jpg,.png,.gif'}
                                     setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
-                            </div>
+                            </div> */}
                         </fieldset>
                     </div>
                     <div className="form-group col-lg-6">

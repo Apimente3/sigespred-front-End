@@ -43,6 +43,10 @@ const PlanoAdd = ({history,  match}) => {
     
     if(ante && !valAncedente){
         setValAntecedente(ante);
+        set_plano({
+            ...plano,
+            antecedente: ante
+        });
     }
 
     function handleChangeDepartmento(e) {
@@ -151,7 +155,6 @@ const PlanoAdd = ({history,  match}) => {
             ...plano,
             profesionalid: idLocador
         });
-        console.log(plano);
     }
 
     const dispatch = useDispatch();
@@ -244,7 +247,7 @@ const PlanoAdd = ({history,  match}) => {
                                     <span className="obligatorio">* </span>Nro. de Expediente
                                 </label>
                                 <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="nroexpediente" name="nroexpediente" 
+                                    <input type="text" className="form-control input-sm uppercaseinput" id="nroexpediente" name="nroexpediente" 
                                     placeholder="Número de expediente"
                                     required
                                     title="El Número de Expediente es requerido"
@@ -393,14 +396,14 @@ const PlanoAdd = ({history,  match}) => {
                                     </select>
                                 </div>
                             </div>
-                            <div className="form-group">
+                            {/* <div className="form-group">
                                 <label className="col-lg-4 control-label">Referencia Geográfica</label>
                                 <div className="col-lg-8">
                                     <UploadMemo key="refgeografica" file={{urlDocumento:''}}
                                     accept={'.jpg,.png,.gif'}
                                     setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
-                            </div>
+                            </div> */}
                         </fieldset>
                     </div>
 
