@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import moment from 'moment';
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
-import Wraper from "../m000_common/formContent/Wraper";
+import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
@@ -217,101 +217,102 @@ const PlanoEdit = ({history, match}) => {
 
         return (
             <>
-            <Wraper titleForm={"Edición de Plano: " + planoEdicion.codplano} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
+            <WraperLarge titleForm={"Edición de Plano: " + planoEdicion.codplano} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
                 <form onSubmit={actualizar}>
-                    <div className="form-group col-lg-6">
-                        <fieldset className="mleft-20">
-                            <legend>Datos de Codificación</legend>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Tipo de Plano
-                                </label>
-                                <div className="col-lg-8">
-                                    {resListaTipoPlano.error
-                                    ? "Se produjo un error cargando los tipos de plano"
-                                    : resListaTipoPlano.loading
-                                    ? "Cargando..."
-                                    :
-                                    <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid"
-                                    readOnly
-                                    value={planoEdicion.tipoplanoid}
-                                    >
-                                        <option value="">--SELECCIONE--</option>
-                                        <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />
-                                    </select>}
+                    <div className="form-group">
+                        <div className="form-group col-lg-6">
+                            <fieldset className="mleft-20">
+                                <legend>Datos de Codificación</legend>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Tipo de Plano
+                                    </label>
+                                    <div className="col-lg-8">
+                                        {resListaTipoPlano.error
+                                        ? "Se produjo un error cargando los tipos de plano"
+                                        : resListaTipoPlano.loading
+                                        ? "Cargando..."
+                                        :
+                                        <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid"
+                                        readOnly
+                                        value={planoEdicion.tipoplanoid}
+                                        >
+                                            <option value="">--SELECCIONE--</option>
+                                            <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />
+                                        </select>}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Proyecto
-                                </label>
-                                <div className="col-lg-8">
-                                    {resListaProyectos.error
-                                    ? "Se produjo un error cargando los proyectos"
-                                    : resListaProyectos.loading
-                                    ? "Cargando..."
-                                    :
-                                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
-                                    readOnly
-                                    value={planoEdicion.gestionpredialid}
-                                    >
-                                        <option value="">--SELECCIONE--</option>
-                                        <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>
-                                    </select>}
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Proyecto
+                                    </label>
+                                    <div className="col-lg-8">
+                                        {resListaProyectos.error
+                                        ? "Se produjo un error cargando los proyectos"
+                                        : resListaProyectos.loading
+                                        ? "Cargando..."
+                                        :
+                                        <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                                        readOnly
+                                        value={planoEdicion.gestionpredialid}
+                                        >
+                                            <option value="">--SELECCIONE--</option>
+                                            <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>
+                                        </select>}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Nro. de Expediente
-                                </label>
-                                <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="nroexpediente" name="nroexpediente" 
-                                    readOnly
-                                    value={planoEdicion.nroexpediente || ''}
-                                    />
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Nro. de Expediente
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <input type="text" className="form-control input-sm" id="nroexpediente" name="nroexpediente" 
+                                        readOnly
+                                        value={planoEdicion.nroexpediente || ''}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Año
-                                </label>
-                                <div className="col-lg-8">
-                                    {resListaAnios.error
-                                    ? "Se produjo un error cargando los años"
-                                    : resListaAnios.loading
-                                    ? "Cargando..."
-                                    :
-                                    <select className="form-control input-sm" id="periodoid" name="periodoid" 
-                                    readOnly
-                                    value={planoEdicion.periodoid}
-                                    >
-                                        <option value="">--SELECCIONE--</option>
-                                        <ComboOptions data={resListaAnios.result} valorkey="valorcodigo" valornombre="valortexto" />
-                                    </select>}
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Año
+                                    </label>
+                                    <div className="col-lg-8">
+                                        {resListaAnios.error
+                                        ? "Se produjo un error cargando los años"
+                                        : resListaAnios.loading
+                                        ? "Cargando..."
+                                        :
+                                        <select className="form-control input-sm" id="periodoid" name="periodoid" 
+                                        readOnly
+                                        value={planoEdicion.periodoid}
+                                        >
+                                            <option value="">--SELECCIONE--</option>
+                                            <ComboOptions data={resListaAnios.result} valorkey="valorcodigo" valornombre="valortexto" />
+                                        </select>}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Proceso
-                                </label>
-                                <div className="col-lg-8">
-                                    {resListaProcesos.error
-                                    ? "Se produjo un error cargando los procesos"
-                                    : resListaProcesos.loading
-                                    ? "Cargando..."
-                                    :
-                                    <select className="form-control input-sm" id="procesoid" name="procesoid"
-                                    readOnly
-                                    value={planoEdicion.procesoid}
-                                    >
-                                        <option value="">--SELECCIONE--</option>
-                                        <ComboOptions data={resListaProcesos.result} valorkey="valorcodigo" valornombre="valortexto" />
-                                    </select>}
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Proceso
+                                    </label>
+                                    <div className="col-lg-8">
+                                        {resListaProcesos.error
+                                        ? "Se produjo un error cargando los procesos"
+                                        : resListaProcesos.loading
+                                        ? "Cargando..."
+                                        :
+                                        <select className="form-control input-sm" id="procesoid" name="procesoid"
+                                        readOnly
+                                        value={planoEdicion.procesoid}
+                                        >
+                                            <option value="">--SELECCIONE--</option>
+                                            <ComboOptions data={resListaProcesos.result} valorkey="valorcodigo" valornombre="valortexto" />
+                                        </select>}
+                                    </div>
                                 </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div className="form-group col-lg-6">
+                            </fieldset>
+                        </div>
+                        <div className="form-group col-lg-6">
                         <fieldset className="mleft-20">
                             <legend>Datos Generales</legend>
                             <div className="form-group">
@@ -375,6 +376,7 @@ const PlanoEdit = ({history, match}) => {
                             </div>
 
                         </fieldset>
+                    </div>
                     </div>
                     <div className="form-group col-lg-6">
                         <fieldset className="mleft-20">
@@ -519,7 +521,7 @@ const PlanoEdit = ({history, match}) => {
                         </div>
                     </div>
                 </form>
-            </Wraper>
+            </WraperLarge>
             </>
         );
     }

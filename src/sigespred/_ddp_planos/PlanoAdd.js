@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import moment from 'moment';
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
-import Wraper from "../m000_common/formContent/Wraper";
+import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
@@ -11,10 +11,8 @@ import Autocomplete from '../../components/helpers/Autocomplete';
 import SubLista from './SubListaDelete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
-
 import {useDispatch} from 'react-redux';
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
-
 
 const {$} = window;
 
@@ -199,154 +197,157 @@ const PlanoAdd = ({history,  match}) => {
 
         return (
             <>
-            <Wraper titleForm={"Registro de Plano"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
+            <WraperLarge titleForm={"Registro de Plano"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
                 <form onSubmit={registrar}>
-                    <div className="form-group col-lg-6">
-                        <fieldset className="mleft-20">
-                            <legend>Datos de Codificación</legend>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Tipo de Plano
-                                </label>
-                                <div className="col-lg-8">
-                                    <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid"
-                                    required
-                                    title="El Tipo de Plano es requerido"
-                                    onChange={handleInputChange}
-                                    >
-                                        <option value="">--SELECCIONE--</option>
-                                        {resListaTipoPlano.error
-                                        ? "Se produjo un error cargando los tipos de plano"
-                                        : resListaTipoPlano.loading
+                    <div className="form-group">
+                        <div className="form-group col-lg-6">
+                            <fieldset className="mleft-20">
+                                <legend>Datos de Codificación</legend>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Tipo de Plano
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid"
+                                        required
+                                        title="El Tipo de Plano es requerido"
+                                        onChange={handleInputChange}
+                                        >
+                                            <option value="">--SELECCIONE--</option>
+                                            {resListaTipoPlano.error
+                                            ? "Se produjo un error cargando los tipos de plano"
+                                            : resListaTipoPlano.loading
+                                            ? "Cargando..."
+                                            : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Proyecto
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                                        required
+                                        title="El Proyecto es requerido"
+                                        onChange={handleInputChange}
+                                        >
+                                            <option value="">--SELECCIONE--</option>
+                                            {resListaProyectos.error
+                                            ? "Se produjo un error cargando los proyectos"
+                                            : resListaProyectos.loading
+                                            ? "Cargando..."
+                                            : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Nro. de Expediente
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <input type="text" className="form-control input-sm uppercaseinput" id="nroexpediente" name="nroexpediente" 
+                                        placeholder="Número de expediente"
+                                        required
+                                        title="El Número de Expediente es requerido"
+                                        autoComplete = "off"
+                                        onChange={handleInputChange}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Año
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <select className="form-control input-sm" id="periodoid" name="periodoid" 
+                                        required
+                                        title="El Año es requerido"
+                                        autoComplete = "off"
+                                        onChange={handleInputChange}
+                                        >
+                                            <option value="">--SELECCIONE--</option>
+                                            {resListaAnios.error
+                                            ? "Se produjo un error cargando los años"
+                                            : resListaAnios.loading
+                                            ? "Cargando..."
+                                            : <ComboOptions data={resListaAnios.result} valorkey="valorcodigo" valornombre="valortexto" />}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        <span className="obligatorio">* </span>Proceso
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <select className="form-control input-sm" id="procesoid" name="procesoid"
+                                        required
+                                        title="El Proceso es requerido"
+                                        onChange={handleInputChange}
+                                        >
+                                            <option value="">--SELECCIONE--</option>
+                                            {resListaProcesos.error
+                                            ? "Se produjo un error cargando los procesos"
+                                            : resListaProcesos.loading
+                                            ? "Cargando..."
+                                            : <ComboOptions data={resListaProcesos.result} valorkey="valorcodigo" valornombre="valortexto" />}
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <div className="form-group col-lg-6">
+                            <fieldset className="mleft-20">
+                                <legend>Datos Generales</legend>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">Profesional Solicitante</label>
+                                    <div className="col-lg-8">
+                                        {resListaSolicitantes.error
+                                        ? "Se produjo un error cargando los locadores"
+                                        : resListaSolicitantes.loading
                                         ? "Cargando..."
-                                        : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
-                                    </select>
+                                        : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Proyecto
-                                </label>
-                                <div className="col-lg-8">
-                                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
-                                    required
-                                    title="El Proyecto es requerido"
-                                    onChange={handleInputChange}
-                                    >
-                                        <option value="">--SELECCIONE--</option>
-                                        {resListaProyectos.error
-                                        ? "Se produjo un error cargando los proyectos"
-                                        : resListaProyectos.loading
-                                        ? "Cargando..."
-                                        : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>}
-                                    </select>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">Estado del Plano</label>
+                                    <div className="col-lg-8">
+                                        <select id="estadoid" name="estadoid" className="form-control input-sm" onChange={handleInputChange}>
+                                            <option value="0">--SELECCIONE--</option>
+                                            {resListaEstadosPlano.error
+                                            ? "Se produjo un error cargando los estados de plano"
+                                            : resListaEstadosPlano.loading
+                                            ? "Cargando..."
+                                            : <ComboOptions data={resListaEstadosPlano.result} valorkey="valorcodigo" valornombre="valortexto" />}
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Nro. de Expediente
-                                </label>
-                                <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm uppercaseinput" id="nroexpediente" name="nroexpediente" 
-                                    placeholder="Número de expediente"
-                                    required
-                                    title="El Número de Expediente es requerido"
-                                    autoComplete = "off"
-                                    onChange={handleInputChange}
-                                    />
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">Plano Antecedente</label>
+                                    <div className="col-lg-8">
+                                        <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
+                                        value={valAncedente}
+                                        readOnly 
+                                        onChange={handleInputChange}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Año
-                                </label>
-                                <div className="col-lg-8">
-                                    <select className="form-control input-sm" id="periodoid" name="periodoid" 
-                                    required
-                                    title="El Año es requerido"
-                                    autoComplete = "off"
-                                    onChange={handleInputChange}
-                                    >
-                                        <option value="">--SELECCIONE--</option>
-                                        {resListaAnios.error
-                                        ? "Se produjo un error cargando los años"
-                                        : resListaAnios.loading
-                                        ? "Cargando..."
-                                        : <ComboOptions data={resListaAnios.result} valorkey="valorcodigo" valornombre="valortexto" />}
-                                    </select>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">Fecha de Creación</label>
+                                    <div className="col-lg-8">
+                                        <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control input-sm" onChange={handleInputChange} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    <span className="obligatorio">* </span>Proceso
-                                </label>
-                                <div className="col-lg-8">
-                                    <select className="form-control input-sm" id="procesoid" name="procesoid"
-                                    required
-                                    title="El Proceso es requerido"
-                                    onChange={handleInputChange}
-                                    >
-                                        <option value="">--SELECCIONE--</option>
-                                        {resListaProcesos.error
-                                        ? "Se produjo un error cargando los procesos"
-                                        : resListaProcesos.loading
-                                        ? "Cargando..."
-                                        : <ComboOptions data={resListaProcesos.result} valorkey="valorcodigo" valornombre="valortexto" />}
-                                    </select>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">Observaciones</label>
+                                    <div className="col-lg-8">
+                                        <input type="text" className="form-control input-sm" id="observaciones" name="observaciones" onChange={handleInputChange}/>
+                                    </div>
                                 </div>
-                            </div>
-                        </fieldset>
+                            </fieldset>
+                        </div>
                     </div>
 
-                    <div className="form-group col-lg-6">
-                        <fieldset className="mleft-20">
-                            <legend>Datos Generales</legend>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Profesional Solicitante</label>
-                                <div className="col-lg-8">
-                                    {resListaSolicitantes.error
-                                    ? "Se produjo un error cargando los locadores"
-                                    : resListaSolicitantes.loading
-                                    ? "Cargando..."
-                                    : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Estado del Plano</label>
-                                <div className="col-lg-8">
-                                    <select id="estadoid" name="estadoid" className="form-control input-sm" onChange={handleInputChange}>
-                                        <option value="0">--SELECCIONE--</option>
-                                        {resListaEstadosPlano.error
-                                        ? "Se produjo un error cargando los estados de plano"
-                                        : resListaEstadosPlano.loading
-                                        ? "Cargando..."
-                                        : <ComboOptions data={resListaEstadosPlano.result} valorkey="valorcodigo" valornombre="valortexto" />}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Plano Antecedente</label>
-                                <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
-                                    value={valAncedente}
-                                    readOnly 
-                                    onChange={handleInputChange}/>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Fecha de Creación</label>
-                                <div className="col-lg-8">
-                                    <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control input-sm" onChange={handleInputChange} />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Observaciones</label>
-                                <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="observaciones" name="observaciones" onChange={handleInputChange}/>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
 
                     <div className="form-group col-lg-6">
                         <fieldset className="mleft-20">
@@ -460,7 +461,7 @@ const PlanoAdd = ({history,  match}) => {
                         </div>
                     </div>
                 </form>
-                </Wraper>
+                </WraperLarge>
             </>
         );
     }
