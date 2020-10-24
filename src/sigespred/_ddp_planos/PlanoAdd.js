@@ -3,10 +3,8 @@ import moment from 'moment';
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/Wraper";
 import {Link} from "react-router-dom";
-import FileBase64 from 'react-file-base64';
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
-import { useLocation, withRouter } from "react-router-dom";
 import {agregar, setcontinuarAgregar} from '../../actions/_ddp_plano/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
@@ -14,9 +12,9 @@ import SubLista from './SubListaDelete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
-import {serverFile} from "../../config/axios";
+
 
 const {$} = window;
 
@@ -137,9 +135,8 @@ const PlanoAdd = ({history,  match}) => {
             setReiniciarValDigital(true);
             setReiniciarValMemoria(true);
         } else {
-            console.log('here');
+            toastr.error(`Se require al menos un identificador de lámina y el archivo digital.`)
         }
-
     }
 
     const removerDeLista = (idLamina) => {
@@ -168,7 +165,17 @@ const PlanoAdd = ({history,  match}) => {
 
 
     const registrar = async e => {
+
         e.preventDefault();
+        
+        if (Array.isArray(listaArchivos) && listaArchivos.length) {
+            plano.archivos = listaArchivos;
+            set_plano({
+                ...plano,
+                archivos: listaArchivos
+            });
+        }
+
         $('#btnguardar').button('loading');
         try {
             await agregarPlanoAction(plano);

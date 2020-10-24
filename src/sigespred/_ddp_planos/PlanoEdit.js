@@ -1,39 +1,46 @@
 import React, {useState, useEffect, useRef} from 'react';
+import moment from 'moment';
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/Wraper";
 import {Link} from "react-router-dom";
-import FileBase64 from 'react-file-base64';
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
-import { useLocation } from "react-router-dom";
-import {editar, obtener} from '../../actions/_ddp_plano/Actions';
+import {editar} from '../../actions/_ddp_plano/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
+import SubLista from './SubListaDelete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
-
-import {useDispatch, useSelector} from 'react-redux';
+import {initAxiosInterceptors} from '../../config/axios';
+import {useDispatch} from 'react-redux';
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
-import {serverFile} from "../../config/axios";
 
 const {$} = window;
+const axios=initAxiosInterceptors();
+
+const obtenerPlano = async(id) => {
+    const {data} = await axios.get(`/plano?id=${id}`);
+    console.log(data);
+    return data
+}
 
 const PlanoEdit = ({history, match}) => {
 
     const {id} = match.params;
     const editarPlanoAction = (plano) => dispatch(editar(plano));
-    const obtenerPlanoAction = (idplano) => dispatch(obtener(idplano));
     const [planoEditado,set_planoEditado]= useState({});
-    const planoEdicion = useSelector(state => state.plano.plano);
+    const [listaArchivos, set_listaArchivos] = useState([]);
+    const [planoEdicion, setPlanoEdicion]  = useState({});
     
     useEffect(() => {
         const getPlano=async (idplano)=>{
-           await obtenerPlanoAction(idplano)
+           let planoDB = await obtenerPlano(idplano);
+            setPlanoEdicion(planoDB);
+            set_listaArchivos(planoDB.archivos);
         }
         getPlano(id);
     }, []);
     
-
     const [planoArchTmp, set_planoArchTmp] = useState({digital: '', memdescriptiva: ''});
     const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, [""]);
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
@@ -48,7 +55,9 @@ const PlanoEdit = ({history, match}) => {
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
     const [firstLoad, set_firstLoad] = useState(true);
-
+    
+    const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
+    const [reiniciarValMemoria, setReiniciarValMemoria] = useState(false);
     
     function setProvinciaDistrito(iddep){
         if (firstLoad && resListaProvincia.result && resListaDistrito.result){
@@ -106,9 +115,11 @@ const PlanoEdit = ({history, match}) => {
         }
         //TODO: remover console
         console.log(planoEdicion);
+        console.log(listaArchivos);
     }
 
     const saveArchivoDigital = (file) => {
+        setReiniciarValDigital(false);
         set_planoArchTmp({
             ...planoArchTmp,
             "digital": file.path
@@ -116,9 +127,10 @@ const PlanoEdit = ({history, match}) => {
     }
 
     const saveArchivoMemoria = (file) => {
+        setReiniciarValMemoria(false);
         set_planoArchTmp({
             ...planoArchTmp,
-            "memdescriptiva": file.path
+            "memoria": file.path
         });
     }
 
@@ -132,7 +144,7 @@ const PlanoEdit = ({history, match}) => {
     const deleteArchivoMemoria = () => {
         set_planoArchTmp({
             ...planoArchTmp,
-            "memdescriptiva": ''
+            "memoria": ''
         });
     }
 
@@ -144,10 +156,53 @@ const PlanoEdit = ({history, match}) => {
         });
     }
 
+    const handleChangeLamina = (e) => {
+        var uidDate = moment().format("YYYYMMDDHHmmss");
+        set_planoArchTmp({
+            ...planoArchTmp,
+            "lamina": e.target.value,
+            "laminaid": uidDate,
+        });
+    }
+
+    const actualizarLista = () => {
+        
+        if (planoArchTmp.lamina && planoArchTmp.digital) {
+            set_listaArchivos(listaArchivos => [...listaArchivos, planoArchTmp]);
+            set_planoArchTmp({
+                ...planoArchTmp,
+                "lamina": '',
+                "laminaid": '',
+                "digital": '',
+                "memoría": ''
+            });
+            setReiniciarValDigital(true);
+            setReiniciarValMemoria(true);
+        } else {
+            toastr.error(`Se require al menos un identificador de lámina y el archivo digital.`)
+        }
+    }
+
+    const removerDeLista = (idLamina) => {
+        var data = $.grep(listaArchivos, function(e){ 
+            return e.laminaid != idLamina; 
+       });
+       set_listaArchivos(data);
+    }
+
     const dispatch = useDispatch();
     
     const actualizar = async e => {
         e.preventDefault();
+
+        if (Array.isArray(listaArchivos) && listaArchivos.length) {
+            planoEdicion.archivos = listaArchivos;
+            set_planoEditado({
+                ...planoEditado,
+                archivos: listaArchivos
+            });
+        }
+
         toastr.success('Actualización de Plano', 'El plano fue actualizado correctamente.');
         $('#btnguardar').button('loading');
         try {
@@ -159,6 +214,8 @@ const PlanoEdit = ({history, match}) => {
             alert(e.message)
         }
     }
+
+    const cabeceraArchivos = ["Lámina","Plano Digital", "Mem. Descriptiva", "Eliminar"];
 
         return (
             <>
@@ -405,12 +462,20 @@ const PlanoEdit = ({history, match}) => {
                         <fieldset className="mleft-20">
                             <legend>Archivos</legend>
                             <div className="form-group">
+                                <label className="col-lg-4 control-label">Descripcion de Lámina</label>
+                                <div className="col-lg-8">
+                                    <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam" 
+                                    value = {planoArchTmp.lamina || ''}
+                                    onChange={handleChangeLamina}/>
+                                </div>
+                            </div>
+                            <div className="form-group">
                                 <label className="col-lg-4 control-label">
                                     Plano Dígital
                                 </label>
-                                <div className="col-lg-8">
+                                <div className="col-lg-6">
                                     <UploadMemo key="planodigitaltmp" file={{urlDocumento:''}}
-                                    accept={'.jpg,.png,.gif'}
+                                    accept={'.jpg,.png,.gif'} resetContenido={reiniciarValDigital}
                                     setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
                             </div>
@@ -418,11 +483,25 @@ const PlanoEdit = ({history, match}) => {
                                 <label className="col-lg-4 control-label">
                                     Memoría Descriptiva
                                 </label>
-                                <div className="col-lg-8">
+                                <div className="col-lg-6">
                                     <UploadMemo key="memdescriptivatmp" file={{urlDocumento:''}}
-                                    accept={'.jpg,.png,.gif'}
+                                    accept={'.jpg,.png,.gif'} resetContenido={reiniciarValMemoria}
                                     setFile={saveArchivoMemoria} folderSave={"FotosUsuarios"} eliminar={deleteArchivoMemoria}></UploadMemo>
                                 </div>
+                                <div className="col-lg-2">
+                                    <a className="btn btn-default btn-sm dropdown-toggle pull-left"
+                                        title="Agregar a la lista"
+                                        onClick={actualizarLista}
+                                        >
+                                        <i className="fa fa-archive fa-2x"></i></a>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                {listaArchivos ?
+                                <SubLista data={listaArchivos} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
+                                :
+                                <SubLista data={[]} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
+                                }
                             </div>
                         </fieldset>
                     </div>
