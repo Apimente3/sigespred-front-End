@@ -34,6 +34,7 @@ export const REGISTRO_PARTIDA_BREADCRUM = [
     {link: "partida-edit", name: "Editar Partida"}
 ]
 
+
 //region Gestion Predial
 
 export const REGISTRO_GESTIONPREDIAL_BREADCRUM = [
@@ -43,3 +44,20 @@ export const REGISTRO_GESTIONPREDIAL_BREADCRUM = [
 ]
 
 //endregion
+
+export const LISTADO_PARTIDA_BREADCRUM = [
+    {link: "partida-add", name: "Gestion Partida"},
+    {link: "partidas", name: "Listado de Partidas"}
+]
+
+export const ACTUALIZAR_PARTIDA_BREADCRUM = [
+    {link: "partida-add", name: "Gestion de Partidas Registrales"},
+    {link: "partidas", name: "Listado de Partidas"},
+    {link: "partida-add", name: "Actualizar Partida"}
+]
+
+export const ELIMINAR_PARTIDA_BREADCRUM = [
+    {link: "/", name: "Gestion de Partidas Registrales"},
+    {link: "partidas", name: "Listado de Partidas Registrales"},
+    {link: "#", name: "Eliminar Partidas Registrales"}
+]
