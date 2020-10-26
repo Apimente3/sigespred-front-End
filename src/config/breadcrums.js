@@ -47,12 +47,17 @@ export const REGISTRO_GESTIONPREDIAL_BREADCRUM = [
 
 export const LISTADO_PARTIDA_BREADCRUM = [
     {link: "partida-add", name: "Gestion Partida"},
-    {link: "list-partida", name: "Listado de Partidas"}
+    {link: "partidas", name: "Listado de Partidas"}
 ]
 
 export const ACTUALIZAR_PARTIDA_BREADCRUM = [
-    {link: "partida-add", name: "Gestion Partida"},
-    {link: "../list-partida", name: "Listado de Partidas"},
+    {link: "partida-add", name: "Gestion de Partidas Registrales"},
+    {link: "partidas", name: "Listado de Partidas"},
     {link: "partida-add", name: "Actualizar Partida"}
 ]
 
+export const ELIMINAR_PARTIDA_BREADCRUM = [
+    {link: "/", name: "Gestion de Partidas Registrales"},
+    {link: "partidas", name: "Listado de Partidas Registrales"},
+    {link: "#", name: "Eliminar Partidas Registrales"}
+]
