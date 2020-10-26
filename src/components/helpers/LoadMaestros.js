@@ -53,3 +53,12 @@ export const helperGetListaSubAreas = async(params) => {
     const {data:areas} = await Axios.get(`/area`);
     return {areas};
 }
+
+export const helperGetListTramos = async(params) => {
+    if (params) {
+        const {data:tramos} = await Axios.get(`/tramo?gestionpredialid=${params}`);
+        return {tramos};
+    }
+        const {data:tramos} = await Axios.get(`/tramos`);
+        return {tramos};
+}

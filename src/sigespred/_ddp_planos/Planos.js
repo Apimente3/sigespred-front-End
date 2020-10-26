@@ -30,6 +30,7 @@ const Planos = ({history}) => {
     const [busquedaLocal, set_busquedaLocal] = useState(true);
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
+    const [dataTramo, setDataTramo] = useState(null);
     const [contentMessage, set_contentMessage] = useState('');
 
     const dispatch = useDispatch();
@@ -47,7 +48,15 @@ const Planos = ({history}) => {
         }
         initialLoad();
     }, []);
-    
+
+    const handleChangeProyecto = async(e) => {
+        if (e.target.value) {
+            let data = await helperGets.helperGetListTramos(e.target.value);
+            setDataTramo(data);
+        } else {
+            setDataTramo(null);
+        }
+    }
 
     function handleChangeDepartmento(e) {
         if(!resListaProvincia.loading){
@@ -183,7 +192,7 @@ const Planos = ({history}) => {
                 <label className="col-lg-2 control-label">Proyecto</label>
                 <div className="col-lg-4">
                     <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
-                    onChange={handleInputChange}>
+                    onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
                         <option value="">--SELECCIONE--</option>
                         {resListaProyectos.error
                         ? "Se produjo un error cargando los tipos de plano"
@@ -242,6 +251,8 @@ const Planos = ({history}) => {
                     <select className="form-control input-sm"  id="tramoid" name="tramoid" 
                     onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
+                        {dataTramo &&
+                            <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
                     </select>
                 </div>
 
