@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../../config/axios";
 import {toastr} from "react-redux-toastr";
 
@@ -87,22 +88,11 @@ const gridcolumnModel = [
         frozen:true
     },
 
-    // {
-    //     "name": "gestionpredialid",
-    //     "index": "gestionpredialid",
-    //     "align": "left",
-    //     "width": 400,
-    //     "editable": false,
-    //     "search": false,
-    //     "hidden": true,
-    //     frozen:true
-    // },
-
     {
-        "name": "area",
-        "index": "area",
+        "name": "Area.nombre",
+        "index": "Area.nombre",
         "align": "left",
-        "width": 180,
+        "width": 400,
         "editable": false,
         "search": false,
         "hidden": false,
@@ -112,13 +102,12 @@ const gridcolumnModel = [
         "name": "activo",
         "index": "activo",
         "align": "left",
-        "width": 180,
+        "width": 80,
         "editable": false,
         "search": false,
         "hidden": false,
         frozen:true
     },
-
     {
         "name": "proyectoid",
         "index": "proyectoid",
@@ -129,40 +118,37 @@ const gridcolumnModel = [
         "hidden": true
     },
     {
-        "name": "UsuarioInEquipo.id",
-        "index": "UsuarioInEquipo.id",
+        "name": "Area.id",
+        "index": "Area.id",
         "align": "left",
-        "width": 180,
-        "editable": false,
+        "width": 200,
+        "editable": true,
         "search": false,
-        "hidden": true,
-        frozen:true
+        "hidden": true
     },
     {
-        "name": "UsuarioInEquipo.nombres",
-        "index": "UsuarioInEquipo.nombres",
+        "name": "UsuarioInEquipo",
+        "index": "UsuarioInEquipo",
         "align": "left",
-        "width": 180,
-        "editable": false,
+        "width": 200,
+        "editable": true,
         "search": false,
-        "hidden": false,
-        frozen:true
+        "hidden": true
     },
-    {
-        "name": "UsuarioInEquipo.apellidos",
-        "index": "UsuarioInEquipo.apellidos",
-        "align": "left",
-        "width": 180,
-        "editable": false,
-        "search": false,
-        "hidden": false,
-        frozen:true
+    { "name": 'edit',
+     "index": 'edit',
+     "align": "left",
+     "width": 200,
+     "editable": true,
+     "search": false,
+     "hidden": false,
+      "formatter": addLink
     }
 
     ]
 
 
-const gridcolNames = ["ID","GESTION PREDIAL", "EQUIPO", "AREA", "ESTADO", "PORYECTO","IDUSUARIO", "NOMBRES", "APELLIDOS"];
+const gridcolNames = ["ID","GESTION PREDIAL", "EQUIPO", "AREA", "ESTADO", "PROYECTOID", "AREAID","USUARIOS","EDITAR"];
 
 
 const createGrid = () => {
@@ -212,7 +198,26 @@ const createGrid = () => {
     //$("#gridpartida").jqGrid('filterToolbar', {stringResult: true, searchOnEnter: false, defaultSearch: "cn"});
     //$("#gridpartida").jqGrid("setFrozenColumns");
 }
+const redirectOnClick = () => {
+    alert("ds");
+    Link.push('/trabajador-edit/12');
+  }
 
+let history = Link;
+window.ff=function () {
+    
+    
+    history.push('/trabajador-edit/12');
+}
+
+function addLink(cellvalue, options, rowObject) 
+{
+  //to get row Id
+  alert(options.rowId);
+  // to get product Id
+  alert(rowObject.id);
+  return `<a href="#" onclick="${redirectOnClick}" ><i class="fa fa-upload" aria-hidden="true"></i> Subir Archivo</a>`;
+}
 
 const cargarGrid = (response) => {
     if (response.length == 0) {

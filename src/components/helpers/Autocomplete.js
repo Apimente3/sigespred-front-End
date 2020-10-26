@@ -30,12 +30,16 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
 
     const saveInput = async (e) => {
         let id = e.target.getAttribute('value');
+        let value = e.target.innerHTML;
         var found = await listaDatos.find(function (element) {
             return element.id == id;
         });
+        var text = await listaDatos.find(function (element) {
+            return element.value == value;
+        });
         setRowSelect(found);
         setSeleccionado(true);
-        callabck(found.id);
+        callabck(found.id,text.value);
     }
 
     const busquedaItems = (e) => {
@@ -53,7 +57,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
         setSeleccionado(false)
         setRowSelect({})
        
-        callabck(null)
+        callabck(null,null)
     }
 
     return (
