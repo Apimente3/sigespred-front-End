@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
-import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
 import { toastr } from "react-redux-toastr";
@@ -21,19 +19,30 @@ const PartidaAdd = ({ history }) => {
   const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPOPRED,
   ]);
-  const [partida, set_partida] = useState({ observaciones: "Nuevo Registro" });
 
+  const [partida, set_partida] = useState({ observacion: "Nuevo Registro" });
   const dispatch = useDispatch();
   const agregarPartidaComp = (partida) => dispatch(agregar(partida));
+  //const setcontinuarAgregarComp = (estado) => dispatch(setcontinuarAgregar(estado));
+
+//   useEffect(() => {
+//     $('[data-toggle="tooltip"]').tooltip()
+//     setcontinuarAgregarComp(true)
+// }, []);
+
+const limpiarForm = () => {
+  set_partida({observacion: 'Nuevo Registro'})
+}
+
 
   const obtenerTramos = async () => {
     const { data } = await Axios.get(`/tramo`);
     return data;
   };
 
-  useEffect(() => {
-    console.log("Hey");
-  }, [partida]);
+  // useEffect(() => {
+  //   console.log("Hey");
+  // }, [partida]);
 
   function handleChangeProject(e) {
     if (!obtenerTramos.loading) {
@@ -46,40 +55,28 @@ const PartidaAdd = ({ history }) => {
     }
   }
   const handleInputChange = ({ target }) => {
-    set_partida({
-      ...partida,
-      [target.name]: target.value,
-    });
+    if(['infraestructuraid', 'nropartida'].includes(target.name)){
+
+    } else {
+
+      set_partida({
+        ...partida,
+        [target.name]: target.value.toUpperCase()
+      });
+    }
   };
-  //   function handleInputChange(e) {
-  //     if (['nroexpediente'].includes(e.target.name)) {
-  //         set_plano({
-  //             ...plano,
-  //             [e.target.name]: e.target.value.toUpperCase()
-  //         });
-  //     }else{
-  //         set_plano({
-  //             ...plano,
-  //             [e.target.name]: e.target.value
-  //         });
-  //     }
-  //     //TODO: remover console
-  //     console.log(plano);
-  // }
-  const limpiarForm = () => {
-    set_partida({ observaciones: "Nuevo Registro" });
-  };
+  
 
   const registrar = async (e) => {
     e.preventDefault();
-    $("#btnguardar").button("loading");
+    //$("#btnguardar").button("loading");
     try {
       await agregarPartidaComp(partida);
 
-      $("#btnguardar").button("reset");
+      //$("#btnguardar").button("reset");
       const toastrConfirmOptions = {
         onOk: () => limpiarForm(),
-        onCancel: () => history.push("/partidaregistral"),
+        onCancel: () => history.push("/partidas"),
       };
       toastr.confirm("¿ Desea seguir registrando ?", toastrConfirmOptions);
     } catch (e) {
@@ -100,10 +97,10 @@ const PartidaAdd = ({ history }) => {
             </label>
             <div className="col-lg-4">
               <select
-                id="gestionpredialid"
+                id="infraestructuraid"
                 className="form-control input-sm"
-                name="gestionpredialid"
-                // value={trabajador.rol}
+                name="infraestructuraid"
+                // value={partida.infraestructuraid}
                 onChange={handleInputChange}
               >
                 <option value="0">--SELECCIONE--</option>
@@ -120,28 +117,29 @@ const PartidaAdd = ({ history }) => {
                 )}
               </select>
             </div>
-            <label className="col-lg-2 control-label">Asiento</label>
+            <label className="col-lg-2 control-label"><span className="obligatorio">* </span>Numero de Partida</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
+                required
                 type="text"
-                name="asiento"
+                name="nropartida"
+                id="nropartida"
                 onChange={handleInputChange}
-                placeholder="Ingrese numero de asiento"
-                // value={trabajador.contrasenia}
+                placeholder="Ingrese numero de Partida"
+                value={partida.nropartida}
               ></input>
             </div>
           </div>
 
           <div className="form-group">
-            <label className="col-lg-2 control-label">Tramo</label>
+            <label className="col-lg-2 control-label"><span className="obligatorio">* </span>Tramo</label>
             <div className="col-lg-4">
               <select
-                id="tramo"
                 className="form-control input-sm"
-                name="tramo"
-                id="tramo"
-                // value={trabajador.rol}
+                name="tramoid"
+                id="tramoid"
+                value={partida.tramoid}
                 onChange={handleInputChange}
               >
                 <option value="0">--SELECCIONE--</option>
@@ -150,16 +148,16 @@ const PartidaAdd = ({ history }) => {
                 <option value="3">TRAMO 03</option>
               </select>
             </div>
-            <label className="col-lg-2 control-label">Sub Tramo</label>
+            <label className="col-lg-2 control-label"><span className="obligatorio">* </span>Sub Tramo</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
                 type="text"
-                name="subtramo"
-                id="subtramo"
+                name="subtramoid"
+                id="subtramoid"
                 onChange={handleInputChange}
                 placeholder="Ingrese el sub tramo"
-                // value={trabajador.contrasenia}
+                value={partida.subtramoid}
               ></input>
             </div>
           </div>
@@ -168,11 +166,11 @@ const PartidaAdd = ({ history }) => {
             <label className="col-lg-2 control-label">Tipo de Predio</label>
             <div className="col-lg-4">
               <select
-                id="tipopredio"
+                id="tipopredioid"
                 className="form-control input-sm"
-                name="tramo"
+                name="tipopredioid"
                 id="tipopredio"
-                // value={trabajador.rol}
+                value={partida.tipopredioid}
                 onChange={handleInputChange}
               >
                 <option value="0">--SELECCIONE--</option>
@@ -198,243 +196,62 @@ const PartidaAdd = ({ history }) => {
                 id="areapredio"
                 onChange={handleInputChange}
                 placeholder="Ingrese el area del predio"
-                // value={trabajador.contrasenia}
+                value={partida.areapredio}
               ></input>
             </div>
           </div>
 
-
           <div className="form-group">
-          <label className="col-lg-2 control-label">Observacion</label>
+          <label className="col-lg-2 control-label">Asiento</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
                 type="text"
-                name="observaciones"
-                id="observaciones"
+                name="nroasiento"
+                id="nroasiento"
+                onChange={handleInputChange}
+                placeholder="Ingrese numero de asiento"
+                value={partida.nroasiento}
+              ></input>
+            </div>
+            
+
+            <label className="col-lg-2 control-label">Observacion</label>
+            <div className="col-lg-4">
+            
+              <input
+                className="form-control input-sm"
+                type="text"
+                name="observacion"
+                id="observacion"
                 onChange={handleInputChange}
                 placeholder="Ingrese alguna observacion"
-                // value={trabajador.contrasenia}
+                value={partida.observacion}
               ></input>
-
-            </div>
-
-            <div className="col-lg-4">
+           
             </div>
           </div>
 
-
-          <div className="container mtop-20">
-            <fieldset className={"fielsettext"}>
-              <legend align="mtop-25 center fielsettext ">
-                <label className={"titleform"}>
-                  REGISTRAR PARTIDA REGISTRAL
-                </label>
-              </legend>
-            </fieldset>
-            <div className="form-group mtop-25">
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">
-                        <span className="obligatorio">* </span>Proyecto
-                      </label>
-                    </div>
-                    <div className="col-md-8">
-                      <select
-                        className="form-control"
-                        id="gestionpredialid"
-                        name="gestionpredialid"
-                        required
-                        title="El Proyecto es requerido"
-                        onChange={handleInputChange}
-                      >
-                        <option value="">--SELECCIONE--</option>
-                        {resListaProyectos.error ? (
-                          "Se produjo un error cargando los proyectos"
-                        ) : resListaProyectos.loading ? (
-                          "Cargando..."
-                        ) : (
-                          <ComboOptions
-                            data={resListaProyectos.result}
-                            valorkey="id"
-                            valornombre="denominacion"
-                          />
-                        )}
-                      </select>
-                    </div>
-                  </div>
-                  {/* </fieldset> */}
-                </div>
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Asiento</label>
-                    </div>
-                    <div className="col-md-8">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="asiento"
-                        name="asiento"
-                        placeholder="Ingrese numero de asiento"
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Tramo</label>
-                    </div>
-                    <div className="col-md-8">
-                      <select
-                        className="form-control"
-                        id="tramo"
-                        name="tramo"
-                        required
-                        title="El Proyecto es requerido"
-                        //   onChange={(e) => {
-                        //         handleChangeProject(e);
-                        //   }}
-                      >
-                        <option value="">--SELECCIONE--</option>
-                        <option value="1">TRAMO 01</option>
-                        <option value="2">TRAMO 02</option>
-                        <option value="3">TRAMO 03</option>
-                        {/* {obtenerTramos.error ? (
-                        "Se produjo un error cargando los proyectos"
-                      ) : obtenerTramos.loading ? (
-                        "Cargando..."
-                      ) : (
-                        <ComboOptions
-                          data={obtenerTramos.result}
-                          valorkey="id"
-                          valornombre="denominacion"
-                        />
-                      )} */}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Sub Tramo</label>
-                    </div>
-                    <div className="col-md-8">
-                      <input
-                        type="text"
-                        className="form-control "
-                        id="subtramo"
-                        name="subtramo"
-                        placeholder="Ingrese el subtramo"
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Tipo Predio</label>
-                    </div>
-                    <div className="col-md-8">
-                      <select
-                        className="form-control"
-                        id="tipopredio"
-                        name="tipopredio"
-                        required
-                        title="El Proyecto es requerido"
-                        onChange={handleInputChange}
-                      >
-                        <option value="">--SELECCIONE--</option>
-                        {resListaTipoPredio.error ? (
-                          "Se produjo un error cargando los proyectos"
-                        ) : resListaTipoPredio.loading ? (
-                          "Cargando..."
-                        ) : (
-                          <ComboOptions
-                            data={resListaTipoPredio.result}
-                            valorkey="valorcodigo"
-                            valornombre="valortexto"
-                          />
-                        )}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Area del Predio</label>
-                    </div>
-                    <div className="col-md-8">
-                      <input
-                        type="text"
-                        className="form-control "
-                        id="areapredio"
-                        name="areapredio"
-                        placeholder="Ingrese el area del predio"
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right"></div>
-                    <div className="col-md-8"></div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Observacion 11</label>
-                    </div>
-                    <div className="col-md-8">
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="observaciones"
-                        name="observaciones"
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <hr></hr>
-              <div className="panel-body">
-                <div className="form-group ">
-                  <div className="col-lg-offset-2 col-lg-10 text-right">
-                    <button
-                      id="btnguardar"
-                      type="submit"
-                      className="btn btn-danger btn-sm btn-control"
-                    >
-                      Guardar
-                    </button>
-                    <Link
-                      to={`/partidas`}
-                      className="btn btn-default btn-sm btn-control"
-                    >
-                      Cancelar
-                    </Link>
-                  </div>
-                </div>
+          <div className="panel-body">
+            <div className="form-group ">
+              <div className="col-lg-offset-2 col-lg-10 text-right">
+                <Link
+                  to={`/list-trabajadores`}
+                  className="btn btn-default btn-sm btn-control"
+                >
+                  Cancelar
+                </Link>
+                <button
+                  id="btnguardar"
+                  type="submit"
+                  className="btn btn-danger btn-sm btn-control"
+                >
+                  Guardar
+                </button>
               </div>
             </div>
           </div>
+
         </form>
       </Wraper>
     </>
