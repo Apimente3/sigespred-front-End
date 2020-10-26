@@ -76,30 +76,42 @@ const Planos = ({history}) => {
     }
 
     function handleInputChange(e) {
-        if (['codplano'].includes(e.target.name)) {
-            set_filtros({
-                ...filtros,
-                [e.target.name]: e.target.value.toUpperCase()
-            });
-        } else if (['departamentoid'].includes(e.target.name)) {
-            set_filtros({
-                ...filtros,
-                [e.target.name]: e.target.value.toUpperCase(),
-                provinciaid: '',
-                distritoid: ''
-            });
-        } else if (['provinciaid'].includes(e.target.name)) {
-            set_filtros({
-                ...filtros,
-                [e.target.name]: e.target.value.toUpperCase(),
-                distritoid: ''
-            });
-        } else {
-            set_filtros({
-                ...filtros,
-                [e.target.name]: e.target.value
-            });
+        switch(e.target.name){
+            case 'codplano':
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value.toUpperCase()
+                });
+                break;
+            case 'gestionpredialid':
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value,
+                    tramoid: ''
+                });
+                break;
+            case 'departamentoid':
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value,
+                    provinciaid: '',
+                    distritoid: ''
+                });
+                break;
+                case 'provinciaid':
+                    set_filtros({
+                        ...filtros,
+                        [e.target.name]: e.target.value.toUpperCase(),
+                        distritoid: ''
+                    });
+                    break;
+            default:
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value
+                });
         }
+        //TODO: remover console
         console.log(filtros);
         
     }

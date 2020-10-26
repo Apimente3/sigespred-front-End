@@ -36,6 +36,7 @@ const PlanoEdit = ({history, match}) => {
            let planoDB = await obtenerPlano(idplano);
             setPlanoEdicion(planoDB);
             set_listaArchivos(planoDB.archivos);
+            cargarTramo(planoDB.gestionpredialid);
         }
         getPlano(id);
     }, []);
@@ -53,6 +54,7 @@ const PlanoEdit = ({history, match}) => {
 
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
+    const [dataTramo, setDataTramo] = useState(null);
     const [firstLoad, set_firstLoad] = useState(true);
     
     const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
@@ -71,6 +73,15 @@ const PlanoEdit = ({history, match}) => {
                 set_dataDist({data: distList});
             }
             set_firstLoad(false);
+        }
+    }
+
+    const cargarTramo = async(idProyecto) => {
+        if (idProyecto) {
+            let data = await helperGets.helperGetListTramos(idProyecto);
+            setDataTramo(data);
+        } else {
+            setDataTramo(null);
         }
     }
     
@@ -235,7 +246,7 @@ const PlanoEdit = ({history, match}) => {
                                         :
                                         <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid"
                                         readOnly
-                                        value={planoEdicion.tipoplanoid}
+                                        value={planoEdicion.tipoplanoid || ''}
                                         >
                                             <option value="">--SELECCIONE--</option>
                                             <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />
@@ -254,11 +265,14 @@ const PlanoEdit = ({history, match}) => {
                                         :
                                         <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
                                         readOnly
-                                        value={planoEdicion.gestionpredialid}
+                                        value={planoEdicion.gestionpredialid || ''}
                                         >
                                             <option value="">--SELECCIONE--</option>
                                             <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>
                                         </select>}
+                                        {resListaProyectos.result && (
+                                        setProvinciaDistrito(planoEdicion.departamentoid)
+                                        )}
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -284,7 +298,7 @@ const PlanoEdit = ({history, match}) => {
                                         :
                                         <select className="form-control input-sm" id="periodoid" name="periodoid" 
                                         readOnly
-                                        value={planoEdicion.periodoid}
+                                        value={planoEdicion.periodoid || ''}
                                         >
                                             <option value="">--SELECCIONE--</option>
                                             <ComboOptions data={resListaAnios.result} valorkey="valorcodigo" valornombre="valortexto" />
@@ -303,7 +317,7 @@ const PlanoEdit = ({history, match}) => {
                                         :
                                         <select className="form-control input-sm" id="procesoid" name="procesoid"
                                         readOnly
-                                        value={planoEdicion.procesoid}
+                                        value={planoEdicion.procesoid || ''}
                                         >
                                             <option value="">--SELECCIONE--</option>
                                             <ComboOptions data={resListaProcesos.result} valorkey="valorcodigo" valornombre="valortexto" />
@@ -350,7 +364,7 @@ const PlanoEdit = ({history, match}) => {
                                 </label>
                                 <div className="col-lg-8">
                                     <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
-                                    value={planoEdicion.antecedente}
+                                    value={planoEdicion.antecedente || ''}
                                     readOnly onChange={handleInputChange}/>
                                 </div>
                             </div>
@@ -386,9 +400,18 @@ const PlanoEdit = ({history, match}) => {
                                     Tramo
                                 </label>
                                 <div className="col-lg-8">
-                                    <select id="tramo" name="tramo" className="form-control input-sm" onChange={handleInputChange}>
+                                {dataTramo?
+                                    <select id="tramoid" name="tramoid" className="form-control input-sm" 
+                                        value={planoEdicion.tramoid || ''}
+                                        onChange={handleInputChange}>
+                                        <option value="">--SELECCIONE--</option>
+                                        <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />
+                                    </select>
+                                    :
+                                    <select id="tramoid" name="tramoid" className="form-control input-sm">
                                         <option value="">--SELECCIONE--</option>
                                     </select>
+                                }
                                 </div>
                             </div>
                             <div className="form-group">
@@ -412,7 +435,7 @@ const PlanoEdit = ({history, match}) => {
                                     ? "Cargando..."
                                     :
                                     <select className="form-control input-sm" id="departamentoid" name="departamentoid" 
-                                    value={planoEdicion.departamentoid}
+                                    value={planoEdicion.departamentoid || ''}
                                     onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
                                         <option value="">--SELECCIONE--</option>
                                         <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />
@@ -428,7 +451,7 @@ const PlanoEdit = ({history, match}) => {
                                 </label>
                                 <div className="col-lg-8">
                                     <select id="provinciaid" name="provinciaid" className="form-control input-sm" 
-                                    value={planoEdicion.provinciaid}
+                                    value={planoEdicion.provinciaid || ''}
                                     onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
                                         <option value="">--SELECCIONE--</option>
                                         <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
@@ -441,7 +464,7 @@ const PlanoEdit = ({history, match}) => {
                                 </label>
                                 <div className="col-lg-8">
                                     <select id="distritoid" name="distritoid" className="form-control input-sm"
-                                    value={planoEdicion.distritoid}
+                                    value={planoEdicion.distritoid || ''}
                                     onChange={handleInputChange}>
                                         <option value="">--SELECCIONE--</option>
                                         <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />

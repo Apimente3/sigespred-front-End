@@ -31,6 +31,7 @@ const PlanoAdd = ({history,  match}) => {
 
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
+    const [dataTramo, setDataTramo] = useState(null);
     const [listaArchivos, set_listaArchivos] = useState([]);
     const [valAncedente, setValAntecedente] = useState('');
     const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
@@ -45,6 +46,15 @@ const PlanoAdd = ({history,  match}) => {
             ...plano,
             antecedente: ante
         });
+    }
+
+    const handleChangeProyecto = async(e) => {
+        if (e.target.value) {
+            let data = await helperGets.helperGetListTramos(e.target.value);
+            setDataTramo(data);
+        } else {
+            setDataTramo(null);
+        }
     }
 
     function handleChangeDepartmento(e) {
@@ -69,16 +79,40 @@ const PlanoAdd = ({history,  match}) => {
     }
 
     function handleInputChange(e) {
-        if (['nroexpediente'].includes(e.target.name)) {
-            set_plano({
-                ...plano,
-                [e.target.name]: e.target.value.toUpperCase()
-            });
-        }else{
-            set_plano({
-                ...plano,
-                [e.target.name]: e.target.value
-            });
+        switch(e.target.name){
+            case 'nroexpediente':
+                set_plano({
+                    ...plano,
+                    [e.target.name]: e.target.value.toUpperCase()
+                });
+                break;
+            case 'gestionpredialid':
+                set_plano({
+                    ...plano,
+                    [e.target.name]: e.target.value,
+                    tramoid: ''
+                });
+                break;
+            case 'departamentoid':
+                set_plano({
+                    ...plano,
+                    [e.target.name]: e.target.value,
+                    provinciaid: '',
+                    distritoid: ''
+                });
+                break;
+                case 'provinciaid':
+                    set_plano({
+                        ...plano,
+                        [e.target.name]: e.target.value,
+                        distritoid: ''
+                    });
+                    break;
+            default:
+                set_plano({
+                    ...plano,
+                    [e.target.name]: e.target.value
+                });
         }
         //TODO: remover console
         console.log(plano);
@@ -230,7 +264,7 @@ const PlanoAdd = ({history,  match}) => {
                                         <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
                                         required
                                         title="El Proyecto es requerido"
-                                        onChange={handleInputChange}
+                                        onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
                                         >
                                             <option value="">--SELECCIONE--</option>
                                             {resListaProyectos.error
@@ -355,8 +389,10 @@ const PlanoAdd = ({history,  match}) => {
                             <div className="form-group">
                                 <label className="col-lg-4 control-label">Tramo</label>
                                 <div className="col-lg-8">
-                                    <select id="tramo" name="tramo" className="form-control input-sm" onChange={handleInputChange}>
-                                        <option value="0">--SELECCIONE--</option>
+                                    <select id="tramoid" name="tramoid" className="form-control input-sm" onChange={handleInputChange}>
+                                        <option value="">--SELECCIONE--</option>
+                                        {dataTramo &&
+                                        <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
                                     </select>
                                 </div>
                             </div>
