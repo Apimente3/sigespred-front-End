@@ -4,7 +4,7 @@ import { useAsync } from "react-async-hook";
 import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
 import Wraper from "../m000_common/formContent/Wraper";
-import {LISTADO_EQUIPO_BREADCRUM} from "../../config/breadcrums";
+import {REGISTRO_EQUIPO_BREADCRUM} from "../../config/breadcrums";
 import RowEquipo from "./RowEquipo";
 import TableEquipo from "./TableEquipo";
 import Pagination from "react-js-pagination";
@@ -17,9 +17,9 @@ const { $ } = window;
 
 export const Equipo = () => {
 
-  async function buscarEquipo() {
+  async function buscarArea() {
     // alert(query)
-     const {data} = await Axios.get(`/equipo`);
+     const {data} = await Axios.get(`/area`);
      return data;
  }
 
@@ -28,15 +28,15 @@ export const Equipo = () => {
   const [limit, setLimit] = useState(10);
   const [totalItemsCount, settotalItemsCount] = useState(3);
   const [activePage, setactivePage] = useState(1);
-  const [equipos, setEquipos] = useState({"count":5,"rows":[]});
+  const [area, setAreas] = useState({"count":5,"rows":[]});
 
   useEffect(() => {
       async function init() {
           try {
               
-              let equipos=await buscarEquipo('')
-              setEquipos({rows:equipos})
-              settotalItemsCount({count:equipos.count})
+              let areas=await buscarArea('')
+              setAreas({rows:areas})
+              settotalItemsCount({count:areas.count})
           } catch (error) {
               alert('Ocurrio un error')
               console.log(error);
@@ -45,7 +45,7 @@ export const Equipo = () => {
       init();
   }, []);
 
-  const buscarEquipoFilter = async (e) => {
+  const buscarAreaFilter = async (e) => {
 
     e.preventDefault();
     let query =  await  queryString.stringify({busqueda, page, limit});
@@ -62,7 +62,7 @@ export const Equipo = () => {
         sheetid: 'Reporte',
         headers: true
     }];
-    var res = alasql('SELECT INTO XLSX("ListadoEquipos.xlsx",?) FROM ?', [opts, [resultgeojson]]);
+    var res = alasql('SELECT INTO XLSX("ListadoAreas.xlsx",?) FROM ?', [opts, [resultgeojson]]);
     return false;
   }
 
@@ -73,25 +73,25 @@ export const Equipo = () => {
     setPage(pageNumber)
     console.log(`active page is ${pageNumber}`);
     let query =  await  queryString.stringify({busqueda, page:pageNumber, limit});
-    let equipos=await buscarEquipo()
-    setEquipos(equipos)
+    let areas=await buscarArea()
+    setAreas(areas)
 
 }
 
-  const cabecerasTabla = ["ID", "PROYECTO", "EQUIPO", "AREA", "ESTADO", "Acciones"]
+  const cabecerasTabla = ["ID", "AREA", "SUBAREA", "DESCRIPCION", "USUARIO", "Acciones"]
 
  
 
   return (
     <>
-          <Wraper titleForm={"Listado de Equipos"} listbreadcrumb={LISTADO_EQUIPO_BREADCRUM}>
+          <Wraper titleForm={"Listado de Areas"} listbreadcrumb={REGISTRO_EQUIPO_BREADCRUM}>
             <fieldset className={'fielsettext'}>
-                <form onSubmit={buscarEquipoFilter}>
+                <form onSubmit={buscarAreaFilter}>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="input-group">
                                 <input type="text" className="form-control "
-                                       placeholder="Equipo"
+                                       placeholder="Area o SubArea"
                                        
                                 ></input>
                                 <span className="input-group-btn">
@@ -101,8 +101,8 @@ export const Equipo = () => {
                             </div>
                         </div>
                         <div className="col-md-6">
-                            <Link to={`/equipo-add`} className="btn btn-danger pull-right btn-sm fullborder">
-                                <i className="fa fa-plus"></i> Agregar Equipo</Link>
+                            <Link to={`/area-add`} className="btn btn-danger pull-right btn-sm fullborder">
+                                <i className="fa fa-plus"></i> Agregar Area</Link>
                             <button type="button" onClick={descarxls}
                                     className="btn btn-default pull-right btn-sm fullborder">
                                 <i className="fa fa-file-excel-o"></i> Descargar Excel

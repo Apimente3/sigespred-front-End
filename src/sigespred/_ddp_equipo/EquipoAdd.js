@@ -28,7 +28,7 @@ const EquipoAdd = ({ history }) => {
     const resListaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
     const resListaSolicitantes = useAsync(helperGets.helperGetListaLocadores, []);
 
-    const [filtros, set_filtros] = useState();
+    const [filtros, set_filtros] = useState({nombre:null});
 
     const cabeceraEquipo = ["ID", "PROFESIONAL","MONITOR", "ACCIONES"];
 
@@ -40,14 +40,12 @@ const EquipoAdd = ({ history }) => {
 
     const registrar = async e => {
       e.preventDefault();
-      // $('#btnguardar').button('loading');
-      //equipo.profesionales= profesionales.users;
+      
       let objEquipo = {
           equipo:equipo,
           profesionales: profesionales.users    
       };
-      var myJSON = JSON.stringify(objEquipo);
-      console.log(myJSON);
+
       try {
           await addEquipo(objEquipo);
           const toastrConfirmOptions = {
@@ -108,8 +106,35 @@ const EquipoAdd = ({ history }) => {
     }
 
     const handleClick = (e) => {
-      //profesionales.push({id:filtros.id,monitor:monitor.checked});
-      
+
+      let filterList = profesionales.users.filter((user) => {
+        if(user.id === filtros.id) {
+           return true;
+        }
+        return false;
+      })
+      if(filtros.nombre == null){
+        toastr.info(`Información !!! Ingrese el profesional.`);
+        return;
+      }
+      if(monitor.checked){
+        let filterList = profesionales.users.filter((user) => {
+          if(user.monitor == true) {
+             return true;
+          }
+          return false;
+        })
+        if(filterList.length>0){
+          toastr.info(`Información !!! Ya existe un profesional asignado como monitor.`);
+          return;
+        } 
+      }
+
+      if(filterList.length>0){
+        toastr.info(`Información !!! Ya existe un profesional en el grupo`);
+        return;
+      }
+
       set_profesionales({
         users: [
            ...profesionales.users,
@@ -120,7 +145,8 @@ const EquipoAdd = ({ history }) => {
            }
         ]
       });
-      console.log(profesionales);
+      
+      
     }
 
     const deleteUser = key => {
@@ -144,17 +170,11 @@ const EquipoAdd = ({ history }) => {
     <>
       <Wraper titleForm={"Asignar el equipo"} listbreadcrumb={REGISTRO_EQUIPO_BREADCRUM}>
       <form onSubmit={registrar}>
-          <div className="form-group">
             <fieldset><legend>Datos del Equipo</legend>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row mt-3">
-                  <div className="col-md-4 text-right">
-                    <label className="control-label">
-                      <span className="obligatorio">* </span>Proyecto
-                    </label>
-                  </div>
-                  <div className="col-lg-8">
+            <div className="form-group">
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Proyecto</label>
+                <div className="col-lg-4">
                     <select
                       className="form-control input-sm"
                       id="proyectoid"
@@ -176,39 +196,24 @@ const EquipoAdd = ({ history }) => {
                         />
                       )}
                     </select>
-                  </div>
                 </div>
-                {/* </fieldset> */}
-              </div>
-              <div className="col-md-6">
-                <div className="row mt-3">
-                  <div className="col-md-4 text-right">
-                    <label className="control-label">
-                    <span className="obligatorio">* </span>Nombre</label>
-                  </div>
-                  <div className="col-md-8">
-                    <input
-                      type="text"
-                      className="form-control input-sm"
-                      required
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Nombre</label>
+                <div className="col-lg-4">
+                    <input mayuscula="true" required
+                      className="form-control input-sm " type="text"
                       id="equipo"
                       name="equipo"
                       placeholder="Ingrese el nombre del equipo"
-                      onChange={handleInputChange}
-                    />
-                  </div>
+                      onChange={handleInputChange}>
+                    </input>
                 </div>
-              </div>
             </div>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row mt-3">
-                  <div className="col-md-4 text-right">
-                    <label className="control-label">
-                    <span className="obligatorio">* </span>Areas</label>
-                  </div>
-                  <div className="col-md-8">
-                    <select className="form-control input-sm" id="areaid" name="areaid" 
+            <div className="form-group">
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Areas</label>
+                <div className="col-lg-4">
+                  <select className="form-control input-sm" id="areaid" name="areaid" 
                       required
                       title="El area es requerido"
                       onChange={handleInputChange}>
@@ -226,67 +231,50 @@ const EquipoAdd = ({ history }) => {
                             grupojson="SubArea"
                           />
                         )}
-                    </select>
-                  </div>
+                  </select>
                 </div>
-              </div>
-              <div className="col-md-6">
-                <div className="row mt-3">
-                  <div className="col-md-4 text-right">
-                    <label className="control-label">Activo</label>
-                  </div>
-                  <div className="col-md-8">
-                    <input type="checkbox" className="form-control input-sm" placeholder="Ingrese el resumen de la visita"
-                            name="activo" onChange={handleCheckActivoChange} defaultChecked={activoequipo.checked}
-                    />
-                  </div>
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Activo</label>
+                <div className="col-lg-4">
+                  <input type="checkbox" className="form-control input-sm" placeholder="Ingrese el resumen de la visita"
+                    name="activo" onChange={handleCheckActivoChange} defaultChecked={activoequipo.checked}
+                  />
                 </div>
-              </div>
             </div>
             </fieldset>
+
             <fieldset><legend>Asignar Profesional</legend>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Profesional</label>
-                    </div>
-                    <div className="col-md-8">
-                      {resListaSolicitantes.error
+              <div className="form-group">
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Profesional</label>
+                <div className="col-lg-4">
+                  {resListaSolicitantes.error
                       ? "Se produjo un error cargando los locadores"
                       : resListaSolicitantes.loading
                       ? "Cargando..."
                       : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
-                    </div>
-                  </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Monitor</label>
-                    </div>
-                    <div className="col-md-4">
-                      <input type="checkbox" className="form-control input-sm" placeholder="Ingrese el resumen de la visita"
-                            name="monitor" onChange={handleCheckChange} defaultChecked={monitor.checked}
-                      />
-                    
-                    </div>
-                    <div class="col-md-4">
-                     <button class="btn btn-sm btn-info" type="button" onClick={handleClick}><i
-                                            class="fa fa-plus fa-lg"
-                                        /> Agregar Profesional</button>
-                    </div>
-                  </div>
-                </div>              
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Monitor</label>
+                <div className="col-lg-2">
+                  <input type="checkbox" className="form-control input-sm" placeholder="Ingrese el resumen de la visita"
+                      name="monitor" onChange={handleCheckChange} defaultChecked={monitor.checked}
+                  />
+                </div>
+                <div class="col-lg-2">
+                  <button class="btn btn-sm btn-info" type="button" onClick={handleClick}><i
+                                        class="fa fa-plus fa-lg"
+                                    /> Agregar Profesional</button>
+                </div>
               </div>
             </fieldset>
-            <hr></hr>
-            <EquipoTable 
-              cabecera={cabeceraEquipo} 
-              data={profesionales}
-              deleteUser={deleteUser}>
-            </EquipoTable>
-            <hr></hr>
+            <div className="panel panel-default">
+              <EquipoTable 
+                cabecera={cabeceraEquipo} 
+                data={profesionales}
+                deleteUser={deleteUser}>
+              </EquipoTable>
+            </div>
             <div className="panel-body">
               <div className="form-group ">
                 <div className="col-lg-offset-2 col-lg-10 text-right">
@@ -306,7 +294,6 @@ const EquipoAdd = ({ history }) => {
                 </div>
               </div>
             </div>
-          </div>
       </form>
       </Wraper>
     </>

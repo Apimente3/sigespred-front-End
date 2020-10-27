@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Wraper from "../m000_common/formContent/Wraper";
-import {REGISTRO_EQUIPO_BREADCRUM} from "../../config/breadcrums";
+import {ACTUALIZAR_EQUIPO_BREADCRUM} from "../../config/breadcrums";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import ComboOptions from "../../components/helpers/ComboOptions";
@@ -42,7 +42,7 @@ const EquipoEdit = ({history, match}) => {
     const [monitor, set_monitor] = useState({checked: false});
     const [activoequipo, set_activoequipo] = useState({checked: false});
 
-    const [filtros, set_filtros] = useState();
+    const [filtros, set_filtros] = useState({nombre:null});
 
     const cabeceraEquipo = ["ID", "PROFESIONAL","MONITOR", "ACCIONES"];
 
@@ -63,7 +63,7 @@ const EquipoEdit = ({history, match}) => {
                 });
 
                 set_activoequipo({
-                    checked: true
+                    checked: equipo.activo
                 })
 
                 console.log(user);
@@ -83,10 +83,6 @@ const EquipoEdit = ({history, match}) => {
         //set_trabajador({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'})
     }
 
-    
-
-
-
     const actualizar = async e => {
         e.preventDefault();
         $('#btnguardar').button('loading');
@@ -97,8 +93,8 @@ const EquipoEdit = ({history, match}) => {
         try {
             await updateEquipo(objEquipo);
             const toastrConfirmOptions = {
-                onOk: () => limpiarForm(),
-                onCancel: () => history.push('/list-equipos2')
+                onOk: () => history.push('/list-equipos2'),
+                onCancel: () => history.push(`/list-equipos2`)
             };
             toastr.confirm('¿ Desea seguir actualizando ?', toastrConfirmOptions);
         }
@@ -151,7 +147,34 @@ const EquipoEdit = ({history, match}) => {
         console.log(text);
       }
   
-      const handleClick = (e) => {        
+      const handleClick = (e) => {  
+        let filterList = profesionales.users.filter((user) => {
+          if(user.id === filtros.id) {
+             return true;
+          }
+          return false;
+        })
+        if(filtros.nombre == null){
+          toastr.info(`Información !!! Ingrese el profesional.`);
+          return;
+        }
+        if(monitor.checked){
+          let filterList = profesionales.users.filter((user) => {
+            if(user.monitor == true) {
+               return true;
+            }
+            return false;
+          })
+          if(filterList.length>0){
+            toastr.info(`Información !!! Ya existe un profesional asignado como monitor.`);
+            return;
+          } 
+        }
+  
+        if(filterList.length>0){
+          toastr.info(`Información !!! Ya existe un profesional en el grupo`);
+          return;
+        }      
         set_profesionales({
           users: [
              ...profesionales.users,
@@ -178,27 +201,21 @@ const EquipoEdit = ({history, match}) => {
     // const {foto} = this.state;
     return (
         <>
-        <Wraper titleForm={"Actualización del equipo"} listbreadcrumb={REGISTRO_EQUIPO_BREADCRUM}>
-            <form onSubmit={actualizar}>
-          <div className="form-group">
+        <Wraper titleForm={"Actualización del equipo"} listbreadcrumb={ACTUALIZAR_EQUIPO_BREADCRUM}>
+          <form onSubmit={actualizar}>
             <fieldset><legend>Datos del Equipo</legend>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row mt-3">
-                  <div className="col-md-4 text-right">
-                    <label className="control-label">
-                      <span className="obligatorio">* </span>Proyecto
-                    </label>
-                  </div>
-                  <div className="col-md-8">
+              <div className="form-group">
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Proyecto</label>
+                <div className="col-lg-4">
                     <select
                       className="form-control input-sm"
                       id="proyectoid"
                       name="proyectoid"
                       required
                       title="El Proyecto es requerido"
-                      onChange={handleInputChange}
                       value={equipo.proyectoid}
+                      onChange={handleInputChange}
                     >
                       <option value="">--SELECCIONE--</option>
                       {resListaProyectos.error ? (
@@ -213,39 +230,27 @@ const EquipoEdit = ({history, match}) => {
                         />
                       )}
                     </select>
-                  </div>
                 </div>
-                {/* </fieldset> */}
-              </div>
-              <div className="col-md-6">
-                <div className="row mt-3">
-                  <div className="col-md-4 text-right">
-                    <label className="control-label">Nombre</label>
-                  </div>
-                  <div className="col-md-8">
-                    <input
-                      required
-                      type="text"
-                      className="form-control input-sm"
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Nombre</label>
+                <div className="col-lg-4">
+                    <input mayuscula="true" required
+                      className="form-control input-sm " type="text"
                       id="equipo"
                       name="equipo"
                       placeholder="Ingrese el nombre del equipo"
-                      onChange={handleInputChange}
                       value={equipo.equipo}
-                    />
-                  </div>
+                      onChange={handleInputChange}>
+                    </input>
                 </div>
               </div>
-            </div>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row mt-3">
-                  <div className="col-md-4 text-right">
-                    <label className="control-label">Areas</label>
-                  </div>
-                  <div className="col-md-8">
-                    <select className="form-control input-sm" id="areaid" name="areaid" 
+              <div className="form-group">
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Areas</label>
+                <div className="col-lg-4">
+                  <select className="form-control input-sm" id="areaid" name="areaid" 
                       required
+                      title="El area es requerido"
                       onChange={handleInputChange}
                       value={equipo.areaid}>
                       <option value="">--SELECCIONE--</option>
@@ -262,67 +267,50 @@ const EquipoEdit = ({history, match}) => {
                             grupojson="SubArea"
                           />
                         )}
-                    </select>
-                  </div>
+                  </select>
+                </div>
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Activo</label>
+                <div className="col-lg-4">
+                  <input type="checkbox" className="form-control input-sm" placeholder="Ingrese el resumen de la visita"
+                    name="activo" onChange={handleCheckActivoChange} checked={activoequipo.checked}
+                  />
                 </div>
               </div>
-              <div className="col-md-6">
-                <div className="row mt-3">
-                  <div className="col-md-4 text-right">
-                    <label className="control-label">Activo</label>
-                  </div>
-                  <div className="col-md-8">
-                    <input type="checkbox" className="form-control input-sm" placeholder="Ingrese el resumen de la visita"
-                            name="activo" onChange={handleCheckActivoChange} checked={activoequipo.checked}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
             </fieldset>
+
             <fieldset><legend>Asignar Profesional</legend>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Profesional</label>
-                    </div>
-                    <div className="col-md-8">
-                      {resListaSolicitantes.error
+              <div className="form-group">
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Profesional</label>
+                <div className="col-lg-4">
+                  {resListaSolicitantes.error
                       ? "Se produjo un error cargando los locadores"
                       : resListaSolicitantes.loading
                       ? "Cargando..."
                       : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
-                    </div>
-                  </div>
                 </div>
-                <div className="col-md-6">
-                  <div className="row mt-3">
-                    <div className="col-md-4 text-right">
-                      <label className="control-label">Monitor</label>
-                    </div>
-                    <div className="col-md-4">
-                      <input type="checkbox" className="form-control input-sm" placeholder="Ingrese el resumen de la visita"
-                            name="monitor" onChange={handleCheckChange} checked={monitor.checked}
-                      />
-                    
-                    </div>
-                    <div class="col-md-4">
-                     <button class="btn btn-sm btn-info" type="button" onClick={handleClick}><i
-                                            class="fa fa-plus fa-lg"
-                                        /> Agregar Profesional</button>
-                    </div>
-                  </div>
-                </div>              
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Monitor</label>
+                <div className="col-lg-2">
+                  <input type="checkbox" className="form-control input-sm" placeholder="Ingrese el resumen de la visita"
+                      name="monitor" onChange={handleCheckChange} defaultChecked={monitor.checked}
+                  />
+                </div>
+                <div class="col-lg-2">
+                  <button class="btn btn-sm btn-info" type="button" onClick={handleClick}><i
+                                        class="fa fa-plus fa-lg"
+                                    /> Agregar Profesional</button>
+                </div>
               </div>
             </fieldset>
-            <hr></hr>
-            <EquipoTable 
-              cabecera={cabeceraEquipo} 
-              data={profesionales}
-              deleteUser={deleteUser}>
-            </EquipoTable>
-            <hr></hr>
+            <div className="panel panel-default">
+              <EquipoTable 
+                cabecera={cabeceraEquipo} 
+                data={profesionales}
+                deleteUser={deleteUser}>
+              </EquipoTable>
+            </div>
             <div className="panel-body">
               <div className="form-group ">
                 <div className="col-lg-offset-2 col-lg-10 text-right">
@@ -342,9 +330,7 @@ const EquipoEdit = ({history, match}) => {
                 </div>
               </div>
             </div>
-          </div>
-
-            </form>
+          </form>
         </Wraper>
         </>
     );

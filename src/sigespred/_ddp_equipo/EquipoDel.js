@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { REGISTRO_EQUIPO_BREADCRUM } from "../../config/breadcrums";
+import { ELIMINAR_EQUIPO_BREADCRUM } from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/Wraper";
 //import {initAxiosInterceptors, serverFile} from '../../../config/axios';
 import {Link, useParams} from "react-router-dom";
@@ -48,22 +48,19 @@ const EquipoDel = ({ history, match }) => {
     e.preventDefault();
     $("#btnguardar").button("loading");
     try {
-     
-
-      const toastrConfirmOptions = {
-        onOk: () => deleteEquipo(equipo),
-        onCancel: () => history.push("/list-equipos2"),
-      };
-      toastr.confirm("¿ Desea seguir registrando ?", toastrConfirmOptions);
+      const response= await deleteEquipo(equipo);
+      if(response){
+          history.push('/list-equipos2');
+      }
     } catch (e) {
-      alert(e.message);
+      toastr.error(`ERROR !!! No se logro verificar la existencia del equipo.`)
     }
   };
 
   return (
     <Wraper
       titleForm={"Eliminacion del Equipo"}
-      listbreadcrumb={REGISTRO_EQUIPO_BREADCRUM}
+      listbreadcrumb={ELIMINAR_EQUIPO_BREADCRUM}
     >
       <form onSubmit={eliminar}>
         <div className="form-group">

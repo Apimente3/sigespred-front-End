@@ -61,11 +61,24 @@ export const ELIMINAR_PARTIDA_BREADCRUM = [
     {link: "#", name: "Eliminar Partidas Registrales"}
 ]
 
+export const LISTADO_EQUIPO_BREADCRUM = [
+    {link: "equipo-add", name: "Agregar Equipos"},
+    {link: "list-equipos2", name: "Listado de Equipos"}
+]
 
 export const REGISTRO_EQUIPO_BREADCRUM = [
     {link: "equipo-add", name: "Agregar Equipos"},
     {link: "list-equipos2", name: "Listado de Equipos"},
-    {link: "equipo-edit", name: "Editar Equipo"},
-    {link: "equipo-del", name: "Eliminar Equipo"}
+    {link: "#", name: "Agregar Equipos"}
+]
 
+export const ACTUALIZAR_EQUIPO_BREADCRUM = [
+    {link: "../equipo-add", name: "Agregar Equipos"},,
+    {link: "../list-equipos2", name: "Listado de Equipos"},
+    {link: "#", name: "Actualizar Equipo"}
+]
+
+export const ELIMINAR_EQUIPO_BREADCRUM = [
+    {link: "../list-equipos2", name: "Listado de Equipos"},
+    {link: "#", name: "Eliminar Equipo"}
 ]
