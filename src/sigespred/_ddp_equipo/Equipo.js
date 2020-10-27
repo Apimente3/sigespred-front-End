@@ -17,9 +17,9 @@ const { $ } = window;
 
 export const Equipo = () => {
 
-  async function buscarEquipo() {
+  async function buscarEquipo(query) {
     // alert(query)
-     const {data} = await Axios.get(`/equipo`);
+     const {data} = await Axios.get(`/equipo?`+ query);
      return data;
  }
 
@@ -33,10 +33,10 @@ export const Equipo = () => {
   useEffect(() => {
       async function init() {
           try {
-              
-              let equipos=await buscarEquipo('')
+              let query =  await  queryString.stringify({busqueda,page, limit});
+              let equipos = await buscarEquipo(query)
               setEquipos({rows:equipos})
-              settotalItemsCount({count:equipos.count})
+              settotalItemsCount(equipos.length)
           } catch (error) {
               alert('Ocurrio un error')
               console.log(error);
@@ -48,9 +48,9 @@ export const Equipo = () => {
   const buscarEquipoFilter = async (e) => {
 
     e.preventDefault();
-    let query =  await  queryString.stringify({busqueda, page, limit});
-    let equipos=await buscarEquipo()
-    setEquipos(equipos)
+    let query =  await  queryString.stringify({ busqueda, page, limit});
+    let equipos=await buscarEquipo(query)
+    setEquipos({rows:equipos})
   }
 
   const descarxls = () => {
@@ -72,9 +72,9 @@ export const Equipo = () => {
     setactivePage(pageNumber)
     setPage(pageNumber)
     console.log(`active page is ${pageNumber}`);
-    let query =  await  queryString.stringify({busqueda, page:pageNumber, limit});
-    let equipos=await buscarEquipo()
-    setEquipos(equipos)
+    let query =  await  queryString.stringify({ busqueda, page:pageNumber, limit});
+    let equipos= await buscarEquipo(query)
+    setEquipos({rows:equipos})
 
 }
 
@@ -91,8 +91,8 @@ export const Equipo = () => {
                         <div className="col-md-6">
                             <div className="input-group">
                                 <input type="text" className="form-control "
-                                       placeholder="Equipo"
-                                       
+                                       placeholder="Escriba el equipo o proyecto"
+                                       onChange={e => setBusqueda(e.target.value)}
                                 ></input>
                                 <span className="input-group-btn">
                                                             <button className="btn btn-default " type="submit"><i
@@ -114,7 +114,7 @@ export const Equipo = () => {
             <div className="panel panel-default">
                 <TableEquipo cabecera={cabecerasTabla}>
                    {equipos.rows.map((equipo, i) => (
-                        <RowEquipo equipo={equipo}></RowEquipo>
+                        <RowEquipo nro={i} equipo={equipo}></RowEquipo>
                     ))}
                 </TableEquipo>
                 <div className="panel-footer clearfix pull-right">

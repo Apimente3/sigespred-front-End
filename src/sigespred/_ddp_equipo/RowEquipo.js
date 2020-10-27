@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 
-const RowEquipo = ({equipo}) => {
+const RowEquipo = ({equipo,nro}) => {
 
     return (
         <>
