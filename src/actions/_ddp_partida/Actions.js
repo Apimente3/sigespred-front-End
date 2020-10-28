@@ -1,6 +1,6 @@
 import { initAxiosInterceptors } from "../../config/axios";
 
-import { AGREGAR_PARTIDA, BUSCAR_PARTIDA, EDITAR_PARTIDA } from "./types";
+import { AGREGAR_PARTIDA, BUSCAR_PARTIDA, EDITAR_PARTIDA, RESPUESTA_PARTIDA } from "./types";
 
 const axios = initAxiosInterceptors();
 
@@ -31,6 +31,16 @@ export const editar = PARTIDA => async dispatch => {
   const respuesta = await axios.put(`/partidaregistral/${PARTIDA.id}`, PARTIDA);
   dispatch({
       type: EDITAR_PARTIDA,
+      payload: respuesta.data
+  })
+}
+
+export const respuestaPartida = PARTIDA => async dispatch => {
+
+  console.log(PARTIDA)
+  const respuesta = await axios.put(`/partidaregistral/${PARTIDA.id}`, PARTIDA);
+  dispatch({
+      type: RESPUESTA_PARTIDA,
       payload: respuesta.data
   })
 }
