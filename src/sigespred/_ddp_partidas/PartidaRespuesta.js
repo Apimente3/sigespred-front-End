@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import moment from 'moment';
 import { useAsync } from "react-async-hook";
 import { Link, useParams } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
@@ -7,9 +8,8 @@ import Wraper from "../m000_common/formContent/WraperLarge";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
-import Autocomplete from "../../components/helpers/Autocomplete";
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
-import SubLista from "../_ddp_planos/SubListaDelete";
+import SubLista from './SubListaDelete';
 import { toastr } from "react-redux-toastr";
 import { editar } from "../../actions/_ddp_partida/Actions";
 import { useDispatch } from "react-redux";
@@ -27,6 +27,7 @@ const PartidaRespuesta = (history) => {
   const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPOPRED,
   ]);
+  const [partidaArchTmp, set_partidaArchTmp] = useState({archivodigital: ''});
   const [partidaRespuesta, setPartidaRespuesta] = useState({});
   const [partidaEditado, set_partidaEditado] = useState({});
   const [dataTramo, setDataTramo] = useState(null);
@@ -36,33 +37,20 @@ const PartidaRespuesta = (history) => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  
-
   useEffect(() => {
     const getPartida = async (idpartida) => {
       let partidaDB = await obtenerPartida(idpartida);
-      console.log(partidaDB);
+      cargarTramo(partidaDB.infraestructuraid);
       setPartidaRespuesta(partidaDB);
-      cargarTramo(partidaDB.gestionpredialid);
     };
     getPartida(id);
   }, []);
 
-  const [partidadigitalArchTmp, set_partidadigitalArchTmp] = useState({
-    partidamatriz: "",
-    titulo: "",
-    copialiteral: "",
-  });
+  
+  const agregarPartidaRespuestaAction = (partida) =>
+    dispatch(editar(partidaRespuesta));
 
-  const agregarPartidaRespuestaAction = (partida) => dispatch(editar(partidaRespuesta));
 
-  const savePartidaMatrizDigital = (file) => {
-    setReiniciarValDigital(false);
-    set_partidadigitalArchTmp({
-      ...partidadigitalArchTmp,
-      partidamatriz: file.path,
-    });
-  };
 
   function handleInputChange(e) {
     if (e.target.name) {
@@ -74,30 +62,89 @@ const PartidaRespuesta = (history) => {
     }
   }
 
+  const handleChangeArchivos = (e) => {
+    var uidDate = moment().format("YYYYMMDDHHmmss");
+    set_partidaArchTmp({
+        ...partidaArchTmp,
+        "descripcion": e.target.value,
+        "archivoid": uidDate,
+
+    });
+}
+
+const saveArchivoDigital = (file) => {
+  setReiniciarValDigital(false);
+  set_partidaArchTmp({
+      ...partidaArchTmp,
+      "archivodigital": file.path
+  });
+}
+
+const deleteArchivoDigital = () => {
+  set_partidaArchTmp({
+      ...partidaArchTmp,
+      "archivodigital": ''
+  });
+}
+
   const limpiarForm = () => {
-    setPartidaRespuesta({observaciones: ''})
+    setPartidaRespuesta({ observaciones: "" });
+  };
+
+  
+  const actualizarLista = () => {
+        console.log(partidaArchTmp.descripcion)
+        console.log(partidaArchTmp.archivodigital)
+        console.log(listaArchivos)
+        console.log(partidaArchTmp)
+    if (partidaArchTmp.descripcion && partidaArchTmp.archivodigital) {
+        set_listaArchivos(listaArchivos => [...listaArchivos, partidaArchTmp]);
+        set_partidaArchTmp({
+            ...partidaArchTmp,
+            "descripcion": '',
+            "archivodigital": '',
+            "archivoid": ''
+        });
+        setReiniciarValDigital(true);
+        setReiniciarValMemoria(true);
+    } else {
+        toastr.error(`Se require al menos un identificador del archivo y el archivo digital.`)
+    }
 }
 
   const registrar = async (e) => {
     e.preventDefault();
-    //TODO: pendiente validacion de archivos
+    
+    if (Array.isArray(listaArchivos) && listaArchivos.length) {
+      partidaRespuesta.archivos = listaArchivos;
+      setPartidaRespuesta({
+          ...partidaRespuesta,
+          archivos: listaArchivos
+      });
+  }
 
-    $('#btnguardar').button('loading');
+    $("#btnguardar").button("loading");
 
     try {
-
       await agregarPartidaRespuestaAction(partidaRespuesta);
-      
-      $('#btnguardar').button('reset');
+
+      $("#btnguardar").button("reset");
       const toastrConfirmOptions = {
-          onOk: () => limpiarForm(),
-          onCancel: () => history.push('/partidas')
+        onOk: () => limpiarForm(),
+        onCancel: () => history.push("/partidas"),
       };
-      toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
+      toastr.confirm("¿ Desea seguir registrando ?", toastrConfirmOptions);
     } catch (e) {
       alert(e.message);
     }
   };
+
+  const removerDeLista = (idArchivo) => {
+    var data = $.grep(listaArchivos, function(e){ 
+        return e.archivoid != idArchivo; 
+   });
+   set_listaArchivos(data);
+}
 
   const cargarTramo = async (idProyecto) => {
     if (idProyecto) {
@@ -166,6 +213,7 @@ const PartidaRespuesta = (history) => {
                 onChange={handleInputChange}
                 placeholder="Ingrese numero de Partida"
                 value={partidaRespuesta.nropartida}
+                readOnly
               ></input>
             </div>
           </div>
@@ -181,6 +229,8 @@ const PartidaRespuesta = (history) => {
                   name="tramoid"
                   value={partidaRespuesta.tramoid || ""}
                   onChange={handleInputChange}
+                  className="form-control input-sm"
+                  readOnly
                 >
                   <option value="">--SELECCIONE--</option>
                   <ComboOptions
@@ -194,6 +244,7 @@ const PartidaRespuesta = (history) => {
                   id="tramoid"
                   name="tramoid"
                   className="form-control input-sm"
+                  readOnly
                 >
                   <option value="">--SELECCIONE--</option>
                 </select>
@@ -211,6 +262,7 @@ const PartidaRespuesta = (history) => {
                 onChange={handleInputChange}
                 placeholder="Ingrese el sub tramo"
                 value={partidaRespuesta.subtramoid}
+                readOnly
               ></input>
             </div>
           </div>
@@ -224,6 +276,7 @@ const PartidaRespuesta = (history) => {
                 name="tipopredio"
                 value={partidaRespuesta.tipopredioid}
                 onChange={handleInputChange}
+                readOnly
               >
                 <option value="0">--SELECCIONE--</option>
                 {resListaTipoPredio.error ? (
@@ -249,6 +302,7 @@ const PartidaRespuesta = (history) => {
                 onChange={handleInputChange}
                 placeholder="Ingrese el area del predio"
                 value={partidaRespuesta.areapredio}
+                readOnly
               ></input>
             </div>
           </div>
@@ -264,6 +318,7 @@ const PartidaRespuesta = (history) => {
                 onChange={handleInputChange}
                 placeholder="Ingrese numero de asiento"
                 value={partidaRespuesta.nroasiento}
+                readOnly
               ></input>
             </div>
 
@@ -277,6 +332,7 @@ const PartidaRespuesta = (history) => {
                 onChange={handleInputChange}
                 placeholder="Ingrese alguna observacion"
                 value={partidaRespuesta.observacion}
+                readOnly
               ></input>
             </div>
           </div>
@@ -304,8 +360,8 @@ const PartidaRespuesta = (history) => {
               <input
                 className="form-control input-sm"
                 type="text"
-                name="observacion"
-                id="observacion"
+                name="gravamentpredio"
+                id="gravamentpredio"
                 onChange={handleInputChange}
                 placeholder="Ingrese el gravament del predio"
                 value={partidaRespuesta.gravamentpredio}
@@ -354,68 +410,46 @@ const PartidaRespuesta = (history) => {
                   <input
                     type="text"
                     className="form-control input-sm"
-                    id="nombrelam"
-                    name="nombrelam"
-                    // value={planoArchTmp.lamina || ""}
-                    // onChange={handleChangeLamina}
+                    id="descripcionarchivo"
+                    name="descripcionarchivo"
+                    value={partidaArchTmp.descripcion || ""}
+                    onChange={handleChangeArchivos}
                   />
                 </div>
               </div>
 
-              {/* <div className="form-group">
-                <label className="col-lg-4 control-label">Plano Dígital</label>
+              <div className="form-group">
+                <label className="col-lg-4 control-label">
+                  Archivo Dígital
+                </label>
                 <div className="col-lg-6">
                   <UploadMemo
                     key="planodigitaltmp"
                     file={{ urlDocumento: "" }}
                     accept={".jpg,.png,.gif"}
                     resetContenido={reiniciarValDigital}
-                    // setFile={saveArchivoDigital}
+                    setFile={saveArchivoDigital}
                     folderSave={"FotosUsuarios"}
-                    // eliminar={deleteArchivoDigital}
-                  ></UploadMemo>
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="col-lg-4 control-label">
-                  Memoría Descriptiva
-                </label>
-                <div className="col-lg-6">
-                  <UploadMemo
-                    key="memdescriptivatmp"
-                    file={{ urlDocumento: "" }}
-                    accept={".jpg,.png,.gif"}
-                     resetContenido={reiniciarValMemoria}
-                    //  setFile={saveArchivoMemoria}
-                     folderSave={"FotosUsuarios"}
-                    //  eliminar={deleteArchivoMemoria}
+                    eliminar={deleteArchivoDigital}
                   ></UploadMemo>
                 </div>
                 <div className="col-lg-2">
                   <a
                     className="btn btn-default btn-sm dropdown-toggle pull-left"
                     title="Agregar a la lista"
-                    // onClick={actualizarLista}
+                    onClick={actualizarLista}
                   >
                     <i className="fa fa-archive fa-2x"></i>
                   </a>
                 </div>
-              </div> */}
+              </div>
 
               <div className="form-group">
-                {/* {listaArchivos ? (
-                  <SubLista
-                    // data={listaArchivos}
-                    cabecera={cabeceraArchivos}
-                    // deleterow={removerDeLista}
-                  />
-                ) : ( */}
-                <SubLista
-                  data={[]}
+                <SubLista  
+                  data={listaArchivos}
                   cabecera={cabeceraArchivos}
-                  // deleterow={removerDeLista}
+                  deleterow={removerDeLista}
                 />
-                {/* )} */}
               </div>
             </fieldset>
           </div>

@@ -478,7 +478,11 @@ const PlanoAdd = ({history,  match}) => {
                                 </div>
                             </div>
                             <div className="form-group">
+                            {listaArchivos ?
                                 <SubLista data={listaArchivos} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
+                                :
+                                <SubLista data={[]} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
+                            }
                             </div>
                         </fieldset>
                     </div>
