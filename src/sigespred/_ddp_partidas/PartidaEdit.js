@@ -10,7 +10,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import { useDispatch } from "react-redux";
 import { toastr } from "react-redux-toastr";
-import {editar} from "../../actions/_ddp_partida/Actions";
+import { editar } from "../../actions/_ddp_partida/Actions";
 
 const { $ } = window;
 const axios = initAxiosInterceptors();
@@ -45,20 +45,22 @@ const PartidaEdit = ({ history, match }) => {
     //TODO: remover console
   }
 
-  const handleChangeProyecto = async(e) => {
+  const handleChangeProyecto = async (e) => {
     if (e.target.value) {
-        let data = await helperGets.helperGetListTramos(e.target.value);
-        setDataTramo(data);
+      let data = await helperGets.helperGetListTramos(e.target.value);
+      setDataTramo(data);
     } else {
-        setDataTramo(null);
+      setDataTramo(null);
     }
-}
+  };
 
   useEffect(() => {
     const getPartida = async (idpartida) => {
       let partidaDB = await obtenerPartida(idpartida);
       setPartidaEdicion(partidaDB);
-      let data = await helperGets.helperGetListTramos(partidaDB.infraestructuraid);
+      let data = await helperGets.helperGetListTramos(
+        partidaDB.infraestructuraid
+      );
       setDataTramo(data);
     };
     getPartida(id);
@@ -75,13 +77,13 @@ const PartidaEdit = ({ history, match }) => {
       ...partidaEditado,
     });
 
-    toastr.success(
-      "Actualización de Partida",
-      "La partida fue actualizado correctamente."
-    );
     $("#btnguardar").button("loading");
     try {
       await editarPartidaAction(partidaEdicion);
+      toastr.success(
+        "Actualización de Partida",
+        "La partida fue actualizado correctamente."
+      );
       $("#btnguardar").button("reset");
       history.push("/partidas");
     } catch (e) {
@@ -106,9 +108,9 @@ const PartidaEdit = ({ history, match }) => {
                 name="infraestructuraid"
                 value={partidaEdicion.infraestructuraid}
                 onChange={(e) => {
-                    handleChangeProyecto(e);
-                    handleInputChange(e);
-                  }}
+                  handleChangeProyecto(e);
+                  handleInputChange(e);
+                }}
               >
                 <option value="0">--SELECCIONE--</option>
                 {resListaProyectos.error ? (
@@ -154,13 +156,16 @@ const PartidaEdit = ({ history, match }) => {
                 onChange={handleInputChange}
               >
                 <option value="0">--SELECCIONE--</option>
-                {dataTramo &&
-                            <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
+                {dataTramo && (
+                  <ComboOptions
+                    data={dataTramo}
+                    valorkey="id"
+                    valornombre="descripcion"
+                  />
+                )}
               </select>
             </div>
-            <label className="col-lg-2 control-label">
-              <span className="obligatorio">* </span>Sub Tramo
-            </label>
+            <label className="col-lg-2 control-label">Sub Tramo</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
@@ -245,7 +250,7 @@ const PartidaEdit = ({ history, match }) => {
             <div className="form-group ">
               <div className="col-lg-offset-2 col-lg-10 text-right">
                 <Link
-                  to={`/list-partidas`}
+                  to={`/partidas`}
                   className="btn btn-default btn-sm btn-control"
                 >
                   Cancelar

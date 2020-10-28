@@ -49,12 +49,20 @@ const PartidaDel = ({ history, match }) => {
     //$("#btnguardar").button("loading");
     try {
      
+      deletePartida(partida)
+      
+      toastr.success(
+        "Eliminacion de la  Partida",
+        "La partida se elimino correctamente."
+      );
+      $("#btnguardar").button("reset");
+      history.push("/partidas");
 
-      const toastrConfirmOptions = {
-        onOk: () => deletePartida(partida),
-        onCancel: () => history.push("/partidas"),
-      };
-      toastr.confirm("¿ Desea seguir registrando ?", toastrConfirmOptions);
+      // const toastrConfirmOptions = {
+      //   onOk: () => deletePartida(partida),
+      //   onCancel: () => history.push("/partidas"),
+      // };
+      // toastr.confirm("¿ Desea seguir registrando ?", toastrConfirmOptions);
     } catch (e) {
       alert(e.message);
     }

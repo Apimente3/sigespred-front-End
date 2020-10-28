@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Link} from "react-router-dom";
-
+const {$} = window;
 const PartidarRow = ({partida,nro}) => {
+
+    useEffect(() => {
+        const init = async () => {
+            $('[data-toggle="tooltip"]').tooltip()
+        };
+        init();
+    }, []);
 
     return (
         <>
@@ -19,11 +26,11 @@ const PartidarRow = ({partida,nro}) => {
 
                 <td>
                     <div className="btn-group pull-right">
-                        <Link  to={`/partida-respuesta/${partida.id}`}  className="btn btn-xs btn-default" type="button"><i
+                        <Link  to={`/partida-respuesta/${partida.id}`}  className="btn btn-xs btn-default" type="button"  data-toggle="tooltip"  data-original-title={ "Respuesta" }><i
                             className="fa fa-envelope fa-lg "></i></Link>
-                        <Link  to={`/partida-edit/${partida.id}`}  className="btn btn-xs btn-default" type="button"><i
+                        <Link  to={`/partida-edit/${partida.id}`}  className="btn btn-xs btn-default" type="button"   data-toggle="tooltip"  data-original-title={ "Edicion" }><i
                             className="fa fa-edit fa-lg"></i></Link>
-                        <Link  to={`/partida-del/${partida.id}`}   className="btn btn-xs btn-default" type="button"><i
+                        <Link  to={`/partida-del/${partida.id}`}   className="btn btn-xs btn-default" type="button"   data-toggle="tooltip"  data-original-title={ "Eliminar" }><i
                             className="fa fa-trash-o fa-lg"></i></Link>
 
 
