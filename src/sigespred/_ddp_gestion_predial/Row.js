@@ -1,7 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
-
+const {$} = window;
 const TrabajadorRow = ({trabajador,nro}) => {
+
+
+    useEffect(() => {
+        const init = async () => {
+            $('[data-toggle="tooltip"]').tooltip()
+        };
+        init();
+    }, []);
 
     return (
         <>
@@ -16,9 +24,11 @@ const TrabajadorRow = ({trabajador,nro}) => {
                 <td>
                     <div className="btn-group pull-right">
 
-                        <Link  to={`/trabajador-edit/${trabajador.id}`}  className="btn btn-xs btn-default" type="button"><i
+                        <Link  to={`/trabajador-edit/${trabajador.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                               data-original-title={ "Editar fila" }><i
                             className="fa fa-edit fa-lg"></i></Link>
-                        <Link  to={`/trabajador-del/${trabajador.id}`}   className="btn btn-xs btn-default" type="button"><i
+                        <Link  to={`/trabajador-del/${trabajador.id}`}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                               data-original-title={ "Eliminar fila" }><i
                             className="fa fa-trash-o fa-lg"></i></Link>
 
 

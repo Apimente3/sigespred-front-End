@@ -7,6 +7,7 @@ import TableTrabajador from "./TableTrabajador";
 import TrabajadorRow from "./TrabajadorRow";
 import Pagination from "react-js-pagination";
 const queryString = require('query-string');
+
 const {alasql} = window;
 
 const Axios = initAxiosInterceptors();

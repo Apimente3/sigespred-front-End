@@ -25,6 +25,7 @@ import {FilesUsuario} from "../../config/parameters";
 
 import {initAxiosInterceptors, serverFile} from '../../config/axios';
 import FormGroupInline from "../../components/forms/FormGroupInline";
+import UploadMultiple from "../../components/helpers/uploaders/UploadMultiple";
 
 const Axios = initAxiosInterceptors();
 
@@ -37,10 +38,12 @@ async function getListTipoInfraestructura() {
     return data;
 }
 
+let listInfraestructuraGlobal = [];
 
 /*Listar tipo de infraestrucra*/
 async function getListInfraestructura() {
     const {data} = await Axios.get(`/infraestructura`);
+    listInfraestructuraGlobal = data;
     return data;
 }
 
@@ -49,9 +52,12 @@ const GestionPredialAdd = ({history}) => {
     const [gestionPredial, setGestionPredial] = useState({});
     const [listTipoInfraestructura, setlistTipoInfraestructura] = useState([]);
     const [listInfraestructura, setlistInfraestructura] = useState([]);
+    /*Files multiple */
+
+    const [filesstate, setFilesstate] = useState([]);
 
     /*Valiables Globales*/
-    let listInfraestructuraGlobal = [];
+
 
     useEffect(() => {
         const init = async () => {
@@ -98,25 +104,44 @@ const GestionPredialAdd = ({history}) => {
 
     /*Permite Filtrar la infraestructura en relacion a una tipo de infraestrucutra*/
     const FiltrarInfraestructura = (e) => {
+
+        let value = parseInt(e.target.value)
+        // alert(value)
+
+        //handleInputChange(e);
+
         let listInfraes = listInfraestructuraGlobal.filter(row => {
-            return row.tipoinfraestructuraid == e.target.value;
+            return parseInt(row.tipoinfraestructuraid) == value;
         });
+
+        console.log(listInfraes)
         setlistInfraestructura(listInfraes);
+
+
     }
+
+    /*Permite agregar un file multiple*/
+    const setFiles=(newListFiles)=>{
+        setFilesstate([...filesstate,newListFiles])
+    }
+
+    /*Permite eliminar  un file multiple*/
+    const removeFiles=(id)=>{
+        setFilesstate(
+            filesstate.filter(file => file.id !== id)
+        )
+    }
+
+
 
     return (
         <Wraper titleForm={"Registro de Gestion Predial"} listbreadcrumb={REGISTRO_GESTIONPREDIAL_BREADCRUM}>
             <Form onSubmit={registrar}>
                 <RowForm>
-                    <Row6 title={"DATOS DE LA GESTION PREDIAL"}>
+                    <Row6 title={"Datos de la Gestión Predial"}>
                         <FormGroup label={"Tipo Infraestructura "} require={true}>
                             <Select required={true} value={gestionPredial.tipoinfraestructuraid}
-                                    onChange={
-                                        (e) => {
-                                            handleInputChange(e);
-                                            FiltrarInfraestructura(e);
-                                        }
-                                    }
+                                    onChange={FiltrarInfraestructura}
                                     name={"tipoinfraestructuraid"}>
                                 <Options options={listTipoInfraestructura} index={"id"}
                                          valor={"denominacion"}></Options>
@@ -132,28 +157,32 @@ const GestionPredialAdd = ({history}) => {
                         </FormGroup>
 
                     </Row6>
-                    <Row6 title={"ARCHIVOS ENVIADOS EN EL DOCUMENTO D"}>
+                    <Row6 title={"Archivos adjuntos en el documento"}>
                         <FormGroupInline>
-                            <InputInline withLabel={2} withControl={10} require={true} label={"Edad"}>
-
-                            </InputInline>
+                            <UploadMultiple listFiles={[]} setListFiles={setFiles} removeFiles={removeFiles}/>
                         </FormGroupInline>
                     </Row6>
                 </RowForm>
 
                 <RowForm>
-                    <Row6 title={"DATOS DEL DOCUMENTO"}>
+                    <Row6 title={"Datos del documento de inicio de la Gestión Predial"}>
                         <FormGroup label={"Tipo de documento "} require={true}>
                             <Select required={true} value={gestionPredial.tipodocumentoid} onChange={handleInputChange}
                                     name={"tipo_infraestructura_id"}>
-                                <Options options={[{id: 1, value: "DNI"}]} index={"id"} valor={"value"}></Options>
+                                <Options options={[{id: 1, value: "MEMORANDUM"},{id: 2, value: "CORREO"}]} index={"id"} valor={"value"}></Options>
                             </Select>
                         </FormGroup>
-                        <FormGroup label={"Nro de documento"} require={true}>
+                        <FormGroup label={"Nro de documento"} require={true} ayuda={"Ingrese el nro de documento"}>
                             <Input required={true} value={""} onChange={handleInputChange}
                                    name={"tipo_infraestructura_id"} placeholder={"Ingrese la nro de documento"}
                                    type={"text"}>
                             </Input>
+                        </FormGroup>
+                        <FormGroup label={"Archivo del documento"} require={true} ayuda={"Archivo del documento de preferencia en PDF."}>
+                            <UploadMemo key="upload_portada_imagen" file={{urlDocumento: ''}}
+                                        accept={'.*'}
+                                        setFile={null} folderSave={''}
+                                        eliminar={null}></UploadMemo>
                         </FormGroup>
                         <FormGroup label={"Fecha de documento"} require={true}>
                             <Input required={true} value={""} onChange={handleInputChange}
@@ -161,7 +190,7 @@ const GestionPredialAdd = ({history}) => {
                                    type={"date"}>
                             </Input>
                         </FormGroup>
-                        <FormGroup label={"Asunto"} require={true}>
+                        <FormGroup label={"Asunto"} require={true} ayuda={"Asunto del documento de solicitud"}>
                             <Input required={true} value={""} onChange={handleInputChange}
                                    name={"tipo_infraestructura_id"} placeholder={"Ingrese el asunto del documento"}
                                    type={"text"}>

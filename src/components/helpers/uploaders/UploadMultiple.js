@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {initAxiosInterceptors,serverFile} from '../../../config/axios';
+import {initAxiosInterceptors, serverFile} from '../../../config/axios';
 import {toastr} from "react-redux-toastr";
 import Loading from './LoadingUploader'
 import FileMultiple from "./FileMultiple";
+
 const {$} = window;
 
 const Axios = initAxiosInterceptors();
 
-const UploadFileMultiple = ({listFiles, setListFiles,removeFiles}) => {
-    
-   
+const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) => {
+
 
     const [subiendoImagen, setSubiendoImagen] = useState(false);
     const [denominacionArchivo, setDenominacionArchivo] = useState('');
@@ -18,7 +18,6 @@ const UploadFileMultiple = ({listFiles, setListFiles,removeFiles}) => {
     const [originalName, setoriginalName] = useState(null);
 
     const [localfiles, setLocalFiles] = useState(listFiles);
-
 
     useEffect(() => {
 
@@ -33,14 +32,14 @@ const UploadFileMultiple = ({listFiles, setListFiles,removeFiles}) => {
 
         initialLoad();
 
-    },localfiles);
+    }, localfiles);
 
     const eliminarFile = (id) => {
         removeFiles(id)
         setLocalFiles(localfiles.filter(file => file.id !== id));
-        
+
     }
-    
+
     const addFile = (file) => {
         setListFiles(file);
         setLocalFiles([...localfiles, file]);
@@ -52,19 +51,18 @@ const UploadFileMultiple = ({listFiles, setListFiles,removeFiles}) => {
     }
 
 
-    const validatedenomiancion=()=>{
-        if($('#txtdenominacion').val().trim()==''){
+    const validatedenomiancion = () => {
+        if ($('#txtdenominacion').val().trim() == '') {
             // setDenominacionArchivo('')
             $('#txtdenominacion').focus()
-            toastr.error('¡ Error !','Ingrese la Denominación', {position: 'top-center'})
+            toastr.error('¡ Error !', 'Ingrese la Denominación', {position: 'top-center'})
             return;
         }
     };
-    
+
     const uploadFile = async (e) => {
         try {
 
-          
 
             setSubiendoImagen(true);
             const file = e.target.files[0];
@@ -79,17 +77,24 @@ const UploadFileMultiple = ({listFiles, setListFiles,removeFiles}) => {
                 onUploadProgress: progressEvent => {
 
                     console.log(progressEvent.loaded)
-                    var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                   // var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     // setPorcentajeSubida(percentCompleted)
                 }
             };
             setSubiendoImagen('cargando')
-            const {data} = await Axios.post('/fileupload', formData, config);
-            addFile(data)
-            setUrlDocumento(data.filesave)
-            setoriginalName(data.originalname)
+
+            const {data} = await Axios.post('/fileuploadJSONB?folder=' + folderSave, formData, config);
+            //const {filename,id,path,usuareg_id}=data;
+            console.log(data)
+
+            let filesaved = data;
+
+            setUrlDocumento(data.path)
+            setoriginalName(data.filename)
+
 
             //  let filesaved = {filesave: data.filesave, originalname: data.originalname};
+            setLocalFiles([...localfiles,data])
 
             setSubiendoImagen(false)
             toastr.info('¡ Correcto !', 'Se subio correctamente el Documento', {position: 'top-right'})
@@ -98,7 +103,7 @@ const UploadFileMultiple = ({listFiles, setListFiles,removeFiles}) => {
             setSubiendoImagen('ninguno');
             setSubiendoImagen(true);
             console.log(error);
-            toastr.error('¡ Error !', JSON.stringify(error) , {position: 'top-right'})
+            toastr.error('¡ Error !', JSON.stringify(error), {position: 'top-right'})
         }
     }
     return (
@@ -113,13 +118,14 @@ const UploadFileMultiple = ({listFiles, setListFiles,removeFiles}) => {
                             <div className="form-group ">
                                 <label className="col-lg-2 control-label">Denominacion </label>
                                 <div className="col-lg-4">
-                                    <input id="txtdenominacion"  className="form-control input-sm" placeholder="Denominacion" onChange={setdenominacionArch}/>
+                                    <input id="txtdenominacion" className="form-control input-sm"
+                                           placeholder="Denominacion" onChange={setdenominacionArch}/>
 
                                 </div>
 
                                 <label className="col-lg-2 control-label">Archivo </label>
                                 <div className="col-lg-4">
-                                    <input onClick={validatedenomiancion}  onChange={uploadFile} type="file"/>
+                                    <input onClick={validatedenomiancion} onChange={uploadFile} type="file"/>
                                 </div>
 
                             </div>
@@ -127,8 +133,8 @@ const UploadFileMultiple = ({listFiles, setListFiles,removeFiles}) => {
 
                         </div>
                     </div>
-<br/>
-<br/>
+                    <br/>
+                    <br/>
                     <div className="form-group">
                         <div className="col-lg-8">
                             <ul className="list-group">
