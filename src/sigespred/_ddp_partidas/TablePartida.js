@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 const TablePartida = ({children,cabecera}) => {
     return (
         <>
-            <table className="table table-striped" id="dataTable">
+            <table className="table table-striped  " id="dataTable">
                 <thead>
                 <tr>
                     { cabecera.map((cabeza,i)=>(

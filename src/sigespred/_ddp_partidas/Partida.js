@@ -22,7 +22,7 @@ const Axios = initAxiosInterceptors();
 const { alasql } = window;
 const { $ } = window;
 
-export const Partida = () => {
+export const Partida = (history) => {
   const WizardContext = createContext();
 
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
@@ -48,7 +48,6 @@ export const Partida = () => {
   };
 
   async function buscarPartida(query) {
-    
     const { data } = await Axios.get(`/partidaregistral/buscar?` + query);
     return data;
   }
@@ -56,9 +55,8 @@ export const Partida = () => {
   useEffect(() => {
     async function initialLoad() {
       try {
-        
         let partidasDB = await buscarPartida("");
-        
+
         set_busquedaLocal(false);
         setPartidas({ count: 50, rows: partidasDB });
       } catch (error) {
@@ -198,6 +196,25 @@ export const Partida = () => {
     return false;
   };
 
+  const limpiarPartidaFilter = (e) => {
+    $("#nropartida").val("");
+    $("#gestionpredialid").val("");
+    $("#fechainicio").val("");
+    $("#fechafin").val("");
+    $("#tramoid").val("");
+    $("#subtramoid").val("");
+    $("#tipopredio").val("");
+    $("#estadoatencion").val("");
+    
+
+    // handleChangeProyecto("");
+    
+
+    set_filtros({});
+    
+    //ejecutarPlanosFilter("");
+  };
+
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber);
     //alert(pageNumber)
@@ -216,15 +233,15 @@ export const Partida = () => {
   const cabecerasTabla = [
     "#",
     "ID",
-    "Denominación",
-    "Nº Partida",
-    "Tramo",
-    "Sub Tramo",
-    "Tipo Predio",
-    "Fecha Atención",
-    "Observación",
-    "Estato Atención",
-    "Acciones",
+    "DENOMINACION",
+    "Nº PARTIDA",
+    "TRAMO",
+    "SUB TRAMO",
+    "TIPO PREDIO",
+    "FECHA ATENCION",
+    "OBSERVACION",
+    "ESTADO ATENCION",
+    "ACCIONES",
   ];
   return (
     <>
@@ -276,7 +293,12 @@ export const Partida = () => {
           <div className="form-group">
             <label className="col-lg-2 control-label">Tramo</label>
             <div className="col-lg-4">
-              <select className="form-control" id="tramoid" name="tramoid" onChange={handleInputChange}>
+              <select
+                className="form-control"
+                id="tramoid"
+                name="tramoid"
+                onChange={handleInputChange}
+              >
                 <option value="">--SELECCIONE--</option>
                 {dataTramo && (
                   <ComboOptions
@@ -301,27 +323,25 @@ export const Partida = () => {
           </div>
 
           <div className="form-group">
-            <label className="col-lg-2 control-label">
-              Fecha Creacion Inicio
-            </label>
+            <label className="col-lg-2 control-label">Fecha Desde</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
                 type="date"
                 id="fechainicio"
                 name="fechainicio"
-                placeholder="Ingrese fecha inicio"
+                placeholder="Ingrese fecha "
                 onChange={handleInputChange}
               ></input>
             </div>
-            <label className="col-lg-2 control-label">Fecha Creacion Fin</label>
+            <label className="col-lg-2 control-label">Fecha Hasta</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
                 type="date"
                 id="fechafin"
                 name="fechafin"
-                placeholder="Ingrese fecha inicio"
+                placeholder="Ingrese fecha "
                 onChange={handleInputChange}
               ></input>
             </div>
@@ -351,11 +371,44 @@ export const Partida = () => {
               </select>
             </div>
 
-            <div className="col-lg-6 text-right">
-              <button type="submit" className="btn btn-info">
+            <label className="col-lg-2 control-label">Estado</label>
+            <div className="col-lg-4">
+              <select
+                id="estadoatencion"
+                className="form-control"
+                name="estadoatencion"
+                onChange={handleInputChange}
+              >
+                <option value="">--SELECCIONE--</option>
+                <option value="true">ATENDIDO</option>
+                <option value="false">PENDIENTE</option>
+                {/* {resListaTipoPredio.error ? (
+                  "Se produjo un error cargando los tipos de plano"
+                ) : resListaTipoPredio.loading ? (
+                  "Cargando..."
+                ) : (
+                  <ComboOptions
+                    data={resListaTipoPredio.result}
+                    valorkey="valorcodigo"
+                    valornombre="valortexto"
+                  />
+                )} */}
+              </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-lg-12 text-right">
+              <button
+                type="button"
+                onClick={limpiarPartidaFilter}
+                className="btn btn-default btn-sm fullborder"
+              >
+                <i className="fa fa-eraser"></i> Limpiar Filtro(s)
+              </button>
+              <button type="submit" className="btn btn-info btn-sm ">
                 <i className="fa fa-search"></i> Aplicar Filtro(s)
               </button>
-            </div>
+            </label>
           </div>
         </form>
         <div className="form-group">
@@ -366,13 +419,13 @@ export const Partida = () => {
             >
               <i className="fa fa-plus"></i> Agregar Partida
             </Link>
-            <button
+            {/* <button
               type="button"
               onClick={descarxls}
               className="btn btn-default pull-right btn-sm fullborder"
             >
               <i className="fa fa-file-excel-o"></i> Descargar Excel
-            </button>
+            </button> */}
           </div>
         </div>
         {/* <fieldset className={"fielsettext"}> */}

@@ -36,9 +36,7 @@ console.log('-----------------------ENTROOOOOOO---------------')
 }
 
 export const respuestaPartida = PARTIDA => async dispatch => {
-
-  console.log(PARTIDA)
-  const respuesta = await axios.put(`/partidaregistral/${PARTIDA.id}`, PARTIDA);
+  const respuesta = await axios.put(`/partidaregistral/grabarRespuesta/${PARTIDA.id}`, PARTIDA);
   dispatch({
       type: RESPUESTA_PARTIDA,
       payload: respuesta.data

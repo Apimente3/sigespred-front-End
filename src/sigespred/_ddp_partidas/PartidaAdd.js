@@ -82,11 +82,13 @@ const PartidaAdd = ({ history }) => {
       await agregarPartidaComp(partida);
 
       //$("#btnguardar").button("reset");
-      const toastrConfirmOptions = {
-        onOk: () => limpiarForm(),
-        onCancel: () => history.push("/partidas"),
-      };
-      toastr.confirm("¿ Desea seguir registrando ?", toastrConfirmOptions);
+      toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'})
+      history.push("/partidas")
+      // const toastrConfirmOptions = {
+      //   onOk: () => limpiarForm(),
+      //   onCancel: () => history.push("/partidas"),
+      // };
+      // toastr.confirm("¿ Desea seguir registrando ?", toastrConfirmOptions);
     } catch (e) {
       alert(e.message);
     }
