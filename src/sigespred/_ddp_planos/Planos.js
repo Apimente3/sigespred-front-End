@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useAsync } from "react-async-hook";
 import {useDispatch, useSelector} from 'react-redux';
 import GridPlano from "../m000_common/grids/GridPlano";
+import {toastr} from 'react-redux-toastr';
 import TablePlano from "./TablePlano";
 import PlanoRow from "./PlanoRow";
 import {Link} from "react-router-dom";
@@ -32,6 +33,7 @@ const Planos = ({history}) => {
     const [dataDist, set_dataDist] = useState(null);
     const [dataTramo, setDataTramo] = useState(null);
     const [contentMessage, set_contentMessage] = useState('');
+    const [reiniciarSolicitante, setReiniciarSolicitante] = useState(false);
 
     const dispatch = useDispatch();
     const buscarPlanosAction = (filtros) => dispatch(listar(filtros));
@@ -50,7 +52,7 @@ const Planos = ({history}) => {
     }, []);
 
     const handleChangeProyecto = async(e) => {
-        if (e.target.value) {
+        if (e && e.target.value) {
             let data = await helperGets.helperGetListTramos(e.target.value);
             setDataTramo(data);
         } else {
@@ -59,10 +61,13 @@ const Planos = ({history}) => {
     }
 
     function handleChangeDepartmento(e) {
-        if(!resListaProvincia.loading){
+        if(e && !resListaProvincia.loading){
             let data = resListaProvincia.result;
             let provList = data[Object.keys(data)[0]].filter( o => o.id_dpto === e.target.value);
             set_dataProv({data: provList});
+            set_dataDist(null);
+        } else {
+            set_dataProv(null);
             set_dataDist(null);
         }
     }
@@ -116,12 +121,31 @@ const Planos = ({history}) => {
         
     }
 
-    function setSolicitante(idLocador) {
+    function setSolicitante(idLocador, nameLocador) {
+        setReiniciarSolicitante(false);
         set_filtros({
             ...filtros,
             profesionalid: idLocador
         });
         console.log(filtros);
+    }
+
+    const limpiarPlanosFilter =(e)=>{
+        $('#codplano').val('');
+        $('#gestionpredialid').val('');
+        $('#fechainicio').val('');
+        $('#fechafin').val('');
+        $('#contienedigital').val('');
+        $('#subtramoid').val('');
+        $('#tipoplanoid').val('');
+        $('#departamentoid').val('');
+    
+        handleChangeProyecto('');
+        handleChangeDepartmento('');
+        
+        set_filtros({});
+        setReiniciarSolicitante(true);
+        ejecutarPlanosFilter('');
     }
 
     const buscarPlanosFilter=async (e)=>{
@@ -171,8 +195,18 @@ const Planos = ({history}) => {
         }
 
         e.preventDefault();
+        
+        ejecutarPlanosFilter(valorFiltros);
+    }
+
+    const ejecutarPlanosFilter=async (filtros)=>{
         set_busquedaLocal(true)
-        await buscarPlanosAction(valorFiltros);
+        try {
+            await buscarPlanosAction(filtros);
+        }
+        catch (e) {
+            toastr.error('Búsqueda de Planos', "Se encontró un error: " +  e.message);
+        }
         set_busquedaLocal(false)
     }
  
@@ -253,7 +287,7 @@ const Planos = ({history}) => {
                     ? "Se produjo un error cargando los locadores"
                     : resListaSolicitantes.loading
                     ? "Cargando..."
-                    : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
+                    : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} resetContenido={reiniciarSolicitante} />}
                 </div>
             </div>
 
@@ -270,7 +304,8 @@ const Planos = ({history}) => {
 
                 <label className="col-lg-2 control-label">Subtramo</label>
                 <div className="col-lg-4">
-                    <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" placeholder="Ingrese el subtramo"/>
+                    <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" placeholder="Ingrese el subtramo"
+                    onChange={handleInputChange} />
                 </div>
             </div>
 
@@ -327,6 +362,9 @@ const Planos = ({history}) => {
                     )}  
                     </div>
                     <div className="col-lg-6 text-right">
+                    <button type="button" onClick={limpiarPlanosFilter} className="btn btn-default btn-sm fullborder">
+                            <i className="fa fa-eraser"></i> Limpiar Filtro(s)
+                        </button>
                         <button type="button" onClick={buscarPlanosFilter} className="btn btn-info  btn-sm  fullborder">
                             <i className="fa fa-search"></i> Aplicar Filtro(s)
                         </button>
@@ -337,9 +375,12 @@ const Planos = ({history}) => {
                 <div className="row">
                     <div className="col-md-6"></div>
                     <div className="col-md-6 text-right">
-                        <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
-                            <i className="fa fa-file-excel-o"></i> Descargar Excel
-                        </button>
+                        {/* <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
+                            <i className="fa fa-file-excel-o"></i> TODO: Descargar Excel
+                        </button> */}
+                        <Link to={`/plano-grupo`} className="btn btn-danger btn-sm fullborder">
+                            <i className="fa fa-clone"></i>  Generación Códigos
+                        </Link>
                         <Link to={`/plano-add`} className="btn btn-danger btn-sm fullborder">
                             <i className="fa fa-plus-circle"></i>  Agregar Plano
                         </Link>

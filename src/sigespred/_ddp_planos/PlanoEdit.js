@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import moment from 'moment';
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
-import {toastr} from 'react-redux-toastr'
+import {toastr} from 'react-redux-toastr';
 import { useAsync } from "react-async-hook";
 import {editar} from '../../actions/_ddp_plano/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
@@ -35,7 +35,9 @@ const PlanoEdit = ({history, match}) => {
         const getPlano=async (idplano)=>{
            let planoDB = await obtenerPlano(idplano);
             setPlanoEdicion(planoDB);
-            set_listaArchivos(planoDB.archivos);
+            if (planoDB.archivos) {
+                set_listaArchivos(planoDB.archivos);
+            }            
             cargarTramo(planoDB.gestionpredialid);
         }
         getPlano(id);
@@ -204,6 +206,12 @@ const PlanoEdit = ({history, match}) => {
     const actualizar = async e => {
         e.preventDefault();
 
+        $.each(planoEdicion, function(key, value){
+            if (key === 'tramoid' && (value === "" || value === null)){
+                delete planoEdicion[key];
+            }
+        });
+
         if (Array.isArray(listaArchivos) && listaArchivos.length) {
             planoEdicion.archivos = listaArchivos;
             set_planoEditado({
@@ -212,15 +220,16 @@ const PlanoEdit = ({history, match}) => {
             });
         }
 
-        toastr.success('Actualización de Plano', 'El plano fue actualizado correctamente.');
         $('#btnguardar').button('loading');
         try {
             await editarPlanoAction(planoEdicion);
+            toastr.success('Actualización de Plano', `El plano ${planoEdicion.codplano} fue actualizado correctamente.`);
             $('#btnguardar').button('reset');
             history.push('/planos');
         }
         catch (e) {
-            alert(e.message)
+            toastr.error('Actualización de Plano', "Se encontró un error: " +  e.message);
+            $('#btnguardar').button('reset');
         }
     }
 

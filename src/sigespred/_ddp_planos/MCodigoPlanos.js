@@ -2,6 +2,22 @@ import React from 'react';
 import {Link} from "react-router-dom";
 
 const MCodigoPlanos = ({dataMostrar}) => {
+
+    const downloadTxtFile = () => {
+        if (dataMostrar) {
+            const element = document.createElement("a");
+            var text = "";
+            dataMostrar.forEach(code => {
+                  text += code + '\r\n';
+            });
+            
+            const file = new Blob([text], {type: 'text/plain'});
+            element.href = URL.createObjectURL(file);
+            element.download = "codigosPlanos.txt";
+            document.body.appendChild(element); // Required for this to work in FireFox
+            element.click();
+        }
+      }
     
     return (
         <>
@@ -30,6 +46,7 @@ const MCodigoPlanos = ({dataMostrar}) => {
                                 </div>
 
                                 <div className="modal-footer">
+                                <a onClick={downloadTxtFile} className="btn btn-default btn-sm dropdown-toggle pull-left">Download txt</a>
                                     <Link to={`/planos`} className="btn btn-default btn-sm btn-control">Cerrar
                                     </Link>
                                 </div>

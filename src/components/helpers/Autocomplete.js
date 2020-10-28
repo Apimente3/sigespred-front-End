@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react';
 import React, {useEffect, useState} from 'react';
 
-const Autocomplete = ({listaDatos, callabck, valorinit}) => {
+const Autocomplete = ({listaDatos, callabck, valorinit, resetContenido=false}) => {
 
     const [seleccionado, setSeleccionado] = useState(false);
     const [listinit, setListinit] = useState(listaDatos);
@@ -9,6 +9,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
     const [rowSelect, setRowSelect] = useState({});
     const [fisrtLoad, setfisrtLoad] = useState(true);
     const [valorBuscar, setValorBuscar] = useState('');
+    const [resetDone, setResetDone] = useState(false);
 
     useEffect(() => {
         async function initialLoad() {
@@ -50,6 +51,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
                 return el.value.toLowerCase().indexOf(valor.toLowerCase()) > -1;
             })
         )
+        setResetDone(false);
     }
 
     const limpiar = (e) => {
@@ -58,6 +60,11 @@ const Autocomplete = ({listaDatos, callabck, valorinit}) => {
         setRowSelect({})
        
         callabck(null,null)
+    }
+
+    if (resetContenido && !resetDone) {
+         limpiar('');
+        setResetDone(true);
     }
 
     return (

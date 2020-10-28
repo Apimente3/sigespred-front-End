@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState} from 'react';
+import {initAxiosInterceptors} from '../../config/axios';
 import moment from 'moment';
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
@@ -15,6 +16,7 @@ import {useDispatch} from 'react-redux';
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 
 const {$} = window;
+const Axios = initAxiosInterceptors();
 
 const PlanoAdd = ({history,  match}) => {
     const [plano, set_plano] = useState({observaciones: ''});
@@ -198,10 +200,20 @@ const PlanoAdd = ({history,  match}) => {
     //     setcontinuarAgregarAction(true)
     // }, []);
 
+    async function addPlano(plano) {
+        const {data} = await Axios.post(`/plano`,plano);
+        return data;
+    }
 
     const registrar = async e => {
 
         e.preventDefault();
+
+        $.each(plano, function(key, value){
+            if (key === 'tramoid' && (value === "" || value === null)){
+                delete plano[key];
+            }
+        });
         
         if (Array.isArray(listaArchivos) && listaArchivos.length) {
             plano.archivos = listaArchivos;
@@ -213,17 +225,19 @@ const PlanoAdd = ({history,  match}) => {
 
         $('#btnguardar').button('loading');
         try {
-            await agregarPlanoAction(plano);
-
+            let resultPlano = await addPlano(plano);
             $('#btnguardar').button('reset');
-            const toastrConfirmOptions = {
-                onOk: () => limpiarForm(),
-                onCancel: () => history.push('/planos')
-            };
-            toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
+            // const toastrConfirmOptions = {
+            //     onOk: () => limpiarForm(),
+            //     onCancel: () => history.push('/planos')
+            // };
+            // toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
+            toastr.success('Registro de Plano', `El plano ${resultPlano.codplano} fue ingresado correctamente.`);
+            history.push('/planos');
         }
         catch (e) {
-            alert(e.message)
+            toastr.error('Registro de Plano', "Se encontró un error: " +  e.message);
+            $('#btnguardar').button('reset');
         }
     }
 
