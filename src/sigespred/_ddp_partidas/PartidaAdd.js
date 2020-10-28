@@ -8,7 +8,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import { useDispatch, useSelector } from "react-redux";
 import { agregar } from "../../actions/_ddp_partida/Actions";
-import Wraper from "../m000_common/formContent/Wraper";
+import WraperLarge from "../m000_common/formContent/WraperLarge";
 import { REGISTRO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
 
 const { $ } = window;
@@ -21,19 +21,22 @@ const PartidaAdd = ({ history }) => {
   ]);
 
   const [partida, set_partida] = useState({ observacion: "Nuevo Registro" });
+  const [dataTramo, setDataTramo] = useState(null);
   const dispatch = useDispatch();
   const agregarPartidaComp = (partida) => dispatch(agregar(partida));
-  //const setcontinuarAgregarComp = (estado) => dispatch(setcontinuarAgregar(estado));
 
-//   useEffect(() => {
-//     $('[data-toggle="tooltip"]').tooltip()
-//     setcontinuarAgregarComp(true)
-// }, []);
+  const handleChangeProyecto = async (e) => {
+    if (e.target.value) {
+      let data = await helperGets.helperGetListTramos(e.target.value);
+      setDataTramo(data);
+    } else {
+      setDataTramo(null);
+    }
+  };
 
-const limpiarForm = () => {
-  set_partida({observacion: 'Nuevo Registro'})
-}
-
+  const limpiarForm = () => {
+    set_partida({ observacion: "Nuevo Registro" });
+  };
 
   const obtenerTramos = async () => {
     const { data } = await Axios.get(`/tramo`);
@@ -55,19 +58,24 @@ const limpiarForm = () => {
     }
   }
   const handleInputChange = ({ target }) => {
-    if(['infraestructuraid', 'nropartida'].includes(target.name)){
-
-    } else {
-
-      set_partida({
-        ...partida,
-        [target.name]: target.value.toUpperCase()
-      });
+    switch (target.name) {
+      case "gestionpredialid":
+        set_partida({
+          ...partida,
+          [target.name]: target.value,
+          tramoid: "",
+        });
+        break;
+      default:
+        set_partida({
+          ...partida,
+          [target.name]: target.value.toUpperCase(),
+        });
     }
   };
-  
 
   const registrar = async (e) => {
+    console.log(partida);
     e.preventDefault();
     //$("#btnguardar").button("loading");
     try {
@@ -86,7 +94,7 @@ const limpiarForm = () => {
 
   return (
     <>
-      <Wraper
+      <WraperLarge
         titleForm={"Registro de Partida Registral"}
         listbreadcrumb={REGISTRO_PARTIDA_BREADCRUM}
       >
@@ -100,8 +108,11 @@ const limpiarForm = () => {
                 id="infraestructuraid"
                 className="form-control input-sm"
                 name="infraestructuraid"
-                // value={partida.infraestructuraid}
-                onChange={handleInputChange}
+                value={partida.infraestructuraid}
+                onChange={(e) => {
+                  handleChangeProyecto(e);
+                  handleInputChange(e);
+                }}
               >
                 <option value="0">--SELECCIONE--</option>
                 {resListaProyectos.error ? (
@@ -117,7 +128,9 @@ const limpiarForm = () => {
                 )}
               </select>
             </div>
-            <label className="col-lg-2 control-label"><span className="obligatorio">* </span>Numero de Partida</label>
+            <label className="col-lg-2 control-label">
+              <span className="obligatorio">* </span>Numero de Partida
+            </label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
@@ -133,7 +146,9 @@ const limpiarForm = () => {
           </div>
 
           <div className="form-group">
-            <label className="col-lg-2 control-label"><span className="obligatorio">* </span>Tramo</label>
+            <label className="col-lg-2 control-label">
+              <span className="obligatorio">* </span>Tramo
+            </label>
             <div className="col-lg-4">
               <select
                 className="form-control input-sm"
@@ -143,12 +158,16 @@ const limpiarForm = () => {
                 onChange={handleInputChange}
               >
                 <option value="0">--SELECCIONE--</option>
-                <option value="1">TRAMO 01</option>
-                <option value="2">TRAMO 02</option>
-                <option value="3">TRAMO 03</option>
+                {dataTramo && (
+                  <ComboOptions
+                    data={dataTramo}
+                    valorkey="id"
+                    valornombre="descripcion"
+                  />
+                )}
               </select>
             </div>
-            <label className="col-lg-2 control-label"><span className="obligatorio">* </span>Sub Tramo</label>
+            <label className="col-lg-2 control-label">Sub Tramo</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
@@ -202,7 +221,7 @@ const limpiarForm = () => {
           </div>
 
           <div className="form-group">
-          <label className="col-lg-2 control-label">Asiento</label>
+            <label className="col-lg-2 control-label">Asiento</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
@@ -214,11 +233,9 @@ const limpiarForm = () => {
                 value={partida.nroasiento}
               ></input>
             </div>
-            
 
             <label className="col-lg-2 control-label">Observacion</label>
             <div className="col-lg-4">
-            
               <input
                 className="form-control input-sm"
                 type="text"
@@ -228,7 +245,6 @@ const limpiarForm = () => {
                 placeholder="Ingrese alguna observacion"
                 value={partida.observacion}
               ></input>
-           
             </div>
           </div>
 
@@ -251,9 +267,8 @@ const limpiarForm = () => {
               </div>
             </div>
           </div>
-
         </form>
-      </Wraper>
+      </WraperLarge>
     </>
   );
 };

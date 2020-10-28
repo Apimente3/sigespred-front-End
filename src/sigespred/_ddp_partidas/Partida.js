@@ -2,8 +2,8 @@ import React, { createContext, useEffect, useState } from "react";
 import { useAsync } from "react-async-hook";
 import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
+import WraperLarge from "../m000_common/formContent/WraperLarge";
 
-import Wraper from "../m000_common/formContent/Wraper";
 import { LISTADO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -22,7 +22,6 @@ const Axios = initAxiosInterceptors();
 const { alasql } = window;
 const { $ } = window;
 
-
 export const Partida = () => {
   const WizardContext = createContext();
 
@@ -34,7 +33,7 @@ export const Partida = () => {
   const [filtros, set_filtros] = useState("");
   const [busquedaLocal, set_busquedaLocal] = useState(true);
   const dispatch = useDispatch();
-  
+
   const [contentMessage, set_contentMessage] = useState("");
   const [busqueda, setBusqueda] = useState("");
   const [page, setPage] = useState(1);
@@ -42,29 +41,41 @@ export const Partida = () => {
   const [totalItemsCount, settotalItemsCount] = useState(3);
   const [activePage, setactivePage] = useState(1);
   const [partidas, setPartidas] = useState({ count: 5, rows: [] });
+  const [dataTramo, setDataTramo] = useState(null);
 
   const context = {
     nropagina: 1,
   };
 
   async function buscarPartida(query) {
-    // alert(query)
-     const {data} = await Axios.get(`/partidaregistral/buscar?`+ query);
-     return data;
- }
+    
+    const { data } = await Axios.get(`/partidaregistral/buscar?` + query);
+    return data;
+  }
 
   useEffect(() => {
     async function initialLoad() {
       try {
+        
         let partidasDB = await buscarPartida("");
+        
         set_busquedaLocal(false);
-        setPartidas({ count: 50, rows: partidasDB })
+        setPartidas({ count: 50, rows: partidasDB });
       } catch (error) {
         console.log(error);
       }
     }
     initialLoad();
   }, []);
+
+  const handleChangeProyecto = async (e) => {
+    if (e.target.value) {
+      let data = await helperGets.helperGetListTramos(e.target.value);
+      setDataTramo(data);
+    } else {
+      setDataTramo(null);
+    }
+  };
 
   const definirFiltro = () => {
     let valFiltro = "";
@@ -77,24 +88,31 @@ export const Partida = () => {
   };
 
   function handleInputChange(e) {
-    if (["nropartida"].includes(e.target.name)) {
-      set_filtros({
-        ...filtros,
-        [e.target.name]: e.target.value.toUpperCase(),
-      });
-    } else if (["tramoid"].includes(e.target.name)) {
-      set_filtros({
-        ...filtros,
-        [e.target.name]: e.target.value.toUpperCase(),
-      });
-    } else {
-      set_filtros({
-        ...filtros,
-        [e.target.name]: e.target.value,
-      });
+    switch (e.target.name) {
+      case "gestionpredialid":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
+      case "tramoid":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
+      case "subtramoid":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value.toUpperCase(),
+        });
+      default:
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
     }
     console.log(filtros);
   }
+
   const [proyectos, set_proyectos] = useState([]);
 
   const buscarPartidasFilter = async (e) => {
@@ -138,8 +156,6 @@ export const Partida = () => {
         });
       }
     }
-    e.preventDefault();
-    set_busquedaLocal(true);
 
     let valorFiltros = "";
     if (filtros) {
@@ -153,10 +169,12 @@ export const Partida = () => {
       console.log(valorFiltros);
     }
 
+    console.log("FILTROS");
+    console.log(valorFiltros);
     e.preventDefault();
     set_busquedaLocal(true);
     let dataFiltrada = await buscarPartida(valorFiltros);
-    setPartidas({ count: 50, rows: dataFiltrada })
+    setPartidas({ count: 50, rows: dataFiltrada });
     set_busquedaLocal(false);
   };
 
@@ -211,11 +229,11 @@ export const Partida = () => {
   return (
     <>
       {/* <WizardContext.Provider value={context}> */}
-        <Wraper
-          titleForm={"Listado de Partidas Registrales"}
-          listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}
-        >
-          <form onSubmit={buscarPartidasFilter}>
+      <WraperLarge
+        titleForm={"Listado de Partidas Registrales"}
+        listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}
+      >
+        <form onSubmit={buscarPartidasFilter}>
           <div className="form-group">
             <label className="col-lg-2 control-label">Nro Partida</label>
             <div className="col-lg-4">
@@ -225,15 +243,19 @@ export const Partida = () => {
                 id="nropartida"
                 name="nropartida"
                 placeholder="Numero de Partida Registral"
-                onBlur={definirFiltro}
+                onChange={handleInputChange}
               />
             </div>
             <label className="col-lg-2 control-label">Proyecto</label>
             <div className="col-lg-4">
               <select
                 className="form-control"
-                id="proyectoid"
-                name="proyectoid"
+                id="gestionpredialid"
+                name="gestionpredialid"
+                onChange={(e) => {
+                  handleChangeProyecto(e);
+                  handleInputChange(e);
+                }}
               >
                 <option value="">--SELECCIONE--</option>
                 {resListaProyectos.error ? (
@@ -254,11 +276,15 @@ export const Partida = () => {
           <div className="form-group">
             <label className="col-lg-2 control-label">Tramo</label>
             <div className="col-lg-4">
-              <select className="form-control" id="tramoid" name="tramoid">
+              <select className="form-control" id="tramoid" name="tramoid" onChange={handleInputChange}>
                 <option value="">--SELECCIONE--</option>
-                <option value="1">TRAMO 01</option>
-                <option value="2">TRAMO 02</option>
-                <option value="3">TRAMO 03</option>
+                {dataTramo && (
+                  <ComboOptions
+                    data={dataTramo}
+                    valorkey="id"
+                    valornombre="descripcion"
+                  />
+                )}
               </select>
             </div>
             <label className="col-lg-2 control-label">Sub Tramo</label>
@@ -269,7 +295,7 @@ export const Partida = () => {
                 id="subtramoid"
                 name="subtramoid"
                 placeholder="Ingrese el subtramo"
-                onBlur={definirFiltro}
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -305,9 +331,10 @@ export const Partida = () => {
             <label className="col-lg-2 control-label">Tipo Predio</label>
             <div className="col-lg-4">
               <select
-                id="tipopredioid"
+                id="tipopredio"
                 className="form-control"
-                name="tipopredioid"
+                name="tipopredio"
+                onChange={handleInputChange}
               >
                 <option value="">--SELECCIONE--</option>
                 {resListaTipoPredio.error ? (
@@ -325,56 +352,51 @@ export const Partida = () => {
             </div>
 
             <div className="col-lg-6 text-right">
-              <button
-                type="submit"
-                className="btn btn-info"
-              >
+              <button type="submit" className="btn btn-info">
                 <i className="fa fa-search"></i> Aplicar Filtro(s)
               </button>
             </div>
           </div>
-          </form>
-          <div className="form-group">
-            <div className="col-lg-12 text-right">
-              <Link
-                to={`/partida-add`}
-                className="btn btn-danger pull-right btn-sm fullborder"
-              >
-                <i className="fa fa-plus"></i> Agregar Partida
-              </Link>
-              <button
-                type="button"
-                onClick={descarxls}
-                className="btn btn-default pull-right btn-sm fullborder"
-              >
-                <i className="fa fa-file-excel-o"></i> Descargar Excel
-              </button>
-            </div>
+        </form>
+        <div className="form-group">
+          <div className="col-lg-12 text-right">
+            <Link
+              to={`/partida-add`}
+              className="btn btn-danger pull-right btn-sm fullborder"
+            >
+              <i className="fa fa-plus"></i> Agregar Partida
+            </Link>
+            <button
+              type="button"
+              onClick={descarxls}
+              className="btn btn-default pull-right btn-sm fullborder"
+            >
+              <i className="fa fa-file-excel-o"></i> Descargar Excel
+            </button>
           </div>
-          {/* <fieldset className={"fielsettext"}> */}
-          {/* <form onSubmit={buscarPartidasFilter}> */}
+        </div>
+        {/* <fieldset className={"fielsettext"}> */}
+        {/* <form onSubmit={buscarPartidasFilter}> */}
 
-          {/* </form> */}
-          {/* </fieldset> */}
-          <div className="panel panel-default">
-            <TablePartida cabecera={cabecerasTabla}>
-              {partidas.rows.map((partida, i) => (
-                <PartidarRow nro={i} partida={partida}></PartidarRow>
-              ))}
-            </TablePartida>
-            <div className="panel-footer clearfix pull-right">
-              <Pagination
-                activePage={activePage}
-                itemsCountPerPage={limit}
-                totalItemsCount={totalItemsCount}
-                pageRangeDisplayed={3}
-                onChange={handlePageChange}
-              ></Pagination>
-            </div>
+        {/* </form> */}
+        {/* </fieldset> */}
+        <div className="panel panel-default">
+          <TablePartida cabecera={cabecerasTabla}>
+            {partidas.rows.map((partida, i) => (
+              <PartidarRow nro={i} partida={partida}></PartidarRow>
+            ))}
+          </TablePartida>
+          <div className="panel-footer clearfix pull-right">
+            <Pagination
+              activePage={activePage}
+              itemsCountPerPage={limit}
+              totalItemsCount={totalItemsCount}
+              pageRangeDisplayed={3}
+              onChange={handlePageChange}
+            ></Pagination>
           </div>
-
-
-        </Wraper>
+        </div>
+      </WraperLarge>
       {/* </WizardContext.Provider> */}
     </>
   );

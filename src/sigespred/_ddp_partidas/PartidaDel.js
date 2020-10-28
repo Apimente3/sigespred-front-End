@@ -46,7 +46,7 @@ const PartidaDel = ({ history, match }) => {
 
   const eliminar = async (e) => {
     e.preventDefault();
-    $("#btnguardar").button("loading");
+    //$("#btnguardar").button("loading");
     try {
      
 

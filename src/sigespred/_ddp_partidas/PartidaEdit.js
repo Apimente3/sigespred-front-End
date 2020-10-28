@@ -2,7 +2,7 @@ import { initAxiosInterceptors } from "../../config/axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { REGISTRO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
-import Wraper from "../m000_common/formContent/Wraper";
+import Wraper from "../m000_common/formContent/WraperLarge";
 import { useForm } from "./useForm";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import { useAsync } from "react-async-hook";
@@ -31,7 +31,7 @@ const PartidaEdit = ({ history, match }) => {
     PARAMS.LISTASIDS.TIPOPRED,
   ]);
   const [partidaEditado, set_partidaEditado] = useState({});
-
+  const [dataTramo, setDataTramo] = useState(null);
   const { id } = useParams();
 
   function handleInputChange(e) {
@@ -45,10 +45,21 @@ const PartidaEdit = ({ history, match }) => {
     //TODO: remover console
   }
 
+  const handleChangeProyecto = async(e) => {
+    if (e.target.value) {
+        let data = await helperGets.helperGetListTramos(e.target.value);
+        setDataTramo(data);
+    } else {
+        setDataTramo(null);
+    }
+}
+
   useEffect(() => {
     const getPartida = async (idpartida) => {
       let partidaDB = await obtenerPartida(idpartida);
       setPartidaEdicion(partidaDB);
+      let data = await helperGets.helperGetListTramos(partidaDB.infraestructuraid);
+      setDataTramo(data);
     };
     getPartida(id);
   }, []);
@@ -90,11 +101,14 @@ const PartidaEdit = ({ history, match }) => {
             </label>
             <div className="col-lg-4">
               <select
-                id="gestionpredialid"
+                id="infraestructuraid"
                 className="form-control input-sm"
-                name="gestionpredialid"
+                name="infraestructuraid"
                 value={partidaEdicion.infraestructuraid}
-                onChange={handleInputChange}
+                onChange={(e) => {
+                    handleChangeProyecto(e);
+                    handleInputChange(e);
+                  }}
               >
                 <option value="0">--SELECCIONE--</option>
                 {resListaProyectos.error ? (
@@ -140,9 +154,8 @@ const PartidaEdit = ({ history, match }) => {
                 onChange={handleInputChange}
               >
                 <option value="0">--SELECCIONE--</option>
-                <option value="1">TRAMO 01</option>
-                <option value="2">TRAMO 02</option>
-                <option value="3">TRAMO 03</option>
+                {dataTramo &&
+                            <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
               </select>
             </div>
             <label className="col-lg-2 control-label">
