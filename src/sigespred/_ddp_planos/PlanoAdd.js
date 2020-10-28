@@ -265,7 +265,6 @@ const PlanoAdd = ({history,  match}) => {
                                         required
                                         title="El Proyecto es requerido"
                                         onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
-                                        >
                                             <option value="">--SELECCIONE--</option>
                                             {resListaProyectos.error
                                             ? "Se produjo un error cargando los proyectos"
