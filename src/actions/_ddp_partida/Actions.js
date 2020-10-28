@@ -26,7 +26,7 @@ export const buscarPartida = (busqueda) => async (dispatch) => {
 };
 
 export const editar = PARTIDA => async dispatch => {
-
+console.log('-----------------------ENTROOOOOOO---------------')
   console.log(PARTIDA)
   const respuesta = await axios.put(`/partidaregistral/${PARTIDA.id}`, PARTIDA);
   dispatch({
