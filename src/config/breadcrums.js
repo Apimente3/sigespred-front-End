@@ -82,3 +82,26 @@ export const ELIMINAR_EQUIPO_BREADCRUM = [
     {link: "../list-equipos2", name: "Listado de Equipos"},
     {link: "#", name: "Eliminar Equipo"}
 ]
+
+export const LISTADO_AREA_BREADCRUM = [
+    {link: "area-list", name: "Listado de areas"},
+    {link: "area-add", name: "Agregar de areas"}
+]
+
+export const REGISTRO_AREA_BREADCRUM = [
+    {link: "area-add", name: "Agregar de areas"},
+    {link: "area-list", name: "Listado de areas"}
+]
+
+export const ELIMINAR_AREA_BREADCRUM = [
+    {link: "../area-list", name: "Listado de Areas"},
+    {link: "#", name: "Eliminar Area"}
+]
+
+export const ACTUALIZAR_AREA_BREADCRUM = [
+    {link: "../area-add", name: "Agregar area"},,
+    {link: "../area-list", name: "Listado de area"},
+    {link: "#", name: "Actualizar Area"}
+]
+
+

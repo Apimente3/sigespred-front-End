@@ -13,6 +13,7 @@ import RouteGestionPredial from './RouteGestionPredial';
 import RouteModPlanos from './_ddp_RouteModPlanos';
 import RouteModPartidas from './_ddp_RouteModPartidas';
 import RouteModEquipo from './_ddp_RouteModEquipo';
+import RouteModArea from './_ddp_RouteModArea';
 
 export default [
     ...RouteMod01Login,
@@ -26,5 +27,7 @@ export default [
     ...RouteMod05DiagnosticoTecnicoLegal,
     ...RouteMod04PeticionGestionPredial,
     ...RouteMod05Predios,
-    ...RouteMod06ProcesoAdquisicionExpropiacion
+    ...RouteMod06ProcesoAdquisicionExpropiacion,
+
+    ...RouteModArea
 ]

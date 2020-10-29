@@ -1,8 +1,7 @@
-const { ReactComponent } = require("*.svg");
-
 import React from 'react';
+import {Link} from "react-router-dom";
 
-const TableArea = ({childeren,cabecera}) => {
+const TableArea = ({children,cabecera}) => {
     return (
         <>
             <table className="table table-striped" id="dataTableArea">
