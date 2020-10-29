@@ -22,8 +22,8 @@ const PartidarRow = ({partida,nro}) => {
                 <td>{partida.tipopredioid}</td>
                 <td>{partida.fechaatencion}</td>
                 <td>{partida.observacion}</td>
-                <td>{partida.estadoatencion}</td>
-
+                { partida.estadoatencion == 'ATENDIDO' ? <td className="colorCeldaAtendido" > <span className="badge badge-info">{partida.estadoatencion}</span></td> : <td className="colorCeldaPendiente"><span className="badge badge-danger">{partida.estadoatencion}</span></td>   }
+                
                 <td>
                     <div className="btn-group pull-right">
                         <Link  to={`/partida-respuesta/${partida.id}`}  className="btn btn-xs btn-default" type="button"  data-toggle="tooltip"  data-original-title={ "Respuesta" }><i

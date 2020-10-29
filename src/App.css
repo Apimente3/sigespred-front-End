@@ -598,7 +598,12 @@ legend {
 }
 
 /*================cards==================*/
-
+.colorCeldaPendiente {
+    color: red !important;
+}
+.colorCeldaAtendido {
+    color: green !important;
+}
 .card {
     -ms-flex-direction: column;
     background-color: #fff;
