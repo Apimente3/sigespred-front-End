@@ -45,26 +45,19 @@ const PartidaDel = ({ history, match }) => {
 
 
   const eliminar = async (e) => {
-    e.preventDefault();
-    //$("#btnguardar").button("loading");
-    try {
-     
-      deletePartida(partida)
-      
-      toastr.success(
-        "Eliminacion de la  Partida",
-        "La partida se elimino correctamente."
-      );
-      $("#btnguardar").button("reset");
-      history.push("/partidas");
 
-      // const toastrConfirmOptions = {
-      //   onOk: () => deletePartida(partida),
-      //   onCancel: () => history.push("/partidas"),
-      // };
-      // toastr.confirm("¿ Desea seguir registrando ?", toastrConfirmOptions);
+    e.preventDefault();
+    $("#btnguardar").button("loading");
+    try {
+      const response= await deletePartida(partida);
+      toastr.success(
+            "Eliminacion de la  Partida",
+            "La partida se elimino correctamente.")
+      if(response){
+          history.push('/partidas');
+      }
     } catch (e) {
-      alert(e.message);
+      toastr.error(`ERROR !!! No se logro verificar la existencia de la partida.`)
     }
   };
 
@@ -79,7 +72,6 @@ const PartidaDel = ({ history, match }) => {
             <strong className="font-16">
               ¿Desea eliminar la partida registral Nro {partida.id}?
             </strong>
-            {/* <small className="block text-muted">DNI : {trabajador.dni}</small> */}
           </div>
         </div>
 

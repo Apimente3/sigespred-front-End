@@ -146,20 +146,19 @@ const PartidaRespuesta = () => {
   const cargarTramo = async (idProyecto) => {
     if (idProyecto) {
       let data = await helperGets.helperGetListTramos(idProyecto);
-      console.log(data);
       setDataTramo(data);
     } else {
       setDataTramo(null);
     }
   };
-  const handleChangeProyecto = async (e) => {
-    if (e.target.value) {
-      let data = await helperGets.helperGetListTramos(e.target.value);
-      setDataTramo(data);
-    } else {
-      setDataTramo(null);
-    }
-  };
+  // const handleChangeProyecto = async (e) => {
+  //   if (e.target.value) {
+  //     let data = await helperGets.helperGetListTramos(e.target.value);
+  //     setDataTramo(data);
+  //   } else {
+  //     setDataTramo(null);
+  //   }
+  // };
 
   const cabeceraArchivos = ["Descripcion Archivo", "Archivo", "Eliminar"];
 
@@ -328,14 +327,14 @@ const PartidaRespuesta = () => {
             <legend>Datos de Generales</legend>
             <div className="form-group">
               <label className="col-lg-2 control-label">
-                Fecha de Atencion{" "}
+                Fecha de Atencion
               </label>
               <div className="col-lg-4">
                 <input
                   style={{ lineHeight: "1.43" }}
                   type="date"
-                  id="fechacreacion"
-                  name="fechacreacion input-sm"
+                  id="fechaatencion"
+                  name="fechaatencion"
                   className="form-control"
                   value={partidaRespuesta.fechaatencion || ""}
                   onChange={handleInputChange}

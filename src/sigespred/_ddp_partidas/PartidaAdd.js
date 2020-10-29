@@ -208,7 +208,7 @@ const PartidaAdd = ({ history }) => {
                 )}
               </select>
             </div>
-            <label className="col-lg-2 control-label">Area del Predio</label>
+            {/* <label className="col-lg-2 control-label">Area del Predio</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
@@ -219,7 +219,7 @@ const PartidaAdd = ({ history }) => {
                 placeholder="Ingrese el area del predio"
                 value={partida.areapredio}
               ></input>
-            </div>
+            </div> */}
           </div>
 
           <div className="form-group">

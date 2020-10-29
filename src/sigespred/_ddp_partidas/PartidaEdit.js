@@ -204,7 +204,7 @@ const PartidaEdit = ({ history, match }) => {
                 )}
               </select>
             </div>
-            <label className="col-lg-2 control-label">Area del Predio</label>
+            {/* <label className="col-lg-2 control-label">Area del Predio</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
@@ -215,7 +215,7 @@ const PartidaEdit = ({ history, match }) => {
                 placeholder="Ingrese el area del predio"
                 value={partidaEdicion.areapredio}
               ></input>
-            </div>
+            </div> */}
           </div>
 
           <div className="form-group">
