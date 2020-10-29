@@ -1,23 +1,29 @@
 import React, {useEffect, useState} from 'react';
-import moment from 'moment';
 import { useAsync } from "react-async-hook";
-import {useDispatch, useSelector} from 'react-redux';
 import GridPlano from "../m000_common/grids/GridPlano";
 import {toastr} from 'react-redux-toastr';
 import TablePlano from "./TablePlano";
 import PlanoRow from "./PlanoRow";
+import Pagination from "react-js-pagination";
 import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
-import { listar } from '../../actions/_ddp_plano/Actions';
-import Wraper from "../m000_common/formContent/Wraper";
+import MArcDigital from './MArcDigital';
+import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
 
+const Axios = initAxiosInterceptors();
 const {alasql}=window;
 const {$} = window;
+const queryString = require('query-string');
+
+async function buscarPlano(query) {
+     const {data} = await Axios.get(`/plano/buscar?`+ query);
+     return data;
+ }
 
 const Planos = ({history}) => {
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
@@ -34,16 +40,26 @@ const Planos = ({history}) => {
     const [dataTramo, setDataTramo] = useState(null);
     const [contentMessage, set_contentMessage] = useState('');
     const [reiniciarSolicitante, setReiniciarSolicitante] = useState(false);
+    const [mostrarPopup, setMostrarPopup] = useState(false);
+    const [codPlanoPopup, setCodPlanoPopup] = useState('');
+    const [archivosPopup, setArchivosPopup] = useState([]);
 
-    const dispatch = useDispatch();
-    const buscarPlanosAction = (filtros) => dispatch(listar(filtros));
-    const planos = useSelector(state => state.plano.planos);
+    const [busqueda, setBusqueda] = useState('');
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
+    const [totalItemsCount, settotalItemsCount] = useState(3);
+    const [activePage, setactivePage] = useState(1);
+    const [dataPlanos, setDataPlanos] = useState({"count":5,"rows":[]});
 
     useEffect(() => {
         async function initialLoad() {
             try {
-                await buscarPlanosAction('');
                 set_busquedaLocal(false);
+
+                let query =  await  queryString.stringify({busqueda, page, limit});
+                let listPlanos = await buscarPlano(query);
+                setDataPlanos(listPlanos)
+                settotalItemsCount(listPlanos.count)
             } catch (error) {
                 console.log(error);
             }
@@ -148,6 +164,39 @@ const Planos = ({history}) => {
         ejecutarPlanosFilter('');
     }
 
+    const cargarPopupDigitales = (codplano, archivos) => {
+        setCodPlanoPopup(codplano);
+        setArchivosPopup(archivos);
+        setMostrarPopup(true);
+    }
+
+    const cerrarModal=(estado)=>{
+        setMostrarPopup(estado);
+    }
+
+    const ejecutarEliminar = (id) => {
+        Axios.delete(`/plano/${id}`)
+        .then(() => {
+            ejecutarPlanosFilter(busqueda);
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }    
+
+    const callbackEliminarPlano = (idplano, codplano) => {
+        try {
+            console.log(idplano);
+            const toastrConfirmOptions = {
+                onOk: () => ejecutarEliminar(idplano),
+            };
+            toastr.confirm(`¿Desea eliminar el plano: ${codplano}?`, toastrConfirmOptions);
+        }
+        catch (e) {
+            toastr.error('Búsqueda de Planos', "Se encontró un error: " +  e.message);
+        }
+    }
+
     const buscarPlanosFilter=async (e)=>{
 
         if ((filtros.fechainicio && !filtros.fechafin) || (!filtros.fechainicio && filtros.fechafin)){
@@ -193,21 +242,37 @@ const Planos = ({history}) => {
             console.log('valorFiltros');
             console.log(valorFiltros);
         }
-
-        e.preventDefault();
-        
         ejecutarPlanosFilter(valorFiltros);
     }
 
-    const ejecutarPlanosFilter=async (filtros)=>{
+    const ejecutarPlanosFilter=async (datosfiltro)=>{
         set_busquedaLocal(true)
-        try {
-            await buscarPlanosAction(filtros);
+        setBusqueda(datosfiltro);
+        await setPage(1)
+        setactivePage(1)
+        let query =  await  queryString.stringify({page:1, limit});
+        if(datosfiltro) {
+            query += `&${datosfiltro}`;
         }
-        catch (e) {
-            toastr.error('Búsqueda de Planos', "Se encontró un error: " +  e.message);
-        }
+        let listPlanos = await buscarPlano(query);
+        setDataPlanos(listPlanos);
+        settotalItemsCount(listPlanos.count);
         set_busquedaLocal(false)
+    }
+
+    const handlePageChange = async (pageNumber) => {
+        await setPage(pageNumber)
+        setactivePage(pageNumber)
+        setPage(pageNumber)
+        
+        let query =  await  queryString.stringify({page:pageNumber, limit});
+        if(busqueda) {
+            query += `&${busqueda}`;
+        }
+
+        let listPlanos = await buscarPlano(query);
+        setDataPlanos(listPlanos);
+        settotalItemsCount(listPlanos.count);
     }
  
     // TODO: Revisar procedimiento de exportación
@@ -224,10 +289,10 @@ const Planos = ({history}) => {
         return false;
     }
 
-    const cabecerasTabla = ["#","ID", "Código del Plano", "Proyecto", "Profesional", "Fecha de Creación", "Ubicación","Digital", "Antecedente","Acciones"]
+    const cabecerasTabla = ["","ID", "CÓDIGO DEL PLANO", "PROYECTO", "PROFESIONAL", "FECHA DE CREACIÓN", "UBICACIÓN","DIGITAL", "ANTECEDENTE","ACCIONES"]
     return (
         <>
-        <Wraper titleForm={"Listado de Planos"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
+        <WraperLarge titleForm={"Listado de Planos"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Código de Plano</label>
                 <div className="col-lg-4">
@@ -388,9 +453,10 @@ const Planos = ({history}) => {
                     </div>
                 </div>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-1"></div>
+                    <div className="col-md-11">
                             {
                                 (busquedaLocal)?
                                     console.log('cargando datos de planos...')
@@ -399,21 +465,35 @@ const Planos = ({history}) => {
                                 }              
                     </div>
                 </div>
-            </div>
-
-            {/* <div className="panel panel-default">
+            </div> */}
+            <div className="panel panel-default">
                 {
                 (busquedaLocal)?
                     console.log('cargando datos de planos...')
                     :
+                    (
+                    <>
                     <TablePlano cabecera={cabecerasTabla}>
-                       {planos.map((plano, i) => (
-                            <PlanoRow nro={i} plano={plano}></PlanoRow>
+                       {/* {planos.map((plano, i) => ( */}
+                        {dataPlanos.rows.map((plano, i) => (
+                            <PlanoRow nro={i} plano={plano} callback={callbackEliminarPlano} loadfiles={cargarPopupDigitales}></PlanoRow>
                         ))}
                     </TablePlano>
+                    <div className="panel-footer clearfix pull-right">
+                        <Pagination
+                            activePage={activePage}
+                            itemsCountPerPage={limit}
+                            totalItemsCount={totalItemsCount}
+                            pageRangeDisplayed={3}
+                            onChange={handlePageChange}
+                        ></Pagination>
+                    </div>
+                    </>
+                    )
                 }
-            </div> */}
-        </Wraper>
+            </div>
+            {mostrarPopup && <MArcDigital closeventana={cerrarModal} codplano={codPlanoPopup} archivosdescargar={archivosPopup}/>}
+        </WraperLarge>
         </>
     );
 

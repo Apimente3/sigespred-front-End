@@ -1,6 +1,7 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {initAxiosInterceptors} from "../../../config/axios";
 import {toastr} from "react-redux-toastr";
+import MArcDigital from "../../_ddp_planos/MArcDigital";
 import history from '../../../history';
 
 const {$, jQuery, alasql} = window;
@@ -37,6 +38,11 @@ window.deletePlano = function(row_id, codplano){
     }
 }
 
+window.cargarPopupDigital = function(){
+    console.log('Revisar');
+    //setMostrarPopup(true);
+}
+
 const ejecutarEliminar = (id) => {
     Axios.delete(`/plano/${id}`)
     .then(() => {
@@ -53,6 +59,11 @@ const numberTemplate = {
     editrules: {number: true, required: true},
     searchoptions: {sopt: ["eq", "ne", "lt", "le", "gt", "ge", "nu", "nn", "in", "ni"]}
 };
+
+function linkDigitales(cellValue, options, rowdata, action) 
+{
+    return `<a class="cursorpointer" onclick="window.cargarPopupDigital(${options.rowId})" >${cellValue}</a>`;
+}  
 
 const gridcolumnModel = [
     {
@@ -124,7 +135,9 @@ const gridcolumnModel = [
         "width": 60,
         "editable": true,
         "search": false,
-        "hidden": false
+        "hidden": false,
+        "formatter":linkDigitales, 
+        //"formatoptions":{baseLinkUrl:'someurl.php', addParam: '&action=edit'}
     },
 
     {
@@ -211,6 +224,8 @@ const cargarGrid = (response) => {
 }
 
 const GridPlano = (datos) => {
+    const [mostrarPopup, setMostrarPopup] = useState(false);
+
     useEffect(() => {
         const init = async () => {
             await createGrid();
@@ -227,6 +242,7 @@ const GridPlano = (datos) => {
                     <table id="gridplano"></table>
                     <div id="pagerplano"></div>
                 </div>
+                {mostrarPopup && <MArcDigital/>}
             </>
         );
 };

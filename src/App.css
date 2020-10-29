@@ -764,6 +764,10 @@ input[type="checkbox"] {
     transition: all 0.3s ease 0s;
 }
 
+.cursorpointer {
+    cursor: pointer;   
+}
+
 .lightCustomModal_wrapper {
     opacity: 1;
     visibility: visible;

@@ -46,7 +46,7 @@ const MCodigoPlanos = ({dataMostrar}) => {
                                 </div>
 
                                 <div className="modal-footer">
-                                <a onClick={downloadTxtFile} className="btn btn-default btn-sm dropdown-toggle pull-left">Download txt</a>
+                                <a onClick={downloadTxtFile} className="btn btn-default btn-sm dropdown-toggle pull-left">Descargar Códigos</a>
                                     <Link to={`/planos`} className="btn btn-default btn-sm btn-control">Cerrar
                                     </Link>
                                 </div>

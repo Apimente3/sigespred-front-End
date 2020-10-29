@@ -117,7 +117,6 @@ const PlanoEdit = ({history, match}) => {
     }
 
     function handleInputChange(e) {
-        
         if(e.target.name){
             planoEdicion[e.target.name] = e.target.value;
             set_planoEditado({
@@ -382,7 +381,7 @@ const PlanoEdit = ({history, match}) => {
                                     Fecha de Creación
                                 </label>
                                 <div className="col-lg-8">
-                                    <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion input-sm" className="form-control" 
+                                    <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control" 
                                     value={planoEdicion.fechacreacion || ''}
                                     onChange={handleInputChange} />
                                 </div>
