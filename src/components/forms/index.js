@@ -9,6 +9,7 @@ import Input from "./Input";
 import InputInline from "./InputInline";
 import Options from "./Options";
 import FormFooter from "./FormFooter";
+import FormGroupInline from "./FormGroupInline";
 
 export {
     Form,
@@ -21,5 +22,6 @@ export {
     Options,
     FormControl,
     InputInline,
-    FormFooter
+    FormFooter,
+    FormGroupInline
 }

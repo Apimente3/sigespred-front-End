@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Row6 = ({children,title}) => {
+const Row6 = ({children,title=""}) => {
     return (
         <div className="col-lg-6">
-            <legend>{title}</legend>
+            { title.length!=0 ?<legend>{title}</legend>:null}
             {children}
         </div>
     );

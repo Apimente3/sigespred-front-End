@@ -19,7 +19,7 @@ const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*", reset
         };
         init();
     }, []);
-        
+
     if (resetContenido && !resetDone) {
         setSubiendoImagen('ninguno');
         setUrlDocumento('');
@@ -52,7 +52,7 @@ const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*", reset
             setUrlDocumento(data.path)
             setoriginalName(data.filename)
 
-            setFile(filesaved)
+            setFile(data.path)
 
             setSubiendoImagen(false);
             setPorcentajeSubida(0);

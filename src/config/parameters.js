@@ -30,7 +30,7 @@ export var tipourbanizacion_global=[{"tipourbanizacion":"AGR"},
 export const LISTASIDS = {
         GENERO: 1,
         TIPODOC: 2,
-        TIPOPRED: 3, 
+        TIPOPRED: 3,
         ANIO: 4,
         PROCESOSGPRED: 5,
         ESTADOPLANO: 6,
@@ -39,4 +39,10 @@ export const LISTASIDS = {
 export const FilesUsuario={
     "fotosUsuario":"Usuario/Fotos",
     "fotos":"Usuario/Fotos"
+}
+
+
+export const FilesGestionPredial={
+    "FilesSolicitud":"GestionPredial/Solicitudes",
+    "Files":"GestionPredial/Files"
 }

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {initAxiosInterceptors, serverFile} from '../../../config/axios'
-
+import {Link} from "react-router-dom";
+const {$} = window;
 
 const FileMultiple = ({eliminarFile,file}) => {
 
@@ -11,6 +12,14 @@ const FileMultiple = ({eliminarFile,file}) => {
     useEffect(() => {
         setId(id)
     }, []);
+
+    useEffect(() => {
+        const init = async () => {
+            $('[data-toggle="tooltip"]').tooltip()
+        };
+        init();
+    }, []);
+
 
     /*Eliminando archivos*/
     const eliminarArchivo=(e)=>{
@@ -24,16 +33,20 @@ const FileMultiple = ({eliminarFile,file}) => {
                     <span><b>{denominacion}</b> :</span><br></br>
                 </div>
                 <div className="pull-left m-left-sm ">
-                    <span>{path}</span><br></br>
+                    <span>{filename}</span><br></br>
                 </div>
 
 
                 <div className="btn-group hover-dropdown pull-right">
-                    <a href={`${serverFile}${filename}`} target={'_blank'} className="btn btn-xs btn-default" type="button">
+                    <a href={`${serverFile}${path}`} target={'_blank'} className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                       data-original-title={ "Descargar" }>
                         <i className="fa fa-download fa-lg"></i> </a>
 
-                    <a onClick={eliminarArchivo} href={'#'}  className="btn btn-xs btn-default" type="button"><i
+                    <a onClick={eliminarArchivo} href={'#'}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                       data-original-title={ "Eliminar archivo" }><i
                         className="fa fa-trash-o fa-lg"></i></a>
+
+
                 </div>
             </li>
         </>

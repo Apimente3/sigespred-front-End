@@ -3,6 +3,9 @@ import {initAxiosInterceptors, serverFile} from '../../../config/axios';
 import {toastr} from "react-redux-toastr";
 import Loading from './LoadingUploader'
 import FileMultiple from "./FileMultiple";
+import {Row12,FormFooter,InputInline,FormControl,Options,Input,RowForm,FormGroupInline} from "../../forms";
+
+import Row6 from "../../forms/Row6";
 
 const {$} = window;
 
@@ -20,18 +23,14 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
     const [localfiles, setLocalFiles] = useState(listFiles);
 
     useEffect(() => {
-
         async function initialLoad() {
             try {
                 setLocalFiles(listFiles())
-
             } catch (error) {
                 console.log(error);
             }
         }
-
         initialLoad();
-
     }, localfiles);
 
     const eliminarFile = (id) => {
@@ -41,8 +40,9 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
     }
 
     const addFile = (file) => {
-        setListFiles(file);
+
         setLocalFiles([...localfiles, file]);
+        setListFiles(localfiles);
     }
 
     const setdenominacionArch = (e) => {
@@ -51,10 +51,9 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
     }
 
 
-    const validatedenomiancion = () => {
-        if ($('#txtdenominacion').val().trim() == '') {
+    const validatedenomiancion = (e) => {
+        if (denominacionArchivo.trim() == '') {
             // setDenominacionArchivo('')
-            $('#txtdenominacion').focus()
             toastr.error('¡ Error !', 'Ingrese la Denominación', {position: 'top-center'})
             return;
         }
@@ -62,8 +61,9 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
 
     const uploadFile = async (e) => {
         try {
-
-
+            if(denominacionArchivo.trim()==''){
+                throw "No ingreso de denominacion";
+            }
             setSubiendoImagen(true);
             const file = e.target.files[0];
             var formData = new FormData()
@@ -75,33 +75,24 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
                     "content-type": "multipart/form-data"
                 },
                 onUploadProgress: progressEvent => {
-
                     console.log(progressEvent.loaded)
                    // var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     // setPorcentajeSubida(percentCompleted)
                 }
             };
             setSubiendoImagen('cargando')
-
-            const {data} = await Axios.post('/fileuploadJSONB?folder=' + folderSave, formData, config);
-            //const {filename,id,path,usuareg_id}=data;
-            console.log(data)
-
-            let filesaved = data;
-
-            setUrlDocumento(data.path)
-            setoriginalName(data.filename)
-
+            const {data} = await Axios.post(`/fileuploadJSONB?folder=${folderSave}&denominacion=${denominacionArchivo}`, formData, config);
 
             //  let filesaved = {filesave: data.filesave, originalname: data.originalname};
             setLocalFiles([...localfiles,data])
-
-            setSubiendoImagen(false)
-            toastr.info('¡ Correcto !', 'Se subio correctamente el Documento', {position: 'top-right'})
+            setListFiles([...localfiles,data]);
+            setSubiendoImagen(false);
+            toastr.info('¡ Correcto !', 'Se subio correctamente el Documento', {position: 'top-right'});
+            setDenominacionArchivo('')
 
         } catch (error) {
             setSubiendoImagen('ninguno');
-            setSubiendoImagen(true);
+            setSubiendoImagen(false);
             console.log(error);
             toastr.error('¡ Error !', JSON.stringify(error), {position: 'top-right'})
         }
@@ -109,46 +100,37 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
     return (
         <>
             {subiendoImagen ? <Loading/> :
-                (<div className={''}>
+                (<div>
 
-
-                    <div className="form-group">
-                        <div className="col-lg-8">
-
-                            <div className="form-group ">
-                                <label className="col-lg-2 control-label">Denominacion </label>
-                                <div className="col-lg-4">
-                                    <input id="txtdenominacion" className="form-control input-sm"
-                                           placeholder="Denominacion" onChange={setdenominacionArch}/>
-
+                    <RowForm>
+                        <Row6 title={""}>
+                            <FormGroupInline >
+                            <InputInline require={false} onChange={setdenominacionArch} label={"Denominacion"} placeholder={"Ingrese la denominacion del archivo"} ayuda={"Aqui vienen los archivos que viene junto a la solicitud de gestion predial como Planos, Base Grafico y otros"} withControl={8}></InputInline>
+                            </FormGroupInline>
+                        </Row6>
+                        <Row6 title={""}>
+                            <FormGroupInline >
+                                <label className="col-lg-4 control-label">Digital</label>
+                                <div className="col-lg-8">
+                                <input onClick={validatedenomiancion} onChange={uploadFile} type="file"/>
                                 </div>
-
-                                <label className="col-lg-2 control-label">Archivo </label>
-                                <div className="col-lg-4">
-                                    <input onClick={validatedenomiancion} onChange={uploadFile} type="file"/>
-                                </div>
-
+                            </FormGroupInline>
+                        </Row6>
+                    </RowForm>
+                    <RowForm>
+                        <Row12 title={""}>
+                            <div className="col-lg-8">
+                                <ul className="list-group">
+                                    {
+                                        localfiles.map(file => (
+                                            <FileMultiple serverFile={serverFile} eliminarFile={eliminarFile}
+                                                          file={file}/>
+                                        ))
+                                    }
+                                </ul>
                             </div>
-
-
-                        </div>
-                    </div>
-                    <br/>
-                    <br/>
-                    <div className="form-group">
-                        <div className="col-lg-8">
-                            <ul className="list-group">
-                                {
-                                    localfiles.map(file => (
-                                        <FileMultiple serverFile={serverFile} eliminarFile={eliminarFile}
-                                                      file={file}/>
-                                    ))
-                                }
-
-
-                            </ul>
-                        </div>
-                    </div>
+                        </Row12>
+                    </RowForm>
                 </div>)
             }
 

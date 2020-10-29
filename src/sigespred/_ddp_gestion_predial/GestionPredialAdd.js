@@ -15,8 +15,11 @@ import {
     InputInline,
     FormFooter
 } from "../../components/forms";
+
+import {useForm} from "../../hooks/useForm"
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
+import {FilesGestionPredial} from "../../config/parameters";
 
 
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
@@ -47,18 +50,26 @@ async function getListInfraestructura() {
     return data;
 }
 
+
+
+/*Guardar tipo de infraestrucra*/
+async function saveGestioPredial(body) {
+    const {data} = await Axios.post(`/gestionpredial`,body);
+    return data;
+}
+
+
 const GestionPredialAdd = ({history}) => {
 
-    const [gestionPredial, setGestionPredial] = useState({});
+    //const [gestionPredial, setGestionPredial] = useState({});
+
+    const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({}, ['resoministerial']);
     const [listTipoInfraestructura, setlistTipoInfraestructura] = useState([]);
     const [listInfraestructura, setlistInfraestructura] = useState([]);
     /*Files multiple */
-
     const [filesstate, setFilesstate] = useState([]);
 
     /*Valiables Globales*/
-
-
     useEffect(() => {
         const init = async () => {
             setlistTipoInfraestructura(await getListTipoInfraestructura());
@@ -74,41 +85,20 @@ const GestionPredialAdd = ({history}) => {
 
     const registrar = async e => {
         e.preventDefault();
-        // $('#btnguardar').button('loading');
         try {
-            //  await addTrabajador(trabajador);
+            await saveGestioPredial(gestionPredial)
             toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'})
-            history.push('/list-trabajadores')
         }
         catch (e) {
-            alert(e.message)
+            toastr.error('Registro Incorrecto', JSON.stringify(e), {position: 'top-right'})
         }
     }
 
-
-    /*Permite el cambio del los datos del trabajador*/
-
-    function handleInputChange(e) {
-        if (['nombres', 'apellidos', 'direccion', 'cargo'].includes(e.target.name)) {
-            setGestionPredial({
-                ...gestionPredial,
-                [e.target.name]: e.target.value.toUpperCase()
-            });
-        } else {
-            setGestionPredial({
-                ...gestionPredial,
-                [e.target.name]: e.target.value
-            });
-        }
-    }
 
     /*Permite Filtrar la infraestructura en relacion a una tipo de infraestrucutra*/
     const FiltrarInfraestructura = (e) => {
 
         let value = parseInt(e.target.value)
-        // alert(value)
-
-        //handleInputChange(e);
 
         let listInfraes = listInfraestructuraGlobal.filter(row => {
             return parseInt(row.tipoinfraestructuraid) == value;
@@ -116,22 +106,29 @@ const GestionPredialAdd = ({history}) => {
 
         console.log(listInfraes)
         setlistInfraestructura(listInfraes);
-
-
     }
 
     /*Permite agregar un file multiple*/
-    const setFiles=(newListFiles)=>{
-        setFilesstate([...filesstate,newListFiles])
+    const setFiles = (newListFiles) => {
+        setGestionPredial({...gestionPredial,archivos: newListFiles})
+    }
+
+    /*Permite agregar un file multiple*/
+    const setFilesArchivodigital = (path) => {
+        setGestionPredial({...gestionPredial, archivodigital: path});
+    }
+
+    /*Permite agregar un file multiple*/
+    const deleteFilesArchivodigital = () => {
+        setGestionPredial({...gestionPredial, archivodigital: null});
     }
 
     /*Permite eliminar  un file multiple*/
-    const removeFiles=(id)=>{
+    const removeFiles = (id) => {
         setFilesstate(
             filesstate.filter(file => file.id !== id)
         )
     }
-
 
 
     return (
@@ -155,47 +152,64 @@ const GestionPredialAdd = ({history}) => {
                                 <Options options={listInfraestructura} index={"id"} valor={"descripcion"}></Options>
                             </Select>
                         </FormGroup>
-
-                    </Row6>
-                    <Row6 title={"Archivos adjuntos en el documento"}>
-                        <FormGroupInline>
-                            <UploadMultiple listFiles={[]} setListFiles={setFiles} removeFiles={removeFiles}/>
-                        </FormGroupInline>
-                    </Row6>
-                </RowForm>
-
-                <RowForm>
-                    <Row6 title={"Datos del documento de inicio de la Gestión Predial"}>
-                        <FormGroup label={"Tipo de documento "} require={true}>
-                            <Select required={true} value={gestionPredial.tipodocumentoid} onChange={handleInputChange}
-                                    name={"tipo_infraestructura_id"}>
-                                <Options options={[{id: 1, value: "MEMORANDUM"},{id: 2, value: "CORREO"}]} index={"id"} valor={"value"}></Options>
-                            </Select>
-                        </FormGroup>
-                        <FormGroup label={"Nro de documento"} require={true} ayuda={"Ingrese el nro de documento"}>
-                            <Input required={true} value={""} onChange={handleInputChange}
-                                   name={"tipo_infraestructura_id"} placeholder={"Ingrese la nro de documento"}
+                        <FormGroup label={"Resolucion Ministerial"} require={true} ayuda={"Ingrese el nro de RM"}>
+                            <Input required={true} value={gestionPredial.resoministerial} onChange={handleInputChange}
+                                   name={"resoministerial"} placeholder={"Ingrese el nro de RM"}
                                    type={"text"}>
                             </Input>
                         </FormGroup>
-                        <FormGroup label={"Archivo del documento"} require={true} ayuda={"Archivo del documento de preferencia en PDF."}>
+
+                        <FormGroup label={"Fecha Resolucion Ministerial"} require={true}
+                                   ayuda={"Fecha de la RM de publicación"}>
+                            <Input required={true} value={gestionPredial.fechresoministerial}
+                                   onChange={handleInputChange}
+                                   name={"fechresoministerial"} placeholder={"Ingrese la fecha RM"}
+                                   type={"date"}>
+                            </Input>
+                        </FormGroup>
+
+                    </Row6>
+                    <Row6 title={"Datos del documento de inicio de la Gestión Predial"}>
+                        <FormGroup label={"Tipo de documento "} require={true}>
+                            <Select required={true} value={gestionPredial.tipodocumentoid} onChange={handleInputChange}
+                                    name={"tipodocumentoid"}>
+                                <Options options={[{id: 1, value: "MEMORANDUM"}, {id: 2, value: "CORREO"}]} index={"id"}
+                                         valor={"value"}></Options>
+                            </Select>
+                        </FormGroup>
+                        <FormGroup label={"Nro de documento"} require={true} ayuda={"Ingrese el nro de documento"}>
+                            <Input required={true} value={gestionPredial.nrodocumento} onChange={handleInputChange}
+                                   name={"nrodocumento"} placeholder={"Ingrese la nro de documento"}
+                                   type={"text"}>
+                            </Input>
+                        </FormGroup>
+                        <FormGroup label={"Archivo del documento"} require={true}
+                                   ayuda={"Archivo del documento de preferencia en PDF."}>
                             <UploadMemo key="upload_portada_imagen" file={{urlDocumento: ''}}
                                         accept={'.*'}
-                                        setFile={null} folderSave={''}
-                                        eliminar={null}></UploadMemo>
+                                        setFile={setFilesArchivodigital} folderSave={FilesGestionPredial.FilesSolicitud}
+                                        eliminar={deleteFilesArchivodigital}> </UploadMemo>
                         </FormGroup>
-                        <FormGroup label={"Fecha de documento"} require={true}>
-                            <Input required={true} value={""} onChange={handleInputChange}
-                                   name={"tipo_infraestructura_id"} placeholder={"Ingrese la denominacion de Proyecto"}
+                        <FormGroup label={"Fecha de documento"} require={true} >
+                            <Input required={true} value={gestionPredial.fechadocumento} onChange={handleInputChange}
+                                   name={"fechadocumento"} placeholder={"Ingrese la denominacion de Proyecto"}
                                    type={"date"}>
                             </Input>
                         </FormGroup>
                         <FormGroup label={"Asunto"} require={true} ayuda={"Asunto del documento de solicitud"}>
-                            <Input required={true} value={""} onChange={handleInputChange}
-                                   name={"tipo_infraestructura_id"} placeholder={"Ingrese el asunto del documento"}
+                            <Input required={true} value={gestionPredial.asunto} onChange={handleInputChange}
+                                   name={"asunto"} placeholder={"Ingrese el asunto del documento"}
                                    type={"text"}>
                             </Input>
                         </FormGroup>
+                    </Row6>
+                </RowForm>
+                <RowForm>
+                    <Row6 title={"Archivos adjuntos en el documento"}>
+                        <FormGroupInline>
+                            <UploadMultiple folderSave={FilesGestionPredial.Files} listFiles={[]}
+                                            setListFiles={setFiles} removeFiles={removeFiles}/>
+                        </FormGroupInline>
                     </Row6>
                 </RowForm>
                 <FormFooter>
