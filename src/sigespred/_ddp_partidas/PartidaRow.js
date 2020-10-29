@@ -19,7 +19,7 @@ const PartidarRow = ({partida,nro}) => {
                 <td>{partida.nropartida}</td>
                 <td>{partida.tramoid}</td>
                 <td>{partida.subtramoid}</td>
-                <td>{partida.tipopredioid}</td>
+                <td>{partida.tipopredio}</td>
                 <td>{partida.fechaatencion}</td>
                 <td>{partida.observacion}</td>
                 { partida.estadoatencion == 'ATENDIDO' ? <td className="colorCeldaAtendido" > <span className="badge badge-info">{partida.estadoatencion}</span></td> : <td className="colorCeldaPendiente"><span className="badge badge-danger">{partida.estadoatencion}</span></td>   }
