@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { REGISTRO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
-import { useForm } from "./useForm";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
@@ -21,12 +20,12 @@ const obtenerPartida = async (id) => {
 };
 
 const PartidaEdit = ({ history, match }) => {
-  //const {id} = match.params;
+
   const [partidaEdicion, setPartidaEdicion] = useState({});
   const editarPartidaAction = (partida) => dispatch(editar(partida));
-  //   const [formValues, handleInputChange] = useForm ({
 
-  //   });
+
+
   const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPOPRED,
   ]);
@@ -42,7 +41,7 @@ const PartidaEdit = ({ history, match }) => {
         [e.target.name]: e.target.value,
       });
     }
-    //TODO: remover console
+
   }
 
   const handleChangeProyecto = async (e) => {
