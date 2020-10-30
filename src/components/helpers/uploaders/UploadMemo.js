@@ -6,7 +6,7 @@ const Axios = initAxiosInterceptors();
 
 const UploadMemo = memo(({file, setFile,eliminar,folderSave, accept = "*", resetContenido=false}) => {
     //alert(JSON.stringify(file))
-
+ 
     const [subiendoImagen, setSubiendoImagen] = useState('ninguno');
     const [porcentajeSubida, setPorcentajeSubida] = useState(0);
     const [urlDocumento, setUrlDocumento] = useState(file.urlDocumento || '');

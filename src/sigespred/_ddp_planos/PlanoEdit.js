@@ -132,7 +132,7 @@ const PlanoEdit = ({history, match}) => {
         setReiniciarValDigital(false);
         set_planoArchTmp({
             ...planoArchTmp,
-            "digital": file.path
+            "digital": file
         });
     }
 
@@ -140,7 +140,7 @@ const PlanoEdit = ({history, match}) => {
         setReiniciarValMemoria(false);
         set_planoArchTmp({
             ...planoArchTmp,
-            "memoria": file.path
+            "memoria": file
         });
     }
 

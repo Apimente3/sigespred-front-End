@@ -105,3 +105,13 @@ export const ACTUALIZAR_AREA_BREADCRUM = [
 ]
 
 
+export const REGISTRO_SOLICITUD_BREADCRUM = [
+    // {link: "solicitud-add", name: "Agregar Solicitud"},
+    {link: "solicitud-list", name: "Listado de Solicitudes"},
+    {link: "#", name: "Agregar Solicitud"}
+]
+
+export const ACTUALIZAR_SOLICITUD_BREADCRUM = [
+    {link: "solicitud-add", name: "Agregar Solicitud"},
+    {link: "../solicitud-list", name: "Listado de Solicitudes"},
+    {link: "#", name: "Actualizar Solicitudes"}

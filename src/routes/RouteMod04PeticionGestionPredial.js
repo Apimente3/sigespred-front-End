@@ -5,10 +5,10 @@ import SolicitudDel from "../components/administracion/solicitudes/SolicitudDel"
 import SolicitudAddPred from "../components/administracion/solicitudes/SolicitudAddPred";
 
 const RouteMod04PeticionGestionPredial = [
-    {path: "/solicitudes", component: Solicitudes},
-    {path: "/solicitud-add", component: SolicitudAdd},
-    {path: "/solicitud-edit/:id", component: SolicitudEdit},
-    {path: "/solicitud-del/:codsolicitud", component: SolicitudDel},
-    {path: "/solicitud-add-pred/:id", component: SolicitudAddPred}
+    {path: "/solicitudes1", component: Solicitudes},
+    {path: "/solicitud-add1", component: SolicitudAdd},
+    {path: "/solicitud-edit1/:id", component: SolicitudEdit},
+    {path: "/solicitud-del1/:codsolicitud", component: SolicitudDel},
+    {path: "/solicitud-add-pred1/:id", component: SolicitudAddPred}
 ]
 export default RouteMod04PeticionGestionPredial;

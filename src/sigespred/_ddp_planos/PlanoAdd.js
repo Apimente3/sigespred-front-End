@@ -122,17 +122,20 @@ const PlanoAdd = ({history,  match}) => {
 
     const saveArchivoDigital = (file) => {
         setReiniciarValDigital(false);
+        console.log(file);
+        console.log('saveArchivoDigital')
         set_planoArchTmp({
             ...planoArchTmp,
-            "digital": file.path
+            "digital": file
         });
+        console.log(planoArchTmp);
     }
 
     const saveArchivoMemoria = (file) => {
         setReiniciarValMemoria(false);
         set_planoArchTmp({
             ...planoArchTmp,
-            "memoria": file.path
+            "memoria": file
         });
     }
 
@@ -152,6 +155,8 @@ const PlanoAdd = ({history,  match}) => {
 
     const handleChangeLamina = (e) => {
         var uidDate = moment().format("YYYYMMDDHHmmss");
+        console.log(planoArchTmp);
+        console.log('paso por aqui');
         set_planoArchTmp({
             ...planoArchTmp,
             "lamina": e.target.value,
@@ -160,7 +165,8 @@ const PlanoAdd = ({history,  match}) => {
     }
 
     const actualizarLista = () => {
-        
+        console.log('planoArchTmp');
+        console.log(planoArchTmp);
         if (planoArchTmp.lamina && planoArchTmp.digital) {
             set_listaArchivos(listaArchivos => [...listaArchivos, planoArchTmp]);
             set_planoArchTmp({
