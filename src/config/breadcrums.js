@@ -115,3 +115,4 @@ export const ACTUALIZAR_SOLICITUD_BREADCRUM = [
     {link: "solicitud-add", name: "Agregar Solicitud"},
     {link: "../solicitud-list", name: "Listado de Solicitudes"},
     {link: "#", name: "Actualizar Solicitudes"}
+]
