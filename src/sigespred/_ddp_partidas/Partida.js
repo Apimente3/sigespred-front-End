@@ -167,8 +167,6 @@ export const Partida = (history) => {
       console.log(valorFiltros);
     }
 
-    console.log("FILTROS");
-    console.log(valorFiltros);
     e.preventDefault();
     set_busquedaLocal(true);
     let dataFiltrada = await buscarPartida(valorFiltros);

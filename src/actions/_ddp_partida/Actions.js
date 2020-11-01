@@ -14,8 +14,7 @@ export const buscarPartida = (busqueda) => async (dispatch) => {
   let respuesta;
   if (busqueda) {
     respuesta = await axios.get(`/partidaregistral/buscar?${busqueda}`);
-    // console.log('-------------------ENTROOO')
-    // console.log(respuesta)
+
   } else {
     respuesta = await axios.get(`/partidaregistral/buscar`);
   }
@@ -26,7 +25,6 @@ export const buscarPartida = (busqueda) => async (dispatch) => {
 };
 
 export const editar = PARTIDA => async dispatch => {
-console.log('-----------------------ENTROOOOOOO---------------')
   console.log(PARTIDA)
   const respuesta = await axios.put(`/partidaregistral/${PARTIDA.id}`, PARTIDA);
   dispatch({

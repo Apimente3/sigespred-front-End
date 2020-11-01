@@ -1,79 +1,81 @@
-import React from "react";
-import WraperLarge from "../m000_common/formContent/WraperLarge";
-import { initAxiosInterceptors } from "../../config/axios";
-import { REGISTRO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
-import ComboOptions from "../../components/helpers/ComboOptions";
+import React, { useEffect, useState } from "react";
 import { toastr } from "react-redux-toastr";
-import { Link } from "react-router-dom";
-import { useForm } from "../../hooks/useForm";
-import {
-  Form,
-  FormGroup,
-  Row6,
-  Row12,
-  RowForm,
-  Select,
-  Input,
-  Options,
-  FormControl,
-  InputInline,
-  FormFooter,
-  FormGroupInline,
-} from "../../components/forms";
-
+import { Link, useParams } from "react-router-dom";
+import { FormFooter } from "../../components/forms";
+import ComboOptions from "../../components/helpers/ComboOptions";
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 
-const { $ } = window;
+import { initAxiosInterceptors } from "../../config/axios";
+import { REGISTRO_PLANO_BREADCRUM } from "../../config/breadcrums";
+import Wraper from "../m000_common/formContent/WraperLarge";
 const Axios = initAxiosInterceptors();
 
-/*Guardar tipo de infraestrucra*/
-async function saveDocumentosInternos(body) {
-  console.log(body)
-  const { data } = await Axios.post(`/docinterno`, body);
-  return data;
+const { $ } = window;
+
+async function obtenerDocumentoInterno(id) {
+    const {data} = await Axios.get(`/docinterno/${id}`);
+    return data;
 }
 
-const DocInternoAdd = ({ history }) => {
-  const [
-    documentosInternos,
-    setDocumentosInternos,
-    handleInputChange,
-    reset,
-  ] = useForm({}, [""]);
+async function updateDocumentoInterno(documentosInternos) {
+    const {data} = await Axios.put(`/docinterno/${documentosInternos.id}`,documentosInternos);
+    return data;
+}
+
+const DocInternoEdit = ({ history }) => {
+  const [documentosInternos, setDocumentosInternos] = useState({});
+  const [documentosInternosEditado, set_DocumentosInternosEditado] = useState({});
+  const { id } = useParams();
+
+  function handleInputChange(e) {
+    if (e.target.name) {
+        documentosInternos[e.target.name] = e.target.value;
+        set_DocumentosInternosEditado({
+        ...documentosInternosEditado,
+        [e.target.name]: e.target.value,
+      });
+    }
+
+  }
+
+  useEffect(() => {
+      const getDocumentoInterno = async (idDocInterno) => {
+          let documentoInternoDB = await obtenerDocumentoInterno(idDocInterno);
+          setDocumentosInternos(documentoInternoDB);
 
 
-    //   /*Valiables Globales*/
-    //   useEffect(() => {
-    //     const init = async () => {
-    //         setlistTipoInfraestructura(await getListTipoInfraestructura());
-    //         listInfraestructuraGlobal = await getListInfraestructura()
-    //         setlistInfraestructura(listInfraestructuraGlobal);
-    //     };
-    //     init();
-    // }, []);
+      }
+      getDocumentoInterno(id);
+  }, []);
 
-  const registrar = async (e) => {
+  const actualizar = async (e) => {
     e.preventDefault();
+
+    set_DocumentosInternosEditado({
+        ...documentosInternosEditado,
+      });
+
+    $("#btnguardar").button("loading");
     try {
-      await saveDocumentosInternos(documentosInternos);
-      toastr.success("Registro Correcto", "Se registro correctamente.", {
-        position: "top-right",
-      });
-      history.push("/docinternos")
+       await updateDocumentoInterno(documentosInternos);
+      toastr.success(
+        "Actualización del documento interno",
+        "El documento interno fue actualizado correctamente."
+      );
+      $("#btnguardar").button("reset");
+      history.push("/docinternos");
     } catch (e) {
-      toastr.error("Registro Incorrecto", JSON.stringify(e), {
-        position: "top-right",
-      });
+      alert(e.message);
     }
   };
 
   return (
     <>
-      <WraperLarge
-        titleForm={"Registro de Documentacion interna "} // + partidaRespuesta.id}
-        listbreadcrumb={REGISTRO_PARTIDA_BREADCRUM}
+      <Wraper
+        titleForm={"Edicion del Documento interno " + documentosInternos.id}
+        listbreadcrumb={REGISTRO_PLANO_BREADCRUM}
       >
-        <form onSubmit={registrar}>
+        <form onSubmit={actualizar}>
           <div className="form-group">
             <div className="form-group col-lg-11">
               <fieldset className="mleft-20">
@@ -184,6 +186,7 @@ const DocInternoAdd = ({ history }) => {
                       required
                       title="El codigo STD  es requerido"
                       autoComplete="off"
+                      value={documentosInternos.codigostd}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -205,6 +208,7 @@ const DocInternoAdd = ({ history }) => {
                       id="fecharecepcion"
                       name="fecharecepcion"
                       className="form-control input-sm"
+                      value={documentosInternos.fecharecepcion}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -221,6 +225,7 @@ const DocInternoAdd = ({ history }) => {
                       //title="El codigo STD  es requerido"
                       autoComplete="off"
                       onChange={handleInputChange}
+                      value={documentosInternos.numdocrecepcion}
                     />
                   </div>
                 </div>
@@ -237,6 +242,7 @@ const DocInternoAdd = ({ history }) => {
                       title="El codigo STD  es requerido"
                       autoComplete="off"
                       onChange={handleInputChange}
+                      value={documentosInternos.comentariorecepcion}
                     />
                   </div>
                   <label className="col-lg-2 control-label">
@@ -274,9 +280,9 @@ const DocInternoAdd = ({ history }) => {
             </button>
           </FormFooter>
         </form>
-      </WraperLarge>
+      </Wraper>
     </>
   );
 };
 
-export default DocInternoAdd;
+export default DocInternoEdit;
