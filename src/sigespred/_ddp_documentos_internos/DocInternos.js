@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { REGISTRO_PLANO_BREADCRUM } from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import TableDocInterno from "./TablaDocInterno";
@@ -7,6 +7,7 @@ import { initAxiosInterceptors } from "../../config/axios";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import { useForm } from "../../hooks/useForm";
 import { Link } from "react-router-dom";
+import DocInternoRow from "./DocInternoRow";
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -19,6 +20,11 @@ const DocInternos = () => {
   const [totalItemsCount, settotalItemsCount] = useState(3);
   const [page, setPage] = useState(1);
   const [busqueda, setBusqueda] = useState("");
+  const [busquedaLocal, set_busquedaLocal] = useState(true);
+  const [documentosInternos, setDocumentosInternos] = useState({
+    count: 5,
+    rows: [],
+  });
 
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber);
@@ -35,6 +41,34 @@ const DocInternos = () => {
     // settotalItemsCount(listPlanos.count);
   };
 
+  async function buscarDocumentosInternos(query) {
+    const { data } = await Axios.get(`/docinterno`);
+    return data;
+  }
+
+  useEffect(() => {
+    async function initialLoad() {
+      try {
+        let documentosInternosDB = await buscarDocumentosInternos();
+
+        set_busquedaLocal(false);
+        setDocumentosInternos({ count: 50, rows: documentosInternosDB });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    initialLoad();
+  }, []);
+
+  const buscarPartidasFilter = async (e) => {
+    e.preventDefault();
+    set_busquedaLocal(true);
+    let dataFiltrada = await buscarDocumentosInternos();//valorFiltros
+    setDocumentosInternos({ count: 50, rows: dataFiltrada });
+    set_busquedaLocal(false);
+  };
+
+  const limpiarPartidaFilter = (e) => {};
   const cabecerasTabla = [
     "",
     "ID",
@@ -207,14 +241,18 @@ const DocInternos = () => {
                 to={`/docinternos-add`}
                 className="btn btn-danger btn-sm fullborder"
               >
-                <i className="fa fa-plus-circle"></i> Agregar 
+                <i className="fa fa-plus-circle"></i> Agregar
               </Link>
             </div>
           </div>
         </div>
 
         <div className="panel panel-default">
-          <TableDocInterno cabecera={cabecerasTabla}></TableDocInterno>
+          <TableDocInterno cabecera={cabecerasTabla}>
+          {documentosInternos.rows.map((docinterno, i) => (
+              <DocInternoRow nro={i} docinterno={docinterno}></DocInternoRow>
+            ))}
+          </TableDocInterno>
           <div className="panel-footer clearfix pull-right">
             <Pagination
               activePage={activePage}
