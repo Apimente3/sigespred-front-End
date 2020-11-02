@@ -1,7 +1,7 @@
 import React, {useEffect, useState,createContext} from 'react';
 import {Link} from "react-router-dom";
 import Wraper from "../m000_common/formContent/WraperLarge";
-import {LISTADO_TRABAJADOR_BREADCRUM} from "../../config/breadcrums";
+import {LISTAR_GESTIONPREDIAL_BREADCRUM} from "../../config/breadcrums";
 import {initAxiosInterceptors, serverFile} from '../../config/axios';
 import TableTrabajador from "./Table";
 import TrabajadorRow from "./Row";
@@ -97,7 +97,7 @@ const GestionPredials = ({history}) => {
     return (
         <>
             <WizardContext.Provider value={context}>
-                <Wraper titleForm={"Listado de Gestion Prediales"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
+                <Wraper titleForm={"Listado de Gestion Prediales"} listbreadcrumb={LISTAR_GESTIONPREDIAL_BREADCRUM}>
                     <fieldset className={'fielsettext'}>
                         <form onSubmit={buscarTrabadorFilter}>
                             <div className="row">

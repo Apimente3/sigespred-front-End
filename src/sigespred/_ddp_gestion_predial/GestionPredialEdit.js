@@ -75,7 +75,7 @@ async function getGestionPredial(id) {
 
 /*Guardar tipo de infraestrucra*/
 async function saveGestioPredial(body) {
-    const {data} = await Axios.post(`/gestionpredial`,body);
+    const {data} = await Axios.put(`/gestionpredial`,body);
     return data;
 }
 
@@ -85,7 +85,7 @@ const GestionPredialAdd = ({match,history}) => {
     //const [gestionPredial, setGestionPredial] = useState({});
     const {id}=match.params;
 
-    const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({archivos:[]}, ['resoministerial']);
+    const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({archivos:[]}, ['resoministerial','nrodocumento']);
     const [listTipoInfraestructura, setlistTipoInfraestructura] = useState([]);
     const [listInfraestructura, setlistInfraestructura] = useState([]);
     /*Files multiple */
@@ -98,7 +98,7 @@ const GestionPredialAdd = ({match,history}) => {
             listInfraestructuraGlobal = await getListInfraestructura()
             setlistInfraestructura(listInfraestructuraGlobal);
             let gestPredial= await getGestionPredial(id);
-            alert(JSON.stringify(gestPredial))
+           // alert(JSON.stringify(gestPredial))
             setGestionPredial(gestPredial)
 
         };
@@ -134,32 +134,7 @@ const GestionPredialAdd = ({match,history}) => {
         setlistInfraestructura(listInfraes);
     }
 
-    /*Permite agregar un file multiple*/
-    const setFiles = (newListFiles) => {
-        setGestionPredial({...gestionPredial,archivos: newListFiles})
-    }
 
-    /*Permite agregar un file multiple*/
-    const setFilesArchivodigital =useCallback( (path) => {
-        setGestionPredial( v => {
-          return  {...v, archivodigital: path}
-        });
-    },[gestionPredial.archivos]);
-
-    /*Permite agregar un file multiple*/
-    const deleteFilesArchivodigital = useCallback(() => {
-        setGestionPredial( gestionPredial => {
-            return  {...gestionPredial, archivodigital: null}
-        });
-       // setGestionPredial({...gestionPredial, archivodigital: null});
-    },[gestionPredial.archivos]);
-
-    /*Permite eliminar  un file multiple*/
-    const removeFiles = (id) => {
-        setFilesstate(
-            filesstate.filter(file => file.id !== id)
-        )
-    }
 
     return (
         <Wraper titleForm={"Registro de Gestion Predial"} listbreadcrumb={ACTUALIZA_GESTIONPREDIAL_BREADCRUM}>

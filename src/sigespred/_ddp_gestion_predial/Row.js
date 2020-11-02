@@ -25,11 +25,9 @@ const TrabajadorRow = ({row,nro}) => {
                     <div className="btn-group pull-right">
 
                         <Link  to={`/gestionpredial-edit/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
-                               data-original-title={ "Editar fila" }><i
+                               data-original-title={ "Editar" }><i
                             className="fa fa-edit fa-lg"></i></Link>
-                        <Link  to={`/gestionpredial-del/${row.id}`}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
-                               data-original-title={ "Eliminar fila" }><i
-                            className="fa fa-trash-o fa-lg"></i></Link>
+
 
 
 

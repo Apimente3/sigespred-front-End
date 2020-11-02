@@ -65,7 +65,7 @@ const UploadFileMultiple = memo(({form, setForm, handleInputChange, nameUpload, 
     const [denominacionArchivo, setDenominacionArchivo] = useState('');
 
     const eliminarFile = (file) => {
-        console.log(file)
+
         let result = form[nameUpload].reduce((p,c) => (c.id !== file.id && p.push(c),p),[]);
         console.log(result)
             //form[nameUpload].filter(file => file.id !== id);
