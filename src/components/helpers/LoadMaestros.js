@@ -62,3 +62,8 @@ export const helperGetListTramos = async(params) => {
         const {data:tramos} = await Axios.get(`/tramos`);
         return {tramos};
 }
+
+export const helperGetListEntidades = async() => {
+        const {data:entidades} = await Axios.get(`/entidad`);
+        return {entidades};
+}

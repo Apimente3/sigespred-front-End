@@ -478,7 +478,7 @@ const PlanoAdd = ({history,  match}) => {
                                 <label className="col-lg-4 control-label">Plano Dígital</label>
                                 <div className="col-lg-6">
                                     <UploadMemo key="planodigitaltmp" file={{urlDocumento:''}}
-                                    accept={'.jpg,.png,.gif'} resetContenido={reiniciarValDigital}
+                                    accept={'.*'} resetContenido={reiniciarValDigital}
                                     setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
                             </div>
@@ -486,7 +486,7 @@ const PlanoAdd = ({history,  match}) => {
                                 <label className="col-lg-4 control-label">Memoría Descriptiva</label>
                                 <div className="col-lg-6">
                                     <UploadMemo key="memdescriptivatmp" file={{urlDocumento:''}}
-                                    accept={'.jpg,.png,.gif'} resetContenido={reiniciarValMemoria}
+                                    accept={'.*'} resetContenido={reiniciarValMemoria}
                                     setFile={saveArchivoMemoria} folderSave={"FotosUsuarios"} eliminar={deleteArchivoMemoria}></UploadMemo>
                                 </div>
                                 <div className="col-lg-2">

@@ -21,10 +21,10 @@ const Axios = initAxiosInterceptors();
 const SolicitudAdd = ({history,  match}) => {
     const [solicitud, setSolicitud] = useState({});
     // const [planoArchTmp, set_planoArchTmp] = useState({digital: '', memdescriptiva: ''});
-    // const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, [""]);
+    const resListaEntidades = useAsync(helperGets.helperGetListEntidades, []);
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
-    // const resListaAnios = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.ANIO]);
-    // const resListaProcesos = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PROCESOSGPRED]);
+    const resListaTipoSolic = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
+    const resListaCanalEnvio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.SOLICCANALENVIO]);
     // const resListaDepartmento = useAsync(helperGets.helperGetListDepartamento, []);
     // const resListaProvincia = useAsync(helperGets.helperGetListProvincia,[]);
     // const resListaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
@@ -324,11 +324,9 @@ const SolicitudAdd = ({history,  match}) => {
                                             onChange={handleInputChange}
                                             >
                                                 <option value="">--SELECCIONE--</option>
-                                                {/* {resListaTipoPlano.error
-                                                ? "Se produjo un error cargando los tipos de plano"
-                                                : resListaTipoPlano.loading
-                                                ? "Cargando..."
-                                                : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />} */}
+                                                {resListaTipoSolic.result
+                                                ? <ComboOptions data={resListaTipoSolic.result} valorkey="valorcodigo" valornombre="valortexto" />
+                                                : "Cargando..."}
                                             </select>
                                         </div>
                                     </div>
@@ -428,6 +426,9 @@ const SolicitudAdd = ({history,  match}) => {
                                         <div className="col-lg-8">
                                             <select id="entidadid" name="entidadid" className="form-control input-sm" onChange={handleInputChange}>
                                                 <option value="">--SELECCIONE--</option>
+                                                {resListaEntidades.result
+                                                ? <ComboOptions data={resListaEntidades.result} valorkey="id" valornombre="nombre" />
+                                                : "Cargando..."}
                                             </select>
                                         </div>
                                     </div>
@@ -447,6 +448,9 @@ const SolicitudAdd = ({history,  match}) => {
                                             onChange={handleInputChange}
                                             >
                                                 <option value="">--SELECCIONE--</option>
+                                                {resListaCanalEnvio.result
+                                                ? <ComboOptions data={resListaCanalEnvio.result} valorkey="valorcodigo" valornombre="valortexto" />
+                                                : "Cargando..."}
                                             </select>
                                         </div>
                                     </div>

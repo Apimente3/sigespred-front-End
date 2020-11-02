@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import {serverFile} from "../../config/axios";
 
 const MArcDigital = ({closeventana, codplano, archivosdescargar}) => {
     
@@ -40,8 +41,14 @@ const MArcDigital = ({closeventana, codplano, archivosdescargar}) => {
                                             {archivosdescargar && archivosdescargar.length > 0 &&  archivosdescargar.map(function(item, i){
                                                 return (<tr key={`tr_lam_${item.laminaid}`}>
                                                             <td key={`lam_${item.laminaid}`}>{item.lamina}</td>
-                                                            <td key={`dig_${item.laminaid}`}>{item.digital}</td>
-                                                            <td key={`mem_${item.laminaid}`}>{item.memdescriptiva}</td>
+                                                            <td key={`dig_${item.laminaid}`}>{item.digital && 
+                                                                <a key={`adig_${item.laminaid}`} href={serverFile + item.digital} target="_blank" rel="noreferrer noopener">{item.digital}</a>
+                                                            }
+                                                            </td>
+                                                            <td key={`mem_${item.laminaid}`}>{item.memoria && 
+                                                                <a key={`amem_${item.laminaid}`} href={serverFile + item.memoria} target="_blank" rel="noreferrer noopener">{item.memoria}</a>
+                                                            }
+                                                            </td>
                                                         </tr>)
                                             })}
                                             </tbody>

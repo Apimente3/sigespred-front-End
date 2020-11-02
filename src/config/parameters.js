@@ -34,6 +34,8 @@ export const LISTASIDS = {
         ANIO: 4,
         PROCESOSGPRED: 5,
         ESTADOPLANO: 6,
+        TIPOSOLICEXT: 7,
+        SOLICCANALENVIO: 8,
     }
 
 export const FilesUsuario={
