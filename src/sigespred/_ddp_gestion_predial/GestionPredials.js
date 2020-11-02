@@ -127,7 +127,7 @@ const GestionPredials = ({history}) => {
                     <div className="panel panel-default">
                         <TableTrabajador cabecera={cabecerasTabla}>
                             {trabajadors.rows.map((trabajador, i) => (
-                                <TrabajadorRow nro={i} trabajador={trabajador}></TrabajadorRow>
+                                <TrabajadorRow nro={i} row={trabajador}></TrabajadorRow>
                             ))}
                         </TableTrabajador>
                         <div className="panel-footer clearfix pull-right">

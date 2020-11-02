@@ -42,6 +42,12 @@ export const REGISTRO_GESTIONPREDIAL_BREADCRUM = [
     {link: "#", name: "Registro Gestión Predial"}
 ]
 
+export const ACTUALIZA_GESTIONPREDIAL_BREADCRUM = [
+    {link: "../../", name: "Gestion Predial"},
+    {link: "gestionpredial", name: "Listado de Gestión Predial"},
+    {link: "#", name: "Actualiza Gestión Predial"}
+]
+
 //endregion
 
 export const LISTADO_PARTIDA_BREADCRUM = [

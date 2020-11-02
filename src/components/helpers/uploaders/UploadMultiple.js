@@ -5,13 +5,19 @@ import Loading from './LoadingUploader'
 import FileMultiple from "./FileMultiple";
 import {Row12,FormFooter,InputInline,FormControl,Options,Input,RowForm,FormGroupInline} from "../../forms";
 
+
 import Row6 from "../../forms/Row6";
 
 const {$} = window;
 
 const Axios = initAxiosInterceptors();
 
-const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) => {
+
+
+
+const UploadFileMultiple = ({estado,setListFiles, removeFiles, folderSave,useContext}) => {
+
+    const {archivos : localfiles}=useContext()
 
 
     const [subiendoImagen, setSubiendoImagen] = useState(false);
@@ -20,12 +26,14 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
     const [urlDocumento, setUrlDocumento] = useState(null);
     const [originalName, setoriginalName] = useState(null);
 
-    const [localfiles, setLocalFiles] = useState(listFiles);
+
+
+    //const [localfiles, setLocalFiles] = useState(listFiles);
 
     useEffect(() => {
         async function initialLoad() {
             try {
-                setLocalFiles(listFiles())
+              //  setLocalFiles(listFiles())
             } catch (error) {
                 console.log(error);
             }
@@ -35,14 +43,14 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
 
     const eliminarFile = (id) => {
         removeFiles(id)
-        setLocalFiles(localfiles.filter(file => file.id !== id));
+      //  setLocalFiles(localfiles.filter(file => file.id !== id));
 
     }
 
     const addFile = (file) => {
 
-        setLocalFiles([...localfiles, file]);
-        setListFiles(localfiles);
+        //setLocalFiles([...localfiles, file]);
+        setListFiles([...localfiles, file]);
     }
 
     const setdenominacionArch = (e) => {
@@ -84,7 +92,7 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
             const {data} = await Axios.post(`/fileuploadJSONB?folder=${folderSave}&denominacion=${denominacionArchivo}`, formData, config);
 
             //  let filesaved = {filesave: data.filesave, originalname: data.originalname};
-            setLocalFiles([...localfiles,data])
+           // setLocalFiles([...localfiles,data])
             setListFiles([...localfiles,data]);
             setSubiendoImagen(false);
             toastr.info('¡ Correcto !', 'Se subio correctamente el Documento', {position: 'top-right'});
@@ -117,6 +125,7 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
                             </FormGroupInline>
                         </Row6>
                     </RowForm>
+
                     <RowForm>
                         <Row12 title={""}>
                             <div className="col-lg-8">
@@ -131,6 +140,7 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
                             </div>
                         </Row12>
                     </RowForm>
+
                 </div>)
             }
 
@@ -140,5 +150,7 @@ const UploadFileMultiple = ({listFiles, setListFiles, removeFiles, folderSave}) 
 
     );
 };
+
+
 
 export default UploadFileMultiple;

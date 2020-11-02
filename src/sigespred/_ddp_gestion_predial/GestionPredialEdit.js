@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {REGISTRO_GESTIONPREDIAL_BREADCRUM} from "../../config/breadcrums";
+import React, {useState, useEffect, useRef, createContext, useContext,useCallback} from 'react';
+import {ACTUALIZA_GESTIONPREDIAL_BREADCRUM} from "../../config/breadcrums";
 
 import Wraper from "../m000_common/formContent/WraperLarge";
 import {
@@ -16,26 +16,38 @@ import {
     FormFooter
 } from "../../components/forms";
 
-import SingleUpload from "../../components/uploader/SingleUpload";
-import MultipleUpload from "../../components/uploader/MultipleUpload";
-
 import {useForm} from "../../hooks/useForm"
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import {FilesGestionPredial} from "../../config/parameters";
 
 
-import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 
-import {FilesUsuario} from "../../config/parameters";
+import SingleUpload from "../../components/uploader/SingleUpload";
+import MultipleUpload from "../../components/uploader/MultipleUpload";
+
 
 import {initAxiosInterceptors, serverFile} from '../../config/axios';
 import FormGroupInline from "../../components/forms/FormGroupInline";
 import UploadMultiple from "../../components/helpers/uploaders/UploadMultiple";
 
 const Axios = initAxiosInterceptors();
+const FilesFormContext = createContext();
 
 const {$} = window;
+
+/*Creacion de Hooks para el contecto*/
+
+export const useFilesFormContext = () => {
+    const context = useContext(FilesFormContext);
+    if (!context) {
+        throw new Error(
+            `Un componente compuesto de Wizard no puede ser
+       renderizado fuera del Wizard padre`
+        );
+    }
+    return context;
+};
 
 
 /*Listar tipo de infraestrucra*/
@@ -54,6 +66,12 @@ async function getListInfraestructura() {
 }
 
 
+/*Obtener Gestion Predial*/
+async function getGestionPredial(id) {
+    const {data} = await Axios.get(`/gestionpredial/${id}`);
+    return data;
+}
+
 
 /*Guardar tipo de infraestrucra*/
 async function saveGestioPredial(body) {
@@ -62,10 +80,12 @@ async function saveGestioPredial(body) {
 }
 
 
-const GestionPredialAdd = ({history}) => {
+const GestionPredialAdd = ({match,history}) => {
 
-    /*Es necesario inicializar los valores por defecto */
-    const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({}, ['resoministerial']);
+    //const [gestionPredial, setGestionPredial] = useState({});
+    const {id}=match.params;
+
+    const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({archivos:[]}, ['resoministerial']);
     const [listTipoInfraestructura, setlistTipoInfraestructura] = useState([]);
     const [listInfraestructura, setlistInfraestructura] = useState([]);
     /*Files multiple */
@@ -77,7 +97,10 @@ const GestionPredialAdd = ({history}) => {
             setlistTipoInfraestructura(await getListTipoInfraestructura());
             listInfraestructuraGlobal = await getListInfraestructura()
             setlistInfraestructura(listInfraestructuraGlobal);
-            //setGestionPredial({...gestionPredial,archivos:[{id:"1",path:"asdasd",}]})
+            let gestPredial= await getGestionPredial(id);
+            alert(JSON.stringify(gestPredial))
+            setGestionPredial(gestPredial)
+
         };
         init();
     }, []);
@@ -102,6 +125,7 @@ const GestionPredialAdd = ({history}) => {
     const FiltrarInfraestructura = (e) => {
 
         let value = parseInt(e.target.value)
+
         let listInfraes = listInfraestructuraGlobal.filter(row => {
             return parseInt(row.tipoinfraestructuraid) == value;
         });
@@ -116,14 +140,19 @@ const GestionPredialAdd = ({history}) => {
     }
 
     /*Permite agregar un file multiple*/
-    const setFilesArchivodigital = (path) => {
-        setGestionPredial({...gestionPredial, archivodigital: path});
-    }
+    const setFilesArchivodigital =useCallback( (path) => {
+        setGestionPredial( v => {
+          return  {...v, archivodigital: path}
+        });
+    },[gestionPredial.archivos]);
 
     /*Permite agregar un file multiple*/
-    const deleteFilesArchivodigital = () => {
-        setGestionPredial({...gestionPredial, archivodigital: null});
-    }
+    const deleteFilesArchivodigital = useCallback(() => {
+        setGestionPredial( gestionPredial => {
+            return  {...gestionPredial, archivodigital: null}
+        });
+       // setGestionPredial({...gestionPredial, archivodigital: null});
+    },[gestionPredial.archivos]);
 
     /*Permite eliminar  un file multiple*/
     const removeFiles = (id) => {
@@ -133,7 +162,7 @@ const GestionPredialAdd = ({history}) => {
     }
 
     return (
-        <Wraper titleForm={"Registro de Gestion Predial"} listbreadcrumb={REGISTRO_GESTIONPREDIAL_BREADCRUM}>
+        <Wraper titleForm={"Registro de Gestion Predial"} listbreadcrumb={ACTUALIZA_GESTIONPREDIAL_BREADCRUM}>
             <Form onSubmit={registrar}>
                 <RowForm>
                     <Row6 title={"Datos de la Gestión Predial"}>
@@ -186,7 +215,7 @@ const GestionPredialAdd = ({history}) => {
                         </FormGroup>
                         <FormGroup label={"Archivo del documento"} require={true}
                                    ayuda={"Archivo del documento de preferencia en PDF."}>
-                            <SingleUpload
+                              <SingleUpload
                                 key="upload_portada_imagen"
                                 accept={'.*'}
                                 folderSave={FilesGestionPredial.FilesSolicitud}
@@ -211,9 +240,10 @@ const GestionPredialAdd = ({history}) => {
                     </Row6>
                 </RowForm>
                 <RowForm>
+
                     <Row6 title={"Archivos adjuntos en el documento"}>
                         <FormGroupInline>
-                            <MultipleUpload
+                             <MultipleUpload
                                 key="multiple"
                                 accept={'.*'}
                                 folderSave={FilesGestionPredial.FilesSolicitud}
@@ -224,6 +254,7 @@ const GestionPredialAdd = ({history}) => {
                             </MultipleUpload>
                         </FormGroupInline>
                     </Row6>
+
                 </RowForm>
                 <FormFooter>
                     <Link to={`/gestionpredial`}

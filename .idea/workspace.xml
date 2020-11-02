@@ -2,18 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f33408e-9338-484c-96b0-504a92e0d08d" name="Default Changelist" comment="Trabajador">
-      <change afterPath="$PROJECT_DIR$/src/hooks/useForm.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/forms/Table.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/uploader/Loading.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/uploader/LoadingUploader.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/uploader/MultipleUpload.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/uploader/SingleUpload.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialEdit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/Row6.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/Row6.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/Select.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/Select.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/forms/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/forms/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/helpers/uploaders/FileMultiple.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/helpers/uploaders/FileMultiple.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/helpers/uploaders/Loading.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/helpers/uploaders/Loading.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/helpers/uploaders/LoadingUploader.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/helpers/uploaders/LoadingUploader.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMultiple.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMultiple.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/parameters.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/parameters.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/breadcrums.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/breadcrums.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/RouteGestionPredial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/RouteGestionPredial.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialAdd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialAdd.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredials.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredials.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/Row.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/Row.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/m000_common/siderbars/SidebarAdm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m000_common/siderbars/SidebarAdm.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -79,16 +82,16 @@
     <session id="1709242">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="css" value="3" />
+          <entry key="css" value="5" />
           <entry key="gitignore" value="1" />
-          <entry key="js" value="176" />
+          <entry key="js" value="199" />
           <entry key="ts" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="3" />
-          <entry key="JavaScript" value="176" />
+          <entry key="CSS" value="5" />
+          <entry key="JavaScript" value="199" />
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="TypeScript" value="1" />
         </counts>
@@ -96,32 +99,34 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="26" />
-          <entry key="js" value="6230" />
+          <entry key="js" value="7831" />
           <entry key="txt" value="135" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="26" />
-          <entry key="JavaScript" value="6230" />
+          <entry key="JavaScript" value="7831" />
           <entry key="PLAIN_TEXT" value="135" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
-          <entry key="project.open.time.1" value="1" />
+          <entry key="project.closed" value="7" />
+          <entry key="project.open.time.1" value="3" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.15" value="1" />
-          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.5" value="3" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="3" />
-          <entry key="project.opened" value="9" />
+          <entry key="project.opened" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="ESLintLanguageService" value="9" />
+          <entry key="ESLintLanguageService" value="15" />
           <entry key="TypeScriptServerServiceImpl" value="1" />
         </counts>
       </usages-collector>
@@ -129,55 +134,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialAdd.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-163">
-              <caret line="108" selection-start-line="108" selection-end-line="108" />
-              <folding>
-                <element signature="e#0#57#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/forms/Select.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="28" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa11928.4342/useCounter.js">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/FileMultiple.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="40" column="49" selection-start-line="40" selection-start-column="49" selection-end-line="40" selection-end-column="49" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="72" column="18" lean-forward="true" selection-start-line="72" selection-start-column="18" selection-end-line="72" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/UploadMultiple.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="87" column="47" lean-forward="true" selection-start-line="87" selection-start-column="47" selection-end-line="87" selection-end-column="47" />
+            <state relative-caret-position="238">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
               <folding>
                 <element signature="e#0#49#0" expanded="true" />
               </folding>
@@ -186,40 +147,91 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/forms/InputInline.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-238">
-              <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/hooks/useForm.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="60" selection-start-line="2" selection-start-column="45" selection-end-line="2" selection-end-column="60" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/LoadingUploader.js">
+        <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/FileMultiple.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
-              <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+              <caret line="5" selection-start-line="5" selection-end-line="54" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js">
+        <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="121" column="45" lean-forward="true" selection-start-line="121" selection-start-column="45" selection-end-line="121" selection-end-column="45" />
+            <state relative-caret-position="-281">
+              <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="24" />
               <folding>
-                <element signature="e#0#57#0" expanded="true" />
+                <element signature="e#0#54#0" expanded="true" />
+                <element signature="e#1109#2620#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/uploader/SingleUpload.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="42" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
+              <folding>
+                <element signature="e#0#49#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/uploader/MultipleUpload.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="53" selection-start-column="53" selection-end-column="53" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/uploader/LoadingUploader.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#0#26#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/Loading.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="70" column="1" lean-forward="true" selection-start-line="70" selection-start-column="1" selection-end-line="70" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/uploader/Loading.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="27" lean-forward="true" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialEdit.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="26" column="70" lean-forward="true" selection-start-line="26" selection-start-column="70" selection-end-line="26" selection-end-column="70" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialAdd.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="18" selection-start-line="18" selection-end-line="19" selection-end-column="70" />
             </state>
           </provider>
         </entry>
@@ -235,13 +247,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>pattern</find>
-      <find>Institucional</find>
-      <find>trabajador</find>
-      <find>Axios</find>
-      <find>buscarTrabajador</find>
-      <find>buscarTrabajadorAction</find>
-      <find>trabajadores</find>
       <find>activePage</find>
       <find>option</find>
       <find>settotalItemsCount</find>
@@ -260,11 +265,18 @@
       <find>folderSave</find>
       <find>nro</find>
       <find>removeFiles</find>
-      <find>localfiles</find>
       <find>thro</find>
       <find>value</find>
-      <find>setListFiles</find>
       <find>setGestionPredial</find>
+      <find>setLocalFiles</find>
+      <find>setUrlDocumento</find>
+      <find>denominacionArchivo</find>
+      <find>localfiles</find>
+      <find>handleImagenSeleccionada</find>
+      <find>originalName</find>
+      <find>setListFiles</find>
+      <find>UploadMultiple</find>
+      <find>UploadMemo</find>
     </findStrings>
     <dirStrings>
       <dir>D:\MTC\Front-End-2020\sigespred-front-end\src\routes</dir>
@@ -279,11 +291,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/storybook.test.js" />
-        <option value="$PROJECT_DIR$/src/components/Tasklist/Tasklist.js" />
-        <option value="$PROJECT_DIR$/src/components/Tasklist/TaskList.stories.js" />
-        <option value="$PROJECT_DIR$/src/sigespred/m005_diagnostico_tecnico_legal/m005_02_interferencias/Interferencias.js" />
-        <option value="$PROJECT_DIR$/src/sigespred/m005_diagnostico_tecnico_legal/DatosGenerales.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m006_proceso_adquisicion_expropiacion/ModalUploadFile.js" />
         <option value="$PROJECT_DIR$/src/sigespred/base_grafica/BaseGrafica2.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m006_proceso_adquisicion_expropiacion/Adquisicion_expropiacion.js" />
@@ -299,12 +306,10 @@
         <option value="$PROJECT_DIR$/src/sigespred/m001_login/Login.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorDel.js" />
         <option value="$PROJECT_DIR$/src/routes/index.js" />
-        <option value="$PROJECT_DIR$/src/config/breadcrums.js" />
         <option value="$PROJECT_DIR$/src/components/forms/RowForm.js" />
         <option value="$PROJECT_DIR$/src/components/forms/Row12.js" />
         <option value="$PROJECT_DIR$/src/components/forms/Form.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m000_common/formContent/WraperLarge.js" />
-        <option value="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredials.js" />
         <option value="$PROJECT_DIR$/src/components/forms/FormControl.js" />
         <option value="$PROJECT_DIR$/src/components/forms/FormGroupInline.js" />
         <option value="$PROJECT_DIR$/src/components/forms/Options.js" />
@@ -313,23 +318,30 @@
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorEdit.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorRow.js" />
-        <option value="$PROJECT_DIR$/src/routes/RouteGestionPredial.js" />
         <option value="$PROJECT_DIR$/src/App.css" />
         <option value="$PROJECT_DIR$/src/components/forms/InputInline.js" />
         <option value="$PROJECT_DIR$/src/components/forms/FromGroup.js" />
         <option value="$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajadores.js" />
-        <option value="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/Row.js" />
         <option value="$PROJECT_DIR$/src/components/forms/index.js" />
         <option value="$PROJECT_DIR$/src/components/forms/Row6.js" />
         <option value="$PROJECT_DIR$/src/components/helpers/uploaders/LoadingUploader.js" />
         <option value="$PROJECT_DIR$/src/components/helpers/uploaders/Loading.css" />
-        <option value="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js" />
         <option value="$PROJECT_DIR$/src/config/parameters.js" />
         <option value="$PROJECT_DIR$/src/components/forms/Select.js" />
         <option value="$PROJECT_DIR$/src/components/helpers/uploaders/FileMultiple.js" />
-        <option value="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMultiple.js" />
         <option value="$PROJECT_DIR$/src/hooks/useForm.js" />
+        <option value="$PROJECT_DIR$/src/routes/RouteGestionPredial.js" />
+        <option value="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/Row.js" />
+        <option value="$PROJECT_DIR$/src/config/breadcrums.js" />
+        <option value="$PROJECT_DIR$/src/components/forms/Table.js" />
+        <option value="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredials.js" />
+        <option value="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js" />
+        <option value="$PROJECT_DIR$/src/sigespred/m000_common/siderbars/SidebarAdm.js" />
+        <option value="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMultiple.js" />
+        <option value="$PROJECT_DIR$/src/components/uploader/SingleUpload.js" />
+        <option value="$PROJECT_DIR$/src/components/uploader/MultipleUpload.js" />
         <option value="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialAdd.js" />
+        <option value="$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialEdit.js" />
       </list>
     </option>
   </component>
@@ -374,6 +386,19 @@
               <item name="demo" type="b2602c69:ProjectViewProjectNode" />
               <item name="demo" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="demo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="uploader" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="demo" type="b2602c69:ProjectViewProjectNode" />
@@ -426,10 +451,12 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="prettierjs.PrettierConfiguration.Package" value="D:\MTC\Front-End-2020\sigespred-front-end\node_modules\prettier" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2018.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\MTC\Front-End-2020\examplereact\demo\src\components\uploader" />
       <recent name="D:\MTC\Front-End-2020\examplereact\demo\src\components\forms" />
       <recent name="D:\MTC\Front-End-2020\examplereact\demo\src\sigespred\_ddp_gestion_predial" />
       <recent name="D:\MTC\Front-End-2020\sigespred-front-end\src\components\button\stories" />
@@ -483,6 +510,12 @@
       <workItem from="1603748330565" duration="2602000" />
       <workItem from="1603804680860" duration="1695000" />
       <workItem from="1603895992560" duration="15258000" />
+      <workItem from="1603982785105" duration="2470000" />
+      <workItem from="1604003227162" duration="599000" />
+      <workItem from="1604058241232" duration="6512000" />
+      <workItem from="1604090965487" duration="535000" />
+      <workItem from="1604091517190" duration="1083000" />
+      <workItem from="1604254073443" duration="14807000" />
     </task>
     <task id="LOCAL-00001" summary="Trabajador">
       <created>1603396622842</created>
@@ -544,12 +577,21 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="123443000" />
+    <option name="totallyTimeSpent" value="152234000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1923077" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1380597" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -559,16 +601,18 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49947312" weight="0.329718" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5052687" side_tool="true" visible="true" weight="0.30585682" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4947313" visible="true" weight="0.30585682" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49894625" weight="0.329718" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50959486" side_tool="true" visible="true" weight="0.26789588" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4904051" visible="true" weight="0.26789588" />
       <window_info anchor="bottom" id="Messages" order="11" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Codota" order="3" />
+      <window_info anchor="right" id="Json Parser" order="4" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -587,84 +631,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Gestion Predal ToolTips" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyecto.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-459" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/ProyectoAdd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="34" column="4" selection-start-line="34" selection-start-column="4" selection-end-line="34" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/gestionPredios/proce_1/InputAPN.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/gestionPredios/proce_1/InputDiptra.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="22" lean-forward="true" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/gestionPredios/proce_2/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="121" column="48" selection-start-line="121" selection-start-column="29" selection-end-line="121" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/gestionPredios/proce_3/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2244" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/gestionPredios/proce_4/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1683" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RouteMod11Reportes.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RouteMod12Reportes.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RoutePaginasGenerales.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/m005_diagnostico_tecnico_legal/m005_01_predios/DatosPredio.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1762">
-          <caret line="28" column="6" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RouteMod04PeticionGestionPredial.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RouteMod05DiagnosticoTecnicoLegal.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RouteMod05Predios.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="52" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RouteMod06ProcesoAdquisicionExpropiacion.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RouteMod02GestionTrabajadores.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/routes/RouteMod03GestionProyectos.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -694,23 +660,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/RouteGestionPredial.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#73#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sigespred/m005_diagnostico_tecnico_legal/modals/MvisitaCampo.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3145">
           <caret line="194" column="120" selection-start-line="194" selection-start-column="71" selection-end-line="194" selection-end-column="120" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -722,13 +675,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/Trabajador.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/App.css">
       <provider selected="true" editor-type-id="text-editor">
@@ -747,20 +694,10 @@
     <entry file="file://$USER_HOME$/Downloads/aportes.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredials.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="2" column="51" selection-start-line="2" selection-start-column="51" selection-end-line="2" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/forms/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="425">
           <caret line="25" column="19" selection-start-line="25" selection-start-column="19" selection-end-line="25" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -785,24 +722,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/Row.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/react-autosuggest/dist/Autowhatever.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="205">
           <caret line="31" column="192" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="192" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/Loading.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="86" column="1" selection-start-line="86" selection-start-column="1" selection-end-line="86" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -820,9 +743,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa11928.4342/useCounter.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa11928.4342/useCounter.js" />
     <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/LoadingUploader.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -830,16 +751,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa11928.1377/useForm.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa11928.1377/useForm.js" />
     <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
-          <caret line="121" column="45" lean-forward="true" selection-start-line="121" selection-start-column="45" selection-end-line="121" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#57#0" expanded="true" />
-          </folding>
+          <caret line="121" column="45" selection-start-line="121" selection-start-column="45" selection-end-line="121" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -857,30 +773,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/FileMultiple.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="40" column="49" selection-start-line="40" selection-start-column="49" selection-end-line="40" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="72" column="18" lean-forward="true" selection-start-line="72" selection-start-column="18" selection-end-line="72" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/UploadMultiple.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="87" column="47" lean-forward="true" selection-start-line="87" selection-start-column="47" selection-end-line="87" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#49#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/hooks/useForm.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="34">
@@ -888,13 +780,153 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/Table.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/forms/Table.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="30" column="20" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/Row.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="29" column="61" selection-start-line="29" selection-start-column="61" selection-end-line="29" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/RouteGestionPredial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredials.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="593">
+          <caret line="129" column="60" selection-start-line="129" selection-start-column="60" selection-end-line="129" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa9628.27418/Padre.js" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa9628.11162/MemoHook.js" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa9628.11377/Memorize.js" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa9628.17108/useCouter.js" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa9628.11511/CallbackHook.js" />
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/Rar$DIa9628.27589/Hijo.js" />
+    <entry file="file://$PROJECT_DIR$/src/config/breadcrums.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="748">
+          <caret line="44" column="47" selection-start-line="44" selection-start-column="13" selection-end-line="44" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/m000_common/formContent/WraperLarge.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/m000_common/siderbars/SidebarAdm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="51" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/FileMultiple.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="5" selection-start-line="5" selection-end-line="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/UploadMultiple.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/uploader/LoadingUploader.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/Loading.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="70" column="1" lean-forward="true" selection-start-line="70" selection-start-column="1" selection-end-line="70" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/uploader/Loading.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="27" lean-forward="true" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-281">
+          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+            <element signature="e#1109#2620#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/uploader/SingleUpload.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/uploader/MultipleUpload.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="53" selection-start-column="53" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialAdd.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-163">
-          <caret line="108" selection-start-line="108" selection-end-line="108" />
-          <folding>
-            <element signature="e#0#57#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="255">
+          <caret line="18" selection-start-line="18" selection-end-line="19" selection-end-column="70" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialEdit.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="26" column="70" lean-forward="true" selection-start-line="26" selection-start-column="70" selection-end-line="26" selection-end-column="70" />
         </state>
       </provider>
     </entry>

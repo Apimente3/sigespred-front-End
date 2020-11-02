@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 const {$} = window;
-const TrabajadorRow = ({trabajador,nro}) => {
+const TrabajadorRow = ({row,nro}) => {
 
 
     useEffect(() => {
@@ -14,20 +14,20 @@ const TrabajadorRow = ({trabajador,nro}) => {
     return (
         <>
             <tr>
-                <td>{trabajador.tipoinfraestructura}</td>
-                <td>{trabajador.infraestructura}</td>
-                <td>{trabajador.abreviatura}</td>
-                <td>{trabajador.denominacion}</td>
+                <td>{row.tipoinfraestructura}</td>
+                <td>{row.infraestructura}</td>
+                <td>{row.abreviatura}</td>
+                <td>{row.denominacion}</td>
 
-                <td>{trabajador.correo}</td>
+                <td>{row.correo}</td>
 
                 <td>
                     <div className="btn-group pull-right">
 
-                        <Link  to={`/trabajador-edit/${trabajador.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                        <Link  to={`/gestionpredial-edit/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                                data-original-title={ "Editar fila" }><i
                             className="fa fa-edit fa-lg"></i></Link>
-                        <Link  to={`/trabajador-del/${trabajador.id}`}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                        <Link  to={`/gestionpredial-del/${row.id}`}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                                data-original-title={ "Eliminar fila" }><i
                             className="fa fa-trash-o fa-lg"></i></Link>
 
