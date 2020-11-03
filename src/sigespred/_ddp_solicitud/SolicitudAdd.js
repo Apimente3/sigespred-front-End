@@ -34,6 +34,7 @@ const SolicitudAdd = ({history,  match}) => {
     // const [dataProv, set_dataProv] = useState(null);
     // const [dataDist, set_dataDist] = useState(null);
     const [dataTramo, setDataTramo] = useState(null);
+    const [dataEquipo, setDataEquipo] = useState(null);
     // const [listaArchivos, set_listaArchivos] = useState([]);
     // const [valAncedente, setValAntecedente] = useState('');
     // const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
@@ -53,9 +54,12 @@ const SolicitudAdd = ({history,  match}) => {
     const handleChangeProyecto = async(e) => {
         if (e.target.value) {
             let data = await helperGets.helperGetListTramos(e.target.value);
+            let dataEq = await helperGets.helperGetListEquipos(e.target.value);
             setDataTramo(data);
+            setDataEquipo(dataEq);
         } else {
             setDataTramo(null);
+            setDataEquipo(null);
         }
     }
 
@@ -92,7 +96,8 @@ const SolicitudAdd = ({history,  match}) => {
                 setSolicitud({
                     ...solicitud,
                     [e.target.name]: e.target.value,
-                    tramoid: ''
+                    tramoid: '',
+                    equipoid: ''
                 });
                 break;
             case 'departamentoid':
@@ -313,14 +318,16 @@ const SolicitudAdd = ({history,  match}) => {
                                             <input type="text" className="form-control input-sm" id="subtramo" name="subtramo" onChange={handleInputChange}/>
                                         </div>
                                     </div>
+                                </div>
+                                <div className="form-group col-lg-6">
                                     <div className="form-group">
                                         <label className="col-lg-4 control-label">
                                             <span className="obligatorio">* </span>Tipo de Consulta
                                         </label>
                                         <div className="col-lg-8">
                                             <select className="form-control input-sm" id="tipoconsultaid" name="tipoconsultaid"
-                                            // required
-                                            // title="El Tipo de Plano es requerido"
+                                            required
+                                            title="El Tipo de Consulta es requerido"
                                             onChange={handleInputChange}
                                             >
                                                 <option value="">--SELECCIONE--</option>
@@ -330,11 +337,9 @@ const SolicitudAdd = ({history,  match}) => {
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="form-group col-lg-6">
                                     <div className="form-group">
                                         <label className="col-lg-4 control-label">
-                                            <span className="obligatorio">* </span>Equipo
+                                            Equipo
                                         </label>
                                         <div className="col-lg-8">
                                             <select className="form-control input-sm" id="equipoid" name="equipoid"
@@ -343,11 +348,8 @@ const SolicitudAdd = ({history,  match}) => {
                                             onChange={handleInputChange}
                                             >
                                                 <option value="">--SELECCIONE--</option>
-                                                {/* {resListaTipoPlano.error
-                                                ? "Se produjo un error cargando los tipos de plano"
-                                                : resListaTipoPlano.loading
-                                                ? "Cargando..."
-                                                : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />} */}
+                                                {dataEquipo &&
+                                                <ComboOptions data={dataEquipo} valorkey="id" valornombre="equipo" />}
                                             </select>
                                         </div>
                                     </div>
@@ -359,7 +361,7 @@ const SolicitudAdd = ({history,  match}) => {
                                             : "Cargando..."}
                                         </div>
                                     </div>
-                                    <div className="form-group">
+                                    {/* <div className="form-group">
                                         <label className="col-lg-4 control-label">Código del Plano</label>
                                         <div className="col-lg-8">
                                             <input type="text" className="form-control input-sm" id="codplano" name="codplano" onChange={handleInputChange}/>
@@ -372,7 +374,7 @@ const SolicitudAdd = ({history,  match}) => {
                                             accept={'.*'}
                                             setFile={saveDigitalPlano} folderSave={"FotosUsuarios"} eliminar={deleteDigitalPlano}></UploadMemo>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </fieldset>
                         </div>
@@ -404,7 +406,7 @@ const SolicitudAdd = ({history,  match}) => {
                                         </div>
                                     </div>
                                     <div className="form-group">
-                                        <label className="col-lg-4 control-label"><span className="obligatorio">* </span>Digital de Documento Enviado <br />(Doc. + Anexos + Cargo)</label>
+                                        <label className="col-lg-4 control-label"><span className="obligatorio">* </span>Digital de Documento Enviado</label>
                                         <div className="col-lg-8">
                                             <UploadMemo key="urloficio" file={{urlDocumento:''}}
                                             accept={'.*'}
@@ -470,7 +472,7 @@ const SolicitudAdd = ({history,  match}) => {
                                         </div>
                                     </div>
                                     <div className="form-group">
-                                        <label className="col-lg-4 control-label">Descripcioón del Canal</label>
+                                        <label className="col-lg-4 control-label">Descripción del Canal</label>
                                         <div className="col-lg-8">
                                             <input type="text" className="form-control input-sm" id="descripcionenvio" name="descripcionenvio" onChange={handleInputChange}/>
                                         </div>

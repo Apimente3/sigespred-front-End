@@ -67,3 +67,12 @@ export const helperGetListEntidades = async() => {
         const {data:entidades} = await Axios.get(`/entidad`);
         return {entidades};
 }
+
+export const helperGetListEquipos = async(params) => {
+    if (params) {
+        const {data:equipos} = await Axios.get(`/equipolista?gestionpredialid=${params}`);
+        return {equipos};
+    }
+        const {data:equipos} = await Axios.get(`/equipolista`);
+        return {equipos};
+}
