@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import moment from 'moment';
-import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
+import {ACTUALIZAR_PLANO_BREADCRUM} from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr';
@@ -236,7 +236,7 @@ const PlanoEdit = ({history, match}) => {
 
         return (
             <>
-            <WraperLarge titleForm={"Edición de Plano: " + planoEdicion.codplano} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
+            <WraperLarge titleForm={"Edición de Plano: " + planoEdicion.codplano} listbreadcrumb={ACTUALIZAR_PLANO_BREADCRUM}>
                 <form onSubmit={actualizar}>
                     <div className="form-group">
                         <div className="form-group col-lg-6">

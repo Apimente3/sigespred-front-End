@@ -22,12 +22,6 @@ export const LISTADO_TRABAJADOR_BREADCRUM = [
     {link: "list-trabajadores", name: "Listado de Trabajadores"}
 ]
 
-export const REGISTRO_PLANO_BREADCRUM = [
-    {link: "plano-add", name: "Agregar Plano"},
-    {link: "planos", name: "Listado de Planos"},
-    {link: "plano-edit", name: "Editar Plano"}
-]
-
 export const REGISTRO_PARTIDA_BREADCRUM = [
     {link: "partida-add", name: "Agregar Partida"},
     {link: "partidas", name: "Listado de Partidas"},
@@ -132,4 +126,24 @@ export const ACTUALIZAR_SOLICITUD_BREADCRUM = [
 export const LISTADO_SOLICITUD_BREADCRUM = [
     {link: "solicitud-add", name: "Agregar Solicitud"},
     {link: "solicitud-list", name: "Listado de Solicitudes"}
+]
+
+export const REGISTRO_PLANO_BREADCRUM = [
+    {link: "planos", name: "Listado de Planos"},
+    {link: "#", name: "Agregar Plano"}
+]
+
+export const ACTUALIZAR_PLANO_BREADCRUM = [
+    {link: "../planos", name: "Listado de Planos"},
+    {link: "#", name: "Actualizar Plano"}
+]
+
+export const CODIGOS_PLANO_BREADCRUM = [
+    {link: "planos", name: "Listado de Planos"},
+    {link: "#", name: "Generación de Códigos de Plano"}
+]
+
+export const LISTADO_PLANO_BREADCRUM = [
+    {link: "plano-add", name: "Registrar Plano"},
+    {link: "#", name: "Listado de Planos"}
 ]

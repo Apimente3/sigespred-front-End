@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { useAsync } from "react-async-hook";
-import GridPlano from "../m000_common/grids/GridPlano";
 import {toastr} from 'react-redux-toastr';
 import TablePlano from "./TablePlano";
 import PlanoRow from "./PlanoRow";
@@ -13,7 +12,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import MArcDigital from './MArcDigital';
 import WraperLarge from "../m000_common/formContent/WraperLarge";
-import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
+import {LISTADO_PLANO_BREADCRUM} from "../../config/breadcrums";
 
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
@@ -292,7 +291,7 @@ const Planos = ({history}) => {
     const cabecerasTabla = ["","ID", "CÓDIGO DEL PLANO", "PROYECTO", "PROFESIONAL", "FECHA DE CREACIÓN", "UBICACIÓN","DIGITAL", "ANTECEDENTE","ACCIONES"]
     return (
         <>
-        <WraperLarge titleForm={"Listado de Planos"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
+        <WraperLarge titleForm={"Listado de Planos"} listbreadcrumb={LISTADO_PLANO_BREADCRUM}>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Código de Plano</label>
                 <div className="col-lg-4">
@@ -453,19 +452,6 @@ const Planos = ({history}) => {
                     </div>
                 </div>
             </div>
-            {/* <div className="form-group">
-                <div className="row">
-                    <div className="col-md-1"></div>
-                    <div className="col-md-11">
-                            {
-                                (busquedaLocal)?
-                                    console.log('cargando datos de planos...')
-                                    :
-                                    <GridPlano datos={planos}/>
-                                }              
-                    </div>
-                </div>
-            </div> */}
             <div className="panel panel-default">
                 {
                 (busquedaLocal)?
@@ -474,7 +460,6 @@ const Planos = ({history}) => {
                     (
                     <>
                     <TablePlano cabecera={cabecerasTabla}>
-                       {/* {planos.map((plano, i) => ( */}
                         {dataPlanos.rows.map((plano, i) => (
                             <PlanoRow nro={i} plano={plano} callback={callbackEliminarPlano} loadfiles={cargarPopupDigitales}></PlanoRow>
                         ))}

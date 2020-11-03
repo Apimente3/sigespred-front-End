@@ -37,8 +37,8 @@ const DrpAministrativo = ({history}) => {
     /*Funcion para cerrar session*/
 
     const cerrarSession = () => {
-        logout()
-
+        logout();
+        window.location = '/';
     }
 
 

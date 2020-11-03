@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
+import {CODIGOS_PLANO_BREADCRUM} from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
@@ -134,7 +134,7 @@ async function addPlanos(planos) {
 
         return (
             <>
-            <WraperLarge titleForm={"Generación Grupal de Códigos de Plano"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
+            <WraperLarge titleForm={"Generación Grupal de Códigos de Plano"} listbreadcrumb={CODIGOS_PLANO_BREADCRUM}>
                 <form onSubmit={registrar}>   
                     <div className="form-group col-lg-6">
                         <label className="col-lg-4 control-label">

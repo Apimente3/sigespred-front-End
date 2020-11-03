@@ -54,7 +54,7 @@ const Login = ({}) => {
                contrasenia: password
             });
             if (LoginSession(data)) {
-                history.push('/gestionpredials');
+                history.push('/planos');
                 setAuhtError(false)
             }else{
             }
