@@ -36,6 +36,8 @@ export const LISTASIDS = {
         ESTADOPLANO: 6,
         TIPOSOLICEXT: 7,
         SOLICCANALENVIO: 8,
+        REQAREALIST: 9,
+        TIPODOCINTER: 10
     }
 
 export const FilesUsuario={

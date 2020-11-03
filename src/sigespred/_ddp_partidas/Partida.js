@@ -5,25 +5,20 @@ import { initAxiosInterceptors } from "../../config/axios";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 
 import { LISTADO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
-import { useDispatch, useSelector } from "react-redux";
-
 import ComboOptions from "../../components/helpers/ComboOptions";
 import * as helperGets from "../../components/helpers/LoadMaestros";
-import GridPartida from "../m000_common/grids/GridPartida";
-import { buscarPartida } from "../../actions/_ddp_partida/Actions";
 import * as PARAMS from "../../config/parameters";
 import TablePartida from "./TablePartida";
 import PartidarRow from "./PartidaRow";
 import Pagination from "react-js-pagination";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
-const queryString = require("query-string");
 
+const queryString = require("query-string");
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
 const { $ } = window;
 
 export const Partida = (history) => {
-  const WizardContext = createContext();
 
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
   const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
@@ -32,7 +27,6 @@ export const Partida = (history) => {
 
   const [filtros, set_filtros] = useState("");
   const [busquedaLocal, set_busquedaLocal] = useState(true);
-  const dispatch = useDispatch();
 
   const [contentMessage, set_contentMessage] = useState("");
   const [busqueda, setBusqueda] = useState("");
@@ -40,12 +34,8 @@ export const Partida = (history) => {
   const [limit, setLimit] = useState(10);
   const [totalItemsCount, settotalItemsCount] = useState(3);
   const [activePage, setactivePage] = useState(1);
-  const [partidas, setPartidas] = useState({ count: 5, rows: [] });
   const [dataTramo, setDataTramo] = useState(null);
-
-  const context = {
-    nropagina: 1,
-  };
+  const [dataPartidas, setDataPartidas] = useState({ count: 5, rows: [] });
 
   async function buscarPartida(query) {
     const { data } = await Axios.get(`/partidaregistral/buscar?` + query);
@@ -55,10 +45,13 @@ export const Partida = (history) => {
   useEffect(() => {
     async function initialLoad() {
       try {
-        let partidasDB = await buscarPartida("");
-
         set_busquedaLocal(false);
-        setPartidas({ count: 50, rows: partidasDB });
+
+        let query = await queryString.stringify({ busqueda, page, limit });
+        let listaPartidas = await buscarPartida(query);
+        setDataPartidas(listaPartidas);
+        settotalItemsCount(listaPartidas.count);
+
       } catch (error) {
         console.log(error);
       }
@@ -75,15 +68,6 @@ export const Partida = (history) => {
     }
   };
 
-  const definirFiltro = () => {
-    let valFiltro = "";
-    let valorNroPartida = $("#nropartida").val().trim();
-    if (valorNroPartida) {
-      valFiltro = `nropartida=${valorNroPartida}`;
-    }
-
-    console.log(valFiltro);
-  };
 
   function handleInputChange(e) {
     switch (e.target.name) {
@@ -111,7 +95,7 @@ export const Partida = (history) => {
     console.log(filtros);
   }
 
-  const [proyectos, set_proyectos] = useState([]);
+  
 
   const buscarPartidasFilter = async (e) => {
     if (
@@ -166,33 +150,27 @@ export const Partida = (history) => {
       console.log("valorFiltros");
       console.log(valorFiltros);
     }
+    
+    ejecutarPartidasFilter(filtros);
+  };
 
-    e.preventDefault();
+  const ejecutarPartidasFilter = async (datosfiltro) => {
+     
     set_busquedaLocal(true);
-    let dataFiltrada = await buscarPartida(valorFiltros);
-    setPartidas({ count: 50, rows: dataFiltrada });
+    setBusqueda(datosfiltro);
+    await setPage(1);
+    setactivePage(1);
+    let query = await queryString.stringify({ page: 1, limit });
+    if (datosfiltro) {
+      query += `&${datosfiltro}`;
+    }
+    let listaPartidas = await buscarPartida(query);
+    //setPartidas({ count: 50, rows: dataFiltrada });
+    setDataPartidas(listaPartidas);
+    settotalItemsCount(listaPartidas.count);
     set_busquedaLocal(false);
   };
 
-  const descarxls = () => {
-    let listexportexcel = proyectos;
-    var resultgeojson = alasql(
-      `SELECT *
-                 FROM ? `,
-      [listexportexcel]
-    );
-    var opts = [
-      {
-        sheetid: "Reporte",
-        headers: true,
-      },
-    ];
-    var res = alasql('SELECT INTO XLSX("ListadoProyectos.xlsx",?) FROM ?', [
-      opts,
-      [resultgeojson],
-    ]);
-    return false;
-  };
 
   const limpiarPartidaFilter = (e) => {
     $("#nropartida").val("");
@@ -203,29 +181,31 @@ export const Partida = (history) => {
     $("#subtramoid").val("");
     $("#tipopredio").val("");
     $("#estadoatencion").val("");
-    
 
     // handleChangeProyecto("");
-    
 
     set_filtros({});
-    
-    //ejecutarPlanosFilter("");
+
+    ejecutarPartidasFilter('');
   };
 
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber);
-    //alert(pageNumber)
     setactivePage(pageNumber);
     setPage(pageNumber);
-    console.log(`active page is ${pageNumber}`);
+    //console.log(`active page is ${pageNumber}`);
     let query = await queryString.stringify({
-      busqueda,
       page: pageNumber,
       limit,
     });
-    // let trabajadores=await buscarTrabajador(query)
-    // setTrabajadores(trabajadores)
+
+    if (busqueda) {
+      query += `&${busqueda}`;
+    }
+
+    let listPartidas = await buscarPartida(query);
+    setDataPartidas(listPartidas);
+    settotalItemsCount(listPartidas.count);
   };
 
   const cabecerasTabla = [
@@ -248,7 +228,7 @@ export const Partida = (history) => {
         titleForm={"Listado de Partidas Registrales"}
         listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}
       >
-        <form onSubmit={buscarPartidasFilter}>
+        {/* <form onSubmit={buscarPartidasFilter}> */}
           <div className="form-group">
             <label className="col-lg-2 control-label">Nro Partida</label>
             <div className="col-lg-4">
@@ -258,7 +238,8 @@ export const Partida = (history) => {
                 id="nropartida"
                 name="nropartida"
                 placeholder="Numero de Partida Registral"
-                onChange={handleInputChange}
+                // onChange={handleInputChange}
+                onBlur={handleInputChange}
               />
             </div>
             <label className="col-lg-2 control-label">Proyecto</label>
@@ -315,7 +296,8 @@ export const Partida = (history) => {
                 id="subtramoid"
                 name="subtramoid"
                 placeholder="Ingrese el subtramo"
-                onChange={handleInputChange}
+                onBlur={handleInputChange}
+                // onChange={handleInputChange}
               />
             </div>
           </div>
@@ -395,6 +377,13 @@ export const Partida = (history) => {
             </div>
           </div>
           <div className="form-group">
+            <div className="row mb-3">
+              <div className="col-lg-6 text-center">
+                {contentMessage && (
+                  <label className="alert alert-danger">{contentMessage}</label>
+                )}
+              </div>
+            </div>
             <label className="col-lg-12 text-right">
               <button
                 type="button"
@@ -403,52 +392,49 @@ export const Partida = (history) => {
               >
                 <i className="fa fa-eraser"></i> Limpiar Filtro(s)
               </button>
-              <button type="submit" className="btn btn-info btn-sm ">
+              <button type="button" className="btn btn-info btn-sm fullborder " onClick={buscarPartidasFilter}  >
                 <i className="fa fa-search"></i> Aplicar Filtro(s)
               </button>
             </label>
           </div>
-        </form>
-        <div className="form-group">
-          <div className="col-lg-12 text-right">
-            <Link
-              to={`/partida-add`}
-              className="btn btn-danger pull-right btn-sm fullborder"
-            >
-              <i className="fa fa-plus"></i> Agregar Partida
-            </Link>
-            {/* <button
-              type="button"
-              onClick={descarxls}
-              className="btn btn-default pull-right btn-sm fullborder"
-            >
-              <i className="fa fa-file-excel-o"></i> Descargar Excel
-            </button> */}
+          <div className="mt-4  form-group">
+            <div className="row">
+              <div className="col-lg-12 text-right">
+                <Link
+                  to={`/partida-add`}
+                  className="btn btn-danger pull-right btn-sm fullborder"
+                >
+                  <i className="fa fa-plus"></i> Agregar Partida
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-        {/* <fieldset className={"fielsettext"}> */}
-        {/* <form onSubmit={buscarPartidasFilter}> */}
-
         {/* </form> */}
-        {/* </fieldset> */}
+
         <div className="panel panel-default">
-          <TablePartida cabecera={cabecerasTabla}>
-            {partidas.rows.map((partida, i) => (
-              <PartidarRow nro={i} partida={partida}></PartidarRow>
-            ))}
-          </TablePartida>
-          <div className="panel-footer clearfix pull-right">
-            <Pagination
-              activePage={activePage}
-              itemsCountPerPage={limit}
-              totalItemsCount={totalItemsCount}
-              pageRangeDisplayed={3}
-              onChange={handlePageChange}
-            ></Pagination>
-          </div>
+          {busquedaLocal ? (
+            console.log("cargando datos de planos...")
+          ) : (
+            <>
+              <TablePartida cabecera={cabecerasTabla}>
+          {/* {console.log(dataPartidas)} */}
+                {dataPartidas.rows.map((partida, i) => (
+                  <PartidarRow nro={i} partida={partida}></PartidarRow>
+                ))}
+              </TablePartida>
+              <div className="panel-footer clearfix pull-right">
+                <Pagination
+                  activePage={activePage}
+                  itemsCountPerPage={limit}
+                  totalItemsCount={totalItemsCount}
+                  pageRangeDisplayed={3}
+                  onChange={handlePageChange}
+                ></Pagination>
+              </div>
+            </>
+          )}
         </div>
       </WraperLarge>
-      {/* </WizardContext.Provider> */}
     </>
   );
 };
