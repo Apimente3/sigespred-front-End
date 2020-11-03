@@ -8,23 +8,56 @@ import ComboOptions from "../../components/helpers/ComboOptions";
 import { useForm } from "../../hooks/useForm";
 import { Link } from "react-router-dom";
 import DocInternoRow from "./DocInternoRow";
+import * as funcGlob from "../../components/helpers/FuncionesGlobales";
+import { toastr } from "react-redux-toastr";
+import { useAsync } from "react-async-hook";
+import * as helperGets from "../../components/helpers/LoadMaestros";
+import * as PARAMS from "../../config/parameters";
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
 const { $ } = window;
 const queryString = require("query-string");
 
+async function buscarDocumentosInternos(query) {
+  const { data } = await Axios.get(`/docinterno/buscar?` + query);
+  return data;
+}
+
 const DocInternos = () => {
-  const [activePage, setactivePage] = useState(1);
+  // const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({archivos:[]}, ['resoministerial','nrodocumento']);
+  const [filtros, set_filtros] = useState("");
+  const [contentMessage, set_contentMessage] = useState("");
+  const [busquedaLocal, set_busquedaLocal] = useState(true);
+  const [busqueda, setBusqueda] = useState("");
+  const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [totalItemsCount, settotalItemsCount] = useState(3);
-  const [page, setPage] = useState(1);
-  const [busqueda, setBusqueda] = useState("");
-  const [busquedaLocal, set_busquedaLocal] = useState(true);
-  const [documentosInternos, setDocumentosInternos] = useState({
+  const [activePage, setactivePage] = useState(1);
+  const [dataDocInteno, setDataDocInteno] = useState({
     count: 5,
     rows: [],
   });
+  const [mostrarPopup, setMostrarPopup] = useState(false);
+  const resListaTipoDocInterno = useAsync(helperGets.helperGetListDetalle, [
+    PARAMS.LISTASIDS.TIPODOCINTER,
+  ]);
+
+  useEffect(() => {
+    async function initialLoad() {
+      try {
+        set_busquedaLocal(false);
+
+        let query = await queryString.stringify({ busqueda, page, limit });
+        let listDocumentosInternos = await buscarDocumentosInternos(query);
+        setDataDocInteno(listDocumentosInternos);
+        settotalItemsCount(listDocumentosInternos.count);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    initialLoad();
+  }, []);
 
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber);
@@ -36,39 +69,167 @@ const DocInternos = () => {
       query += `&${busqueda}`;
     }
 
-    // let listPlanos = await buscarPlano(query);
-    // setDataPlanos(listPlanos);
-    // settotalItemsCount(listPlanos.count);
+    let listDocumentosInternos = await buscarDocumentosInternos(query);
+    setDataDocInteno(listDocumentosInternos);
+    settotalItemsCount(listDocumentosInternos.count);
   };
 
-  async function buscarDocumentosInternos(query) {
-    const { data } = await Axios.get(`/docinterno`);
-    return data;
-  }
+  const buscarDocumentosInternosFilter = async (e) => {
+    if (
+      (filtros.fechainicio && !filtros.fechafin) ||
+      (!filtros.fechainicio && filtros.fechafin)
+    ) {
+      set_contentMessage(
+        "El filtro Fecha de Creación, debe tener un inicio y fin"
+      );
+      return;
+    } else {
+      set_contentMessage("");
+    }
 
-  useEffect(() => {
-    async function initialLoad() {
-      try {
-        let documentosInternosDB = await buscarDocumentosInternos();
+    if (filtros.fechainicio && filtros.fechafin) {
+      let resultFechaInicio = funcGlob.helperValidarFecha(
+        filtros.fechainicio,
+        true
+      );
+      let resultFechaFin = funcGlob.helperValidarFecha(filtros.fechafin, true);
 
-        set_busquedaLocal(false);
-        setDocumentosInternos({ count: 50, rows: documentosInternosDB });
-      } catch (error) {
-        console.log(error);
+      if (resultFechaFin < resultFechaInicio) {
+        set_contentMessage(
+          "La Fecha de Creación de inicio no puede ser mayor a la de fin"
+        );
+        return;
+      } else {
+        set_filtros({
+          ...filtros,
+          fechainicio: resultFechaInicio,
+          fechafin: resultFechaFin,
+        });
+        $.each(filtros, function (key, value) {
+          if (key === "fechainicio") {
+            filtros[key] = resultFechaInicio;
+          }
+          if (key === "fechafin") {
+            filtros[key] = resultFechaFin;
+          }
+        });
       }
     }
-    initialLoad();
-  }, []);
 
-  const buscarPartidasFilter = async (e) => {
-    e.preventDefault();
+    let valorFiltros = "";
+    if (filtros) {
+      $.each(filtros, function (key, value) {
+        if (value === "" || value === null) {
+          delete filtros[key];
+        }
+      });
+      valorFiltros = $.param(filtros);
+      console.log("valorFiltros");
+      console.log(valorFiltros);
+    }
+
+    ejecutarDocInternosFilter(valorFiltros);
+  };
+
+  const ejecutarDocInternosFilter = async (datosfiltro) => {
     set_busquedaLocal(true);
-    let dataFiltrada = await buscarDocumentosInternos();//valorFiltros
-    setDocumentosInternos({ count: 50, rows: dataFiltrada });
+    setBusqueda(datosfiltro);
+    await setPage(1);
+    setactivePage(1);
+    let query = await queryString.stringify({ page: 1, limit });
+    if (datosfiltro) {
+      query += `&${datosfiltro}`;
+    }
+    let listDocinternos = await buscarDocumentosInternos(query);
+    setDataDocInteno(listDocinternos);
+    settotalItemsCount(listDocinternos.count);
     set_busquedaLocal(false);
   };
 
-  const limpiarPartidaFilter = (e) => {};
+  function handleInputChange(e) {
+    switch (e.target.name) {
+      case "equipoid":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
+        break;
+      case "monitorid":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
+        break;
+      case "tipodocumentoid":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
+        break;
+      case "codigostd":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value.toUpperCase(),
+        });
+        break;
+      default:
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
+    }
+    //TODO: remover console
+    console.log(filtros);
+  }
+
+  const limpiarDocumentacionInternaFilter = (e) => {
+    $("#equipoid").val("");
+    $("#monitorid").val("");
+    $("#fechainicio").val("");
+    $("#fechafin").val("");
+    $("#tipodocumentoid").val("");
+    $("#codigostd").val("");
+    $("#fecharecepcion").val("");
+    $("#numdocrecepcion").val("");
+    $("#reqareaid").val("");
+    $("#recibirespuesta").val("");
+
+    // handleChangeProyecto('');
+    // handleChangeDepartmento('');
+
+    set_filtros({});
+    ejecutarDocInternosFilter("");
+  };
+
+  const cerrarModal = (estado) => {
+    setMostrarPopup(estado);
+  };
+
+  const ejecutarEliminar = (id) => {
+    Axios.delete(`/docinterno/${id}`)
+      .then(() => {
+        ejecutarDocInternosFilter(busqueda);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const callbackEliminarDocumentoInterno = (iddocinterno, coddocinterno) => {
+    try {
+      console.log(iddocinterno);
+      const toastrConfirmOptions = {
+        onOk: () => ejecutarEliminar(iddocinterno),
+      };
+      toastr.confirm(
+        `¿Desea eliminar el Documento interno: ${coddocinterno}?`,
+        toastrConfirmOptions
+      );
+    } catch (e) {
+      toastr.error("Búsqueda de Documento interno", "Se encontró un error: " + e.message);
+    }
+  };
+
   const cabecerasTabla = [
     "",
     "ID",
@@ -118,8 +279,8 @@ const DocInternos = () => {
           <div className="col-lg-4">
             <select
               className="form-control input-sm"
-              id="monitor"
-              name="monitor"
+              id="monitorid"
+              name="monitorid"
               onChange={(e) => {
                 // handleChangeProyecto(e);
                 // handleInputChange(e);
@@ -146,25 +307,25 @@ const DocInternos = () => {
           <div className="col-lg-4">
             <select
               className="form-control input-sm"
-              id="equipotrabajoid"
-              name="equipotrabajoid"
+              id="tipodocumentoid"
+              name="tipodocumentoid"
               onChange={(e) => {
-                // handleChangeProyecto(e);
-                // handleInputChange(e);
+                
+                handleInputChange(e);
               }}
             >
               <option value="">--SELECCIONE--</option>
-              {/* {resListaProyectos.error ? (
-                "Se produjo un error cargando los tipos de plano"
-              ) : resListaProyectos.loading ? (
+              {resListaTipoDocInterno.error ? (
+                "Se produjo un error cargando los tipos de documento"
+              ) : resListaTipoDocInterno.loading ? (
                 "Cargando..."
-              ) : ( */}
+              ) : (
               <ComboOptions
-                //   data={resListaProyectos.result}
-                valorkey="id"
-                valornombre="denominacion"
+                  data={resListaTipoDocInterno.result}
+                  valorkey="valorcodigo"
+                  valornombre="valortexto"
               />
-              {/* )} */}
+               )} 
             </select>
           </div>
           <label className="col-lg-2 control-label">Fecha de Recepcion</label>
@@ -175,7 +336,7 @@ const DocInternos = () => {
               id="fecharecepcion"
               name="fecharecepcion"
               placeholder="Ingrese fecha de Recepcion"
-              // onChange={handleInputChange}
+              onChange={handleInputChange}
             ></input>
           </div>
         </div>
@@ -189,7 +350,7 @@ const DocInternos = () => {
               id="codigostd"
               name="codigostd"
               placeholder="Código del plano"
-              //   onBlur={handleInputChange}
+              onBlur={handleInputChange}
             />
           </div>
           <label className="col-lg-2 control-label">Nro Documento</label>
@@ -197,10 +358,10 @@ const DocInternos = () => {
             <input
               type="text"
               className="form-control input-sm"
-              id="numdocumento"
-              name="numdocumento"
+              id="numdocrecepcion"
+              name="numdocrecepcion"
               placeholder="Numero de documento"
-              //   onBlur={handleInputChange}
+              onBlur={handleInputChange}
             />
           </div>
         </div>
@@ -215,14 +376,14 @@ const DocInternos = () => {
             <div className="col-lg-6 text-right">
               <button
                 type="button"
-                // onClick={limpiarPlanosFilter}
+                onClick={limpiarDocumentacionInternaFilter}
                 className="btn btn-default btn-sm fullborder"
               >
                 <i className="fa fa-eraser"></i> Limpiar Filtro(s)
               </button>
               <button
                 type="button"
-                // onClick={buscarPlanosFilter}
+                onClick={buscarDocumentosInternosFilter}
                 className="btn btn-info  btn-sm  fullborder"
               >
                 <i className="fa fa-search"></i> Aplicar Filtro(s)
@@ -234,9 +395,6 @@ const DocInternos = () => {
           <div className="row">
             <div className="col-md-6"></div>
             <div className="col-md-6 text-right">
-              {/* <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
-                            <i className="fa fa-file-excel-o"></i> TODO: Descargar Excel
-                        </button> */}
               <Link
                 to={`/docinternos-add`}
                 className="btn btn-danger btn-sm fullborder"
@@ -248,9 +406,15 @@ const DocInternos = () => {
         </div>
 
         <div className="panel panel-default">
+        {
+                (busquedaLocal)?
+                    console.log('cargando datos de planos...')
+                    :
+                    (
+                    <>
           <TableDocInterno cabecera={cabecerasTabla}>
-          {documentosInternos.rows.map((docinterno, i) => (
-              <DocInternoRow nro={i} docinterno={docinterno}></DocInternoRow>
+            {dataDocInteno.rows.map((docinterno, i) => (
+              <DocInternoRow nro={i} docinterno={docinterno} callback={callbackEliminarDocumentoInterno} ></DocInternoRow>
             ))}
           </TableDocInterno>
           <div className="panel-footer clearfix pull-right">
@@ -262,6 +426,9 @@ const DocInternos = () => {
               onChange={handlePageChange}
             ></Pagination>
           </div>
+          </>
+                    )
+                }
         </div>
       </WraperLarge>
     </>

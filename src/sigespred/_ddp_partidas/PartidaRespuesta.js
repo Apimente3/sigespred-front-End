@@ -13,7 +13,8 @@ import SubLista from "./SubListaDelete";
 import { toastr } from "react-redux-toastr";
 import { editar, respuestaPartida } from "../../actions/_ddp_partida/Actions";
 import { useDispatch } from "react-redux";
-import history from '../../history';
+import history from "../../history";
+import MultipleUpload from "../../components/uploader/MultipleUpload";
 
 const { $ } = window;
 const axios = initAxiosInterceptors();
@@ -38,7 +39,6 @@ const PartidaRespuesta = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-
   useEffect(() => {
     const getPartida = async (idpartida) => {
       let partidaDB = await obtenerPartida(idpartida);
@@ -46,7 +46,7 @@ const PartidaRespuesta = () => {
       setPartidaRespuesta(partidaDB);
       if (partidaDB.archivos) {
         set_listaArchivos(partidaDB.archivos);
-    }   
+      }
     };
     getPartida(id);
   }, []);
@@ -121,14 +121,14 @@ const PartidaRespuesta = () => {
       });
     }
     $("#btnguardar").button("loading");
-    
+
     try {
       await agregarPartidaRespuestaAction(partidaRespuesta);
       toastr.success(
         "Registro de respuesta de partida ",
         "La Partida fue actualizado correctamente."
       );
-      
+
       $("#btnguardar").button("reset");
       history.push("/partidas");
     } catch (e) {
@@ -393,55 +393,22 @@ const PartidaRespuesta = () => {
           <div className="form-group col-lg-6">
             <fieldset className="mleft-20">
               <legend>Archivos</legend>
-              <div className="form-group">
-                <label className="col-lg-4 control-label">
-                  Descripcion de los Archivos Adjuntos
-                </label>
-                <div className="col-lg-8">
-                  <input
-                    type="text"
-                    className="form-control input-sm"
-                    id="descripcionarchivo"
-                    name="descripcionarchivo"
-                    value={partidaArchTmp.descripcion || ""}
-                    onChange={handleChangeArchivos}
-                  />
-                </div>
-              </div>
+            
 
               <div className="form-group">
-                <label className="col-lg-4 control-label">
-                  Archivo Dígital
-                </label>
-                <div className="col-lg-6">
-                  <UploadMemo
-                    key="planodigitaltmp"
-                    file={{ urlDocumento: "" }}
-                    accept={".jpg,.png,.gif"}
-                    resetContenido={reiniciarValDigital}
-                    setFile={saveArchivoDigital}
+              <MultipleUpload
+                    key="multiple"
+                    accept={".*"}
                     folderSave={"FotosUsuarios"}
-                    eliminar={deleteArchivoDigital}
-                  ></UploadMemo>
-                </div>
-                <div className="col-lg-2">
-                  <a
-                    className="btn btn-default btn-sm dropdown-toggle pull-left"
-                    title="Agregar a la lista"
-                    onClick={actualizarLista}
-                  >
-                    <i className="fa fa-archive fa-2x"></i>
-                  </a>
-                </div>
+                    form={partidaRespuesta}
+                    setForm={setPartidaRespuesta}
+                    nameUpload={"archivos"}
+                  ></MultipleUpload>
+                
+               
               </div>
 
-              <div className="form-group">
-                <SubLista
-                  data={listaArchivos}
-                  cabecera={cabeceraArchivos}
-                  deleterow={removerDeLista}
-                />
-              </div>
+
             </fieldset>
           </div>
 

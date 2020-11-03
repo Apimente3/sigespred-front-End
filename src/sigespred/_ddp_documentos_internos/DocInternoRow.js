@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {Link} from "react-router-dom";
 const {$} = window;
-const DocInternoRow = ({docinterno,nro}) => {
+const DocInternoRow = ({docinterno,nro, callback}) => {
 
     useEffect(() => {
         const init = async () => {
@@ -10,17 +10,21 @@ const DocInternoRow = ({docinterno,nro}) => {
         init();
     }, []);
 
+    const eliminar = (idplano, codplano) => {
+        callback(idplano, codplano);
+    }
+
     return (
         <>
-            <tr>
-                <td>{nro+1}</td>
-                <td>{docinterno.id}</td>
-                <td>{docinterno.equipoid}</td>
-                <td>{docinterno.monitorid}</td>
-                <td>{docinterno.tipodocumentoid}</td>
-                <td>{docinterno.codigostd}</td>
-                <td>{docinterno.fecharecepcion}</td>
-                <td>{docinterno.numdocrecepcion}</td>
+            <tr key={`trrowkey_${nro}`}> 
+                <td key={`tdrowkey_1${nro}`}>{nro+1}</td>
+                <td key={`tdrowkey_2${nro}`}>{docinterno.id}</td>
+                <td key={`tdrowkey_3${nro}`}>{docinterno.equipoid}</td>
+                <td key={`tdrowkey_4${nro}`}>{docinterno.monitorid}</td>
+                <td key={`tdrowkey_5${nro}`}>{docinterno.tipodocumento}</td>
+                <td key={`tdrowkey_6${nro}`}>{docinterno.codigostd}</td>
+                <td key={`tdrowkey_7${nro}`}>{docinterno.fecharecepcion}</td>
+                <td key={`tdrowkey_8${nro}`}>{docinterno.numdocrecepcion}</td>
                 <td></td>
                 {/* <td>{docinterno.observacion}</td>
                 { partida.estadoatencion == 'ATENDIDO' ? <td className="colorCeldaAtendido" > <span className="badge badge-info">{partida.estadoatencion}</span></td> : <td className="colorCeldaPendiente"><span className="badge badge-danger">{partida.estadoatencion}</span></td>   } */}
@@ -30,8 +34,11 @@ const DocInternoRow = ({docinterno,nro}) => {
                             className="fa fa-envelope fa-lg "></i></Link>
                         <Link  to={`/docinternos-edit/${docinterno.id}`}  className="btn btn-xs btn-default" type="button"   data-toggle="tooltip"  data-original-title={ "Edicion" }><i
                             className="fa fa-edit fa-lg"></i></Link>
-                        <Link  to={`/docinternos-del/${docinterno.id}`}   className="btn btn-xs btn-default" type="button"   data-toggle="tooltip"  data-original-title={ "Eliminar" }><i
-                            className="fa fa-trash-o fa-lg"></i></Link>
+                        {/* <Link  to={`/docinternos-del/${docinterno.id}`}   className="btn btn-xs btn-default" type="button"   data-toggle="tooltip"  data-original-title={ "Eliminar" }><i
+                            className="fa fa-trash-o fa-lg"></i></Link> */}
+
+                        <a key={`arowkey_${nro}`} onClick={() => eliminar(docinterno.id, docinterno.numdocrecepcion)}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"  data-original-title={ "Eliminar"}><i
+                            className="fa fa-trash-o fa-lg"></i></a>    
 
 
 
