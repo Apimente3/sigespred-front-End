@@ -37,7 +37,7 @@ const Login = ({}) => {
             try {
                 const trabajador = await axios.post('/quiensoy', {token: token});
                 if (trabajador) {
-                    history.push('/list-proyectos');
+                    history.push('/planos');
                 }
             } catch (error) {
                 console.log(error);
