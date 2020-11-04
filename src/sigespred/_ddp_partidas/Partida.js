@@ -211,8 +211,8 @@ export const Partida = (history) => {
   const cabecerasTabla = [
     "#",
     "ID",
-    "DENOMINACION",
     "Nº PARTIDA",
+    "PROYECTO",
     "TRAMO",
     "SUB TRAMO",
     "TIPO PREDIO",
