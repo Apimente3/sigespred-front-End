@@ -110,6 +110,9 @@ export const ACTUALIZAR_AREA_BREADCRUM = [
     {link: "#", name: "Actualizar Area"}
 ]
 
+export const REGISTRO_ACTA_BREADCRUM = [
+    {link: "acta-add", name: "Agregar de acta"}
+]
 
 export const REGISTRO_SOLICITUD_BREADCRUM = [
     // {link: "solicitud-add", name: "Agregar Solicitud"},

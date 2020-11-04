@@ -14,8 +14,12 @@ import RouteModPlanos from './_ddp_RouteModPlanos';
 import RouteModPartidas from './_ddp_RouteModPartidas';
 import RouteModEquipo from './_ddp_RouteModEquipo';
 import RouteModArea from './_ddp_RouteModArea';
+
 import RouteModSolicitud from './_ddp_RouteModSolicitud';
 import RouteModDocumentosInternos from './_ddp_RouteModDocumentosInternos';
+
+
+import RouteModActa from './_ddp_RouteModActa';
 
 
 export default [
@@ -35,5 +39,6 @@ export default [
     ...RouteMod05Predios,
     ...RouteMod06ProcesoAdquisicionExpropiacion,
 
-    ...RouteModArea
+    ...RouteModArea,
+    ...RouteModActa
 ]

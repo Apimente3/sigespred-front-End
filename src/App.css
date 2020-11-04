@@ -812,3 +812,10 @@ popup_align2 {
     padding-top: 65px;
     margin-left: 230px;
 }
+
+.img-circle-pro {
+    border-radius: 50%;
+    width:80px;
+    float: left;
+    padding: 5px;
+}
