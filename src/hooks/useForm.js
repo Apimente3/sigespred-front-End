@@ -1,7 +1,6 @@
 import {useState} from 'react';
 
 export const useForm = ( initialState = {} , fieldsUpperCase) => {
-
     const [values, setValues] = useState(initialState);
     const reset = () => {
         setValues( initialState );

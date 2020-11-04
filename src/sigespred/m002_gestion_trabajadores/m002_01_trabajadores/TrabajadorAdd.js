@@ -6,7 +6,7 @@ import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 
 
-import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
+import SingleUpload from "../../../components/uploader/SingleUpload";
 
 import {FilesUsuario} from "../../../config/parameters";
 
@@ -112,17 +112,25 @@ const TrabajadorAdd = ({history}) => {
                         <div className="col-xs-12 col-sm-12 col-md-12 text-center">
                             <a href="#">
                                 <img style={{height: '200px'}}
-                                     src={(trabajador.foto !== 'img/userblank.jpg') ? serverFile + trabajador.foto : trabajador.foto}
+                                     src={(trabajador.foto.path !== 'img/userblank.jpg') ? serverFile + trabajador.foto.path : trabajador.foto}
                                      alt="User Avatar" className="img-thumbnail"></img>
                             </a>
                             <center>
                                 <form className="md-form">
 
 
-                                    <UploadMemo key="upload_portada_imagen" file={{urlDocumento: ''}}
-                                                accept={'.jpg,.png,.gif'}
-                                                setFile={saveFotoPortada} folderSave={FilesUsuario.fotosUsuario}
-                                                eliminar={eliminarFotoPortada}></UploadMemo>
+
+
+
+                                     <SingleUpload
+                                key="upload_foto"
+                                accept="image/*"
+                                folderSave={FilesUsuario.fotosUsuario}
+                                form={trabajador}
+                                setForm={set_trabajador}
+                                nameUpload={"foto"}
+                                       >
+                            </SingleUpload>
 
                                 </form>
                             </center>

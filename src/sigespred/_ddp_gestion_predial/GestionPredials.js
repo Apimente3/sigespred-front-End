@@ -5,6 +5,8 @@ import {LISTAR_GESTIONPREDIAL_BREADCRUM} from "../../config/breadcrums";
 import {initAxiosInterceptors, serverFile} from '../../config/axios';
 import TableTrabajador from "./Table";
 import TrabajadorRow from "./Row";
+import {useForm} from "../../hooks/useForm"
+import {useTable} from "../../hooks/useTable"
 import Pagination from "react-js-pagination";
 const queryString = require('query-string');
 const {alasql} = window;
@@ -24,29 +26,16 @@ async function buscarTrabajador(query) {
 const GestionPredials = ({history}) => {
 
 
-    const WizardContext = createContext();
-
     const [busqueda, setBusqueda] = useState('');
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const [totalItemsCount, settotalItemsCount] = useState(3);
-    const [activePage, setactivePage] = useState(1);
-    const [trabajadors, setTrabajadores] = useState({"count":5,"rows":[]});
-
-
-    const context = {
-        nropagina:1
-
-    };
-
+    const [ page,changePage,limit,totalItemsCount,settotalItemsCount,activePage,trabajadors,setTrabajadores]= useTable();
 
     useEffect(() => {
         async function init() {
             try {
                 let query =  await  queryString.stringify({busqueda, page, limit});
-                let trabajadores=await buscarTrabajador(query)
-                setTrabajadores(trabajadores)
-                settotalItemsCount(trabajadores.count)
+                let resultList=await buscarTrabajador(query)
+                changePage(page,resultList);
+
             } catch (error) {
                 alert('Ocurrio un error')
                 console.log(error);
@@ -61,6 +50,7 @@ const GestionPredials = ({history}) => {
         let query =  await  queryString.stringify({busqueda, page, limit});
         let trabajadores=await buscarTrabajador(query)
         setTrabajadores(trabajadores)
+
     }
 
     //const trabajadores = useSelector(state => state.trabajador.trabajadors);
@@ -81,14 +71,9 @@ const GestionPredials = ({history}) => {
 
 
     const handlePageChange = async (pageNumber) => {
-        await setPage(pageNumber)
-        //alert(pageNumber)
-        setactivePage(pageNumber)
-        setPage(pageNumber)
-        console.log(`active page is ${pageNumber}`);
         let query =  await  queryString.stringify({busqueda, page:pageNumber, limit});
-        let trabajadores=await buscarTrabajador(query)
-        setTrabajadores(trabajadores)
+        let resultList=await buscarTrabajador(query)
+        changePage(page,resultList);
 
     }
 
@@ -96,7 +81,7 @@ const GestionPredials = ({history}) => {
 
     return (
         <>
-            <WizardContext.Provider value={context}>
+
                 <Wraper titleForm={"Listado de Gestion Prediales"} listbreadcrumb={LISTAR_GESTIONPREDIAL_BREADCRUM}>
                     <fieldset className={'fielsettext'}>
                         <form onSubmit={buscarTrabadorFilter}>
@@ -141,7 +126,6 @@ const GestionPredials = ({history}) => {
                         </div>
                     </div>
                 </Wraper>
-            </WizardContext.Provider>
         </>
     );
 
