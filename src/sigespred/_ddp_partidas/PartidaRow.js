@@ -15,8 +15,8 @@ const PartidarRow = ({partida,nro}) => {
             <tr>
                 <td>{nro+1}</td>
                 <td>{partida.id}</td>
-                <td>{partida.denominacion}</td>
                 <td>{partida.nropartida}</td>
+                <td>{partida.denominacion}</td>
                 <td>{partida.tramoid}</td>
                 <td>{partida.subtramoid}</td>
                 <td>{partida.tipopredio}</td>

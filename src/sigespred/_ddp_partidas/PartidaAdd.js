@@ -242,7 +242,7 @@ const PartidaAdd = ({ history }) => {
             <div className="form-group ">
               <div className="col-lg-offset-2 col-lg-10 text-right">
                 <Link
-                  to={`/list-trabajadores`}
+                  to={`/partidas`}
                   className="btn btn-default btn-sm btn-control"
                 >
                   Cancelar
