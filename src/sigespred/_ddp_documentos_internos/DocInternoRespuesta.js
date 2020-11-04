@@ -7,12 +7,18 @@ import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 import { initAxiosInterceptors } from "../../config/axios";
 import { REGISTRO_PLANO_BREADCRUM } from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
+import MultipleUpload from "../../components/uploader/MultipleUpload";
+import { useForm } from "../../hooks/useForm";
+import * as helperGets from "../../components/helpers/LoadMaestros";
+import * as PARAMS from "../../config/parameters";
+import { useAsync } from "react-async-hook";
 
 const { $ } = window;
 const axios = initAxiosInterceptors();
 
 async function obtenerDocumentoInterno(id) {
-  const { data } = await axios.get(`/docinterno/${id}`);
+  // const { data } = await axios.get(`/docinterno/${id}`);
+  const { data } = await axios.get(`/docinterno?id=${id}`);
   return data;
 }
 
@@ -25,30 +31,58 @@ async function updateDocumentoInterno(documentosInternos) {
 }
 
 const DocInternoRespuesta = ({ history }) => {
-  const [documentosInternos, setDocumentosInternos] = useState({});
+  const { id } = useParams();
+  const [
+    documentosInternos,
+    setDocumentosInternos,
+    handleInputChange,
+    reset,
+  ] = useForm({}, [""]);
+  // const [documentosInternos, setDocumentosInternos] = useState({});
   const [documentosInternosEditado, set_DocumentosInternosEditado] = useState(
     {}
   );
-  const { id } = useParams();
-
-  function handleInputChange(e) {
-    if (e.target.name) {
-      documentosInternos[e.target.name] = e.target.value;
-      set_DocumentosInternosEditado({
-        ...documentosInternosEditado,
-        [e.target.name]: e.target.value,
-      });
-    }
-  }
+  const [dataEquipo, setDataEquipo] = useState(null);
+  const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
+  const resListaTipoDocInterno = useAsync(helperGets.helperGetListDetalle, [
+    PARAMS.LISTASIDS.TIPODOCINTER,
+  ]);
+  // function handleInputChange(e) {
+  //   if (e.target.name) {
+  //     documentosInternos[e.target.name] = e.target.value;
+  //     set_DocumentosInternosEditado({
+  //       ...documentosInternosEditado,
+  //       [e.target.name]: e.target.value,
+  //     });
+  //   }
+  // }
 
   useEffect(() => {
     const getDocumentoInterno = async (idDocInterno) => {
       let documentoInternoDB = await obtenerDocumentoInterno(idDocInterno);
+      cargarEquipo(documentoInternoDB.gestionpredialid);
       setDocumentosInternos(documentoInternoDB);
     };
     getDocumentoInterno(id);
   }, []);
 
+  const handleChangeProyecto = async (e) => {
+    if (e.target.value) {
+      let dataEq = await helperGets.helperGetListEquipos(e.target.value);
+      setDataEquipo(dataEq);
+    } else {
+      setDataEquipo(null);
+    }
+  };
+
+  const cargarEquipo = async (idProyecto) => {
+    if (idProyecto) {
+      let data = await helperGets.helperGetListEquipos(idProyecto);
+      setDataEquipo(data);
+    } else {
+      setDataEquipo(null);
+    }
+  };
   const actualizar = async (e) => {
     e.preventDefault();
 
@@ -83,37 +117,88 @@ const DocInternoRespuesta = ({ history }) => {
               <fieldset className="mleft-20">
                 <legend>Datos de Generales</legend>
                 <div className="form-group">
-                  {/* <div className="form-group"> */}
                   <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span> Equipo de Trabajo
+                    <span className="obligatorio">* </span>Proyecto
                   </label>
                   <div className="col-lg-4">
-                    {/* {resListaProyectos.error ? (
-            "Se produjo un error cargando los proyectos"
-          ) : resListaProyectos.loading ? (
-            "Cargando..."
-          ) : ( */}
+                    <select
+                      className="form-control"
+                      id="gestionpredialid"
+                      name="gestionpredialid"
+                      required
+                      onChange={(e) => {
+                        handleChangeProyecto(e);
+                        handleInputChange(e);
+                      }}
+                      value={documentosInternos.gestionpredialid || ""}
+                      readOnly
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      {resListaProyectos.error ? (
+                        "Se produjo un error cargando los tipos de plano"
+                      ) : resListaProyectos.loading ? (
+                        "Cargando..."
+                      ) : (
+                        <ComboOptions
+                          data={resListaProyectos.result}
+                          valorkey="id"
+                          valornombre="denominacion"
+                        />
+                      )}
+                    </select>
+                  </div>
+                  <label className="col-lg-2 control-label">
+                    <span className="obligatorio">* </span> Equipo
+                  </label>
+                  <div className="col-lg-4">
                     <select
                       className="form-control input-sm"
                       id="equipoid"
                       name="equipoid"
-                      value={documentosInternos.equipoid}
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
-                      readOnly
+                      required
+                      // title="El Tipo de Plano es requerido"
+                      onChange={handleInputChange}
                     >
                       <option value="">--SELECCIONE--</option>
-                      <option value="1">SISTEMATIZACION</option>
-                      <option value="2">diagnostico tecnico legal</option>
-                      {/* <ComboOptions
-                  //   data={resListaProyectos.result}
-                  valorkey="id"
-                  valornombre="denominacion"
-                /> */}
+                      {dataEquipo && (
+                        <ComboOptions
+                          data={dataEquipo}
+                          valorkey="id"
+                          valornombre="equipo"
+                        />
+                      )}
                     </select>
-                    {/* )} */}
                   </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-2 control-label">
+                    <span className="obligatorio">* </span> Tipo de Documento
+                  </label>
+                  <div className="col-lg-4">
+                    {resListaTipoDocInterno.error ? (
+                      "Se produjo un error cargando los tipos de documento"
+                    ) : resListaTipoDocInterno.loading ? (
+                      "Cargando..."
+                    ) : (
+                      <select
+                        className="form-control input-sm"
+                        id="tipodocumentoid"
+                        name="tipodocumentoid"
+                        value={documentosInternos.tipodocumentoid}
+                        onChange={handleInputChange}
+                        readOnly
+                      >
+                        <option value="">--SELECCIONE--</option>
+                        <ComboOptions
+                          data={resListaTipoDocInterno.result}
+                          valorkey="valorcodigo"
+                          valornombre="valortexto"
+                        />
+                      </select>
+                    )}
+                  </div>
+
                   <label className="col-lg-2 control-label">
                     <span className="obligatorio">* </span>Monitor
                   </label>
@@ -147,37 +232,6 @@ const DocInternoRespuesta = ({ history }) => {
                 </div>
 
                 <div className="form-group">
-                  <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span> Tipo de Documento
-                  </label>
-                  <div className="col-lg-4">
-                    {/* {resListaProyectos.error ? (
-            "Se produjo un error cargando los proyectos"
-          ) : resListaProyectos.loading ? (
-            "Cargando..."
-          ) : ( */}
-                    <select
-                      className="form-control input-sm"
-                      id="tipodocumentoid"
-                      name="tipodocumentoid"
-                      value={documentosInternos.tipodocumentoid}
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
-                      readOnly
-                    >
-                      <option value="">--SELECCIONE--</option>
-                      <option value="1">MEMORANDO</option>
-                      <option value="2">MEMORANDO MULTIPLE</option>
-                      <option value="3">INFORME</option>
-                      <ComboOptions
-                        //   data={resListaProyectos.result}
-                        valorkey="id"
-                        valornombre="denominacion"
-                      />
-                    </select>
-                    {/* )} */}
-                  </div>
                   <label className="col-lg-2 control-label">
                     <span className="obligatorio">* </span> Codigo STD
                   </label>
@@ -258,16 +312,14 @@ const DocInternoRespuesta = ({ history }) => {
                     Adjuntar Documento
                   </label>
                   <div className="col-lg-4">
-                    <UploadMemo
-                      key="upload_portada_imagen"
-                      file={{ urlDocumento: "" }}
+                    <MultipleUpload
+                      key="multiple"
                       accept={".*"}
-                      //   setFile={setFilesArchivodigital}
-                      //   folderSave={FilesGestionPredial.FilesSolicitud}
-                      //   eliminar={deleteFilesArchivodigital}
-                    >
-                      {" "}
-                    </UploadMemo>
+                      folderSave={"FotosUsuarios"}
+                      form={documentosInternos}
+                      setForm={setDocumentosInternos}
+                      nameUpload={"archivorecepcion"}
+                    ></MultipleUpload>
                   </div>
                 </div>
               </fieldset>
@@ -313,16 +365,14 @@ const DocInternoRespuesta = ({ history }) => {
                     Adjuntar Documento
                   </label>
                   <div className="col-lg-4">
-                    <UploadMemo
-                      key="upload_portada_imagen"
-                      file={{ urlDocumento: "" }}
+                    <MultipleUpload
+                      key="multiple"
                       accept={".*"}
-                      //   setFile={setFilesArchivodigital}
-                      //   folderSave={FilesGestionPredial.FilesSolicitud}
-                      //   eliminar={deleteFilesArchivodigital}
-                    >
-                      {" "}
-                    </UploadMemo>
+                      folderSave={"FotosUsuarios"}
+                      form={documentosInternos}
+                      setForm={setDocumentosInternos}
+                      nameUpload={"archivorespuesta"}
+                    ></MultipleUpload>
                   </div>
 
                   <label className="col-lg-2 control-label">Comentario</label>

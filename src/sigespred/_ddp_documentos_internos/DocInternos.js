@@ -42,6 +42,8 @@ const DocInternos = () => {
   const resListaTipoDocInterno = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPODOCINTER,
   ]);
+  const [dataEquipo, setDataEquipo] = useState(null);
+  const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
 
   useEffect(() => {
     async function initialLoad() {
@@ -58,6 +60,15 @@ const DocInternos = () => {
     }
     initialLoad();
   }, []);
+
+  const handleChangeProyecto = async (e) => {
+    if (e.target.value) {
+      let dataEq = await helperGets.helperGetListEquipos(e.target.value);
+      setDataEquipo(dataEq);
+    } else {
+      setDataEquipo(null);
+    }
+  };
 
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber);
@@ -183,6 +194,7 @@ const DocInternos = () => {
   }
 
   const limpiarDocumentacionInternaFilter = (e) => {
+    $("#gestionpredialid").val("");
     $("#equipoid").val("");
     $("#monitorid").val("");
     $("#fechainicio").val("");
@@ -226,7 +238,10 @@ const DocInternos = () => {
         toastrConfirmOptions
       );
     } catch (e) {
-      toastr.error("Búsqueda de Documento interno", "Se encontró un error: " + e.message);
+      toastr.error(
+        "Búsqueda de Documento interno",
+        "Se encontró un error: " + e.message
+      );
     }
   };
 
@@ -249,55 +264,54 @@ const DocInternos = () => {
         listbreadcrumb={REGISTRO_PLANO_BREADCRUM}
       >
         <div className="form-group">
-          <label className="col-lg-2 control-label">Equipo de Trabajo</label>
+          <label className="col-lg-2 control-label">
+            <span className="obligatorio">* </span>Proyecto
+          </label>
           <div className="col-lg-4">
             <select
-              className="form-control input-sm"
-              id="equipotrabajoid"
-              name="equipotrabajoid"
+              className="form-control"
+              id="gestionpredialid"
+              name="gestionpredialid"
+              required
               onChange={(e) => {
-                // handleChangeProyecto(e);
-                // handleInputChange(e);
+                handleChangeProyecto(e);
+                handleInputChange(e);
               }}
             >
               <option value="">--SELECCIONE--</option>
-              {/* {resListaProyectos.error ? (
+              {resListaProyectos.error ? (
                 "Se produjo un error cargando los tipos de plano"
               ) : resListaProyectos.loading ? (
                 "Cargando..."
-              ) : ( */}
-              <ComboOptions
-                //   data={resListaProyectos.result}
-                valorkey="id"
-                valornombre="denominacion"
-              />
-              {/* )} */}
+              ) : (
+                <ComboOptions
+                  data={resListaProyectos.result}
+                  valorkey="id"
+                  valornombre="denominacion"
+                />
+              )}
             </select>
           </div>
-
-          <label className="col-lg-2 control-label">Monitor</label>
+          <label className="col-lg-2 control-label">
+            <span className="obligatorio">* </span> Equipo
+          </label>
           <div className="col-lg-4">
             <select
               className="form-control input-sm"
-              id="monitorid"
-              name="monitorid"
-              onChange={(e) => {
-                // handleChangeProyecto(e);
-                // handleInputChange(e);
-              }}
+              id="equipoid"
+              name="equipoid"
+              required
+              // title="El Tipo de Plano es requerido"
+              onChange={handleInputChange}
             >
               <option value="">--SELECCIONE--</option>
-              {/* {resListaProyectos.error ? (
-                "Se produjo un error cargando los tipos de plano"
-              ) : resListaProyectos.loading ? (
-                "Cargando..."
-              ) : ( */}
-              <ComboOptions
-                //   data={resListaProyectos.result}
-                valorkey="id"
-                valornombre="denominacion"
-              />
-              {/* )} */}
+              {dataEquipo && (
+                <ComboOptions
+                  data={dataEquipo}
+                  valorkey="id"
+                  valornombre="equipo"
+                />
+              )}
             </select>
           </div>
         </div>
@@ -310,7 +324,6 @@ const DocInternos = () => {
               id="tipodocumentoid"
               name="tipodocumentoid"
               onChange={(e) => {
-                
                 handleInputChange(e);
               }}
             >
@@ -320,12 +333,12 @@ const DocInternos = () => {
               ) : resListaTipoDocInterno.loading ? (
                 "Cargando..."
               ) : (
-              <ComboOptions
+                <ComboOptions
                   data={resListaTipoDocInterno.result}
                   valorkey="valorcodigo"
                   valornombre="valortexto"
-              />
-               )} 
+                />
+              )}
             </select>
           </div>
           <label className="col-lg-2 control-label">Fecha de Recepcion</label>
@@ -406,29 +419,30 @@ const DocInternos = () => {
         </div>
 
         <div className="panel panel-default">
-        {
-                (busquedaLocal)?
-                    console.log('cargando datos de planos...')
-                    :
-                    (
-                    <>
-          <TableDocInterno cabecera={cabecerasTabla}>
-            {dataDocInteno.rows.map((docinterno, i) => (
-              <DocInternoRow nro={i} docinterno={docinterno} callback={callbackEliminarDocumentoInterno} ></DocInternoRow>
-            ))}
-          </TableDocInterno>
-          <div className="panel-footer clearfix pull-right">
-            <Pagination
-              activePage={activePage}
-              itemsCountPerPage={limit}
-              totalItemsCount={totalItemsCount}
-              pageRangeDisplayed={3}
-              onChange={handlePageChange}
-            ></Pagination>
-          </div>
-          </>
-                    )
-                }
+          {busquedaLocal ? (
+            console.log("cargando datos de planos...")
+          ) : (
+            <>
+              <TableDocInterno cabecera={cabecerasTabla}>
+                {dataDocInteno.rows.map((docinterno, i) => (
+                  <DocInternoRow
+                    nro={i}
+                    docinterno={docinterno}
+                    callback={callbackEliminarDocumentoInterno}
+                  ></DocInternoRow>
+                ))}
+              </TableDocInterno>
+              <div className="panel-footer clearfix pull-right">
+                <Pagination
+                  activePage={activePage}
+                  itemsCountPerPage={limit}
+                  totalItemsCount={totalItemsCount}
+                  pageRangeDisplayed={3}
+                  onChange={handlePageChange}
+                ></Pagination>
+              </div>
+            </>
+          )}
         </div>
       </WraperLarge>
     </>

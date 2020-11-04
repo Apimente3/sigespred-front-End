@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toastr } from "react-redux-toastr";
 import { Link, useParams } from "react-router-dom";
-// import { FormFooter } from "../../components/forms";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 import {
@@ -27,11 +26,12 @@ import Wraper from "../m000_common/formContent/WraperLarge";
 import { useAsync } from "react-async-hook";
 import MultipleUpload from "../../components/uploader/MultipleUpload";
 
+
 const Axios = initAxiosInterceptors();
 const { $ } = window;
 
 async function obtenerDocumentoInterno(id) {
-  const { data } = await Axios.get(`/docinterno/${id}`);
+  const { data } = await Axios.get(`/docinterno?id=${id}`);
   return data;
 }
 
@@ -43,33 +43,68 @@ async function updateDocumentoInterno(documentosInternos) {
   return data;
 }
 
-const DocInternoEdit = ({ match,history }) => {
-  // const [
-  //   documentosInternos,
-  //   setDocumentosInternos,
-  //   handleInputChange,
-  //   reset,
-  // ] = useForm({ archivos: [] }, ['comentario']);
-  const [documentosInternos, setDocumentosInternos] = useState({});
-  const [documentosInternosEditado, set_DocumentosInternosEditado] = useState({});
+const DocInternoEdit = ({ match, history }) => {
+  const { id } = match.params;
+  const [
+    documentosInternos,
+    setDocumentosInternos,
+    handleInputChange,
+    reset,
+  ] = useForm({ archivos: [] }, ['comentario']);
+  //const [documentosInternos, setDocumentosInternos] = useState({});
+  const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
+  const [documentosInternosEditado, set_DocumentosInternosEditado] = useState(
+    {}
+  );
   const resListaReqArea = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.REQAREALIST,
   ]);
   const resListaTipoDocInterno = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPODOCINTER,
   ]);
-  //const {id} = match.params;
-  const { id } = useParams();
+  const [dataEquipo, setDataEquipo] = useState(null);
+  
 
-  function handleInputChange(e) {
-    if (e.target.name) {
-      documentosInternos[e.target.name] = e.target.value;
-      set_DocumentosInternosEditado({
-        ...documentosInternosEditado,
-        [e.target.name]: e.target.value,
-      });
+    /*Valiables Globales*/
+    useEffect(() => {
+      const init = async () => {
+        let docInterno = await obtenerDocumentoInterno(id);
+        cargarEquipo(docInterno.gestionpredialid);
+        setDocumentosInternos(docInterno);
+      };
+      init();
+    }, []);
+  //const { id } = useParams();
+
+  // useEffect(() => {
+  //   const getPartida = async (idpartida) => {
+  //     let partidaDB = await obtenerPartida(idpartida);
+  //     cargarTramo(partidaDB.infraestructuraid);
+  //     setPartidaRespuesta(partidaDB);
+  //     if (partidaDB.archivos) {
+  //       set_listaArchivos(partidaDB.archivos);
+  //     }
+  //   };
+  //   getPartida(id);
+  // }, []);
+
+  const handleChangeProyecto = async (e) => {
+    if (e.target.value) {
+      let dataEq = await helperGets.helperGetListEquipos(e.target.value);
+      setDataEquipo(dataEq);
+    } else {
+      setDataEquipo(null);
     }
-  }
+  };
+  // function handleInputChange(e) {
+  //   if (e.target.name) {
+  //     documentosInternos[e.target.name] = e.target.value;
+  //     set_DocumentosInternosEditado({
+  //       ...documentosInternosEditado,
+  //       [e.target.name]: e.target.value,
+  //     });
+  //   }
+  // }
 
   // function handleInputChange(e) {
   //   if (e.target.name) {
@@ -89,19 +124,18 @@ const DocInternoEdit = ({ match,history }) => {
   //   getDocumentoInterno(id);
   // }, []);
 
-  /*Valiables Globales*/
-  useEffect(() => {
-    const init = async () => {
-      // setlistTipoInfraestructura(await getListTipoInfraestructura());
-      // listInfraestructuraGlobal = await getListInfraestructura()
-      // setlistInfraestructura(listInfraestructuraGlobal);
-      let docInterno = await obtenerDocumentoInterno(id);
-      alert(JSON.stringify(docInterno))
-      console.log(docInterno)
-      setDocumentosInternos(docInterno);
-    };
-    init();
-  }, []);
+
+
+
+  
+  const cargarEquipo = async (idProyecto) => {
+    if (idProyecto) {
+      let data = await helperGets.helperGetListEquipos(idProyecto);
+      setDataEquipo(data);
+    } else {
+      setDataEquipo(null);
+    }
+  };
 
   const actualizar = async (e) => {
     e.preventDefault();
@@ -121,7 +155,9 @@ const DocInternoEdit = ({ match,history }) => {
       //$("#btnguardar").button("reset");
       // history.push("/docinternos");
     } catch (e) {
-      toastr.error('Registro Incorrecto', JSON.stringify(e), {position: 'top-right'})
+      toastr.error("Registro Incorrecto", JSON.stringify(e), {
+        position: "top-right",
+      });
     }
   };
 
@@ -136,6 +172,62 @@ const DocInternoEdit = ({ match,history }) => {
             <div className="form-group col-lg-11">
               <fieldset className="mleft-20">
                 <legend>Datos de Generales</legend>
+                <div className="form-group">
+                  <label className="col-lg-2 control-label">
+                    <span className="obligatorio">* </span>Proyecto
+                  </label>
+                  <div className="col-lg-4">
+                    <select
+                      className="form-control"
+                      id="gestionpredialid"
+                      name="gestionpredialid"
+                      required
+                      onChange={(e) => {
+                        handleChangeProyecto(e);
+                        handleInputChange(e);
+                      }}
+                      value={documentosInternos.gestionpredialid || ""}
+                      readonly
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      {resListaProyectos.error ? (
+                        "Se produjo un error cargando los tipos de plano"
+                      ) : resListaProyectos.loading ? (
+                        "Cargando..."
+                      ) : (
+                        <ComboOptions
+                          data={resListaProyectos.result}
+                          valorkey="id"
+                          valornombre="denominacion"
+                        />
+                      )}
+                    </select>
+                  </div>
+                  <label className="col-lg-2 control-label">
+                    <span className="obligatorio">* </span> Equipo
+                  </label>
+                  <div className="col-lg-4">
+                    <select
+                      className="form-control input-sm"
+                      id="equipoid"
+                      name="equipoid"
+                      required
+                      // title="El Tipo de Plano es requerido"
+                      onChange={handleInputChange}
+                      value={documentosInternos.equipoid || ""}
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      {dataEquipo && (
+                        <ComboOptions
+                          data={dataEquipo}
+                          valorkey="id"
+                          valornombre="equipo"
+                        />
+                      )}
+                    </select>
+                  </div>
+                </div>
+
                 <div className="form-group">
                   {/* <div className="form-group"> */}
                   <label className="col-lg-2 control-label">
@@ -204,25 +296,25 @@ const DocInternoEdit = ({ match,history }) => {
                   </label>
                   <div className="col-lg-4">
                     {resListaTipoDocInterno.error ? (
-                  "Se produjo un error cargando los tipos de documento"
-                ) : resListaTipoDocInterno.loading ? (
-                  "Cargando..."
-                ) : (
-                    <select
-                      className="form-control input-sm"
-                      id="tipodocumentoid"
-                      name="tipodocumentoid"
-                      value={documentosInternos.tipodocumentoid}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">--SELECCIONE--</option>
-                      <ComboOptions
-                        data={resListaTipoDocInterno.result}
-                        valorkey="valorcodigo"
-                        valornombre="valortexto"
-                      />
-                    </select>
-                     )} 
+                      "Se produjo un error cargando los tipos de documento"
+                    ) : resListaTipoDocInterno.loading ? (
+                      "Cargando..."
+                    ) : (
+                      <select
+                        className="form-control input-sm"
+                        id="tipodocumentoid"
+                        name="tipodocumentoid"
+                        value={documentosInternos.tipodocumentoid}
+                        onChange={handleInputChange}
+                      >
+                        <option value="">--SELECCIONE--</option>
+                        <ComboOptions
+                          data={resListaTipoDocInterno.result}
+                          valorkey="valorcodigo"
+                          valornombre="valortexto"
+                        />
+                      </select>
+                    )}
                   </div>
                   <label className="col-lg-2 control-label">
                     <span className="obligatorio">* </span> Codigo STD
@@ -237,7 +329,7 @@ const DocInternoEdit = ({ match,history }) => {
                       required
                       title="El codigo STD  es requerido"
                       autoComplete="off"
-                      value={documentosInternos.codigostd}
+                      value={documentosInternos.codigostd || ""}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -259,7 +351,7 @@ const DocInternoEdit = ({ match,history }) => {
                       id="fecharecepcion"
                       name="fecharecepcion"
                       className="form-control input-sm"
-                      value={documentosInternos.fecharecepcion}
+                      value={documentosInternos.fecharecepcion || ""}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -276,7 +368,7 @@ const DocInternoEdit = ({ match,history }) => {
                       //title="El codigo STD  es requerido"
                       autoComplete="off"
                       onChange={handleInputChange}
-                      value={documentosInternos.numdocrecepcion}
+                      value={documentosInternos.numdocrecepcion || ""}
                     />
                   </div>
                 </div>
@@ -293,10 +385,10 @@ const DocInternoEdit = ({ match,history }) => {
                       title="El codigo STD  es requerido"
                       autoComplete="off"
                       onChange={handleInputChange}
-                      value={documentosInternos.comentariorecepcion}
+                      value={documentosInternos.comentariorecepcion || ""}
                     />
                   </div>
-                 
+
                   <div className="col-lg-4">
                     {/* <UploadMemo
                       key="upload_portada_imagen"
@@ -310,13 +402,13 @@ const DocInternoEdit = ({ match,history }) => {
                     </UploadMemo> */}
 
                     <MultipleUpload
-                    key="multiple"
-                    accept={".*"}
-                    folderSave={"FotosUsuarios"}
-                    form={documentosInternos}
-                    setForm={setDocumentosInternos}
-                    nameUpload={"archivos"}
-                  ></MultipleUpload>
+                      key="multiple"
+                      accept={".*"}
+                      folderSave={"FotosUsuarios"}
+                      form={documentosInternos}
+                      setForm={setDocumentosInternos}
+                      nameUpload={"archivorecepcion"}
+                    ></MultipleUpload>
                   </div>
                 </div>
               </fieldset>
