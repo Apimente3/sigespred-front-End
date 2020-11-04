@@ -249,7 +249,6 @@ const DocInternos = () => {
     "",
     "ID",
     "GRUPO TRABAJO",
-    "MONITOR",
     "TIPO DOCUMENTO",
     "CODIGO STD",
     "FECHA RECEPCION",
@@ -341,20 +340,6 @@ const DocInternos = () => {
               )}
             </select>
           </div>
-          <label className="col-lg-2 control-label">Fecha de Recepcion</label>
-          <div className="col-lg-4">
-            <input
-              className="form-control input-sm"
-              type="date"
-              id="fecharecepcion"
-              name="fecharecepcion"
-              placeholder="Ingrese fecha de Recepcion"
-              onChange={handleInputChange}
-            ></input>
-          </div>
-        </div>
-
-        <div className="form-group">
           <label className="col-lg-2 control-label">Código STD</label>
           <div className="col-lg-4">
             <input
@@ -366,6 +351,34 @@ const DocInternos = () => {
               onBlur={handleInputChange}
             />
           </div>
+        </div>
+
+        <div className="form-group">
+          <label className="col-lg-2 control-label">Fecha Desde</label>
+          <div className="col-lg-4">
+            <input
+              className="form-control input-sm"
+              type="date"
+              id="fechainicio"
+              name="fechainicio"
+              placeholder="Ingrese fecha de inicio Recepcion"
+              onChange={handleInputChange}
+            ></input>
+          </div>
+          <label className="col-lg-2 control-label">Fecha Hasta</label>
+          <div className="col-lg-4">
+            <input
+              className="form-control input-sm"
+              type="date"
+              id="fechafin"
+              name="fechafin"
+              placeholder="Ingrese fecha de finalizacion Recepcion"
+              onChange={handleInputChange}
+            ></input>
+          </div>
+        </div>
+
+        <div className="form-group">
           <label className="col-lg-2 control-label">Nro Documento</label>
           <div className="col-lg-4">
             <input
