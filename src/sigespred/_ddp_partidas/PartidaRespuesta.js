@@ -350,6 +350,7 @@ const PartidaRespuesta = () => {
                   className="form-control"
                   name="gravamentpredio"
                   onChange={handleInputChange}
+                  value={partidaRespuesta.gravamentpredio}
                 >
                   <option value="">--SELECCIONE--</option>
                   <option value="SI">SI</option>
@@ -377,6 +378,7 @@ const PartidaRespuesta = () => {
                   className="form-control"
                   name="cargapredio"
                   onChange={handleInputChange}
+                  value={partidaRespuesta.cargapredio}
                 >
                   <option value="">--SELECCIONE--</option>
                   <option value="SI">SI</option>
@@ -408,6 +410,23 @@ const PartidaRespuesta = () => {
                 ></input>
               </div>
             </div>
+
+            <div className="form-group">
+              <label className="col-lg-2 control-label">Observacion</label>
+              <div className="col-lg-4">
+                <input
+                  className="form-control input-sm"
+                  type="text"
+                  name="observacionrespuesta"
+                  id="observacionrespuesta"
+                  onChange={handleInputChange}
+                  placeholder="Ingrese alguna observacion"
+                  value={partidaRespuesta.observacionrespuesta}
+                  
+                ></input>
+              </div>
+            </div> F
+
           </fieldset>
 
           <div className="form-group col-lg-6">
