@@ -2,7 +2,8 @@ import Axios from 'axios';
 const TOKEN_KEY = 'SIGESPRED_TOKEN';
 const BASE_URL = 'http://localhost:8000/api/';
 export const serverFile='http://localhost:8000/';
-
+// const BASE_URL = 'http://200.121.128.102:3000/api';
+//  export const serverFile='http://200.121.128.102:3000/';
 
 export function filepath(file) {
     return serverFile+file;

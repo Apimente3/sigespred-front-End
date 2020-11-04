@@ -1,17 +1,13 @@
-//import Partida from "../sigespred/_ddp_solicitud/Partida";
 import SolicitudAdd  from "../sigespred/_ddp_solicitud/SolicitudAdd";
 import SolicitudList  from "../sigespred/_ddp_solicitud/SolicitudList";
-// import PartidaDel from "../sigespred/_ddp_solicitud/PartidaDel";
-// import PartidaEdit from "../sigespred/_ddp_solicitud/PartidaEdit";
-// import PartidaRespuesta from "../sigespred/_ddp_solicitud/PartidaRespuesta";
+import SolicitudEdit from "../sigespred/_ddp_solicitud/SolicitudEdit";
+import SolicitudRespuesta from "../sigespred/_ddp_solicitud/solicitudRespuesta";
 
 const RouteModSolicitud = [
-    // {path: "/", component:Partida},
     {path: "/solicitud-list", component: SolicitudList},
     {path: "/solicitud-add", component: SolicitudAdd},
-    // {path: "/partida-edit/:id", component: PartidaEdit},
-    // {path: "/partida-del/:id", component: PartidaDel},
-    // {path: "/partida-respuesta/:id", component: PartidaRespuesta},
+    {path: "/solicitud-edit/:id", component: SolicitudEdit},
+    {path: "/solicitud-respuesta/:id", component: SolicitudRespuesta}
 ]
 
 export default RouteModSolicitud;

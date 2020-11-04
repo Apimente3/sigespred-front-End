@@ -3,7 +3,7 @@ import React from 'react';
 const Input = ({required,type,placeholder,name,onChange,value,pattern,title}) => {
     return (
         <>
-            <input required={ require ? "required": ""}
+            <input required={ required ? "required": ""}
                    type={type}
                    className="form-control input-sm"
                    placeholder={placeholder}

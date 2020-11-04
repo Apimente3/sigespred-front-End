@@ -15,7 +15,7 @@ class SidebarAdm extends Component {
                         </div>
                         <div className="main-menu">
                             <ul>
-                                <li>
+                                {/* <li>
                                     <Link to={"/list-proyectos"}>
                                         <span className="menu-icon">
                                             <img src="/img/proyectos.svg" className="btn-siderbar"></img>
@@ -51,7 +51,7 @@ class SidebarAdm extends Component {
                                         </span>
                                         <span className="menu-hover"></span>
                                     </Link>
-                                </li>
+                                </li> */}
                                 
                                 <li menu="/planos">
                                     <Link to={"/planos"}>
