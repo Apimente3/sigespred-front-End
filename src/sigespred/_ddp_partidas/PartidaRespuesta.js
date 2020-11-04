@@ -306,7 +306,7 @@ const PartidaRespuesta = () => {
             </div>
 
             <div className="form-group">
-              <label className="col-lg-2 control-label">Observacion</label>
+              <label className="col-lg-2 control-label">Observación</label>
               <div className="col-lg-4">
                 <input
                   className="form-control input-sm"
@@ -327,7 +327,7 @@ const PartidaRespuesta = () => {
             <legend>Datos de Respuesta</legend>
             <div className="form-group">
               <label className="col-lg-2 control-label">
-                Fecha de Atencion
+                Fecha de Atención
               </label>
               <div className="col-lg-4">
                 <input
@@ -356,15 +356,6 @@ const PartidaRespuesta = () => {
                   <option value="SI">SI</option>
                   <option value="NO">NO</option>
                 </select>
-                {/* <input
-                  className="form-control input-sm"
-                  type="text"
-                  name="gravamentpredio"
-                  id="gravamentpredio"
-                  onChange={handleInputChange}
-                  placeholder="Ingrese el gravament del predio"
-                  value={partidaRespuesta.gravamentpredio}
-                ></input> */}
               </div>
             </div>
 
@@ -384,15 +375,6 @@ const PartidaRespuesta = () => {
                   <option value="SI">SI</option>
                   <option value="NO">NO</option>
                 </select>
-                {/* <input
-                  className="form-control input-sm"
-                  type="text"
-                  name="cargapredio"
-                  id="cargapredio"
-                  onChange={handleInputChange}
-                  placeholder="Ingrese la carga del predio"
-                  value={partidaRespuesta.cargapredio}
-                ></input> */}
               </div>
 
               <label className="col-lg-2 control-label">
@@ -412,7 +394,7 @@ const PartidaRespuesta = () => {
             </div>
 
             <div className="form-group">
-              <label className="col-lg-2 control-label">Observacion</label>
+              <label className="col-lg-2 control-label">Observación</label>
               <div className="col-lg-4">
                 <input
                   className="form-control input-sm"
@@ -420,7 +402,7 @@ const PartidaRespuesta = () => {
                   name="observacionrespuesta"
                   id="observacionrespuesta"
                   onChange={handleInputChange}
-                  placeholder="Ingrese alguna observacion"
+                  placeholder="Ingrese alguna observación"
                   value={partidaRespuesta.observacionrespuesta}
                   
                 ></input>
@@ -442,16 +424,6 @@ const PartidaRespuesta = () => {
                   setForm={setPartidaRespuesta}
                   nameUpload={"archivos"}
                 ></MultipleUpload>
-
-                {/* <div className="col-lg-2">
-                  <a
-                    className="btn btn-default btn-sm dropdown-toggle pull-left"
-                    title="Agregar a la lista"
-                    onClick={actualizarLista}
-                  >
-                    <i className="fa fa-archive fa-2x"></i>
-                  </a>
-                </div> */}
               </div>
             </fieldset>
           </div>

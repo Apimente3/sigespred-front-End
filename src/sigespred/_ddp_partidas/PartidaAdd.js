@@ -208,9 +208,6 @@ const PartidaAdd = ({ history }) => {
                 )}
               </select>
             </div>
-          </div>
-
-          <div className="form-group">
             <label className="col-lg-2 control-label">Asiento</label>
             <div className="col-lg-4">
               <input
@@ -223,8 +220,12 @@ const PartidaAdd = ({ history }) => {
                 value={partida.nroasiento}
               ></input>
             </div>
+          </div>
 
-            <label className="col-lg-2 control-label">Observacion</label>
+          <div className="form-group">
+         
+
+            <label className="col-lg-2 control-label">Observación</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
