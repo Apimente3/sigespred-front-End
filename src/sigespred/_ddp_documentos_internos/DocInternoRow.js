@@ -19,8 +19,8 @@ const DocInternoRow = ({docinterno,nro, callback}) => {
             <tr key={`trrowkey_${nro}`}> 
                 <td key={`tdrowkey_1${nro}`}>{nro+1}</td>
                 <td key={`tdrowkey_2${nro}`}>{docinterno.id}</td>
-                <td key={`tdrowkey_3${nro}`}>{docinterno.equipoid}</td>
-                <td key={`tdrowkey_4${nro}`}>{docinterno.monitorid}</td>
+                <td key={`tdrowkey_3${nro}`}>{docinterno.equipo}</td>
+                {/* <td key={`tdrowkey_4${nro}`}>{docinterno.monitorid}</td> */}
                 <td key={`tdrowkey_5${nro}`}>{docinterno.tipodocumento}</td>
                 <td key={`tdrowkey_6${nro}`}>{docinterno.codigostd}</td>
                 <td key={`tdrowkey_7${nro}`}>{docinterno.fecharecepcion}</td>
