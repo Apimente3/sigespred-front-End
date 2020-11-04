@@ -109,12 +109,14 @@ async function addPlanos(planos) {
         Object.keys(plano4).length === 0 && plano4.constructor === Object &&
         Object.keys(plano5).length === 0 && plano5.constructor === Object)) {
             toastr.error(`Se requiere un profesional y al menos un conjunto de planos para ser codificados.`)
+            $('#btnguardar').button('reset');
             return;
         }
 
         if (!validarPlano(plano1) || !validarPlano(plano2) || !validarPlano(plano3)
             || !validarPlano(plano4) ||!validarPlano(plano5)) {
             toastr.error(`Todos los campos de las filas a usar deben tener un valor.`)
+            $('#btnguardar').button('reset');
             return;
         }
 
@@ -230,7 +232,7 @@ async function addPlanos(planos) {
                             </select>
                         </label>
                         <label className="col-lg-2">
-                            <input type="number" min="1" step="1" className="form-control input-sm uppercaseinput" id="cantidad_1" name="cantidad_1" 
+                            <input type="number" min="1" max="999" step="1" className="form-control input-sm uppercaseinput" id="cantidad_1" name="cantidad_1" 
                             placeholder="Número de Planos"
                             title="El Número de Planos es requerido"
                             autoComplete = "off"
@@ -301,7 +303,7 @@ async function addPlanos(planos) {
                             </select>
                         </label>
                         <label className="col-lg-2">
-                            <input type="number" min="1" step="1" className="form-control input-sm uppercaseinput" id="cantidad_2" name="cantidad_2" 
+                            <input type="number" min="1" max="999" step="1" className="form-control input-sm uppercaseinput" id="cantidad_2" name="cantidad_2" 
                             placeholder="Número de Planos"
                             title="El Número de Planos es requerido"
                             autoComplete = "off"
@@ -372,7 +374,7 @@ async function addPlanos(planos) {
                             </select>
                         </label>
                         <label className="col-lg-2">
-                            <input type="number" min="1" step="1" className="form-control input-sm uppercaseinput" id="cantidad_3" name="cantidad_3" 
+                            <input type="number" min="1" max="999" step="1" className="form-control input-sm uppercaseinput" id="cantidad_3" name="cantidad_3" 
                             placeholder="Número de Planos"
                             title="El Número de Planos es requerido"
                             autoComplete = "off"
@@ -443,7 +445,7 @@ async function addPlanos(planos) {
                             </select>
                         </label>
                         <label className="col-lg-2">
-                            <input type="number" min="1" step="1" className="form-control input-sm uppercaseinput" id="cantidad_4" name="cantidad_4" 
+                            <input type="number" min="1" max="999" step="1" className="form-control input-sm uppercaseinput" id="cantidad_4" name="cantidad_4" 
                             placeholder="Número de Planos"
                             title="El Número de Planos es requerido"
                             autoComplete = "off"
@@ -513,7 +515,7 @@ async function addPlanos(planos) {
                             </select>
                         </label>
                         <label className="col-lg-2">
-                            <input type="number" min="1" step="1" className="form-control input-sm uppercaseinput" id="cantidad_5" name="cantidad_5" 
+                            <input type="number" min="1" max="999" step="1" className="form-control input-sm uppercaseinput" id="cantidad_5" name="cantidad_5" 
                             placeholder="Número de Planos"
                             title="El Número de Planos es requerido"
                             autoComplete = "off"

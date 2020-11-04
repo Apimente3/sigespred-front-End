@@ -45,15 +45,14 @@ class Header extends Component {
                                     <center>  <Link to={`/cuadro-control`} className="top-link active">
                                         <img src='/img/m_trasnferencia.svg' height={'25'}></img><br></br><b>Exp.Tranf.Interestatales</b></Link>
                                     </center>
-                                </li>*/}
+                                </li>
 
                                 <li className='menuprincipalbig2'>
                                     <center>  <Link to={`/cuadro-control`} className="top-link active">
 
                                         <img src='/img/m_cuadro.svg' height={'25'}></img><br></br><b>Cuadro Control</b></Link>
                                     </center>
-                                </li>
-
+                                </li>*/}
 
                               <DrpAministrativo/>
 

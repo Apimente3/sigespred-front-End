@@ -64,7 +64,17 @@ class SidebarAdm extends Component {
                                         <span className="menu-hover"></span>
                                     </Link>
                                 </li>
-
+                                <li menu="/planos">
+                                    <Link to={"/partidas"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                            PARTIDAS REGISTRALES
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
 
                             </ul>
 

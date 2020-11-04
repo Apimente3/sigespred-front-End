@@ -1,23 +1,14 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import {toastr} from 'react-redux-toastr'
 
 const SubListaDelete = ({data, cabecera, deleterow}) => {
 
-    const sampleJSON = [
-        {
-          "lamina": "Lámina 1",
-          "digital": "hola.doc",
-          "memoria": ""
-        },
-        {
-            "lamina": "Lámina 1",
-            "digital": "hola.doc",
-            "memoria": "ddd"
-          }
-        ];
-
     const removerElemento = (idelem) => {
-        deleterow(idelem)
+        const toastrConfirmOptions = {
+            onOk: () => deleterow(idelem),
+        };
+        toastr.confirm(`¿Desea eliminar el archivo?`, toastrConfirmOptions);
     }
 
     return (
@@ -44,9 +35,9 @@ const SubListaDelete = ({data, cabecera, deleterow}) => {
                             <td>
                                 <span>{object.memoria}</span>
                             </td>
-                            <td>
-                                <a className="btn btn-default btn-sm dropdown-toggle pull-left"
-                                    title="Agregar a la lista"
+                            <td align="center">
+                                <a className="btn btn-default btn-sm dropdown-toggle"
+                                    title="Quitar de la lista"
                                     onClick={() => removerElemento(object.laminaid)}
                                     >
                                     <i className="fa fa-trash"></i>

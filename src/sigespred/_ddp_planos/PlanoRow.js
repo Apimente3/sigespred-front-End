@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect }  from 'react';
 import {Link} from "react-router-dom";
-
+const {$} = window;
 const PlanoRow = ({plano,nro, callback, loadfiles}) => {
+    useEffect(() => {
+        const init = async () => {
+            $('[data-toggle="tooltip"]').tooltip()
+        };
+        init();
+    }, []);
 
     const eliminar = (idplano, codplano) => {
         callback(idplano, codplano);
@@ -34,12 +40,12 @@ const PlanoRow = ({plano,nro, callback, loadfiles}) => {
                 <td key={`tdrowkey_9${nro}`}>{plano.antecedente}</td>
                 <td key={`tdrowkey_10${nro}`}>
                     <div key={`divrowkey_${nro}`} className="btn-group pull-right">
-                        <Link  to={`/plano-add/${plano.codplano}`}   className="btn btn-xs btn-default" type="button"><i
+                        <Link  to={`/plano-add/${plano.codplano}`}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Usar como referencia en un nuevo plano" }><i
                             className="fa fa-link fa-lg"></i></Link>                        
-                        <Link  to={`/plano-edit/${plano.id}`}  className="btn btn-xs btn-default" type="button"><i
+                        <Link  to={`/plano-edit/${plano.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Editar el plano" }><i
                             className="fa fa-edit fa-lg"></i></Link>
-                        <a key={`arowkey_${nro}`} onClick={() => eliminar(plano.id, plano.codplano)}  className="btn btn-xs btn-default" type="button"><i
-                            className="fa fa-trash-o fa-lg"></i></a>
+                        {/* <a key={`arowkey_${nro}`} onClick={() => eliminar(plano.id, plano.codplano)}  className="btn btn-xs btn-default" type="button"><i
+                            className="fa fa-trash-o fa-lg"></i></a> */}
 
                     </div>
                 </td>

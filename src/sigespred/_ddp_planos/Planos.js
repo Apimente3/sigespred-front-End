@@ -288,7 +288,7 @@ const Planos = ({history}) => {
         return false;
     }
 
-    const cabecerasTabla = ["","ID", "CÓDIGO DEL PLANO", "PROYECTO", "PROFESIONAL", "FECHA DE CREACIÓN", "UBICACIÓN","DIGITAL", "ANTECEDENTE","ACCIONES"]
+    const cabecerasTabla = ["","ID", "CÓDIGO DEL PLANO", "PROYECTO", "PROFESIONAL", "FECHA DE ELABORACIÓN", "UBICACIÓN","DIGITAL", "ANTECEDENTE","ACCIONES"]
     return (
         <>
         <WraperLarge titleForm={"Listado de Planos"} listbreadcrumb={LISTADO_PLANO_BREADCRUM}>
@@ -298,24 +298,23 @@ const Planos = ({history}) => {
                     <input type="text" className="form-control input-sm" id="codplano" name="codplano" 
                     placeholder="Código del plano" onBlur={handleInputChange}/>
                 </div>
-
-                <label className="col-lg-2 control-label">Proyecto</label>
+                <label className="col-lg-2 control-label">Tipo de Plano</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
-                    onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
+                    <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid" 
+                    onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
-                        {resListaProyectos.error
+                        {resListaTipoPlano.error
                         ? "Se produjo un error cargando los tipos de plano"
-                        : resListaProyectos.loading
+                        : resListaTipoPlano.loading
                         ? "Cargando..."
-                        : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion" />}
+                        : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
                     </select>
                 </div>
             </div>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Fecha de Creación - Inicio</label>
                 <div className="col-lg-4">
-                    <input className="form-control input-sm" type="date"
+                    <input className="form-control input-sm" type="date" style={{ lineHeight: "1.43" }}
                     id="fechainicio"
                     name="fechainicio"
                     placeholder="Ingrese fecha inicio"
@@ -325,7 +324,7 @@ const Planos = ({history}) => {
 
                 <label className="col-lg-2 control-label">Fecha de Creación - Fin</label>
                 <div className="col-lg-4">
-                    <input className="form-control input-sm" type="date"
+                    <input className="form-control input-sm" type="date" style={{ lineHeight: "1.43" }}
                     id="fechafin"
                     name="fechafin"
                     placeholder="Ingrese fecha inicio"
@@ -335,7 +334,7 @@ const Planos = ({history}) => {
             </div>
 
             <div className="form-group">
-                <label className="col-lg-2 control-label">¿Contiene Dígital?</label>
+                <label className="col-lg-2 control-label">¿Contiene Archivo Dígital?</label>
                 <div className="col-lg-4">
                     <select className="form-control input-sm" id="contienedigital" name="contienedigital" 
                     onChange={handleInputChange}>
@@ -356,34 +355,16 @@ const Planos = ({history}) => {
             </div>
 
             <div className="form-group">
-                <label className="col-lg-2 control-label">Tramo</label>
+                <label className="col-lg-2 control-label">Proyecto</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm"  id="tramoid" name="tramoid" 
-                    onChange={handleInputChange}>
+                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                    onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
                         <option value="">--SELECCIONE--</option>
-                        {dataTramo &&
-                            <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
-                    </select>
-                </div>
-
-                <label className="col-lg-2 control-label">Subtramo</label>
-                <div className="col-lg-4">
-                    <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" placeholder="Ingrese el subtramo"
-                    onChange={handleInputChange} />
-                </div>
-            </div>
-
-            <div className="form-group">
-                <label className="col-lg-2 control-label">Tipo de Plano</label>
-                <div className="col-lg-4">
-                    <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid" 
-                    onChange={handleInputChange}>
-                        <option value="">--SELECCIONE--</option>
-                        {resListaTipoPlano.error
+                        {resListaProyectos.error
                         ? "Se produjo un error cargando los tipos de plano"
-                        : resListaTipoPlano.loading
+                        : resListaProyectos.loading
                         ? "Cargando..."
-                        : <ComboOptions data={resListaTipoPlano.result} valorkey="id" valornombre="descripcion" />}
+                        : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion" />}
                     </select>
                 </div>
                 <label className="col-lg-2 control-label">Departamento</label>
@@ -397,10 +378,19 @@ const Planos = ({history}) => {
                         ? "Cargando..."
                         : <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />}
                     </select>
-                </div>
+                </div>                
             </div>
 
             <div className="form-group">
+                <label className="col-lg-2 control-label">Tramo</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm"  id="tramoid" name="tramoid" 
+                    onChange={handleInputChange}>
+                        <option value="">--SELECCIONE--</option>
+                        {dataTramo &&
+                            <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
+                    </select>
+                </div>
                 <label className="col-lg-2 control-label">Provincia</label>
                 <div className="col-lg-4">
                     <select className="form-control input-sm" id="provinciaid" name="provinciaid" 
@@ -408,6 +398,14 @@ const Planos = ({history}) => {
                         <option value="0">--SELECCIONE--</option>
                         <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
                     </select>
+                </div>
+            </div>
+
+            <div className="form-group">
+                <label className="col-lg-2 control-label">Subtramo</label>
+                <div className="col-lg-4">
+                    <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" placeholder="Ingrese el subtramo"
+                    onChange={handleInputChange} />
                 </div>
                 <label className="col-lg-2 control-label">Distrito</label>
                 <div className="col-lg-4">
@@ -426,7 +424,7 @@ const Planos = ({history}) => {
                     )}  
                     </div>
                     <div className="col-lg-6 text-right">
-                    <button type="button" onClick={limpiarPlanosFilter} className="btn btn-default btn-sm fullborder">
+                        <button type="button" onClick={limpiarPlanosFilter} className="btn btn-default btn-sm fullborder">
                             <i className="fa fa-eraser"></i> Limpiar Filtro(s)
                         </button>
                         <button type="button" onClick={buscarPlanosFilter} className="btn btn-info  btn-sm  fullborder">
@@ -443,7 +441,7 @@ const Planos = ({history}) => {
                             <i className="fa fa-file-excel-o"></i> TODO: Descargar Excel
                         </button> */}
                         <Link to={`/plano-grupo`} className="btn btn-danger btn-sm fullborder">
-                            <i className="fa fa-clone"></i>  Generación Códigos
+                            <i className="fa fa-clone"></i>  Generación de Códigos
                         </Link>
                         <Link to={`/plano-add`} className="btn btn-danger btn-sm fullborder">
                             <i className="fa fa-plus-circle"></i>  Agregar Plano

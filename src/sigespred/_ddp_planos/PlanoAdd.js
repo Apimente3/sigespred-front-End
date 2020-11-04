@@ -17,6 +17,8 @@ import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
+const directorioPlanos = "planosadmin";
+const currentYear= moment().year();
 
 const PlanoAdd = ({history,  match}) => {
     const [plano, set_plano] = useState({observaciones: ''});
@@ -247,7 +249,7 @@ const PlanoAdd = ({history,  match}) => {
         }
     }
 
-    const cabeceraArchivos = ["Lámina","Plano Digital", "Mem. Descriptiva", "Eliminar"];
+    const cabeceraArchivos = ["Desc./Lámina","Plano Digital", "Mem. Descriptiva", "Eliminar"];
 
         return (
             <>
@@ -315,6 +317,7 @@ const PlanoAdd = ({history,  match}) => {
                                     <div className="col-lg-8">
                                         <select className="form-control input-sm" id="periodoid" name="periodoid" 
                                         required
+                                        value={currentYear || ""}
                                         title="El Año es requerido"
                                         autoComplete = "off"
                                         onChange={handleInputChange}
@@ -400,27 +403,14 @@ const PlanoAdd = ({history,  match}) => {
                             </fieldset>
                         </div>
                     </div>
-
+                    <div className="form-group col-lg-12">
+                        <fieldset className="mleft-20">
+                            <legend>Ubicación</legend>
+                        </fieldset>
+                    </div>
 
                     <div className="form-group col-lg-6">
                         <fieldset className="mleft-20">
-                            <legend>Ubicación</legend>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Tramo</label>
-                                <div className="col-lg-8">
-                                    <select id="tramoid" name="tramoid" className="form-control input-sm" onChange={handleInputChange}>
-                                        <option value="">--SELECCIONE--</option>
-                                        {dataTramo &&
-                                        <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Subtramo</label>
-                                <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="subtramo" name="subtramo" onChange={handleInputChange}/>
-                                </div>
-                            </div>
                             <div className="form-group">
                                 <label className="col-lg-4 control-label">Departamento</label>
                                 <div className="col-lg-8">
@@ -457,46 +447,67 @@ const PlanoAdd = ({history,  match}) => {
                                 <div className="col-lg-8">
                                     <UploadMemo key="refgeografica" file={{urlDocumento:''}}
                                     accept={'.jpg,.png,.gif'}
-                                    setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
+                                    setFile={saveArchivoDigital} folderSave={directorioPlanos} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
                             </div> */}
                         </fieldset>
                     </div>
 
                     <div className="form-group col-lg-6">
+                        <div className="form-group">
+                                <label className="col-lg-4 control-label">Tramo</label>
+                                <div className="col-lg-8">
+                                    <select id="tramoid" name="tramoid" className="form-control input-sm" onChange={handleInputChange}>
+                                    <option value="">--SELECCIONE--</option>
+                                    {dataTramo &&
+                                    <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
+                                    </select>        
+                                </div>                                
+                            </div>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">Subtramo</label>
+                                <div className="col-lg-8">
+                                    <input type="text" className="form-control input-sm" id="subtramo" name="subtramo" onChange={handleInputChange}/>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div className="form-group col-lg-12">
                         <fieldset className="mleft-20">
                             <legend>Archivos</legend>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Descripcion de Lámina</label>
+                            <div className="form-group col-lg-4">
+                                <label className="col-lg-4 control-label">Descripción/Lámina</label>
                                 <div className="col-lg-8">
                                     <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam" 
                                     value = {planoArchTmp.lamina || ''}
                                     onChange={handleChangeLamina}/>
                                 </div>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group col-lg-3">
                                 <label className="col-lg-4 control-label">Plano Dígital</label>
                                 <div className="col-lg-6">
                                     <UploadMemo key="planodigitaltmp" file={{urlDocumento:''}}
                                     accept={'.*'} resetContenido={reiniciarValDigital}
-                                    setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
+                                    setFile={saveArchivoDigital} folderSave={directorioPlanos} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group col-lg-3">
                                 <label className="col-lg-4 control-label">Memoría Descriptiva</label>
                                 <div className="col-lg-6">
                                     <UploadMemo key="memdescriptivatmp" file={{urlDocumento:''}}
                                     accept={'.*'} resetContenido={reiniciarValMemoria}
-                                    setFile={saveArchivoMemoria} folderSave={"FotosUsuarios"} eliminar={deleteArchivoMemoria}></UploadMemo>
-                                </div>
-                                <div className="col-lg-2">
-                                <a className="btn btn-default btn-sm dropdown-toggle pull-left"
-                                    title="Agregar a la lista"
-                                    onClick={actualizarLista}
-                                    >
-                                    <i className="fa fa-archive fa-2x"></i></a>
+                                    setFile={saveArchivoMemoria} folderSave={directorioPlanos} eliminar={deleteArchivoMemoria}></UploadMemo>
                                 </div>
                             </div>
+                            <div className="form-group col-lg-2">
+                                <a className="btn btn-info btn-sm fullborder"
+                                    title="Agregar a Lista"
+                                    onClick={actualizarLista}
+                                >Agregar a Lista</a>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div className="form-group col-lg-12">
                             <div className="form-group">
                             {listaArchivos ?
                                 <SubLista data={listaArchivos} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
@@ -504,7 +515,6 @@ const PlanoAdd = ({history,  match}) => {
                                 <SubLista data={[]} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
                             }
                             </div>
-                        </fieldset>
                     </div>
                     
                     <div className="panel-body">

@@ -71,7 +71,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit, resetContenido=false}) =
         <>
             {(!seleccionado) ?
                 (<div>
-                    <input onChange={busquedaItems} type="email" className="form-control input-sm"
+                    <input onChange={busquedaItems} type="text" className="form-control input-sm"
                            id="exampleInputEmail1"
                            placeholder=""/>
                     {!valorBuscar || list.length == 0 || list.length == listinit.length ? null :

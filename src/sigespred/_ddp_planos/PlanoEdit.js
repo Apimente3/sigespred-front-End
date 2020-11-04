@@ -17,6 +17,7 @@ import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 
 const {$} = window;
 const axios=initAxiosInterceptors();
+const directorioPlanos = "planosadmin";
 
 const obtenerPlano = async(id) => {
     const {data} = await axios.get(`/plano?id=${id}`);
@@ -232,7 +233,7 @@ const PlanoEdit = ({history, match}) => {
         }
     }
 
-    const cabeceraArchivos = ["Lámina","Plano Digital", "Mem. Descriptiva", "Eliminar"];
+    const cabeceraArchivos = ["Desc./Lámina","Plano Digital", "Mem. Descriptiva", "Eliminar"];
 
         return (
             <>
@@ -335,208 +336,216 @@ const PlanoEdit = ({history, match}) => {
                             </fieldset>
                         </div>
                         <div className="form-group col-lg-6">
-                        <fieldset className="mleft-20">
-                            <legend>Datos Generales</legend>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Profesional Solicitante
-                                </label>
-                                <div className="col-lg-8">
-                                    {resListaSolicitantes.error
-                                    ? "Se produjo un error cargando los locadores"
-                                    : resListaSolicitantes.loading
-                                    ? "Cargando..."
-                                    : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} valorinit={planoEdicion.profesionalid}/>}
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Estado del Plano
-                                </label>
-                                <div className="col-lg-8">
-                                    <select id="estadoid" name="estadoid" className="form-control input-sm" 
-                                    value={planoEdicion.estadoid || ''}
-                                    onChange={handleInputChange}>
-                                        <option value="">--SELECCIONE--</option>
-                                        {resListaEstadosPlano.error
-                                        ? "Se produjo un error cargando los estados de plano"
-                                        : resListaEstadosPlano.loading
+                            <fieldset className="mleft-20">
+                                <legend>Datos Generales</legend>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        Profesional Solicitante
+                                    </label>
+                                    <div className="col-lg-8">
+                                        {resListaSolicitantes.error
+                                        ? "Se produjo un error cargando los locadores"
+                                        : resListaSolicitantes.loading
                                         ? "Cargando..."
-                                        : <ComboOptions data={resListaEstadosPlano.result} valorkey="valorcodigo" valornombre="valortexto" />}
-                                    </select>
+                                        : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} valorinit={planoEdicion.profesionalid}/>}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Plano Antecedente
-                                </label>
-                                <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
-                                    value={planoEdicion.antecedente || ''}
-                                    readOnly onChange={handleInputChange}/>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        Estado del Plano
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <select id="estadoid" name="estadoid" className="form-control input-sm" 
+                                        value={planoEdicion.estadoid || ''}
+                                        onChange={handleInputChange}>
+                                            <option value="">--SELECCIONE--</option>
+                                            {resListaEstadosPlano.error
+                                            ? "Se produjo un error cargando los estados de plano"
+                                            : resListaEstadosPlano.loading
+                                            ? "Cargando..."
+                                            : <ComboOptions data={resListaEstadosPlano.result} valorkey="valorcodigo" valornombre="valortexto" />}
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Fecha de Creación
-                                </label>
-                                <div className="col-lg-8">
-                                    <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control" 
-                                    value={planoEdicion.fechacreacion || ''}
-                                    onChange={handleInputChange} />
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        Plano Antecedente
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
+                                        value={planoEdicion.antecedente || ''}
+                                        readOnly onChange={handleInputChange}/>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Observaciones
-                                </label>
-                                <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="observaciones" name="observaciones" 
-                                        value={planoEdicion.observaciones || ''}
-                                        onChange={handleInputChange}/>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        Fecha de Creación
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control" 
+                                        value={planoEdicion.fechacreacion || ''}
+                                        onChange={handleInputChange} />
+                                    </div>
                                 </div>
-                            </div>
+                                <div className="form-group">
+                                    <label className="col-lg-4 control-label">
+                                        Observaciones
+                                    </label>
+                                    <div className="col-lg-8">
+                                        <input type="text" className="form-control input-sm" id="observaciones" name="observaciones" 
+                                            value={planoEdicion.observaciones || ''}
+                                            onChange={handleInputChange}/>
+                                    </div>
+                                </div>
 
-                        </fieldset>
+                            </fieldset>
+                        </div>
                     </div>
-                    </div>
-                    <div className="form-group col-lg-6">
+
+                    <div className="form-group col-lg-12">
                         <fieldset className="mleft-20">
                             <legend>Ubicación</legend>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Tramo
-                                </label>
-                                <div className="col-lg-8">
-                                {dataTramo?
-                                    <select id="tramoid" name="tramoid" className="form-control input-sm" 
-                                        value={planoEdicion.tramoid || ''}
-                                        onChange={handleInputChange}>
-                                        <option value="">--SELECCIONE--</option>
-                                        <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />
-                                    </select>
-                                    :
-                                    <select id="tramoid" name="tramoid" className="form-control input-sm">
-                                        <option value="">--SELECCIONE--</option>
-                                    </select>
-                                }
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Subtramo
-                                </label>
-                                <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" 
-                                    value={planoEdicion.subtramoid || ''}
-                                    onChange={handleInputChange}/>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Departamento
-                                </label>
-                                <div className="col-lg-8">
-                                    {resListaDepartmento.error
-                                    ? "Se produjo un error cargando los departamentos"
-                                    : resListaDepartmento.loading
-                                    ? "Cargando..."
-                                    :
-                                    <select className="form-control input-sm" id="departamentoid" name="departamentoid" 
-                                    value={planoEdicion.departamentoid || ''}
-                                    onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
-                                        <option value="">--SELECCIONE--</option>
-                                        <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />
-                                    </select>}
-                                    {resListaDepartmento.result && (
-                                        setProvinciaDistrito(planoEdicion.departamentoid)
-                                    )}
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Provincia
-                                </label>
-                                <div className="col-lg-8">
-                                    <select id="provinciaid" name="provinciaid" className="form-control input-sm" 
-                                    value={planoEdicion.provinciaid || ''}
-                                    onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
-                                        <option value="">--SELECCIONE--</option>
-                                        <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Distrito
-                                </label>
-                                <div className="col-lg-8">
-                                    <select id="distritoid" name="distritoid" className="form-control input-sm"
-                                    value={planoEdicion.distritoid || ''}
-                                    onChange={handleInputChange}>
-                                        <option value="">--SELECCIONE--</option>
-                                        <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
-                                    </select>
-                                </div>
-                            </div>
-                            {/* <div className="form-group">
-                                <label className="col-lg-4 control-label">
-                                    Referencia Geográfica
-                                </label>
-                                <div className="col-lg-8">
-                                    <UploadMemo key="refgeografica" file={{urlDocumento:''}}
-                                    accept={'.jpg,.png,.gif'}
-                                    setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
-                                </div>
-                            </div> */}
                         </fieldset>
                     </div>
                     <div className="form-group col-lg-6">
+                        <div className="form-group">
+                            <label className="col-lg-4 control-label">
+                                Departamento
+                            </label>
+                            <div className="col-lg-8">
+                                {resListaDepartmento.error
+                                ? "Se produjo un error cargando los departamentos"
+                                : resListaDepartmento.loading
+                                ? "Cargando..."
+                                :
+                                <select className="form-control input-sm" id="departamentoid" name="departamentoid" 
+                                value={planoEdicion.departamentoid || ''}
+                                onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
+                                    <option value="">--SELECCIONE--</option>
+                                    <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />
+                                </select>}
+                                {resListaDepartmento.result && (
+                                    setProvinciaDistrito(planoEdicion.departamentoid)
+                                )}
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-4 control-label">
+                                Provincia
+                            </label>
+                            <div className="col-lg-8">
+                                <select id="provinciaid" name="provinciaid" className="form-control input-sm" 
+                                value={planoEdicion.provinciaid || ''}
+                                onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
+                                    <option value="">--SELECCIONE--</option>
+                                    <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
+                                </select>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-4 control-label">
+                                Distrito
+                            </label>
+                            <div className="col-lg-8">
+                                <select id="distritoid" name="distritoid" className="form-control input-sm"
+                                value={planoEdicion.distritoid || ''}
+                                onChange={handleInputChange}>
+                                    <option value="">--SELECCIONE--</option>
+                                    <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="form-group col-lg-6">
+                        <div className="form-group">
+                            <label className="col-lg-4 control-label">
+                                Tramo
+                            </label>
+                            <div className="col-lg-8">
+                            {dataTramo?
+                                <select id="tramoid" name="tramoid" className="form-control input-sm" 
+                                    value={planoEdicion.tramoid || ''}
+                                    onChange={handleInputChange}>
+                                    <option value="">--SELECCIONE--</option>
+                                    <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />
+                                </select>
+                                :
+                                <select id="tramoid" name="tramoid" className="form-control input-sm">
+                                    <option value="">--SELECCIONE--</option>
+                                </select>
+                            }
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="col-lg-4 control-label">
+                                Subtramo
+                            </label>
+                            <div className="col-lg-8">
+                                <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" 
+                                value={planoEdicion.subtramoid || ''}
+                                onChange={handleInputChange}/>
+                            </div>
+                        </div>
+                        
+                        {/* <div className="form-group">
+                            <label className="col-lg-4 control-label">
+                                Referencia Geográfica
+                            </label>
+                            <div className="col-lg-8">
+                                <UploadMemo key="refgeografica" file={{urlDocumento:''}}
+                                accept={'.jpg,.png,.gif'}
+                                setFile={saveArchivoDigital} folderSave={directorioPlanos} eliminar={deleteArchivoDigital}></UploadMemo>
+                            </div>
+                        </div> */}
+                    </div>
+                    <div className="form-group col-lg-12">
                         <fieldset className="mleft-20">
                             <legend>Archivos</legend>
-                            <div className="form-group">
-                                <label className="col-lg-4 control-label">Descripcion de Lámina</label>
+                            <div className="form-group col-lg-4">
+                                <label className="col-lg-4 control-label">Descripcion/Lámina</label>
                                 <div className="col-lg-8">
                                     <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam" 
                                     value = {planoArchTmp.lamina || ''}
                                     onChange={handleChangeLamina}/>
                                 </div>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group col-lg-3">
                                 <label className="col-lg-4 control-label">
                                     Plano Dígital
                                 </label>
                                 <div className="col-lg-6">
                                     <UploadMemo key="planodigitaltmp" file={{urlDocumento:''}}
                                     accept={'.*'} resetContenido={reiniciarValDigital}
-                                    setFile={saveArchivoDigital} folderSave={"FotosUsuarios"} eliminar={deleteArchivoDigital}></UploadMemo>
+                                    setFile={saveArchivoDigital} folderSave={directorioPlanos} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
                             </div>
-                            <div className="form-group">
+                            <div className="form-group col-lg-3">
                                 <label className="col-lg-4 control-label">
                                     Memoría Descriptiva
                                 </label>
                                 <div className="col-lg-6">
                                     <UploadMemo key="memdescriptivatmp" file={{urlDocumento:''}}
                                     accept={'.*'} resetContenido={reiniciarValMemoria}
-                                    setFile={saveArchivoMemoria} folderSave={"FotosUsuarios"} eliminar={deleteArchivoMemoria}></UploadMemo>
-                                </div>
-                                <div className="col-lg-2">
-                                    <a className="btn btn-default btn-sm dropdown-toggle pull-left"
-                                        title="Agregar a la lista"
-                                        onClick={actualizarLista}
-                                        >
-                                        <i className="fa fa-archive fa-2x"></i></a>
+                                    setFile={saveArchivoMemoria} folderSave={directorioPlanos} eliminar={deleteArchivoMemoria}></UploadMemo>
                                 </div>
                             </div>
-                            <div className="form-group">
-                                {listaArchivos ?
-                                <SubLista data={listaArchivos} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
-                                :
-                                <SubLista data={[]} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
-                                }
+                            <div className="form-group col-lg-2">
+                                <a className="btn btn-info btn-sm fullborder"
+                                title="Agregar a la lista"
+                                onClick={actualizarLista}
+                                >Agregar a Lista</a>
                             </div>
                         </fieldset>
+                    </div>
+                    <div className="form-group col-lg-12">
+                        <div className="form-group">
+                            {listaArchivos ?
+                            <SubLista data={listaArchivos} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
+                            :
+                            <SubLista data={[]} cabecera={cabeceraArchivos} deleterow={removerDeLista}/>
+                            }
+                        </div>
                     </div>
 
                     <div className="panel-body">
