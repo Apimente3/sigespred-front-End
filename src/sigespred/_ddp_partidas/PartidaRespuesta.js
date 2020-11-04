@@ -405,7 +405,15 @@ const PartidaRespuesta = () => {
                     nameUpload={"archivos"}
                   ></MultipleUpload>
                 
-               
+                <div className="col-lg-2">
+                  <a
+                    className="btn btn-default btn-sm dropdown-toggle pull-left"
+                    title="Agregar a la lista"
+                    onClick={actualizarLista}
+                  >
+                    <i className="fa fa-archive fa-2x"></i>
+                  </a>
+                </div>
               </div>
 
 

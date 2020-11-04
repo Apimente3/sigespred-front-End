@@ -151,7 +151,7 @@ export const Partida = (history) => {
       console.log(valorFiltros);
     }
     
-    ejecutarPartidasFilter(filtros);
+    ejecutarPartidasFilter(valorFiltros);
   };
 
   const ejecutarPartidasFilter = async (datosfiltro) => {
@@ -164,8 +164,8 @@ export const Partida = (history) => {
     if (datosfiltro) {
       query += `&${datosfiltro}`;
     }
+
     let listaPartidas = await buscarPartida(query);
-    //setPartidas({ count: 50, rows: dataFiltrada });
     setDataPartidas(listaPartidas);
     settotalItemsCount(listaPartidas.count);
     set_busquedaLocal(false);
@@ -228,7 +228,7 @@ export const Partida = (history) => {
         titleForm={"Listado de Partidas Registrales"}
         listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}
       >
-        {/* <form onSubmit={buscarPartidasFilter}> */}
+        
           <div className="form-group">
             <label className="col-lg-2 control-label">Nro Partida</label>
             <div className="col-lg-4">
@@ -331,9 +331,9 @@ export const Partida = (history) => {
             <label className="col-lg-2 control-label">Tipo Predio</label>
             <div className="col-lg-4">
               <select
-                id="tipopredio"
+                id="tipopredioid"
                 className="form-control"
-                name="tipopredio"
+                name="tipopredioid"
                 onChange={handleInputChange}
               >
                 <option value="">--SELECCIONE--</option>
