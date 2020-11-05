@@ -406,7 +406,7 @@ const PartidaRespuesta = () => {
                   
                 ></input>
               </div>
-            </div> F
+            </div> 
 
           </fieldset>
 
