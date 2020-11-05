@@ -131,7 +131,7 @@ const PartidaAdd = ({ history }) => {
               </select>
             </div>
             <label className="col-lg-2 control-label">
-              <span className="obligatorio">* </span>Numero de Partida
+              <span className="obligatorio">* </span>Número de Partida
             </label>
             <div className="col-lg-4">
               <input

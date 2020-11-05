@@ -8,8 +8,7 @@ import Wraper from "../m000_common/formContent/WraperLarge";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
-import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
-import SubLista from "./SubListaDelete";
+
 import { toastr } from "react-redux-toastr";
 import { editar, respuestaPartida } from "../../actions/_ddp_partida/Actions";
 import { useDispatch } from "react-redux";
@@ -199,7 +198,7 @@ const PartidaRespuesta = () => {
                 )}
               </div>
               <label className="col-lg-2 control-label">
-                <span className="obligatorio">* </span>Numero de Partida
+                <span className="obligatorio">* </span>Número de Partida
               </label>
               <div className="col-lg-4">
                 <input
@@ -249,7 +248,7 @@ const PartidaRespuesta = () => {
                 )}
               </div>
               <label className="col-lg-2 control-label">
-                <span className="obligatorio">* </span>Sub Tramo
+                Sub Tramo
               </label>
               <div className="col-lg-4">
                 <input

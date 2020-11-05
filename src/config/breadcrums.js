@@ -25,7 +25,24 @@ export const LISTADO_TRABAJADOR_BREADCRUM = [
 export const REGISTRO_PARTIDA_BREADCRUM = [
     {link: "partida-add", name: "Agregar Partida"},
     {link: "partidas", name: "Listado de Partidas"},
-    {link: "partida-edit", name: "Editar Partida"}
+    // {link: "partida-edit", name: "Editar Partida"}
+]
+
+export const LISTADO_PARTIDA_BREADCRUM = [
+    {link: "partida-add", name: "Gestion Partida"},
+    {link: "partidas", name: "Listado de Partidas"}
+]
+
+export const ACTUALIZAR_PARTIDA_BREADCRUM = [
+    {link: "../../partida-add", name: "Gestion de Partidas Registrales"},
+    {link: "../../partidas", name: "Listado de Partidas"},
+    // {link: "partida-add", name: "Actualizar Partida"}
+]
+
+export const ELIMINAR_PARTIDA_BREADCRUM = [
+    {link: "/partidas", name: "Gestion de Partidas Registrales"},
+    {link: "../../partidas", name: "Listado de Partidas Registrales"},
+    // {link: "#", name: "Eliminar Partidas Registrales"}
 ]
 
 //region Gestion Predial
@@ -50,22 +67,6 @@ export const ACTUALIZA_GESTIONPREDIAL_BREADCRUM = [
 
 //endregion
 
-export const LISTADO_PARTIDA_BREADCRUM = [
-    {link: "partida-add", name: "Gestion Partida"},
-    {link: "partidas", name: "Listado de Partidas"}
-]
-
-export const ACTUALIZAR_PARTIDA_BREADCRUM = [
-    {link: "partida-add", name: "Gestion de Partidas Registrales"},
-    {link: "partidas", name: "Listado de Partidas"},
-    {link: "partida-add", name: "Actualizar Partida"}
-]
-
-export const ELIMINAR_PARTIDA_BREADCRUM = [
-    {link: "/", name: "Gestion de Partidas Registrales"},
-    {link: "partidas", name: "Listado de Partidas Registrales"},
-    {link: "#", name: "Eliminar Partidas Registrales"}
-]
 
 export const LISTADO_EQUIPO_BREADCRUM = [
     {link: "equipo-add", name: "Agregar Equipos"},

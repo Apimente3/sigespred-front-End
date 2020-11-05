@@ -216,9 +216,9 @@ export const Partida = (history) => {
     "TRAMO",
     "SUB TRAMO",
     "TIPO PREDIO",
-    "FECHA ATENCION",
-    "OBSERVACION",
-    "ESTADO ATENCION",
+    "FECHA ATENCIÓN",
+    "OBSERVACIÓN",
+    "ESTADO ATENCIÓN",
     "ACCIONES",
   ];
   return (
@@ -362,17 +362,6 @@ export const Partida = (history) => {
                 <option value="">--SELECCIONE--</option>
                 <option value="true">ATENDIDO</option>
                 <option value="false">PENDIENTE</option>
-                {/* {resListaTipoPredio.error ? (
-                  "Se produjo un error cargando los tipos de plano"
-                ) : resListaTipoPredio.loading ? (
-                  "Cargando..."
-                ) : (
-                  <ComboOptions
-                    data={resListaTipoPredio.result}
-                    valorkey="valorcodigo"
-                    valornombre="valortexto"
-                  />
-                )} */}
               </select>
             </div>
           </div>
