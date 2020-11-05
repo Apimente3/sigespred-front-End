@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Select = ({children, onChange, required, name, value,initial=true,title="Seleccione un valor"},readonly=false) => {
+const Select = ({children, onChange, required, name, value,initial=true,title="Seleccione un valor",readonly=false}) => {
     return (
         <>
             <select
