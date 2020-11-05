@@ -51,8 +51,8 @@ const PartidaDel = ({ history, match }) => {
     try {
       const response= await deletePartida(partida);
       toastr.success(
-            "Eliminacion de la  Partida",
-            "La partida se elimino correctamente.")
+            "Eliminación de la  Partida",
+            "La partida se eliminó correctamente.")
       if(response){
           history.push('/partidas');
       }
@@ -63,7 +63,7 @@ const PartidaDel = ({ history, match }) => {
 
   return (
     <Wraper
-      titleForm={"Eliminacion del Trabajador"}
+      titleForm={"Eliminación de la partida registral"}
       listbreadcrumb={ELIMINAR_PARTIDA_BREADCRUM}
     >
       <form onSubmit={eliminar}>

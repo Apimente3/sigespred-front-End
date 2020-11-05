@@ -1,7 +1,7 @@
 import { initAxiosInterceptors } from "../../config/axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { REGISTRO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
+import { ACTUALIZAR_PARTIDA_BREADCRUM } from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import { useAsync } from "react-async-hook";
@@ -93,7 +93,7 @@ const PartidaEdit = ({ history, match }) => {
     <>
       <Wraper
         titleForm={"Edición de Partida: " + partidaEdicion.id}
-        listbreadcrumb={REGISTRO_PARTIDA_BREADCRUM}
+        listbreadcrumb={ACTUALIZAR_PARTIDA_BREADCRUM}
       >
         <form onSubmit={actualizar}>
           <div className="form-group">
@@ -126,7 +126,7 @@ const PartidaEdit = ({ history, match }) => {
               </select>
             </div>
             <label className="col-lg-2 control-label">
-              <span className="obligatorio">* </span>Numero de Partida
+              <span className="obligatorio">* </span>Número de Partida
             </label>
             <div className="col-lg-4">
               <input
@@ -220,7 +220,7 @@ const PartidaEdit = ({ history, match }) => {
               ></input>
             </div>
 
-            <label className="col-lg-2 control-label">Observacion</label>
+            <label className="col-lg-2 control-label">Observación</label>
             <div className="col-lg-4">
               <input
                 className="form-control input-sm"
