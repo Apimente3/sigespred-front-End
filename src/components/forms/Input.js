@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Input = ({required,type,placeholder,name,onChange,value,pattern,title}) => {
+const Input = ({required,type,placeholder,name,onChange,value,pattern,title,readonly=false}) => {
     return (
         <>
             <input required={ required ? "required": ""}
@@ -12,6 +12,7 @@ const Input = ({required,type,placeholder,name,onChange,value,pattern,title}) =>
                    value={value}
                    pattern={pattern}
                    title={title}
+                   readOnly={readonly}
             >
             </input>
         </>
