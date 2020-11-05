@@ -12,6 +12,8 @@ const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSa
 
     useEffect(() => {
         const init = async () => {
+            console.log('----------------------')
+            console.log(form[nameUpload])
             setSubiendoImagen( form[nameUpload] ? 'subido' : 'ninguno' );
             //setoriginalName(form[nameUpload].filename);
         };
@@ -54,8 +56,9 @@ const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSa
 
     /*Funcion para eliminar del formulario el archivo*/
     const eliminarFile=()=>{
+
         setSubiendoImagen('ninguno');
-        setForm({...form,[nameUpload]:null});
+        setForm({...form,[nameUpload]:{foto:''}});
     }
 
 

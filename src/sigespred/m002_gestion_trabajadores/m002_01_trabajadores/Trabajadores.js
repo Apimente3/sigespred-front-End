@@ -1,11 +1,13 @@
-import React, {useEffect, useState,createContext} from 'react';
+import React, {useEffect, useState, createContext} from 'react';
 import {Link} from "react-router-dom";
 import Wraper from "../../m000_common/formContent/Wraper";
 import {LISTADO_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
 import {initAxiosInterceptors, serverFile} from '../../../config/axios';
 import TableTrabajador from "./TableTrabajador";
 import TrabajadorRow from "./TrabajadorRow";
+import {useTable} from "../../../hooks/useTable";
 import Pagination from "react-js-pagination";
+
 const queryString = require('query-string');
 
 const {alasql} = window;
@@ -13,55 +15,39 @@ const {alasql} = window;
 const Axios = initAxiosInterceptors();
 
 
-
-
 async function buscarTrabajador(query) {
-   // alert(query)
-    const {data} = await Axios.get(`/usuario?`+ query);
+    // alert(query)
+    const {data} = await Axios.get(`/usuario?` + query);
     return data;
 }
 
 
 const Trabajadores = ({history}) => {
 
-
-    const WizardContext = createContext();
-
     const [busqueda, setBusqueda] = useState('');
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const [totalItemsCount, settotalItemsCount] = useState(3);
-    const [activePage, setactivePage] = useState(1);
-    const [trabajadors, setTrabajadores] = useState({"count":5,"rows":[]});
-
-
-    const context = {
-        nropagina:1
-
-    };
-
+    const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed  , trabajadors] = useTable();
 
     useEffect(() => {
         async function init() {
             try {
-                let query =  await  queryString.stringify({busqueda, page, limit});
-                let trabajadores=await buscarTrabajador(query)
-                setTrabajadores(trabajadores)
-                settotalItemsCount(trabajadores.count)
+                let query = await queryString.stringify({busqueda, page: activePage, limit});
+                let trabajadores = await buscarTrabajador(query)
+                changePage(activePage, trabajadores);
             } catch (error) {
                 alert('Ocurrio un error')
                 console.log(error);
             }
         }
+
         init();
     }, []);
 
     const buscarTrabadorFilter = async (e) => {
 
         e.preventDefault();
-        let query =  await  queryString.stringify({busqueda, page, limit});
-        let trabajadores=await buscarTrabajador(query)
-        setTrabajadores(trabajadores)
+        let query = await queryString.stringify({busqueda,page: activePage, limit});
+        let trabajadores = await buscarTrabajador(query)
+        changePage(activePage, trabajadores);
     }
 
     //const trabajadores = useSelector(state => state.trabajador.trabajadors);
@@ -82,14 +68,9 @@ const Trabajadores = ({history}) => {
 
 
     const handlePageChange = async (pageNumber) => {
-        await setPage(pageNumber)
-        //alert(pageNumber)
-        setactivePage(pageNumber)
-        setPage(pageNumber)
-        console.log(`active page is ${pageNumber}`);
-        let query =  await  queryString.stringify({busqueda, page:pageNumber, limit});
-        let trabajadores=await buscarTrabajador(query)
-        setTrabajadores(trabajadores)
+        let query = await queryString.stringify({busqueda, page: pageNumber, limit});
+        let resultList = await buscarTrabajador(query)
+        changePage(pageNumber, resultList);
 
     }
 
@@ -97,8 +78,8 @@ const Trabajadores = ({history}) => {
 
     return (
         <>
-            <WizardContext.Provider value={context}>
-             <Wraper titleForm={"Listado de Trabajadores"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
+
+            <Wraper titleForm={"Listado de Trabajadores"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
                 <fieldset className={'fielsettext'}>
                     <form onSubmit={buscarTrabadorFilter}>
                         <div className="row">
@@ -127,7 +108,7 @@ const Trabajadores = ({history}) => {
                 </fieldset>
                 <div className="panel panel-default">
                     <TableTrabajador cabecera={cabecerasTabla}>
-                       {trabajadors.rows.map((trabajador, i) => (
+                        {trabajadors.rows.map((trabajador, i) => (
                             <TrabajadorRow nro={i} trabajador={trabajador}></TrabajadorRow>
                         ))}
                     </TableTrabajador>
@@ -136,13 +117,13 @@ const Trabajadores = ({history}) => {
                             activePage={activePage}
                             itemsCountPerPage={limit}
                             totalItemsCount={totalItemsCount}
-                            pageRangeDisplayed={3}
+                            pageRangeDisplayed={pageRangeDisplayed}
                             onChange={handlePageChange}
                         ></Pagination>
                     </div>
                 </div>
             </Wraper>
-            </WizardContext.Provider>
+
         </>
     );
 

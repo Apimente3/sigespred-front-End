@@ -39,6 +39,17 @@ async function addTrabajador(usuario) {
 }
 
 
+const ImgAvatar = ({trabajador,serverFile}) => {
+    return (
+        <>
+            <img style={{height: '200px'}}
+                 src={(trabajador.foto.path !== 'img/userblank.jpg') ? serverFile + trabajador.foto.path : trabajador.foto}
+                 alt="User Avatar" className="img-thumbnail"></img>
+        </>
+    );
+};
+
+
 const TrabajadorAdd = ({history}) => {
 
     const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'});
@@ -111,15 +122,13 @@ const TrabajadorAdd = ({history}) => {
                     <div className="col-lg-8">
                         <div className="col-xs-12 col-sm-12 col-md-12 text-center">
                             <a href="#">
-                                <img style={{height: '200px'}}
-                                     src={(trabajador.foto.path !== 'img/userblank.jpg') ? serverFile + trabajador.foto.path : trabajador.foto}
-                                     alt="User Avatar" className="img-thumbnail"></img>
+
                             </a>
                             <center>
                                 <form className="md-form">
 
 
-
+                                    <ImgAvatar trabajador={trabajador} serverFile={serverFile}></ImgAvatar>
 
 
                                      <SingleUpload

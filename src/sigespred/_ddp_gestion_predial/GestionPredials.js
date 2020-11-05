@@ -6,7 +6,7 @@ import {initAxiosInterceptors, serverFile} from '../../config/axios';
 import TableTrabajador from "./Table";
 import TrabajadorRow from "./Row";
 import {useForm} from "../../hooks/useForm"
-import {useTable} from "../../hooks/useTable"
+import {useTable} from "../../hooks/useTable";
 import Pagination from "react-js-pagination";
 const queryString = require('query-string');
 const {alasql} = window;
@@ -27,14 +27,14 @@ const GestionPredials = ({history}) => {
 
 
     const [busqueda, setBusqueda] = useState('');
-    const [ page,changePage,limit,totalItemsCount,settotalItemsCount,activePage,trabajadors,setTrabajadores]= useTable();
+    const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
 
     useEffect(() => {
         async function init() {
             try {
-                let query =  await  queryString.stringify({busqueda, page, limit});
+                let query =  await  queryString.stringify({busqueda,page: activePage, limit});
                 let resultList=await buscarTrabajador(query)
-                changePage(page,resultList);
+                changePage(activePage,resultList);
 
             } catch (error) {
                 alert('Ocurrio un error')
@@ -47,9 +47,9 @@ const GestionPredials = ({history}) => {
     const buscarTrabadorFilter = async (e) => {
 
         e.preventDefault();
-        let query =  await  queryString.stringify({busqueda, page, limit});
-        let trabajadores=await buscarTrabajador(query)
-        setTrabajadores(trabajadores)
+        let query =  await  queryString.stringify({busqueda, page:activePage, limit});
+        let list=await buscarTrabajador(query)
+        changePage(activePage,list);
 
     }
 
@@ -58,7 +58,7 @@ const GestionPredials = ({history}) => {
 
     const descarxls = () => {
 
-        let listexportexcel = trabajadors.rows;
+        let listexportexcel = list.rows;
         var resultgeojson = alasql(`SELECT *
                  FROM ? `, [listexportexcel])
         var opts = [{
@@ -71,9 +71,9 @@ const GestionPredials = ({history}) => {
 
 
     const handlePageChange = async (pageNumber) => {
-        let query =  await  queryString.stringify({busqueda, page:pageNumber, limit});
+        let query =  await  queryString.stringify({busqueda, page:activePage, limit});
         let resultList=await buscarTrabajador(query)
-        changePage(page,resultList);
+        changePage(pageNumber,resultList);
 
     }
 
@@ -111,7 +111,7 @@ const GestionPredials = ({history}) => {
                     </fieldset>
                     <div className="panel panel-default">
                         <TableTrabajador cabecera={cabecerasTabla}>
-                            {trabajadors.rows.map((trabajador, i) => (
+                            {list.rows.map((trabajador, i) => (
                                 <TrabajadorRow nro={i} row={trabajador}></TrabajadorRow>
                             ))}
                         </TableTrabajador>
@@ -120,7 +120,7 @@ const GestionPredials = ({history}) => {
                                 activePage={activePage}
                                 itemsCountPerPage={limit}
                                 totalItemsCount={totalItemsCount}
-                                pageRangeDisplayed={3}
+                                pageRangeDisplayed={pageRangeDisplayed}
                                 onChange={handlePageChange}
                             ></Pagination>
                         </div>
