@@ -41,8 +41,8 @@ const PlanoRow = ({plano,nro, callback, loadfiles}) => {
                 <td key={`tdrowkey_10${nro}`}>
                     <div key={`divrowkey_${nro}`} className="btn-group pull-right">
                         <Link  to={`/plano-add/${plano.codplano}`}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Usar como referencia en un nuevo plano" }><i
-                            className="fa fa-link fa-lg"></i></Link>                        
-                        <Link  to={`/plano-edit/${plano.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Editar el plano" }><i
+                            className="fa fa-link fa-lg"></i></Link>
+                        <Link  to={`/plano-edit/${plano.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Editar datos del código de plano" }><i
                             className="fa fa-edit fa-lg"></i></Link>
                         {/* <a key={`arowkey_${nro}`} onClick={() => eliminar(plano.id, plano.codplano)}  className="btn btn-xs btn-default" type="button"><i
                             className="fa fa-trash-o fa-lg"></i></a> */}

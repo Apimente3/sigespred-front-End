@@ -190,7 +190,7 @@ const PlanoEdit = ({history, match}) => {
             setReiniciarValDigital(true);
             setReiniciarValMemoria(true);
         } else {
-            toastr.error(`Se require al menos un identificador de lámina y el archivo digital.`)
+            toastr.error(`Se require al menos un identificador o descripción de lámina y el plano digital.`)
         }
     }
 
@@ -502,15 +502,15 @@ const PlanoEdit = ({history, match}) => {
                     <div className="form-group col-lg-12">
                         <fieldset className="mleft-20">
                             <legend>Archivos</legend>
-                            <div className="form-group col-lg-4">
-                                <label className="col-lg-4 control-label">Descripcion/Lámina</label>
+                            <div className="form-group col-lg-6">
+                                <label className="col-lg-4 control-label">Descripción / Lámina</label>
                                 <div className="col-lg-8">
                                     <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam" 
                                     value = {planoArchTmp.lamina || ''}
                                     onChange={handleChangeLamina}/>
                                 </div>
                             </div>
-                            <div className="form-group col-lg-3">
+                            <div className="form-group col-lg-6">
                                 <label className="col-lg-4 control-label">
                                     Plano Dígital
                                 </label>
@@ -520,7 +520,7 @@ const PlanoEdit = ({history, match}) => {
                                     setFile={saveArchivoDigital} folderSave={directorioPlanos} eliminar={deleteArchivoDigital}></UploadMemo>
                                 </div>
                             </div>
-                            <div className="form-group col-lg-3">
+                            <div className="form-group col-lg-6">
                                 <label className="col-lg-4 control-label">
                                     Memoría Descriptiva
                                 </label>
@@ -530,11 +530,15 @@ const PlanoEdit = ({history, match}) => {
                                     setFile={saveArchivoMemoria} folderSave={directorioPlanos} eliminar={deleteArchivoMemoria}></UploadMemo>
                                 </div>
                             </div>
-                            <div className="form-group col-lg-2">
-                                <a className="btn btn-info btn-sm fullborder"
-                                title="Agregar a la lista"
-                                onClick={actualizarLista}
-                                >Agregar a Lista</a>
+                            <div className="form-group col-lg-6">
+                                <label className="col-lg-4 control-label">
+                                    <a className="btn btn-info btn-sm"
+                                    title="Agregar a la lista"
+                                    onClick={actualizarLista}
+                                    >Agregar a Lista</a>
+                                </label>
+                                <div className="col-lg-6">
+                                </div>
                             </div>
                         </fieldset>
                     </div>

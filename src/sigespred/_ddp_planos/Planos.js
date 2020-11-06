@@ -292,6 +292,7 @@ const Planos = ({history}) => {
     return (
         <>
         <WraperLarge titleForm={"Listado de Planos"} listbreadcrumb={LISTADO_PLANO_BREADCRUM}>
+            <legend className="mleft-20"><i class="fa fa-filter"></i> Filtros de Búsqueda de Planos</legend>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Código de Plano</label>
                 <div className="col-lg-4">
@@ -434,20 +435,20 @@ const Planos = ({history}) => {
                 </div>
             </div>
             <div className="mt-4 form-group">
-                <div className="row">
-                    <div className="col-md-6"></div>
-                    <div className="col-md-6 text-right">
-                        {/* <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
-                            <i className="fa fa-file-excel-o"></i> TODO: Descargar Excel
-                        </button> */}
-                        <Link to={`/plano-grupo`} className="btn btn-danger btn-sm fullborder">
-                            <i className="fa fa-clone"></i>  Generación de Códigos
-                        </Link>
-                        <Link to={`/plano-add`} className="btn btn-danger btn-sm fullborder">
-                            <i className="fa fa-plus-circle"></i>  Agregar Plano
-                        </Link>
-                        
-                    </div>
+                <div className="col-lg-6">
+                    <legend className="fullborder">Resultados de Búsqueda de Planos</legend>
+                </div>
+                <div className="col-lg-6 text-right">
+                    {/* <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
+                        <i className="fa fa-file-excel-o"></i> TODO: Descargar Excel
+                    </button> */}
+                    <Link to={`/plano-grupo`} className="btn btn-danger btn-sm fullborder">
+                        <i className="fa fa-clone"></i>  Generación de Códigos
+                    </Link>
+                    <Link to={`/plano-add`} className="btn btn-danger btn-sm fullborder">
+                        <i className="fa fa-plus-circle"></i>  Agregar Plano
+                    </Link>
+                    
                 </div>
             </div>
             <div className="panel panel-default">
