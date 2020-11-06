@@ -4,8 +4,6 @@ import {initAxiosInterceptors, serverFile} from '../../config/axios';
 const Axios = initAxiosInterceptors();
 
 const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSave, accept}) => {
-
-    console.error('se genero Single Upload')
     const [subiendoImagen, setSubiendoImagen] = useState('ninguno');
     const [porcentajeSubida, setPorcentajeSubida] = useState(0);
    // const [originalName, setoriginalName] = useState(form[nameUpload]||'');

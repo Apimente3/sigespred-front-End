@@ -3,7 +3,7 @@ import {ACTUALIZAR_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
-import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
+import SingleUpload from "../../components/uploader/SingleUpload";
 import {
     Form,
     FormGroup,
@@ -28,18 +28,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 
 const Axios = initAxiosInterceptors();
-const FilesFormContext = createContext();
-
-export const useFilesFormContext = () => {
-    const context = useContext(FilesFormContext);
-    if (!context) {
-        throw new Error(
-            `Un componente compuesto de Wizard no puede ser
-            renderizado fuera del Wizard padre`
-        );
-    }
-    return context;
-};
+const directorioSolicitudes = "solicitudextadmin";
 
 async function getSolicitud(id) {
     const {data} = await Axios.get(`/solicitudentidad/${id}`);
@@ -100,20 +89,6 @@ const SolicitudEdit = ({history, match}) => {
         setSolicitud({
             ...solicitud,
             responsableid: idLocador
-        });
-    }
-
-    const saveDigitalOficio = (file) => {
-        setSolicitud({
-            ...solicitud,
-            "urloficio": file
-        });
-    }
-
-    const deleteDigitalOficio = () => {
-        setSolicitud({
-            ...solicitud,
-            "urloficio": ''
         });
     }
 
@@ -213,10 +188,15 @@ const SolicitudEdit = ({history, match}) => {
                                 </Input>
                             </FormGroup>
                             <FormGroup label={"Digital de Documento Enviado"}>
-                                <UploadMemo key="urloficio" file={{urlDocumento:''}}
-                                            accept={'.*'}
-                                            setFile={saveDigitalOficio} folderSave={"FotosUsuarios"} eliminar={deleteDigitalOficio}>            
-                                </UploadMemo>
+                                <SingleUpload
+                                        key="urlarcoficio"
+                                        accept={'.*'}
+                                        folderSave={directorioSolicitudes}
+                                        form={solicitud}
+                                        setForm={setSolicitud}
+                                        nameUpload={"urlarcoficio"}
+                                            >
+                                    </SingleUpload>
                             </FormGroup>
                         </Row6>
                     </Row12>

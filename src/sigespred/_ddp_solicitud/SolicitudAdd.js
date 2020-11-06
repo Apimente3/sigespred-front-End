@@ -1,221 +1,75 @@
 import React, {useState} from 'react';
 import {initAxiosInterceptors} from '../../config/axios';
-import moment from 'moment';
 import {REGISTRO_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
-import {agregar, setcontinuarAgregar} from '../../actions/_ddp_plano/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
-// import SubLista from './SubListaDelete';
+import {
+    Form,
+    FormGroup,
+    Row6,
+    Row12,
+    RowForm,
+    Select,
+    Input,
+    Options,
+    FormControl,
+    InputInline,
+    FormFooter
+} from "../../components/forms";
+import {useForm} from "../../hooks/useForm"
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
-import {useDispatch} from 'react-redux';
-import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
+import SingleUpload from "../../components/uploader/SingleUpload";
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
+const directorioSolicitudes = "solicitudextadmin";
 
 const SolicitudAdd = ({history,  match}) => {
-    const [solicitud, setSolicitud] = useState({});
-    // const [planoArchTmp, set_planoArchTmp] = useState({digital: '', memdescriptiva: ''});
-    const resListaEntidades = useAsync(helperGets.helperGetListEntidades, []);
-    const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
-    const resListaTipoSolic = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
-    const resListaCanalEnvio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.SOLICCANALENVIO]);
-    // const resListaDepartmento = useAsync(helperGets.helperGetListDepartamento, []);
-    // const resListaProvincia = useAsync(helperGets.helperGetListProvincia,[]);
-    // const resListaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
-    // const resListaEstadosPlano = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.ESTADOPLANO]);
-    const resListaResponsable = useAsync(helperGets.helperGetListaLocadores, []);
-
-    // const [dataProv, set_dataProv] = useState(null);
-    // const [dataDist, set_dataDist] = useState(null);
-    const [dataTramo, setDataTramo] = useState(null);
-    const [dataEquipo, setDataEquipo] = useState(null);
-    // const [listaArchivos, set_listaArchivos] = useState([]);
-    // const [valAncedente, setValAntecedente] = useState('');
-    // const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
-    // const [reiniciarValMemoria, setReiniciarValMemoria] = useState(false);
     
+    const [solicitud, setSolicitud, handleInputChange, reset ] = useForm({},["nrooficio","codigostd"]);
+    const listaProyectos = useAsync(helperGets.helperGetListProyectos, []);
+    const listaTipoConsulta = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
+    const listaResponsables = useAsync(helperGets.helperGetListaLocadores, []);
+    const listaCanalEnvio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.SOLICCANALENVIO]);
+    const listaTipoEntidades = useAsync(helperGets.helperGetListTipoEntidades, []);
 
-    // const {ante} = match.params;
-    
-    // if(ante && !valAncedente){
-    //     setValAntecedente(ante);
-    //     set_plano({
-    //         ...plano,
-    //         antecedente: ante
-    //     });
-    // }
+    const [listaTramos, setListaTramos] = useState(null);
+    const [listaEquipos, setListaEquipos] = useState(null);
+    const [listaEntidades, setListaEntidades] = useState(null);
 
-    const handleChangeProyecto = async(e) => {
-        if (e.target.value) {
-            let data = await helperGets.helperGetListTramos(e.target.value);
-            let dataEq = await helperGets.helperGetListEquipos(e.target.value);
-            setDataTramo(data);
-            setDataEquipo(dataEq);
+    const cargarChildrenProyecto = async(idProyecto) => {
+        if (idProyecto) {
+            let dataTramos = await helperGets.helperGetListTramos(idProyecto);
+            let dataEquipos = await helperGets.helperGetListEquipos(idProyecto);
+            setListaTramos(dataTramos);
+            setListaEquipos(dataEquipos);
         } else {
-            setDataTramo(null);
-            setDataEquipo(null);
+            setListaTramos(null);
+            setListaEquipos(null);
         }
     }
 
-    // function handleChangeDepartmento(e) {
-    //     if(!resListaProvincia.loading){
-    //         let data = resListaProvincia.result;
-    //         let provList = data[Object.keys(data)[0]].filter( o => o.id_dpto === e.target.value);
-    //         set_dataProv({data: provList});
-    //         set_dataDist(null);
-    //     }
-    // }
-
-    // function handleChangeProvincia(e) {
-    //     if(!resListaDistrito.loading){
-    //         let data = resListaDistrito.result;
-    //         let distList = data[Object.keys(data)[0]].filter( o => o.id_prov === e.target.value);
-    //         set_dataDist({data: distList});
-    //     }
-    // }
-
-    // const limpiarForm = () => {
-    //     set_plano({observaciones: ''})
-    // }
-
-    function handleInputChange(e) {
-        switch(e.target.name){
-            case 'nroexpediente':
-                setSolicitud({
-                    ...solicitud,
-                    [e.target.name]: e.target.value.toUpperCase()
-                });
-                break;
-            case 'gestionpredialid':
-                setSolicitud({
-                    ...solicitud,
-                    [e.target.name]: e.target.value,
-                    tramoid: '',
-                    equipoid: ''
-                });
-                break;
-            case 'departamentoid':
-                setSolicitud({
-                    ...solicitud,
-                    [e.target.name]: e.target.value,
-                    provinciaid: '',
-                    distritoid: ''
-                });
-                break;
-                case 'provinciaid':
-                    setSolicitud({
-                        ...solicitud,
-                        [e.target.name]: e.target.value,
-                        distritoid: ''
-                    });
-                    break;
-            default:
-                setSolicitud({
-                    ...solicitud,
-                    [e.target.name]: e.target.value
-                });
+    const cargarEntidades = async(idTipoEntidad) => {
+        if (idTipoEntidad) {
+            let data = await helperGets.helperGetListEntidades(idTipoEntidad);
+            setListaEntidades(data);
+        } else {
+            setListaEntidades(null);
         }
-        //TODO: remover console
-        console.log(solicitud);
     }
 
-    const saveDigitalPlano = (file) => {
-        setSolicitud({
-            ...solicitud,
-            "urlplano": file
-        });
+    const handleFiltrarChildrenProyecto = async(e) => {
+        cargarChildrenProyecto(e.target.value);
     }
 
-    const deleteDigitalPlano = () => {
-        setSolicitud({
-            ...solicitud,
-            "urlplano": ''
-        });
+    const handleFiltrarChildrenTipoEntidad = async(e) => {
+        cargarEntidades(e.target.value);
     }
-
-    const saveDigitalOficio = (file) => {
-        setSolicitud({
-            ...solicitud,
-            "urloficio": file
-        });
-    }
-
-    const deleteDigitalOficio = () => {
-        setSolicitud({
-            ...solicitud,
-            "urloficio": ''
-        });
-    }
-
-    // const saveArchivoDigital = (file) => {
-    //     setReiniciarValDigital(false);
-    //     set_planoArchTmp({
-    //         ...planoArchTmp,
-    //         "digital": file
-    //     });
-    // }
-
-    // const saveArchivoMemoria = (file) => {
-    //     setReiniciarValMemoria(false);
-    //     set_planoArchTmp({
-    //         ...planoArchTmp,
-    //         "memoria": file
-    //     });
-    // }
-
-    // const deleteArchivoDigital = () => {
-    //     set_planoArchTmp({
-    //         ...planoArchTmp,
-    //         "digital": ''
-    //     });
-    // }
-
-    // const deleteArchivoMemoria = () => {
-    //     set_planoArchTmp({
-    //         ...planoArchTmp,
-    //         "memoria": ''
-    //     });
-    // }
-
-    // const handleChangeLamina = (e) => {
-    //     var uidDate = moment().format("YYYYMMDDHHmmss");
-    //     set_planoArchTmp({
-    //         ...planoArchTmp,
-    //         "lamina": e.target.value,
-    //         "laminaid": uidDate,
-    //     });
-    // }
-
-    // const actualizarLista = () => {
-        
-    //     if (planoArchTmp.lamina && planoArchTmp.digital) {
-    //         set_listaArchivos(listaArchivos => [...listaArchivos, planoArchTmp]);
-    //         set_planoArchTmp({
-    //             ...planoArchTmp,
-    //             "lamina": '',
-    //             "laminaid": '',
-    //             "digital": '',
-    //             "memoría": ''
-    //         });
-    //         setReiniciarValDigital(true);
-    //         setReiniciarValMemoria(true);
-    //     } else {
-    //         toastr.error(`Se require al menos un identificador de lámina y el archivo digital.`)
-    //     }
-    // }
-
-    // const removerDeLista = (idLamina) => {
-    //     var data = $.grep(listaArchivos, function(e){ 
-    //         return e.laminaid != idLamina; 
-    //    });
-    //    set_listaArchivos(data);
-    // }
 
     function setResponsable(idLocador) {
         setSolicitud({
@@ -224,49 +78,20 @@ const SolicitudAdd = ({history,  match}) => {
         });
     }
 
-    // const dispatch = useDispatch();
-    // const agregarPlanoAction = (plano) => dispatch(agregar(plano));
-    // const setcontinuarAgregarAction = (estado) => dispatch(setcontinuarAgregar(estado));
-
-    // // useEffect(() => {
-    // //     $('[data-toggle="tooltip"]').tooltip()
-    // //     setcontinuarAgregarAction(true)
-    // // }, []);
-
     async function addSolicitud(solicitud) {
         const {data} = await Axios.post(`/solicitudentidad`,solicitud);
         return data;
     }
 
     const registrar = async e => {
-
         e.preventDefault();
-
-        // $.each(plano, function(key, value){
-        //     if (key === 'tramoid' && (value === "" || value === null)){
-        //         delete plano[key];
-        //     }
-        // });
-        
-        // if (Array.isArray(listaArchivos) && listaArchivos.length) {
-        //     plano.archivos = listaArchivos;
-        //     set_plano({
-        //         ...plano,
-        //         archivos: listaArchivos
-        //     });
-        // }
-
+        console.log(solicitud);
         $('#btnguardar').button('loading');
         try {
             let resultPlano = await addSolicitud(solicitud);
             $('#btnguardar').button('reset');
-            // const toastrConfirmOptions = {
-            //     onOk: () => limpiarForm(),
-            //     onCancel: () => history.push('/planos')
-            // };
-            // toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
             toastr.success('Registro de Solicitud a Entidades', `La solicitud fue ingresada correctamente.`);
-            //history.push('/planos');
+            history.push('/solicitud-list');
         }
         catch (e) {
             toastr.error('Registro de Solicitud a Entidades', "Se encontró un error: " +  e.message);
@@ -274,278 +99,186 @@ const SolicitudAdd = ({history,  match}) => {
         }
     }
 
-    const cabeceraArchivos = ["Lámina","Plano Digital", "Mem. Descriptiva", "Eliminar"];
-
         return (
             <>
             <WraperLarge titleForm={"Registro de Solicitud a Entidades"} listbreadcrumb={REGISTRO_SOLICITUD_BREADCRUM}>
-                <form onSubmit={registrar}>
-                    <div className="form-group">
-                        <div className="form-group col-lg-12">
-                            <fieldset className="mleft-20">
-                                <legend>Datos Generales</legend>
-                                <div className="form-group col-lg-6">
-                                    <div className="form-group">
-                                            <label className="col-lg-4 control-label">
-                                                <span className="obligatorio">* </span>Proyecto
-                                            </label>
-                                            <div className="col-lg-8">
-                                                <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
-                                                required
-                                                title="El Proyecto es requerido"
-                                                onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}
-                                                >
-                                                    <option value="">--SELECCIONE--</option>
-                                                    {resListaProyectos.result?
-                                                    <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>
-                                                    : "Cargando..."}
-                                                </select>
-                                            </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Tramo</label>
-                                        <div className="col-lg-8">
-                                            <select id="tramoid" name="tramoid" className="form-control input-sm" onChange={handleInputChange}>
-                                                <option value="">--SELECCIONE--</option>
-                                                {dataTramo &&
-                                                <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Subtramo</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="subtramo" name="subtramo" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group col-lg-6">
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">
-                                            <span className="obligatorio">* </span>Tipo de Consulta
-                                        </label>
-                                        <div className="col-lg-8">
-                                            <select className="form-control input-sm" id="tipoconsultaid" name="tipoconsultaid"
-                                            required
-                                            title="El Tipo de Consulta es requerido"
+                <Form onSubmit={registrar}>
+                    <RowForm>
+                        <Row12 title={"Datos Generales"}>
+                            <Row6>
+                                <FormGroup label={"Proyecto"} require={true}>
+                                    <Select required={true} value={solicitud.gestionpredialid || ""}
+                                            onChange={(e) => {handleFiltrarChildrenProyecto(e); handleInputChange(e);}}
+                                            name={"gestionpredialid"}>
+                                        {listaProyectos.result?
+                                        <ComboOptions data={listaProyectos.result} valorkey="id" valornombre="denominacion"/>
+                                        : "Cargando..."}
+                                    </Select>
+                                </FormGroup>
+                                <FormGroup label={"Tramo"}>
+                                    <Select value={solicitud.tramoid || ""}
                                             onChange={handleInputChange}
-                                            >
-                                                <option value="">--SELECCIONE--</option>
-                                                {resListaTipoSolic.result
-                                                ? <ComboOptions data={resListaTipoSolic.result} valorkey="valorcodigo" valornombre="valortexto" />
-                                                : "Cargando..."}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">
-                                            Equipo
-                                        </label>
-                                        <div className="col-lg-8">
-                                            <select className="form-control input-sm" id="equipoid" name="equipoid"
-                                            // required
-                                            // title="El Tipo de Plano es requerido"
+                                            name={"tramoid"}>
+                                        <ComboOptions data={listaTramos} valorkey="id" valornombre="descripcion" />
+                                    </Select>
+                                </FormGroup>
+                                <FormGroup label={"Subtramo"}>
+                                    <Input value={solicitud.subtramo || ""} onChange={handleInputChange}
+                                        name={"subtramo"} placeholder={"Ingrese el subtramo"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                            </Row6>
+                            <Row6>
+                                <FormGroup label={"Tipo de Consulta"} require={true}>
+                                    <Select required={true} value={solicitud.tipoconsultaid || ""}
                                             onChange={handleInputChange}
-                                            >
-                                                <option value="">--SELECCIONE--</option>
-                                                {dataEquipo &&
-                                                <ComboOptions data={dataEquipo} valorkey="id" valornombre="equipo" />}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Profesional Responsable</label>
-                                        <div className="col-lg-8">
-                                            {resListaResponsable.result
-                                            ? <Autocomplete listaDatos={resListaResponsable.result} callabck={setResponsable} />
-                                            : "Cargando..."}
-                                        </div>
-                                    </div>
-                                    {/* <div className="form-group">
-                                        <label className="col-lg-4 control-label">Código del Plano</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="codplano" name="codplano" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Archivo Digital del Plano</label>
-                                        <div className="col-lg-8">
-                                            <UploadMemo key="urlplano" file={{urlDocumento:''}}
-                                            accept={'.*'}
-                                            setFile={saveDigitalPlano} folderSave={"FotosUsuarios"} eliminar={deleteDigitalPlano}></UploadMemo>
-                                        </div>
-                                    </div> */}
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <div className="form-group col-lg-12">
-                            <fieldset className="mleft-20">
-                                <legend>Datos de Envío</legend>
-                                <div className="form-group col-lg-6">
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label"><span className="obligatorio">* </span>Código STD</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="codigostd" name="codigostd" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Fecha de Elaboración de Oficio</label>
-                                        <div className="col-lg-8">
-                                            <input style={{lineHeight: '1.43'}} type="date" id="fechaelaboficio" name="fechaelaboficio" className="form-control input-sm" onChange={handleInputChange} />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group col-lg-6">
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label"><span className="obligatorio">* </span>Número de Oficio</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="nrooficio" name="nrooficio" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label"><span className="obligatorio">* </span>Digital de Documento Enviado</label>
-                                        <div className="col-lg-8">
-                                            <UploadMemo key="urloficio" file={{urlDocumento:''}}
-                                            accept={'.*'}
-                                            setFile={saveDigitalOficio} folderSave={"FotosUsuarios"} eliminar={deleteDigitalOficio}></UploadMemo>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <div className="form-group col-lg-12">
-                            <fieldset className="mleft-20">
-                                <legend></legend>
-                                <div className="form-group col-lg-6">
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Entidad</label>
-                                        <div className="col-lg-8">
-                                            <select id="entidadid" name="entidadid" className="form-control input-sm" onChange={handleInputChange}>
-                                                <option value="">--SELECCIONE--</option>
-                                                {resListaEntidades.result
-                                                ? <ComboOptions data={resListaEntidades.result} valorkey="id" valornombre="nombre" />
-                                                : "Cargando..."}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Oficina (de Destino)</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="oficinaentidad" name="oficinaentidad" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">
-                                            Canal de Envío
-                                        </label>
-                                        <div className="col-lg-8">
-                                            <select className="form-control input-sm" id="canalenvio" name="canalenvio"
+                                            name={"tipoconsultaid"}>
+                                        {listaTipoConsulta.result?
+                                        <ComboOptions data={listaTipoConsulta.result} valorkey="id" valornombre="valortexto"/>
+                                        : "Cargando..."}
+                                    </Select>
+                                </FormGroup>
+                                <FormGroup label={"Equipo"}>
+                                    <Select value={solicitud.equipoid || ""}
                                             onChange={handleInputChange}
+                                            name={"equipoid"}>
+                                        <ComboOptions data={listaEquipos} valorkey="id" valornombre="equipo" />
+                                    </Select>
+                                </FormGroup>
+                                <FormGroup label={"Profesional Responsable"}>
+                                    {listaResponsables.result
+                                    ? <Autocomplete listaDatos={listaResponsables.result} callabck={setResponsable} />
+                                    : "Cargando..."}
+                                </FormGroup>
+                            </Row6>
+                        </Row12>
+                        <Row12 title={"Datos de Envío"}>
+                            <Row6>
+                                <FormGroup label={"Código STD"} require={true} ayuda={"Código de Sistema de Trámite Documentario"}>
+                                    <Input required={true} value={solicitud.codigostd || ""} onChange={handleInputChange}
+                                        name={"codigostd"} placeholder={"Ingrese el código STD"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Fecha de Elaboración de Oficio"} >
+                                    <Input value={solicitud.fechaelaboficio || ""} onChange={handleInputChange}
+                                        name={"fechaelaboficio"}
+                                        type={"date"}>
+                                    </Input>
+                                </FormGroup>
+                            </Row6>
+                            <Row6>
+                                <FormGroup label={"Número de Oficio"} require={true}>
+                                    <Input required={true} value={solicitud.nrooficio || ""} onChange={handleInputChange}
+                                        name={"nrooficio"} placeholder={"Ingrese el número de oficio"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Digital de Documento Enviado"}>
+                                    <SingleUpload
+                                        key="urloficio"
+                                        accept={'.*'}
+                                        folderSave={directorioSolicitudes}
+                                        form={solicitud}
+                                        setForm={setSolicitud}
+                                        nameUpload={"urlarcoficio"}
                                             >
-                                                <option value="">--SELECCIONE--</option>
-                                                {resListaCanalEnvio.result
-                                                ? <ComboOptions data={resListaCanalEnvio.result} valorkey="valorcodigo" valornombre="valortexto" />
-                                                : "Cargando..."}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="form-group col-lg-6">
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Código de Tramite de Expediente</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="codigotramexp" name="codigotramexp" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Fecha de Recepción (en Entidad)</label>
-                                        <div className="col-lg-8">
-                                            <input style={{lineHeight: '1.43'}} type="date" id="fecharecepcion" name="fecharecepcion" className="form-control input-sm" onChange={handleInputChange} />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Descripción del Canal</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="descripcionenvio" name="descripcionenvio" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <div className="form-group col-lg-12">
-                            <fieldset className="mleft-20">
-                                <legend></legend>
-                                <div className="form-group col-lg-6">
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">
-                                            Tipo de Entidad
-                                        </label>
-                                        <div className="col-lg-8">
-                                            <select className="form-control input-sm" id="tipoentidadid" name="tipoentidadid"
+                                    </SingleUpload>
+                                </FormGroup>
+                            </Row6>
+                        </Row12>
+                        <Row12>
+                            <Row6>
+                                <FormGroup label={"Tipo de Entidad"} require={true}>
+                                    <Select required={true} value={solicitud.tipoentidadid || ""}
+                                            onChange={(e) => {handleFiltrarChildrenTipoEntidad(e); handleInputChange(e);}}
+                                            name={"tipoentidadid"}>
+                                        {listaTipoEntidades.result?
+                                        <ComboOptions data={listaTipoEntidades.result} valorkey="id" valornombre="nombre"/>
+                                        : "Cargando..."}
+                                    </Select>
+                                </FormGroup>
+                                <FormGroup label={"Entidad"} require={true}>
+                                    <Select required={true} value={solicitud.entidadid || ""}
                                             onChange={handleInputChange}
-                                            >
-                                                <option value="">--SELECCIONE--</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">
-                                            Clasificación de Entidad
-                                        </label>
-                                        <div className="col-lg-8">
-                                            <select className="form-control input-sm" id="clasifentidadid" name="clasifentidadid"
+                                            name={"entidadid"}>
+                                        <ComboOptions data={listaEntidades} valorkey="id" valornombre="nombre" />
+                                    </Select>
+                                </FormGroup>
+                                <FormGroup label={"Área u oficina"} require={true}>
+                                    <Input required={true} value={solicitud.oficinaentidad || ""} onChange={handleInputChange}
+                                        name={"oficinaentidad"} placeholder={"Ingrese el área u oficina"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Sede"}>
+                                    <Input value={solicitud.sedeentidad || ""} onChange={handleInputChange}
+                                        name={"sedeentidad"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                            </Row6>
+                            <Row6>
+                                <FormGroup label={"Código de Trámite de Expediente"}>
+                                    <Input value={solicitud.codigotramexp || ""} onChange={handleInputChange}
+                                        name={"codigotramexp"} placeholder={"Ingrese el código de trámite"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Fecha de Recepción en Entidad"} >
+                                    <Input value={solicitud.fecharecepcion || ""} onChange={handleInputChange}
+                                        name={"fecharecepcion"}
+                                        type={"date"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Canal de Envío"} >
+                                    <Select value={solicitud.canalenvio || ""}
                                             onChange={handleInputChange}
-                                            >
-                                                <option value="">--SELECCIONE--</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="form-group col-lg-6">
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Contacto</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="contacto" name="contacto" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="col-lg-4 control-label">Observaciones</label>
-                                        <div className="col-lg-8">
-                                            <input type="text" className="form-control input-sm" id="observacion" name="observacion" onChange={handleInputChange}/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </div>
-                    </div>
-                    
-                    <div className="panel-body">
-                        <div className="form-group">
-                            <div className="col-lg-offset-8 col-lg-4">
-                                <Link to={`/solicitud-list`} className="btn btn-default btn-sm btn-control">Cancelar
-                                </Link>
-                                <button id="btnguardar" type="submit"
-                                        className="btn btn-danger btn-sm btn-control">Guardar
-                                </button>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                </WraperLarge>
+                                            name={"canalenvio"}>
+                                        {listaCanalEnvio.result?
+                                        <ComboOptions data={listaCanalEnvio.result} valorkey="valorcodigo" valornombre="valortexto"/>
+                                        : "Cargando..."}
+                                    </Select>
+                                </FormGroup>
+                                <FormGroup label={"Descripción del Canal"}>
+                                    <Input value={solicitud.descripcionenvio || ""} onChange={handleInputChange}
+                                        name={"descripcionenvio"} placeholder={"Ingrese la descripción del canal"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                            </Row6>
+                        </Row12>
+                        <Row12>
+                            <Row6>
+                                <FormGroup label={"Contacto"}>
+                                    <Input value={solicitud.contacto || ""} onChange={handleInputChange}
+                                        name={"contacto"} placeholder={"Ingrese la persona de contacto en la entidad"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                            </Row6>
+                            <Row6>
+                                <FormGroup label={"Observaciones"}>
+                                    <Input value={solicitud.observacion || ""} onChange={handleInputChange}
+                                        name={"observacion"} placeholder={"Ingrese alguna observación o comentario"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                            </Row6>
+                        </Row12>
+                    </RowForm>
+                    <FormFooter>
+                        <Link to={`/solicitud-list`}
+                            className="btn btn-default btn-sm btn-control">Cancelar</Link>
+                        <button id="btnguardar" type="submit"
+                                className="btn btn-danger btn-sm btn-control">Guardar
+                        </button>
+                    </FormFooter>
+                </Form>
+            </WraperLarge>
             </>
         );
     }
 
-    export default SolicitudAdd; 
+    export default SolicitudAdd;
