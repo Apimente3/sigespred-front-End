@@ -27,6 +27,7 @@ const SolicitudRow = ({solicitud, nro, callback, loadfiles}) => {
                 <td key={`tdrowkey_9${nro}`}>{solicitud.fecharecepcion}</td>
                 <td key={`tdrowkey_5${nro}`}>{solicitud.recibiorespuesta}</td>
                 <td key={`tdrowkey_14${nro}`}>{solicitud.fecharespuesta}</td>
+                <td key={`tdrowkey_19${nro}`}>{solicitud.nrodocrespuesta}</td>
                 <td key={`tdrowkey_10${nro}`}>{solicitud.plazo_atencion}</td>
                 {(solicitud.estado && solicitud.estado.toUpperCase()  === 'ATENDIDO')
                 ?<td key={`tdrowkey_11${nro}`}><span className="badge badge-success">{solicitud.estado}</span></td>

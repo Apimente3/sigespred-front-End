@@ -191,23 +191,27 @@ const SolicitudList = ({history}) => {
     }
  
     // TODO: Revisar procedimiento de exportación
-    const descarxls=()=>{
+    const descargarXls=()=>{
 
-        let listexportexcel = resListaProyectos;
-        var resultgeojson = alasql(`SELECT *
-                 FROM ? `, [listexportexcel])
+        let listexportexcel = list.rows;
+        
+        //var resultjson = alasql(`SELECT *
+        var resultjson = alasql(`SELECT id,entidad,proyecto,tramo,tipoconsulta,codigostd,nrooficio,fechaelaboficio,fecharecepcion,
+                                recibiorespuesta,fecharespuesta,nrodocrespuesta,plazo_atencion,estado,accion,observaciones
+                                FROM ? `, [listexportexcel])
         var opts = [{
             sheetid: 'Reporte',
             headers: true
         }];
-        var res = alasql('SELECT INTO XLSX("ListadoProyectos.xlsx",?) FROM ?', [opts, [resultgeojson]]);
+        var res = alasql('SELECT INTO XLSX("ListadoSolicitudes.xlsx",?) FROM ?', [opts, [resultjson]]);
         return false;
     }
 
-    const cabecerasTabla = ["","ID", "ENTIDAD", "PROYECTO", "TIPO DE CONSULTA", "CÓDIGO STD","NRO. OFICIO", "FECHA DE RECEPCIÓN", "ATENDIDO", "FECHA DE ATENCIÓN","PLAZO ATENCIÓN", "SEG. ESTADO", "SEG. ACCIÖN", "ACCIONES"]
+    const cabecerasTabla = ["","ID", "ENTIDAD", "PROYECTO", "TIPO DE CONSULTA", "CÓDIGO STD","NRO. OFICIO", "FECHA DE RECEPCIÓN", "ATENDIDO", "FECHA DE ATENCIÓN", "DOCUMENTO ATENCIÓN", "PLAZO ATENCIÓN", "SEG. ESTADO", "SEG. ACCIÖN", "ACCIONES"]
     return (
         <>
         <WraperLarge titleForm={"Listado de Solicitudes"} listbreadcrumb={LISTADO_SOLICITUD_BREADCRUM}>
+            <legend className="mleft-20"><i class="fa fa-filter"></i> Filtros de Búsqueda de Solicitudes</legend>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Número de Oficio</label>
                 <div className="col-lg-4">
@@ -292,11 +296,13 @@ const SolicitudList = ({history}) => {
             </div>
             <div className="mt-4 form-group">
                 <div className="row">
-                    <div className="col-md-6"></div>
+                    <div className="col-md-6">
+                        <legend className="fullborder">Resultados de Búsqueda de Solicitudes</legend>
+                    </div>
                     <div className="col-md-6 text-right">
-                        {/* <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
-                            <i className="fa fa-file-excel-o"></i> TODO: Descargar Excel
-                        </button> */}
+                        <button type="button" onClick={descargarXls} className="btn btn-default btn-sm fullborder">
+                            <i className="fa fa-file-excel-o"></i> Descargar Excel
+                        </button>
                         <Link to={`/solicitud-add`} className="btn btn-danger btn-sm fullborder">
                             <i className="fa fa-plus-circle"></i>  Agregar Solicitud
                         </Link>
