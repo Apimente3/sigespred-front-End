@@ -1,7 +1,7 @@
 import React, { useEffect }  from 'react';
 import {Link} from "react-router-dom";
 const {$} = window;
-const SolicitudRow = ({solicitud,nro, callback, loadfiles}) => {
+const SolicitudRow = ({solicitud, nro, callback, loadfiles}) => {
 
     useEffect(() => {
         const init = async () => {
@@ -14,10 +14,6 @@ const SolicitudRow = ({solicitud,nro, callback, loadfiles}) => {
         callback(idsolicitud, codsolicitud);
     }
 
-    const cargarPopup = (codsolicitud, jsoncontent) => {
-        loadfiles(codsolicitud, jsoncontent);
-    }
-
     return (
         <>
             <tr key={`trrowkey_${nro}`}>
@@ -25,13 +21,26 @@ const SolicitudRow = ({solicitud,nro, callback, loadfiles}) => {
                 <td key={`tdrowkey_2${nro}`}>{solicitud.id}</td>
                 <td key={`tdrowkey_3${nro}`}>{solicitud.entidad}</td>
                 <td key={`tdrowkey_4${nro}`}>{solicitud.proyecto}</td>
-                <td key={`tdrowkey_5${nro}`}>{solicitud.tramo}</td>
                 <td key={`tdrowkey_6${nro}`}>{solicitud.tipoconsulta}</td>
                 <td key={`tdrowkey_7${nro}`}>{solicitud.codigostd}</td>
                 <td key={`tdrowkey_8${nro}`}>{solicitud.nrooficio}</td>
-                <td key={`tdrowkey_9${nro}`}>{solicitud.fechaelaboficio}</td>
+                <td key={`tdrowkey_9${nro}`}>{solicitud.fecharecepcion}</td>
+                <td key={`tdrowkey_5${nro}`}>{solicitud.recibiorespuesta}</td>
+                <td key={`tdrowkey_14${nro}`}>{solicitud.fecharespuesta}</td>
                 <td key={`tdrowkey_10${nro}`}>{solicitud.plazo_atencion}</td>
-                <td key={`tdrowkey_11${nro}`}>
+                {(solicitud.estado && solicitud.estado.toUpperCase()  === 'ATENDIDO')
+                ?<td key={`tdrowkey_11${nro}`}><span className="badge badge-success">{solicitud.estado}</span></td>
+                :(solicitud.estado && solicitud.estado.toUpperCase()  === 'DENTRO DEL PLAZO')
+                ?<td key={`tdrowkey_15${nro}`}><span className="badge badge-info">{solicitud.estado}</span></td>
+                :(solicitud.estado && solicitud.estado.toUpperCase()  === 'EN TOLERANCIA')
+                ?<td key={`tdrowkey_16${nro}`}><span className="badge badge-warning">{solicitud.estado}</span></td>
+                :(solicitud.estado && solicitud.estado.toUpperCase()  === 'FUERA DE PLAZO')
+                ?<td key={`tdrowkey_17${nro}`}><span className="badge badge-danger">{solicitud.estado}</span></td>
+                :<td key={`tdrowkey_18${nro}`}>{solicitud.estado}</td>
+                }
+                
+                <td key={`tdrowkey_12${nro}`}>{solicitud.accion}</td>
+                <td key={`tdrowkey_13${nro}`}>
                     <div key={`divrowkey_${nro}`} className="btn-group pull-right">
                         <Link  to={`/solicitud-respuesta/${solicitud.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Respuesta a Solicitud" }><i
                             className="fa fa-envelope fa-lg "></i></Link>

@@ -7,7 +7,7 @@ import Pagination from "react-js-pagination";
 import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
 import ComboOptions from "../../components/helpers/ComboOptions";
-import Autocomplete from '../../components/helpers/Autocomplete';
+import {useTable} from "../../hooks/useTable";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
@@ -26,34 +26,27 @@ async function buscarSolicitud(query) {
 
 const SolicitudList = ({history}) => {
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
-    // const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, []);
-    // const resListaSolicitantes = useAsync(helperGets.helperGetListaLocadores, []);
     const resListaEntidades = useAsync(helperGets.helperGetListEntidades, []);
     const resListaTipoSolic = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
 
     const [filtros, set_filtros] = useState({});
     const [busquedaLocal, set_busquedaLocal] = useState(true);
     const [contentMessage, set_contentMessage] = useState('');
-    const [reiniciarSolicitante, setReiniciarSolicitante] = useState(false);
     const [mostrarPopup, setMostrarPopup] = useState(false);
     const [archivosPopup, setArchivosPopup] = useState([]);
 
+    const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
+
     const [busqueda, setBusqueda] = useState('');
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const [totalItemsCount, settotalItemsCount] = useState(3);
-    const [activePage, setactivePage] = useState(1);
-    const [dataSolicitud, setDataSolicitud] = useState({"count":5,"rows":[]});
 
     useEffect(() => {
         async function initialLoad() {
             try {
                 set_busquedaLocal(false);
 
-                let query =  await  queryString.stringify({busqueda, page, limit});
+                let query =  await  queryString.stringify({busqueda, page: activePage, limit});
                 let listSolicitud = await buscarSolicitud(query);
-                setDataSolicitud(listSolicitud)
-                settotalItemsCount(listSolicitud.count)
+                changePage(activePage,listSolicitud);
             } catch (error) {
                 console.log(error);
             }
@@ -70,56 +63,8 @@ const SolicitudList = ({history}) => {
         // }
     }
 
-    // function handleChangeDepartmento(e) {
-    //     if(e && !resListaProvincia.loading){
-    //         let data = resListaProvincia.result;
-    //         let provList = data[Object.keys(data)[0]].filter( o => o.id_dpto === e.target.value);
-    //         set_dataProv({data: provList});
-    //         set_dataDist(null);
-    //     } else {
-    //         set_dataProv(null);
-    //         set_dataDist(null);
-    //     }
-    // }
-
-    // function handleChangeProvincia(e) {
-    //     if(!resListaDistrito.loading){
-    //         let data = resListaDistrito.result;
-    //         let distList = data[Object.keys(data)[0]].filter( o => o.id_prov === e.target.value);
-    //         set_dataDist({data: distList});
-    //     }
-    // }
-
     function handleInputChange(e) {
         switch(e.target.name){
-            // case 'codplano':
-            //     set_filtros({
-            //         ...filtros,
-            //         [e.target.name]: e.target.value.toUpperCase()
-            //     });
-            //     break;
-            // case 'gestionpredialid':
-            //     set_filtros({
-            //         ...filtros,
-            //         [e.target.name]: e.target.value,
-            //         tramoid: ''
-            //     });
-            //     break;
-            // case 'departamentoid':
-            //     set_filtros({
-            //         ...filtros,
-            //         [e.target.name]: e.target.value,
-            //         provinciaid: '',
-            //         distritoid: ''
-            //     });
-            //     break;
-            //     case 'provinciaid':
-            //         set_filtros({
-            //             ...filtros,
-            //             [e.target.name]: e.target.value.toUpperCase(),
-            //             distritoid: ''
-            //         });
-            //         break;
             default:
                 set_filtros({
                     ...filtros,
@@ -131,15 +76,6 @@ const SolicitudList = ({history}) => {
         
     }
 
-    function setSolicitante(idLocador, nameLocador) {
-        setReiniciarSolicitante(false);
-        set_filtros({
-            ...filtros,
-            profesionalid: idLocador
-        });
-        console.log(filtros);
-    }
-
     const limpiarSolicitudesFilter =(e)=>{
         $('#nrooficio').val('');
         $('#gestionpredialid').val('');
@@ -149,30 +85,24 @@ const SolicitudList = ({history}) => {
         $('#tipoconsultaid').val('');    
         
         handleChangeProyecto('');
-        // handleChangeDepartmento('');
-        
         set_filtros({});
-        //setReiniciarSolicitante(true);
         ejecutarSolicitudesFilter('');
     }
 
     const cargarPopupDigitales = (codsolicitud, archivos) => {
-        // setCodPlanoPopup(codplano);
         setArchivosPopup(archivos);
         setMostrarPopup(true);
     }
 
-    const cerrarModal=(estado)=>{
-        setMostrarPopup(estado);
-    }
+ 
 
     const ejecutarEliminar = (id) => {
-        Axios.delete(`/solicitud/${id}`)
+        Axios.delete(`/solicitudentidad/${id}`)
         .then(() => {
             ejecutarSolicitudesFilter(busqueda);
         })
         .catch(error => {
-            console.log(error)
+            toastr.error('Eliminar Solicitud', "Se encontró un error: " +  error);
         });
     }    
 
@@ -240,22 +170,16 @@ const SolicitudList = ({history}) => {
     const ejecutarSolicitudesFilter=async (datosfiltro)=>{
         set_busquedaLocal(true)
         setBusqueda(datosfiltro);
-        await setPage(1)
-        setactivePage(1)
         let query =  await  queryString.stringify({page:1, limit});
         if(datosfiltro) {
             query += `&${datosfiltro}`;
         }
         let listSolicitud = await buscarSolicitud(query);
-        setDataSolicitud(listSolicitud);
-        settotalItemsCount(listSolicitud.count);
+        changePage(1, listSolicitud);
         set_busquedaLocal(false)
     }
 
     const handlePageChange = async (pageNumber) => {
-        await setPage(pageNumber)
-        setactivePage(pageNumber)
-        setPage(pageNumber)
         
         let query =  await  queryString.stringify({page:pageNumber, limit});
         if(busqueda) {
@@ -263,8 +187,7 @@ const SolicitudList = ({history}) => {
         }
 
         let listSolicitud = await buscarSolicitud(query);
-        setDataSolicitud(listSolicitud);
-        settotalItemsCount(listSolicitud.count);
+        changePage(pageNumber,listSolicitud);
     }
  
     // TODO: Revisar procedimiento de exportación
@@ -281,7 +204,7 @@ const SolicitudList = ({history}) => {
         return false;
     }
 
-    const cabecerasTabla = ["","ID", "ENTIDAD", "PROYECTO", "TRAMO", "TIPO DE CONSULTA", "CÓDIGO STD","NRO. OFICIO", "FECHA ELABORACIÓN", "PLAZO ATENCIÓN", "ACCIONES"]
+    const cabecerasTabla = ["","ID", "ENTIDAD", "PROYECTO", "TIPO DE CONSULTA", "CÓDIGO STD","NRO. OFICIO", "FECHA DE RECEPCIÓN", "ATENDIDO", "FECHA DE ATENCIÓN","PLAZO ATENCIÓN", "SEG. ESTADO", "SEG. ACCIÖN", "ACCIONES"]
     return (
         <>
         <WraperLarge titleForm={"Listado de Solicitudes"} listbreadcrumb={LISTADO_SOLICITUD_BREADCRUM}>
@@ -381,19 +304,6 @@ const SolicitudList = ({history}) => {
                     </div>
                 </div>
             </div>
-            {/* <div className="form-group">
-                <div className="row">
-                    <div className="col-md-1"></div>
-                    <div className="col-md-11">
-                            {
-                                (busquedaLocal)?
-                                    console.log('cargando datos de planos...')
-                                    :
-                                    <GridPlano datos={planos}/>
-                                }              
-                    </div>
-                </div>
-            </div> */}
             <div className="panel panel-default">
                 {
                 (busquedaLocal)?
@@ -402,7 +312,7 @@ const SolicitudList = ({history}) => {
                     (
                     <>
                     <TableSolicitud cabecera={cabecerasTabla}>
-                        {dataSolicitud.rows.map((solicitud, i) => (
+                        {list.rows.map((solicitud, i) => (
                             <SolicitudRow nro={i} solicitud={solicitud} callback={callbackEliminarSolicitud} loadfiles={cargarPopupDigitales}></SolicitudRow>
                         ))}
                     </TableSolicitud>
@@ -411,7 +321,7 @@ const SolicitudList = ({history}) => {
                             activePage={activePage}
                             itemsCountPerPage={limit}
                             totalItemsCount={totalItemsCount}
-                            pageRangeDisplayed={3}
+                            pageRangeDisplayed={pageRangeDisplayed}
                             onChange={handlePageChange}
                         ></Pagination>
                     </div>
