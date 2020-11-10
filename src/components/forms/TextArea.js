@@ -11,6 +11,7 @@ const TextArea = ({required,type,placeholder,name,onChange,value,pattern,title,r
                    onChange={onChange}
                    pattern={pattern}
                    title={title}
+                      value={value}
                    readOnly={readonly}
             >{value}
             </textarea>

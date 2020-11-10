@@ -28,10 +28,11 @@ export default [
     ...RouteGestionPredial,
     ...RouteModEquipo,
     ...RouteModPartidas,
+    ...RouteModIndicadores,
     ...RouteModPlanos,
     ...RouteModSolicitud,
     ...RouteModDocumentosInternos,
-    ...RouteModIndicadores,
+
 
     ...RouteMod02GestionTrabajadores,
     ...RouteMod03GestionProyectos,

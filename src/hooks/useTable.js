@@ -9,11 +9,12 @@ export const useTable = ( initLimit=10,initTotalItemsCount=3,initActivePage=1,in
     const [pageRangeDisplayed, setPageRangeDisplayed] = useState(initpageRangeDisplayed);
 
     const changePage = async (pageNumber,resultList) => {
+
         setActivePage(pageNumber);
         setList(resultList);
         settotalItemsCount(resultList.count);
     }
 
-    return [activePage,changePage,limit,totalItemsCount,pageRangeDisplayed,list];
+    return [activePage,changePage,limit,totalItemsCount,pageRangeDisplayed,list] ;
 }
 

@@ -100,6 +100,18 @@ class SidebarAdm extends Component {
                                     </Link>
                                 </li>
 
+                                <li menu="/indicadores">
+                                    <Link to={"/indicadores"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                           Indicadores
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
                             </ul>
 
 

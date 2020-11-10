@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {REGISTRO_INDICADERES_BREADCRUM as breadcrum} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import {
@@ -17,14 +17,12 @@ import {
 } from "../../components/forms";
 
 import SingleUpload from "../../components/uploader/SingleUpload";
-import MultipleUpload from "../../components/uploader/MultipleUpload";
 
 import {useForm} from "../../hooks/useForm"
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import {FilesIndicador} from "../../config/parameters";
-import {initAxiosInterceptors, serverFile} from '../../config/axios';
-import FormGroupInline from "../../components/forms/FormGroupInline";
+import {initAxiosInterceptors} from '../../config/axios';
 
 const Axios = initAxiosInterceptors();
 
@@ -51,9 +49,6 @@ const IndicadorAdd = ({history}) => {
     /*Es necesario inicializar los valores por defecto */
     const [indicador, setIndicador,handleInputChange, reset ] = useForm({}, ['denominacion','descripcion']);
     const [listTipoIndicador, setListTipoIndicador] = useState([]);
-
-    /*Files multiple */
-    const [filesstate, setFilesstate] = useState([]);
 
     /*Valiables Globales*/
     useEffect(() => {
@@ -86,8 +81,8 @@ const IndicadorAdd = ({history}) => {
 
                     <Row12 title={"Datos Indicador"}>
                         <FormGroup withLabel={3} label={"Categoria de Indicador"} require={true}>
-                            <Select required={true} value={indicador.categoriaindicadorid} onChange={handleInputChange}
-                                    name={"categoriaindicadorid"}>
+                            <Select required={true} value={indicador.cateindicadorid} onChange={handleInputChange}
+                                    name={"cateindicadorid"}>
                                 <Options options={listTipoIndicador} index={"id"}
                                          valor={"denominacion"}></Options>
                             </Select>
@@ -100,8 +95,8 @@ const IndicadorAdd = ({history}) => {
                         </FormGroup>
                         <FormGroup withLabel={3}  label={"Descripción"} require={true} ayuda={"Ingrese la descripcion del Indicador correcto y legible"}>
                             <TextArea required={true} value={indicador.descripcion} onChange={handleInputChange}
-                                   name={"descripcion"} placeholder={"Ingrese la descripción"}
-                                   type={"text"}>
+                                      name={"descripcion"} placeholder={"Ingrese la descripción"}
+                                      type={"text"}>
                             </TextArea>
                         </FormGroup>
                         <FormGroup withLabel={3}  label={"URL"} require={true} ayuda={"Direccion de Power BI publicado"}>
@@ -134,8 +129,8 @@ const IndicadorAdd = ({history}) => {
                             >
                             </SingleUpload>
                         </FormGroup>
-                        <FormGroup withLabel={3}  label={"Vistas"} require={false} ayuda={"Ingrese vistas y delimite en ','"}>
-                            <Input required={true} value={indicador.vistas} onChange={handleInputChange}
+                        <FormGroup withLabel={3}  label={"Vistas"}  ayuda={"Ingrese vistas y delimite en ','"}>
+                            <Input required={false} value={indicador.vistas} onChange={handleInputChange}
                                    name={"vistas"} placeholder={"Ingrese la vitas ejemplo vista1, vista2"}
                                    type={"text"}>
                             </Input>
@@ -145,7 +140,7 @@ const IndicadorAdd = ({history}) => {
                 </RowForm>
 
                 <FormFooter>
-                    <Link to={`/indicador`}
+                    <Link to={`/indicadores`}
                           className="btn btn-default btn-sm btn-control">Cancelar</Link>
                     <button id="btnguardar" type="submit"
                             className="btn btn-danger btn-sm btn-control">Guardar

@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
+import {serverFile} from '../../config/axios';
 const {$} = window;
 
-const TrabajadorRow = ({object}) => {
+const Row = ({row}) => {
 
     useEffect(() => {
         const init = async () => {
@@ -15,18 +16,20 @@ const TrabajadorRow = ({object}) => {
         <>
             <tr>
 
-                <td>{object.categoria}</td>
-                <td>{object.denominacion}</td>
-                <td>{object.urlpbi}</td>
-                <td>{object.archivopbi}</td>
+                <td>{row.categoria}</td>
+                <td>{row.denominacion}</td>
+                <td>{row.urlpbi}</td>
+                <td><a data-toggle="tooltip" data-original-title={ "Descargar archivo PBI" } className={"center"} href={serverFile+row.archivopbi.path} target={"_blank"}><img src={"./img/pbi.svg"} Style={"height:22px"}></img></a></td>
 
 
                 <td>
                     <div className="btn-group pull-right">
-                        <Link  to={`/indicador-edit/${object.id}`}  className="btn btn-xs btn-default" type="button"><i
-                            className="fa fa-edit fa-lg"></i></Link>
-                        <Link  to={`/indicador-del/${object.id}`}   className="btn btn-xs btn-default" type="button"><i
-                            className="fa fa-trash-o fa-lg"></i></Link>
+                        <Link  to={`/indicador-visor/${row.id}`}  className="btn btn-xs btn-default" type="button"><i
+                            className="fa fa-eye fa-lg" data-toggle="tooltip" data-original-title={ "Visor" }></i></Link>
+                        <Link  to={`/indicador-edit/${row.id}`}  className="btn btn-xs btn-default" type="button"><i
+                            className="fa fa-edit fa-lg" data-toggle="tooltip" data-original-title={ "Editar" }></i></Link>
+                        {/*     <Link  to={`/indicador-del/${row.id}`}   className="btn btn-xs btn-default" type="button"><i
+                            className="fa fa-trash-o fa-lg" data-toggle="tooltip" data-original-title={ "Eliminar" }></i></Link>*/}
 
                     </div>
                 </td>
@@ -35,4 +38,4 @@ const TrabajadorRow = ({object}) => {
     );
 };
 
-export default TrabajadorRow;
+export default Row;

@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import {LISTADO_INDICADERES_BREADCRUM} from "../../config/breadcrums";
 import {initAxiosInterceptors} from '../../config/axios';
-import TrabajadorRow from "./Row";
+import Row from "./Row";
 
 import {
 Table
@@ -11,6 +11,7 @@ Table
 
 import {useTable} from "../../hooks/useTable";
 import Pagination from "react-js-pagination";
+import {toastr} from "react-redux-toastr";
 const queryString = require('query-string');
 const Axios = initAxiosInterceptors();
 const {alasql} = window;
@@ -38,9 +39,8 @@ const GestionPredials = ({}) => {
                 let resultList=await buscarIndicador(query);
                 changePage(activePage,resultList);
 
-            } catch (error) {
-                alert('Ocurrio un error')
-                console.log(error);
+            } catch (e) {
+                toastr.error('Registro Incorrecto', e.response.data, {position: 'top-center'})
             }
         }
         init();
@@ -113,8 +113,8 @@ const GestionPredials = ({}) => {
                 </fieldset>
                 <div className="panel panel-default">
                     <Table cabecera={cabecerasTabla}>
-                        {list.rows.map((trabajador, i) => (
-                            <TrabajadorRow nro={i} row={trabajador}></TrabajadorRow>
+                        {list.rows.map((row, i) => (
+                            <Row nro={i} row={row}></Row>
                         ))}
                     </Table>
                     <div className="panel-footer clearfix pull-right">
