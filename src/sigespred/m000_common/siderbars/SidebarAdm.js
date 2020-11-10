@@ -52,14 +52,14 @@ class SidebarAdm extends Component {
                                         <span className="menu-hover"></span>
                                     </Link>
                                 </li> */}
-                                
+
                                 <li menu="/planos">
                                     <Link to={"/planos"}>
                                         <span className="menu-icon">
                                             <img src="/img/planos.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
-                                            PLANOS
+                                            Planos
                                         </span>
                                         <span className="menu-hover"></span>
                                     </Link>
@@ -70,7 +70,31 @@ class SidebarAdm extends Component {
                                             <img src="/img/expediente.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
-                                            PARTIDAS REGISTRALES
+                                            Partidas Registrales
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
+                                <li menu="/gestionpredial">
+                                    <Link to={"/gestionpredial"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                            Gestion Predial
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
+                                <li menu="/list-trabajadores">
+                                    <Link to={"/list-trabajadores"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                           Trabajadores
                                         </span>
                                         <span className="menu-hover"></span>
                                     </Link>

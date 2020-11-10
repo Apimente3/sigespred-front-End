@@ -40,7 +40,7 @@ const AreaEdit = ({history, match}) => {
 
     const [area, set_area] = useState({ observacion: 'Nuevo Registro'});
     const [selectedDisabled, setSelectedDisabled] = useState(true);
-    
+
     useEffect(() => {
       async function init() {
           try {
@@ -59,8 +59,8 @@ const AreaEdit = ({history, match}) => {
   }, []);
 
     const actualizar = async e => {
+
         e.preventDefault();
-        //$('#btnguardar').button('loading');
         try {
             await updateArea(area);
             const toastrConfirmOptions = {
@@ -70,23 +70,25 @@ const AreaEdit = ({history, match}) => {
             toastr.confirm('¿ Desea seguir actualizando ?', toastrConfirmOptions);
         }
         catch (e) {
-            alert(e.message)
+            alert(e.message);
         }
     }
 
 
     function handleSelectChange(e) {
+
         if(e.target.value == '0') setSelectedDisabled(true)
         else setSelectedDisabled(false)
     }
 
     function handleInputChange(e) {
-        if (['nombre','descripcion'].includes(e.target.name)) {
+
+        if (['nombre','descripcion'].includes(e.target.name)){
           set_area({
               ...area,
               [e.target.name]: e.target.value.toUpperCase()
           });
-        } 
+        };
         if(['subareaid'].includes(e.target.name)) {
             if(selectedDisabled){
                 set_area({
@@ -102,7 +104,7 @@ const AreaEdit = ({history, match}) => {
         }
     }
 
-    
+
     function setSolicitante(idLocador,text) {
       set_area({
         ...area,
@@ -111,10 +113,7 @@ const AreaEdit = ({history, match}) => {
       console.log(text);
     }
 
-
-
-    // const {foto} = this.state;
-    return (
+   return (
         <>
           <Wraper titleForm={"Actualizar Area"} listbreadcrumb={ACTUALIZAR_AREA_BREADCRUM}>
           <form onSubmit={actualizar}>
@@ -138,7 +137,7 @@ const AreaEdit = ({history, match}) => {
                 </fieldset>
                 <fieldset><legend>Datos de Area/SubArea</legend>
                 <div className="form-group">
-                    <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    <label className="col-lg-2 control-label"><span className="obligatorio">*</span>
                         Nombre</label>
                     <div className="col-lg-4">
                         <input mayuscula="true" required
@@ -225,6 +224,7 @@ const AreaEdit = ({history, match}) => {
       );
 
 }
+
 
 
 export default AreaEdit;

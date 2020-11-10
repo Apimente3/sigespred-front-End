@@ -113,7 +113,8 @@ const GestionPredialAdd = ({match,history}) => {
         e.preventDefault();
         try {
             await saveGestioPredial(gestionPredial)
-            toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'})
+            toastr.success('Actualización Correcto', 'Se actualizo correctamente.', {position: 'top-right'})
+            history.push('/gestionpredial');
         }
         catch (e) {
             toastr.error('Registro Incorrecto', JSON.stringify(e), {position: 'top-right'})
@@ -137,18 +138,17 @@ const GestionPredialAdd = ({match,history}) => {
 
 
     return (
-        <Wraper titleForm={"Registro de Gestion Predial"} listbreadcrumb={ACTUALIZA_GESTIONPREDIAL_BREADCRUM}>
+        <Wraper titleForm={"Actualizacion de Gestión Predial"} listbreadcrumb={ACTUALIZA_GESTIONPREDIAL_BREADCRUM}>
             <Form onSubmit={registrar}>
                 <RowForm>
                     <Row6 title={"Datos de la Gestión Predial"}>
                         <FormGroup label={"Tipo Infraestructura "} require={true}>
                             <Select required={true} value={gestionPredial.tipoinfraestructuraid}
-                                    onChange={FiltrarInfraestructura}
+                                    onChange={(e)=>{ handleInputChange(e); FiltrarInfraestructura(e)}}
                                     name={"tipoinfraestructuraid"}>
                                 <Options options={listTipoInfraestructura} index={"id"}
                                          valor={"denominacion"}></Options>
                             </Select>
-
                         </FormGroup>
                         <FormGroup label={"Proyecto"} require={true}>
                             <Select required={true} value={gestionPredial.infraestructuraid}

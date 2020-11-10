@@ -4,10 +4,24 @@ import Wraper from "../../m000_common/formContent/Wraper";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
+import {
+    Form,
+    FormGroup,
+    Row6,
+    Row12,
+    RowForm,
+    Select,
+    Input,
+    Options,
+    FormControl,
+    InputInline,
+    FormFooter
+} from "../../../components/forms";
 
 import {FilesUsuario} from "../../../config/parameters";
 import {initAxiosInterceptors, serverFile} from '../../../config/axios';
-import FormFooter from "../../../components/forms/FormFooter";
+
+import SingleUpload from "../../../components/uploader/SingleUpload";
 const Axios = initAxiosInterceptors();
 
 const {$} = window;
@@ -15,7 +29,24 @@ const {$} = window;
 /*Obtiene la solcitud de polygonos*/
 async function getTrabajador(id) {
     const {data} = await Axios.get(`/usuario/${id}`);
+   if(!data.foto) {
+       data.foto={}
+
+   }else{
+     //  alert(2)
+   };
     return data;
+}
+
+
+async function loadAreas() {
+    const {data: areas} = await Axios.get(`/areajerarquizado?busqueda=`);
+    return areas;
+}
+
+async function loadRoles() {
+    const {data: roles} = await Axios.get(`/rol`);
+    return roles;
 }
 
 
@@ -31,12 +62,16 @@ const TrabajadorEdit = ({history, match}) => {
 
     const {id} = match.params;
     const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro',rol:3});
+    const [listAreas, setListAreas] = useState([]);
+    const [listRoles, setListRoles] = useState([]);
     const [detalletrabajador, setdetalltreasd] = useState([]);
 
 
     useEffect(() => {
         async function init() {
             try {
+                setListAreas(await loadAreas())
+                setListRoles(await loadRoles())
                 let traba = await getTrabajador(id)
                 delete traba.contrasenia
                 traba.contrasenia="****"
@@ -48,16 +83,6 @@ const TrabajadorEdit = ({history, match}) => {
         }
         init();
     }, []);
-
-    const limpiarForm = () => {
-        set_trabajador({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'})
-    }
-
-    const agregadertalle = (row) => {
-        let auxtrabajador=trabajador
-        auxtrabajador.push(row)
-        setdetalltreasd([...detalletrabajador,row])
-    }
 
 
 
@@ -121,26 +146,36 @@ const TrabajadorEdit = ({history, match}) => {
         <Wraper titleForm={"Actualización de Trabajador"} listbreadcrumb={ACTUALIZAR_TRABAJADOR_BREADCRUM}>
             <form onSubmit={actualizar}>
                 <div className="form-group">
-                    <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
-                        Foto</label>
-                    <div className="col-lg-8">
+                    <label className="col-lg-2 control-label">
+                        <span className="obligatorio">*</span>
+                        Foto
+                    </label>
+                    <div className="col-lg-4">
+                        {
+                            ! trabajador.foto ? <h3>Ingrese la Foto</h3>: <img src={serverFile+trabajador.foto.path} className="img-circle" alt="User Avatar" height="150"></img>
+                        }
+
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-lg-2 control-label"></label>
+                    <div className="col-lg-4">
                         <div className="col-xs-12 col-sm-12 col-md-12 text-center">
                             <a href="#">
-                                <img style={{height: '200px'}}
-                                     src={(trabajador.foto !== 'img/userblank.jpg') ? serverFile + trabajador.foto : trabajador.foto}
-                                     alt="User Avatar" className="img-thumbnail"></img>
+
                             </a>
-                            <center>
-                                <form className="md-form">
+
+                            <SingleUpload
+                                key="upload_foto"
+                                accept="image/*"
+                                folderSave={FilesUsuario.fotosUsuario}
+                                form={trabajador}
+                                setForm={set_trabajador}
+                                nameUpload={"foto"}
+                            >
+                            </SingleUpload>
 
 
-                                    <UploadMemo key="upload_portada_imagen" file={{urlDocumento: trabajador.foto}}
-                                                accept={'.jpg,.png,.gif'}
-                                                setFile={saveFotoPortada} folderSave={FilesUsuario}
-                                                eliminar={eliminarFotoPortada}></UploadMemo>
-
-                                </form>
-                            </center>
                         </div>
 
                     </div>
@@ -272,43 +307,43 @@ const TrabajadorEdit = ({history, match}) => {
 
                     </div>
                 </div>
+                <legend>{"Área y Cargo  "}</legend>
                 <div className="form-group">
                     <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
-                        Fecha Fin Vigencia</label>
+                        Area de Trabajo</label>
                     <div className="col-lg-4">
-                        <input required className="form-control input-sm" type="date"
-                               name="fechvigenvia"
-                               onChange={handleInputChange}
-                               placeholder="Ingrese correo"
-                               value={trabajador.fechvigenvia}
-                        ></input>
+                        <Select required={true}
+                                value={trabajador.areaid}
+                                onChange={handleInputChange}
+                                name={"areaid"}
+                        >
+                            <Options options={listAreas} index={"id"} valor={"path"}></Options>
+                        </Select>
                     </div>
                     <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
-                        Profesión</label>
+                        Cargo </label>
                     <div className="col-lg-4">
                         <input mayuscula="true" required
                                className="form-control input-sm uppercaseinput" type="text" name="cargo"
                                onChange={handleInputChange}
                                placeholder="Ingrese Cargo"
                                value={trabajador.cargo}
-                        ></input>
+                        >
+                        </input>
 
                     </div>
-                </div>
-                <div className="form-group">
-                    <label className="col-lg-2 control-label"><span
-                        className="obligatorio">* </span> Rol de Trabajador</label>
-                    <div className="col-lg-4">
-                        <select id="tipopredio" className="form-control input-sm" name="rol"
-                                value={trabajador.rol}
-                                onChange={handleInputChange}
-                        >
-                            <option value="0">--SELECCIONE--</option>
-                            <option value="1">ADMINISTRADOR</option>
-                            <option value="2">COORDINADOR</option>
-                            <option value="3">BRIGADISTA</option>
 
-                        </select>
+                </div>
+
+
+                <legend>{"Usuario y Roles  "}</legend>
+                <div className="form-group">
+                    <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                        Usuario</label>
+                    <div className="col-lg-4">
+                        <input readOnly className="form-control input-sm" type="text"
+                               value={trabajador.dni}
+                        ></input>
                     </div>
                     <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                         Contraseña</label>
@@ -319,6 +354,36 @@ const TrabajadorEdit = ({history, match}) => {
                                placeholder="Ingrese Clave"
                                autoComplete="off"
                                value={trabajador.contrasenia}
+                        ></input>
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label className="col-lg-2 control-label"><span
+                        className="obligatorio">* </span> Rol de Trabajador</label>
+                    <div className="col-lg-4">
+
+                        <Select required={true}
+                                value={trabajador.rolid}
+                                onChange={handleInputChange}
+                                name={"rolid"}
+                        >
+                            <Options options={listRoles} index={"id"} valor={"nombre"}></Options>
+                        </Select>
+
+                    </div>
+
+                </div>
+
+                <div className="form-group">
+                    <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                        Fecha Fin Vigencia</label>
+                    <div className="col-lg-4">
+                        <input required className="form-control input-sm" type="date"
+                               name="fechvigenvia"
+                               onChange={handleInputChange}
+                               placeholder="Ingrese correo"
+                               value={trabajador.fechvigenvia}
                         ></input>
                     </div>
                 </div>

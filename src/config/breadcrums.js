@@ -151,3 +151,21 @@ export const LISTADO_PLANO_BREADCRUM = [
     {link: "plano-add", name: "Registrar Plano"},
     {link: "#", name: "Listado de Planos"}
 ]
+
+/*Region de Inicadores*/
+export const LISTADO_INDICADERES_BREADCRUM = [
+    {link: "/", name: "Gestion Predial"},
+    {link: "indicadores", name: "Listado de Indicadores"}
+]
+
+export const REGISTRO_INDICADERES_BREADCRUM = [
+    {link: "indicadores", name: "Gestion Predial"},
+    {link: "../indicadores", name: "Listado de Indicadores"}
+]
+
+export const ACTUALIZAR_INDICADERES_BREADCRUM = [
+    {link: "indicadores", name: "Gestion Predial"},
+    {link: "indicadores", name: "Listado de Indicadores"}
+]
+
+/*Fin indicadores*/

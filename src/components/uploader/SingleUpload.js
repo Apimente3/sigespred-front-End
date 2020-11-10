@@ -1,7 +1,19 @@
 import React, {memo, useEffect, useState} from 'react';
 import {toastr} from "react-redux-toastr";
+import styled from 'styled-components';
 import {initAxiosInterceptors, serverFile} from '../../config/axios';
+import {Link} from "react-router-dom";
 const Axios = initAxiosInterceptors();
+const {$}=window;
+
+const LabelUpload = styled.label`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  float: left;
+  white-space: nowrap;
+  max-width: ${props => props.with || "120px"};
+`;
+
 
 const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSave, accept}) => {
     const [subiendoImagen, setSubiendoImagen] = useState('ninguno');
@@ -13,6 +25,7 @@ const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSa
             console.log('----------------------')
             console.log(form[nameUpload])
             setSubiendoImagen( form[nameUpload] ? 'subido' : 'ninguno' );
+            $('[data-toggle="tooltip"]').tooltip();
             //setoriginalName(form[nameUpload].filename);
         };
         init();
@@ -56,13 +69,13 @@ const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSa
     const eliminarFile=()=>{
 
         setSubiendoImagen('ninguno');
-        setForm({...form,[nameUpload]:{foto:''}});
+        setForm({...form,[nameUpload]:null});
     }
 
 
     return (
         <>
-            <div className="col-lg-12">
+
 
                 { /*Verifica si existe algun dato subido*/
                     subiendoImagen == 'ninguno' ? (
@@ -77,33 +90,37 @@ const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSa
                              style={{width: `${porcentajeSubida}%`}}><span
                             style={{color: '#000'}}>{porcentajeSubida} %</span></div>
                     </div>
-                    <a onClick={eliminarFile} className="btn btn-default btn-sm dropdown-toggle pull-left"
+                        <div className="btn-group pull-right">
+                    <a onClick={eliminarFile}  className="btn btn-xs btn-default"
                        data-toggle="dropdown" data-toggle="tooltip"
                        data-original-title={`Permite Sincronizar`}>
-                        <i className="fa fa-times" aria-hidden="true"></i></a> </>) : null}
+                        <i className="fa fa-times" aria-hidden="true"></i></a>
+                        </div>
+                        </>) : null}
 
                 {subiendoImagen == 'subido' || form[nameUpload] ? (
                     <>
-                        <label className="col-lg-8" style={{color: '#000'}}>{form[nameUpload].filename}</label>
-                        <div className="col-lg-2">
+
+                        <LabelUpload  with={'160px'}
+                                     title={form[nameUpload].filename} >{form[nameUpload].filename}</LabelUpload>
+                        <div className="btn-group pull-right">
                             <a href={serverFile + form[nameUpload].path} target="_blank"
-                               className="btn btn-default btn-sm dropdown-toggle pull-left"
+                               className="btn btn-xs btn-default" type="button"
                                data-toggle="dropdown" data-toggle="tooltip"
                                data-original-title={`Descargar`}>
                                 <i className="fa fa-download"></i></a>
-                        </div>
-                        <div className="col-lg-2">
+
                             <a onClick={eliminarFile}
-                               className="btn btn-default btn-sm dropdown-toggle pull-left"
+                               className="btn btn-xs btn-default" type="button"
                                data-toggle="dropdown" data-toggle="tooltip"
-                               data-original-title={`Permite Sincronizar`}>
+                               data-original-title={`Quitar`}>
                                 <i className="fa fa-times" aria-hidden="true"></i></a>
                         </div>
                     </>
                 ) : null}
 
 
-            </div>
+
         </>
     );
 }

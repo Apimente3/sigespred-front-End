@@ -1,53 +1,58 @@
-import React, {useEffect, useState, createContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
-import Wraper from "../../m000_common/formContent/Wraper";
-import {LISTADO_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
-import {initAxiosInterceptors, serverFile} from '../../../config/axios';
-import TableTrabajador from "./TableTrabajador";
-import TrabajadorRow from "./TrabajadorRow";
-import {useTable} from "../../../hooks/useTable";
+import Wraper from "../m000_common/formContent/WraperLarge";
+import {LISTADO_INDICADERES_BREADCRUM} from "../../config/breadcrums";
+import {initAxiosInterceptors} from '../../config/axios';
+import TrabajadorRow from "./Row";
+
+import {
+Table
+} from "../../components/forms";
+
+import {useTable} from "../../hooks/useTable";
 import Pagination from "react-js-pagination";
-
 const queryString = require('query-string');
-
+const Axios = initAxiosInterceptors();
 const {alasql} = window;
 
-const Axios = initAxiosInterceptors();
 
 
-async function buscarTrabajador(query) {
+
+async function buscarIndicador(query) {
     // alert(query)
-    const {data} = await Axios.get(`/usuario?` + query);
+    const {data} = await Axios.get(`/indicadores/paginate?`+ query);
     return data;
 }
 
 
-const Trabajadores = ({history}) => {
+const GestionPredials = ({}) => {
+
 
     const [busqueda, setBusqueda] = useState('');
-    const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed  , trabajadors] = useTable();
+    const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
 
     useEffect(() => {
         async function init() {
             try {
-                let query = await queryString.stringify({busqueda, page: activePage, limit});
-                let trabajadores = await buscarTrabajador(query)
-                changePage(activePage, trabajadores);
+                let query =  await  queryString.stringify({busqueda,page: activePage, limit});
+                let resultList=await buscarIndicador(query);
+                changePage(activePage,resultList);
+
             } catch (error) {
                 alert('Ocurrio un error')
                 console.log(error);
             }
         }
-
         init();
     }, []);
 
-    const buscarTrabadorFilter = async (e) => {
+    const buscarIndicadorFilter = async (e) => {
 
         e.preventDefault();
-        let query = await queryString.stringify({busqueda,page: 1, limit});
-        let trabajadores = await buscarTrabajador(query)
-        changePage(activePage, trabajadores);
+        let query =  await  queryString.stringify({busqueda, page:activePage, limit});
+        let list=await buscarIndicador(query);
+        changePage(activePage,list);
+
     }
 
     //const trabajadores = useSelector(state => state.trabajador.trabajadors);
@@ -55,7 +60,7 @@ const Trabajadores = ({history}) => {
 
     const descarxls = () => {
 
-        let listexportexcel = trabajadors.rows;
+        let listexportexcel = list.rows;
         var resultgeojson = alasql(`SELECT *
                  FROM ? `, [listexportexcel])
         var opts = [{
@@ -68,25 +73,25 @@ const Trabajadores = ({history}) => {
 
 
     const handlePageChange = async (pageNumber) => {
-        let query = await queryString.stringify({busqueda, page: pageNumber, limit});
-        let resultList = await buscarTrabajador(query)
-        changePage(pageNumber, resultList);
+        let query =  await  queryString.stringify({busqueda, page:activePage, limit});
+        let resultList=await buscarIndicador(query)
+        changePage(pageNumber,resultList);
 
     }
 
-    const cabecerasTabla = ["DNI", "Nombres", "Apellidos", "Telefonos", "Correos", "Acciones"]
+    const cabecerasTabla = ["CATEGORIA", "DENOMINACIÓN", "URL PBI", "ARCHIVO",  "ACCIONES"]
 
     return (
         <>
 
-            <Wraper titleForm={"Listado de Trabajadores"} listbreadcrumb={LISTADO_TRABAJADOR_BREADCRUM}>
+            <Wraper titleForm={"Listado de Indicadores"} listbreadcrumb={LISTADO_INDICADERES_BREADCRUM}>
                 <fieldset className={'fielsettext'}>
-                    <form onSubmit={buscarTrabadorFilter}>
+                    <form onSubmit={buscarIndicadorFilter}>
                         <div className="row">
                             <div className="col-md-6">
                                 <div className="input-group">
                                     <input type="text" className="form-control "
-                                           placeholder="Nombre del Trabajador o DNI"
+                                           placeholder="Nombre del Indicador"
                                            onChange={e => setBusqueda(e.target.value)}
                                     ></input>
                                     <span className="input-group-btn">
@@ -96,8 +101,8 @@ const Trabajadores = ({history}) => {
                                 </div>
                             </div>
                             <div className="col-md-6">
-                                <Link to={`/trabajador-add`} className="btn btn-danger pull-right btn-sm fullborder">
-                                    <i className="fa fa-plus"></i> Agregar Trabajador</Link>
+                                <Link to={`/indicador-add`} className="btn btn-danger pull-right btn-sm fullborder btn-control">
+                                    <i className="fa fa-plus"></i> Agregar </Link>
                                 <button type="button" onClick={descarxls}
                                         className="btn btn-default pull-right btn-sm fullborder">
                                     <i className="fa fa-file-excel-o"></i> Descargar Excel
@@ -107,11 +112,11 @@ const Trabajadores = ({history}) => {
                     </form>
                 </fieldset>
                 <div className="panel panel-default">
-                    <TableTrabajador cabecera={cabecerasTabla}>
-                        {trabajadors.rows.map((trabajador, i) => (
-                            <TrabajadorRow nro={i} trabajador={trabajador}></TrabajadorRow>
+                    <Table cabecera={cabecerasTabla}>
+                        {list.rows.map((trabajador, i) => (
+                            <TrabajadorRow nro={i} row={trabajador}></TrabajadorRow>
                         ))}
-                    </TableTrabajador>
+                    </Table>
                     <div className="panel-footer clearfix pull-right">
                         <Pagination
                             activePage={activePage}
@@ -123,11 +128,10 @@ const Trabajadores = ({history}) => {
                     </div>
                 </div>
             </Wraper>
-
         </>
     );
 
 }
 
 
-export default Trabajadores;
+export default GestionPredials;

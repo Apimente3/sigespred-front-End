@@ -14,6 +14,7 @@ import RouteModPlanos from './_ddp_RouteModPlanos';
 import RouteModPartidas from './_ddp_RouteModPartidas';
 import RouteModEquipo from './_ddp_RouteModEquipo';
 import RouteModArea from './_ddp_RouteModArea';
+import RouteModIndicadores from './_ddp_RouteModIndicadores';
 
 import RouteModSolicitud from './_ddp_RouteModSolicitud';
 import RouteModDocumentosInternos from './_ddp_RouteModDocumentosInternos';
@@ -30,7 +31,7 @@ export default [
     ...RouteModPlanos,
     ...RouteModSolicitud,
     ...RouteModDocumentosInternos,
-
+    ...RouteModIndicadores,
 
     ...RouteMod02GestionTrabajadores,
     ...RouteMod03GestionProyectos,

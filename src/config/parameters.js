@@ -50,3 +50,10 @@ export const FilesGestionPredial={
     "FilesSolicitud":"GestionPredial/Solicitudes",
     "Files":"GestionPredial/Files"
 }
+
+
+
+export const FilesIndicador={
+    "FilesIndicadores":"GestionPredial/Indicadores",
+}
+

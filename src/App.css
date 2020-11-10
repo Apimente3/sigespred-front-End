@@ -742,7 +742,7 @@ div.user-block > div > strong {
 input[type="radio"],
 input[type="checkbox"] {
     opacity: 1 !important;
-    position: ;
+
     width: 15px;
     height: 15px;
     z-index: 2;
@@ -765,7 +765,7 @@ input[type="checkbox"] {
 }
 
 .cursorpointer {
-    cursor: pointer;   
+    cursor: pointer;
 }
 
 .lightCustomModal_wrapper {
@@ -783,7 +783,7 @@ input[type="checkbox"] {
     display: block;
 }
 
-.lightCustomModal {
+.lightCustomModal{
     opacity: 1;
     visibility: visible;
     display: inline-block;
@@ -796,7 +796,7 @@ input[type="checkbox"] {
     width: 980px !important;
 }
 
-popup_align2 {
+popup_align2{
     display: inline-block;
     vertical-align: middle;
     height: 100%;
@@ -819,3 +819,6 @@ popup_align2 {
     float: left;
     padding: 5px;
 }
+
+
+

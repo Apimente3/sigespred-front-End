@@ -23,15 +23,8 @@ import {useForm} from "../../hooks/useForm"
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import {FilesGestionPredial} from "../../config/parameters";
-
-
-import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
-
-import {FilesUsuario} from "../../config/parameters";
-
 import {initAxiosInterceptors, serverFile} from '../../config/axios';
 import FormGroupInline from "../../components/forms/FormGroupInline";
-import UploadMultiple from "../../components/helpers/uploaders/UploadMultiple";
 
 const Axios = initAxiosInterceptors();
 
@@ -90,7 +83,8 @@ const GestionPredialAdd = ({history}) => {
         e.preventDefault();
         try {
             await saveGestioPredial(gestionPredial)
-            toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'})
+            toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'});
+            history.push('/gestionpredial');
         }
         catch (e) {
             toastr.error('Registro Incorrecto', JSON.stringify(e), {position: 'top-right'})
