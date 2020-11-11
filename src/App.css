@@ -445,7 +445,7 @@ legend {
 }
 
 .mapa-validapoligono {
-    height: 875px;
+    height: 700px;
 }
 
 .fototrabajadorheader {
@@ -566,6 +566,18 @@ legend {
     margin-top: 50px;
 }
 
+.mtop-25 {
+    margin-top: 25px;
+}
+
+.mtop-10 {
+    margin-top: 10px;
+}
+
+.mtop-5 {
+    margin-top: 5px;
+}
+
 .mleft-20 {
     margin-left: 20px;
 }
@@ -576,6 +588,10 @@ legend {
 
 .mright-5 {
     margin-right: 5px;
+}
+
+.mbot-10 {
+    margin-bottom: 10px;
 }
 
 .footer {

@@ -12,7 +12,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
-import {LISTADO_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
+import {LISTAR_GESTIONPREDIALPOLIGONO_BREADCRUM} from "../../config/breadcrums";
 
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
@@ -59,7 +59,7 @@ const GestionPredialPoligonoList = ({history, match}) => {
     const cabecerasTabla = ["", "ID","REPR. GRÁFICA", "SIST. COORDENADAS VECTOR.", "CONTROL TOPOLÓGICO", "FECHA INFO. VECTOR.","TIPO RASTER", "SIST. COORDENADAS RASTER", "RES. ESPACIAL", "FECHA INFO. RASTER", "ARCHIVO","ACCIONES"]
     return (
         <>
-            <WraperLarge titleForm={"Listado de Polígonos"} listbreadcrumb={LISTADO_SOLICITUD_BREADCRUM}>
+            <WraperLarge titleForm={"Listado de Polígonos"} listbreadcrumb={LISTAR_GESTIONPREDIALPOLIGONO_BREADCRUM}>
             <legend className="mleft-20"> Listado de Polígonos - Proyecto: {tituloVentana}</legend>
             <div className="mt-4 form-group">
                 <div className="row">

@@ -2,7 +2,7 @@ import React, {useEffect, useState,createContext} from 'react';
 import {Link} from "react-router-dom";
 import { useAsync } from "react-async-hook";
 import Wraper from "../m000_common/formContent/WraperLarge";
-import {LISTAR_GESTIONPREDIAL_BREADCRUM} from "../../config/breadcrums";
+import {VALIDA_GESTIONPREDIALPOLIGONO_BREADCRUM} from "../../config/breadcrums";
 import {initAxiosInterceptors, serverFile} from '../../config/axios';
 import {toastr} from 'react-redux-toastr';
 import {
@@ -73,40 +73,8 @@ const GestionPredialPoligono = ({history, match}) => {
         init();
     }, []);
 
-    const isUrl = (texto) => {
-        let regexp =  /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
-            
-        if (regexp.test(texto))
-        {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    const isScale = (texto) => {
-        let regexp =  /\d+:\d+/;
-            
-        if (regexp.test(texto))
-        {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     const registrar = async e => {
         e.preventDefault();
-
-        if (valPoligono.urlortofoto && !isUrl(valPoligono.urlortofoto)) {
-            toastr.error('Registro de Polígono', "El URL para la ortofoto no es válido.");
-            return;
-        }
-
-        if (valPoligono.resolucionespacial && !isScale(valPoligono.resolucionespacial)) {
-            toastr.error('Registro de Polígono', "La resolución espacial ingresada no es válida.");
-            return;
-        }
 
         valPoligono.gestionpredialid = id;
         console.log(valPoligono);
@@ -141,8 +109,8 @@ const GestionPredialPoligono = ({history, match}) => {
 
 return (
     <>
-    <Wraper titleForm={"Gestión Predial - Validación de Polígono"} listbreadcrumb={LISTAR_GESTIONPREDIAL_BREADCRUM}>
-<legend className="mleft-20">VALIDACIÓN DE AMBITO DEL PROYECTO: {ti}</legend>
+    <Wraper titleForm={"Gestión Predial - Validación de Polígono"} listbreadcrumb={VALIDA_GESTIONPREDIALPOLIGONO_BREADCRUM}>
+        <legend className="mleft-20">VALIDACIÓN DE AMBITO DEL PROYECTO: {ti}</legend>
             <Form onSubmit={registrar}>
                 <div className="row mleft-20">
                     <div className="form-group col-lg-5">
@@ -174,6 +142,7 @@ return (
                     <div className="form-group col-lg-5">
                         <Input value={valPoligono.urlortofoto || ""} onChange={handleInputChange}
                             name={"urlortofoto"} placeholder={"Ingrese URL del ortofoto"}
+                            pattern="/^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/"
                             type={"text"}>
                         </Input>
                     </div>
@@ -188,13 +157,13 @@ return (
                         <MapValidaPoligono></MapValidaPoligono>
                     </div>
                     <div className="form-group col-lg-4">
-                        <legend>Vectorial</legend>
-                        <div className="form-group">
+                        <legend className="mbot-10">Vectorial</legend>
+                        <div className="mleft-5">
                             <label className="control-label">
                                 Representación Gráfica:
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Select value={valPoligono.representaciongraficaid || ""}
                                 onChange={handleInputChange}
                                 name={"representaciongraficaid"}>
@@ -203,12 +172,12 @@ return (
                                 : "Cargando..."}
                             </Select>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <label className="control-label">
                                 Sistema de Referencia de Coordenadas (EPSG):
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Select value={valPoligono.sistcoordenadasvectorid || ""}
                                 onChange={handleInputChange}
                                 name={"sistcoordenadasvectorid"}>
@@ -217,12 +186,12 @@ return (
                                 : "Cargando..."}
                             </Select>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <label className="control-label">
                                 Control Topológico:
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Select value={valPoligono.controltopologico || ""}
                                 onChange={handleInputChange}
                                 name={"controltopologico"}>
@@ -230,12 +199,12 @@ return (
                                 <option value="false">No</option>
                             </Select>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <label className="control-label">
                                 Método de Generación de La Geoinformación:
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Select value={valPoligono.metodogeneracionid || ""}
                                 onChange={handleInputChange}
                                 name={"metodogeneracionid"}>
@@ -244,24 +213,24 @@ return (
                                 : "Cargando..."}
                             </Select>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <label className="control-label">
                                 Fecha de La Geoinformación:
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Input value={valPoligono.fechavector || ""} onChange={handleInputChange}
                                 name={"fechavector"}
                                 type={"date"}>
                             </Input>
                         </div>
-                        <legend>Ráster</legend>
-                        <div className="form-group">
+                        <legend className="mtop-25 mbot-10">Ráster</legend>
+                        <div className="mleft-5">
                             <label className="control-label">
                                 Tipo:
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Select value={valPoligono.tiporasterid || ""}
                                 onChange={handleInputChange}
                                 name={"tiporasterid"}>
@@ -270,12 +239,12 @@ return (
                                 : "Cargando..."}
                             </Select>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <label className="control-label">
                                 Sistema de Referencia de Coordenadas (EPSG):
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Select value={valPoligono.sistcoordenadasrasterid || ""}
                                 onChange={handleInputChange}
                                 name={"sistcoordenadasrasterid"}>
@@ -284,34 +253,35 @@ return (
                                 : "Cargando..."}
                             </Select>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <label className="control-label">
-                                Resolución Espacial de La Geoinformación:
+                                Resolución Espacial de La Geoinformación (cm/m): (e.g. 1.25cm)
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Input required={true} value={valPoligono.resolucionespacial || ""} onChange={handleInputChange}
                                 name={"resolucionespacial"} placeholder={"Ingrese la resolución o escala"}
+                                pattern="(\d*).?(\d+)(m|cm)"
                                 type={"text"}>
                             </Input>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <label className="control-label">
                                 Fecha de La Geoinformación:
                             </label>
                         </div>
-                        <div className="form-group">
+                        <div className="mleft-5 mtop-5">
                             <Input value={valPoligono.fecharaster || ""} onChange={handleInputChange}
                                 name={"fecharaster"}
                                 type={"date"}>
                             </Input>
                         </div>
-                        <div className="form-group col-lg-4">
+                        <div className="mtop-10 col-lg-4">
                             <label className="control-label">
                                 Informe Técnico:
                             </label>
                         </div>
-                        <div className="form-group  col-lg-8">
+                        <div className="mtop-10 col-lg-8">
                             <SingleUpload
                                 key="urlinforme"
                                 accept={'.*'}

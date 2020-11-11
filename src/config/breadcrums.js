@@ -189,3 +189,14 @@ export const ACTUALIZAR_INDICADERES_BREADCRUM = [
 ]
 
 /*Fin indicadores*/
+
+export const LISTAR_GESTIONPREDIALPOLIGONO_BREADCRUM = [
+    {link: "/gestionpredial", name: "Listado de Gestión Predial"},
+    {link: "#", name: "Listado de Polígonos para La Gestión Predial"}
+]
+
+
+export const VALIDA_GESTIONPREDIALPOLIGONO_BREADCRUM = [
+    {link: "/gestionpredial", name: "Listado de Gestión Predial"},
+    {link: "#", name: "Registro de Polígono de Gestión Predial"}
+]
