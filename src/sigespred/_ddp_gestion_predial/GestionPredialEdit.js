@@ -143,7 +143,7 @@ const GestionPredialAdd = ({match,history}) => {
                 <RowForm>
                     <Row6 title={"Datos de la Gestión Predial"}>
                         <FormGroup label={"Tipo Infraestructura "} require={true}>
-                            <Select required={true} value={gestionPredial.tipoinfraestructuraid}
+                            <Select  required={true} value={gestionPredial.tipoinfraestructuraid} disable={false}
                                     onChange={(e)=>{ handleInputChange(e); FiltrarInfraestructura(e)}}
                                     name={"tipoinfraestructuraid"}>
                                 <Options options={listTipoInfraestructura} index={"id"}
@@ -151,7 +151,7 @@ const GestionPredialAdd = ({match,history}) => {
                             </Select>
                         </FormGroup>
                         <FormGroup label={"Proyecto"} require={true}>
-                            <Select required={true} value={gestionPredial.infraestructuraid}
+                            <Select required={true} value={gestionPredial.infraestructuraid} disable={false}
                                     onChange={handleInputChange}
                                     name={"infraestructuraid"}>
                                 <Options options={listInfraestructura} index={"id"} valor={"descripcion"}></Options>

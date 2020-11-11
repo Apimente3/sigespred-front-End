@@ -17,9 +17,8 @@ const TrabajadorRow = ({row,nro}) => {
                 <td>{row.tipoinfraestructura}</td>
                 <td>{row.infraestructura}</td>
                 <td>{row.abreviatura}</td>
-                <td>{row.denominacion}</td>
-
-                <td>{row.correo}</td>
+                <td>{row.resoministerial}</td>
+                <td>{row.nrodocumento}</td>
 
                 <td>
                     <div className="btn-group pull-right">

@@ -77,7 +77,7 @@ const GestionPredials = ({history}) => {
 
     }
 
-    const cabecerasTabla = ["TIPO DE INFRAESTRUCTURA", "INFRAESTRUCTURA", "ABREVIATURA", "GESTION DE PREDIAL", "NRO DOCUMENTO", "Acciones"]
+    const cabecerasTabla = ["TIPO DE INFRAESTRUCTURA", "INFRAESTRUCTURA", "ABREVIATURA", "RESO. MINISTERIAL", "NRO DOCUMENTO", "Acciones"]
 
     return (
         <>

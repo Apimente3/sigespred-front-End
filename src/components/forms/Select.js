@@ -1,9 +1,10 @@
 import React from 'react';
 
-const Select = ({children, onChange, required, name, value,initial=true,title="Seleccione un valor",readonly=false}) => {
+const Select = ({children, onChange, required, name, value,initial=true,title="Seleccione un valor",readonly=false,disable=false}) => {
     return (
         <>
             <select
+               disabled= {!disable? '': 'disabled'}
                 required={required?"required":""}
                 className="form-control input-sm"
                 name={name}
