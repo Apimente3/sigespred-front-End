@@ -25,7 +25,8 @@ const DocInternoRow = ({docinterno,nro, callback}) => {
                 <td key={`tdrowkey_6${nro}`}>{docinterno.codigostd}</td>
                 <td key={`tdrowkey_7${nro}`}>{docinterno.fecharecepcion}</td>
                 <td key={`tdrowkey_8${nro}`}>{docinterno.numdocrecepcion}</td>
-                <td></td>
+                <td key={`tdrowkey_9${nro}`}>{docinterno.archivorespuesta}</td>
+                {/* <td></td> */}
                 {/* <td>{docinterno.observacion}</td>
                 { partida.estadoatencion == 'ATENDIDO' ? <td className="colorCeldaAtendido" > <span className="badge badge-info">{partida.estadoatencion}</span></td> : <td className="colorCeldaPendiente"><span className="badge badge-danger">{partida.estadoatencion}</span></td>   } */}
                 <td>

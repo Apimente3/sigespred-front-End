@@ -21,6 +21,7 @@ const queryString = require("query-string");
 
 async function buscarDocumentosInternos(query) {
   const { data } = await Axios.get(`/docinterno/buscar?` + query);
+  console.log(data);
   return data;
 }
 
@@ -262,6 +263,9 @@ const DocInternos = () => {
         titleForm={"Listado de Documentos internos"}
         listbreadcrumb={LISTADO_DOCINTERNOS_BREADCRUM}
       >
+        <legend className="mleft-20">
+          <i class="fa fa-filter"></i> Filtro de Busqueda de Documentos internos
+        </legend>
         <div className="form-group">
           <label className="col-lg-2 control-label">
             <span className="obligatorio">* </span>Proyecto
@@ -419,7 +423,13 @@ const DocInternos = () => {
         </div>
         <div className="mt-4 form-group">
           <div className="row">
-            <div className="col-md-6"></div>
+            {/* <div className="col-md-6"> */}
+              <div className="col-md-6">
+                <legend className="fullborder">
+                  Resultados de Búsqueda de Partidas Registrales
+                </legend>
+              </div>
+            {/* </div> */}
             <div className="col-md-6 text-right">
               <Link
                 to={`/docinternos-add`}
