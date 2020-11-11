@@ -33,8 +33,7 @@ const PartidaRespuesta = () => {
   const [partidaEditado, set_partidaEditado] = useState({});
   const [dataTramo, setDataTramo] = useState(null);
   const [listaArchivos, set_listaArchivos] = useState([]);
-  //const [reiniciarValMemoria, setReiniciarValMemoria] = useState(false);
-  const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
+    
   const dispatch = useDispatch();
   const { id } = useParams();
 
@@ -72,42 +71,6 @@ const PartidaRespuesta = () => {
     });
   };
 
-  // const saveArchivoDigital = (file) => {
-  //   setReiniciarValDigital(false);
-  //   set_partidaArchTmp({
-  //     ...partidaArchTmp,
-  //     archivodigital: file.path,
-  //   });
-  // };
-
-  // const deleteArchivoDigital = () => {
-  //   set_partidaArchTmp({
-  //     ...partidaArchTmp,
-  //     archivodigital: "",
-  //   });
-  // };
-
-  // const limpiarForm = () => {
-  //   setPartidaRespuesta({ observaciones: "" });
-  // };
-
-  // const actualizarLista = () => {
-  //   if (partidaArchTmp.descripcion && partidaArchTmp.archivodigital) {
-  //     set_listaArchivos((listaArchivos) => [...listaArchivos, partidaArchTmp]);
-  //     set_partidaArchTmp({
-  //       ...partidaArchTmp,
-  //       descripcion: "",
-  //       archivodigital: "",
-  //       archivoid: "",
-  //     });
-  //     setReiniciarValDigital(true);
-  //     //setReiniciarValMemoria(true);
-  //   } else {
-  //     toastr.error(
-  //       `Se require al menos un identificador del archivo y el archivo digital.`
-  //     );
-  //   }
-  // };
 
   const registrar = async (e) => {
     e.preventDefault();
