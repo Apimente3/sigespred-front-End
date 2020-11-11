@@ -58,7 +58,7 @@ async function saveGestioPredial(body) {
 const GestionPredialAdd = ({history}) => {
 
     /*Es necesario inicializar los valores por defecto */
-    const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({}, ['resoministerial']);
+    const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({}, ['resoministerial','abreviatura']);
     const [listTipoInfraestructura, setlistTipoInfraestructura] = useState([]);
     const [listInfraestructura, setlistInfraestructura] = useState([]);
     /*Files multiple */
@@ -147,6 +147,14 @@ const GestionPredialAdd = ({history}) => {
                                 <Options options={listInfraestructura} index={"id"} valor={"descripcion"}></Options>
                             </Select>
                         </FormGroup>
+
+                        <FormGroup label={"Abreviatura"} require={true} ayuda={"Esta abreviatura será utilizada para la generacion de planos"}>
+                            <Input required={true} value={gestionPredial.abreviatura} onChange={handleInputChange}
+                                   name={"abreviatura"} placeholder={"Ingrese la abreviatura del proyecto"}
+                                   type={"text"}>
+                            </Input>
+                        </FormGroup>
+
                         <FormGroup label={"Resolucion Ministerial"} require={true} ayuda={"Ingrese el nro de RM"}>
                             <Input required={true} value={gestionPredial.resoministerial} onChange={handleInputChange}
                                    name={"resoministerial"} placeholder={"Ingrese el nro de RM"}

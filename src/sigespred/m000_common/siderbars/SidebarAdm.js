@@ -53,29 +53,6 @@ class SidebarAdm extends Component {
                                     </Link>
                                 </li> */}
 
-                                <li menu="/planos">
-                                    <Link to={"/planos"}>
-                                        <span className="menu-icon">
-                                            <img src="/img/planos.svg" className="btn-siderbar" ></img>
-                                        </span>
-                                        <span className="text text-red">
-                                            Planos
-                                        </span>
-                                        <span className="menu-hover"></span>
-                                    </Link>
-                                </li>
-                                <li menu="/planos">
-                                    <Link to={"/partidas"}>
-                                        <span className="menu-icon">
-                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
-                                        </span>
-                                        <span className="text text-red">
-                                            Partidas Registrales
-                                        </span>
-                                        <span className="menu-hover"></span>
-                                    </Link>
-                                </li>
-
                                 <li menu="/gestionpredial">
                                     <Link to={"/gestionpredial"}>
                                         <span className="menu-icon">
@@ -83,6 +60,18 @@ class SidebarAdm extends Component {
                                         </span>
                                         <span className="text text-red">
                                             Gestion Predial
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
+                                <li menu="/area-list">
+                                    <Link to={"/area-list"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                           Areas
                                         </span>
                                         <span className="menu-hover"></span>
                                     </Link>
@@ -99,6 +88,71 @@ class SidebarAdm extends Component {
                                         <span className="menu-hover"></span>
                                     </Link>
                                 </li>
+
+
+                                <li menu="/list-equipos2">
+                                    <Link to={"/list-equipos2"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                           Equipos
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
+
+
+                                <li menu="/planos">
+                                    <Link to={"/planos"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/planos.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                            Planos
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
+                                <li menu="/partidas">
+                                    <Link to={"/partidas"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                            Partidas Registrales
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
+                                <li menu="/docinternos">
+                                    <Link to={"/docinternos"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                            Doc. Internos
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
+                                <li menu="/docinternos">
+                                    <Link to={"/acta-list"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                            Acta de trabajo
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
+
+
 
                                 <li menu="/indicadores">
                                     <Link to={"/indicadores"}>

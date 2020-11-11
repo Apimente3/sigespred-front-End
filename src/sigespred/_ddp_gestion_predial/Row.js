@@ -26,7 +26,7 @@ const TrabajadorRow = ({row,nro}) => {
 
                         <Link  to={`/gestionpredial-validalist/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                                data-original-title={ "Validacion del Poligono de trabajo" }><i
-                            className="fa fa-edit fa-lg"></i></Link>
+                            className="fa fa-map-o fa-lg"></i></Link>
 
                         <Link  to={`/gestionpredial-edit/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                                data-original-title={ "Editar" }><i
