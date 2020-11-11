@@ -21,6 +21,7 @@ import RouteModDocumentosInternos from './_ddp_RouteModDocumentosInternos';
 
 
 import RouteModActa from './_ddp_RouteModActa';
+import RouterModOrdenServicio from './_ddp_RouterModOrdenServicio';
 
 
 export default [
@@ -32,6 +33,7 @@ export default [
     ...RouteModPlanos,
     ...RouteModSolicitud,
     ...RouteModDocumentosInternos,
+    ...RouterModOrdenServicio,
 
 
     ...RouteMod02GestionTrabajadores,

@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { agregar } from "../../actions/_ddp_partida/Actions";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import { REGISTRO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
+import { useForm } from "../../hooks/useForm";
 
 const { $ } = window;
 const Axios = initAxiosInterceptors();
@@ -20,7 +21,9 @@ const PartidaAdd = ({ history }) => {
     PARAMS.LISTASIDS.TIPOPRED,
   ]);
 
-  const [partida, set_partida] = useState({ observacion: "Nuevo Registro" });
+  //const [partida, set_partida] = useState({ observacion: "Nuevo Registro" });
+  const [partida, set_partida,  handleInputChange,  reset,  ] = useForm({}, [""]);
+
   const [dataTramo, setDataTramo] = useState(null);
   const dispatch = useDispatch();
   const agregarPartidaComp = (partida) => dispatch(agregar(partida));
@@ -47,32 +50,23 @@ const PartidaAdd = ({ history }) => {
   //   console.log("Hey");
   // }, [partida]);
 
-  function handleChangeProject(e) {
-    if (!obtenerTramos.loading) {
-      let data = obtenerTramos.result;
-      let provList = data[Object.keys(data)[0]].filter(
-        (o) => o.id_dpto === e.target.value
-      );
-      // set_dataProv({data: provList});
-      // set_dataDist(null);
-    }
-  }
-  const handleInputChange = ({ target }) => {
-    switch (target.name) {
-      case "gestionpredialid":
-        set_partida({
-          ...partida,
-          [target.name]: target.value,
-          tramoid: "",
-        });
-        break;
-      default:
-        set_partida({
-          ...partida,
-          [target.name]: target.value.toUpperCase(),
-        });
-    }
-  };
+
+  // const handleInputChange = ({ target }) => {
+  //   switch (target.name) {
+  //     case "gestionpredialid":
+  //       set_partida({
+  //         ...partida,
+  //         [target.name]: target.value,
+  //         tramoid: "",
+  //       });
+  //       break;
+  //     default:
+  //       set_partida({
+  //         ...partida,
+  //         [target.name]: target.value.toUpperCase(),
+  //       });
+  //   }
+  // };
 
   const registrar = async (e) => {
     console.log(partida);
@@ -82,8 +76,10 @@ const PartidaAdd = ({ history }) => {
       await agregarPartidaComp(partida);
 
       //$("#btnguardar").button("reset");
-      toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'})
-      history.push("/partidas")
+      toastr.success("Registro Correcto", "Se registro correctamente.", {
+        position: "top-right",
+      });
+      history.push("/partidas");
       // const toastrConfirmOptions = {
       //   onOk: () => limpiarForm(),
       //   onCancel: () => history.push("/partidas"),
@@ -110,13 +106,15 @@ const PartidaAdd = ({ history }) => {
                 id="infraestructuraid"
                 className="form-control input-sm"
                 name="infraestructuraid"
-                value={partida.infraestructuraid}
+                // value={partida.infraestructuraid}
                 onChange={(e) => {
                   handleChangeProyecto(e);
                   handleInputChange(e);
                 }}
+                required
+                title="El proyecto es requerido"
               >
-                <option value="0">--SELECCIONE--</option>
+                <option value="">--SELECCIONE--</option>
                 {resListaProyectos.error ? (
                   "Se produjo un error cargando los proyectos"
                 ) : resListaProyectos.loading ? (
@@ -142,7 +140,8 @@ const PartidaAdd = ({ history }) => {
                 id="nropartida"
                 onChange={handleInputChange}
                 placeholder="Ingrese numero de Partida"
-                value={partida.nropartida}
+                value={partida.nropartida || ""}
+                autoComplete = "off"
               ></input>
             </div>
           </div>
@@ -158,8 +157,10 @@ const PartidaAdd = ({ history }) => {
                 id="tramoid"
                 value={partida.tramoid}
                 onChange={handleInputChange}
+                required
+                title="El tramo es requerido"
               >
-                <option value="0">--SELECCIONE--</option>
+                <option value="">--SELECCIONE--</option>
                 {dataTramo && (
                   <ComboOptions
                     data={dataTramo}
@@ -223,8 +224,6 @@ const PartidaAdd = ({ history }) => {
           </div>
 
           <div className="form-group">
-         
-
             <label className="col-lg-2 control-label">Observación</label>
             <div className="col-lg-4">
               <input
