@@ -72,42 +72,42 @@ const PartidaRespuesta = () => {
     });
   };
 
-  const saveArchivoDigital = (file) => {
-    setReiniciarValDigital(false);
-    set_partidaArchTmp({
-      ...partidaArchTmp,
-      archivodigital: file.path,
-    });
-  };
+  // const saveArchivoDigital = (file) => {
+  //   setReiniciarValDigital(false);
+  //   set_partidaArchTmp({
+  //     ...partidaArchTmp,
+  //     archivodigital: file.path,
+  //   });
+  // };
 
-  const deleteArchivoDigital = () => {
-    set_partidaArchTmp({
-      ...partidaArchTmp,
-      archivodigital: "",
-    });
-  };
+  // const deleteArchivoDigital = () => {
+  //   set_partidaArchTmp({
+  //     ...partidaArchTmp,
+  //     archivodigital: "",
+  //   });
+  // };
 
-  const limpiarForm = () => {
-    setPartidaRespuesta({ observaciones: "" });
-  };
+  // const limpiarForm = () => {
+  //   setPartidaRespuesta({ observaciones: "" });
+  // };
 
-  const actualizarLista = () => {
-    if (partidaArchTmp.descripcion && partidaArchTmp.archivodigital) {
-      set_listaArchivos((listaArchivos) => [...listaArchivos, partidaArchTmp]);
-      set_partidaArchTmp({
-        ...partidaArchTmp,
-        descripcion: "",
-        archivodigital: "",
-        archivoid: "",
-      });
-      setReiniciarValDigital(true);
-      //setReiniciarValMemoria(true);
-    } else {
-      toastr.error(
-        `Se require al menos un identificador del archivo y el archivo digital.`
-      );
-    }
-  };
+  // const actualizarLista = () => {
+  //   if (partidaArchTmp.descripcion && partidaArchTmp.archivodigital) {
+  //     set_listaArchivos((listaArchivos) => [...listaArchivos, partidaArchTmp]);
+  //     set_partidaArchTmp({
+  //       ...partidaArchTmp,
+  //       descripcion: "",
+  //       archivodigital: "",
+  //       archivoid: "",
+  //     });
+  //     setReiniciarValDigital(true);
+  //     //setReiniciarValMemoria(true);
+  //   } else {
+  //     toastr.error(
+  //       `Se require al menos un identificador del archivo y el archivo digital.`
+  //     );
+  //   }
+  // };
 
   const registrar = async (e) => {
     e.preventDefault();
@@ -135,12 +135,12 @@ const PartidaRespuesta = () => {
     }
   };
 
-  const removerDeLista = (idArchivo) => {
-    var data = $.grep(listaArchivos, function (e) {
-      return e.archivoid != idArchivo;
-    });
-    set_listaArchivos(data);
-  };
+  // const removerDeLista = (idArchivo) => {
+  //   var data = $.grep(listaArchivos, function (e) {
+  //     return e.archivoid != idArchivo;
+  //   });
+  //   set_listaArchivos(data);
+  // };
 
   const cargarTramo = async (idProyecto) => {
     if (idProyecto) {
@@ -159,7 +159,7 @@ const PartidaRespuesta = () => {
   //   }
   // };
 
-  const cabeceraArchivos = ["Descripcion Archivo", "Archivo", "Eliminar"];
+  // const cabeceraArchivos = ["Descripcion Archivo", "Archivo", "Eliminar"];
 
   return (
     <>

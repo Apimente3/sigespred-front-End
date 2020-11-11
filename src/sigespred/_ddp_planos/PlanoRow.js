@@ -9,9 +9,9 @@ const PlanoRow = ({plano,nro, callback, loadfiles}) => {
         init();
     }, []);
 
-    const eliminar = (idplano, codplano) => {
-        callback(idplano, codplano);
-    }
+    // const eliminar = (idplano, codplano) => {
+    //     callback(idplano, codplano);
+    // }
 
     const cargarPopup = (codplano, jsoncontent) => {
         loadfiles(codplano, jsoncontent);

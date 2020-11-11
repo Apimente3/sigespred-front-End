@@ -12,6 +12,7 @@ import TablePartida from "./TablePartida";
 import PartidarRow from "./PartidaRow";
 import Pagination from "react-js-pagination";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
+import { useFetch } from "../../hooks/useFetch";
 
 const queryString = require("query-string");
 const Axios = initAxiosInterceptors();
@@ -19,7 +20,6 @@ const { alasql } = window;
 const { $ } = window;
 
 export const Partida = (history) => {
-
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
   const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPOPRED,
@@ -51,7 +51,6 @@ export const Partida = (history) => {
         let listaPartidas = await buscarPartida(query);
         setDataPartidas(listaPartidas);
         settotalItemsCount(listaPartidas.count);
-
       } catch (error) {
         console.log(error);
       }
@@ -67,7 +66,6 @@ export const Partida = (history) => {
       setDataTramo(null);
     }
   };
-
 
   function handleInputChange(e) {
     switch (e.target.name) {
@@ -94,8 +92,6 @@ export const Partida = (history) => {
     }
     console.log(filtros);
   }
-
-  
 
   const buscarPartidasFilter = async (e) => {
     if (
@@ -150,12 +146,11 @@ export const Partida = (history) => {
       console.log("valorFiltros");
       console.log(valorFiltros);
     }
-    
+
     ejecutarPartidasFilter(valorFiltros);
   };
 
   const ejecutarPartidasFilter = async (datosfiltro) => {
-     
     set_busquedaLocal(true);
     setBusqueda(datosfiltro);
     await setPage(1);
@@ -171,7 +166,6 @@ export const Partida = (history) => {
     set_busquedaLocal(false);
   };
 
-
   const limpiarPartidaFilter = (e) => {
     $("#nropartida").val("");
     $("#gestionpredialid").val("");
@@ -186,7 +180,7 @@ export const Partida = (history) => {
 
     set_filtros({});
 
-    ejecutarPartidasFilter('');
+    ejecutarPartidasFilter("");
   };
 
   const handlePageChange = async (pageNumber) => {
@@ -228,185 +222,187 @@ export const Partida = (history) => {
         titleForm={"Listado de Partidas Registrales"}
         listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}
       >
-        
-          <div className="form-group">
-            <label className="col-lg-2 control-label">Nro Partida</label>
-            <div className="col-lg-4">
-              <input
-                type="text"
-                className="form-control "
-                id="nropartida"
-                name="nropartida"
-                placeholder="Numero de Partida Registral"
-                // onChange={handleInputChange}
-                onBlur={handleInputChange}
-              />
-            </div>
-            <label className="col-lg-2 control-label">Proyecto</label>
-            <div className="col-lg-4">
-              <select
-                className="form-control"
-                id="gestionpredialid"
-                name="gestionpredialid"
-                onChange={(e) => {
-                  handleChangeProyecto(e);
-                  handleInputChange(e);
-                }}
-              >
-                <option value="">--SELECCIONE--</option>
-                {resListaProyectos.error ? (
-                  "Se produjo un error cargando los tipos de plano"
-                ) : resListaProyectos.loading ? (
-                  "Cargando..."
-                ) : (
-                  <ComboOptions
-                    data={resListaProyectos.result}
-                    valorkey="id"
-                    valornombre="denominacion"
-                  />
-                )}
-              </select>
-            </div>
+        <div className="form-group">
+          <label className="col-lg-2 control-label">Nro Partida</label>
+          <div className="col-lg-4">
+            <input
+              type="text"
+              className="form-control "
+              id="nropartida"
+              name="nropartida"
+              placeholder="Numero de Partida Registral"
+              // onChange={handleInputChange}
+              onBlur={handleInputChange}
+            />
+          </div>
+          <label className="col-lg-2 control-label">Proyecto</label>
+          <div className="col-lg-4">
+            <select
+              className="form-control"
+              id="gestionpredialid"
+              name="gestionpredialid"
+              onChange={(e) => {
+                handleChangeProyecto(e);
+                handleInputChange(e);
+              }}
+            >
+              <option value="">--SELECCIONE--</option>
+              {resListaProyectos.error ? (
+                "Se produjo un error cargando los tipos de plano"
+              ) : resListaProyectos.loading ? (
+                "Cargando..."
+              ) : (
+                <ComboOptions
+                  data={resListaProyectos.result}
+                  valorkey="id"
+                  valornombre="denominacion"
+                />
+              )}
+            </select>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label className="col-lg-2 control-label">Tramo</label>
+          <div className="col-lg-4">
+            <select
+              className="form-control"
+              id="tramoid"
+              name="tramoid"
+              onChange={handleInputChange}
+            >
+              <option value="">--SELECCIONE--</option>
+              {dataTramo && (
+                <ComboOptions
+                  data={dataTramo}
+                  valorkey="id"
+                  valornombre="descripcion"
+                />
+              )}
+            </select>
+          </div>
+          <label className="col-lg-2 control-label">Sub Tramo</label>
+          <div className="col-lg-4">
+            <input
+              type="text"
+              className="form-control "
+              id="subtramoid"
+              name="subtramoid"
+              placeholder="Ingrese el subtramo"
+              onBlur={handleInputChange}
+              // onChange={handleInputChange}
+            />
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label className="col-lg-2 control-label">Fecha Desde</label>
+          <div className="col-lg-4">
+            <input
+              className="form-control input-sm"
+              type="date"
+              id="fechainicio"
+              name="fechainicio"
+              placeholder="Ingrese fecha "
+              onChange={handleInputChange}
+            ></input>
+          </div>
+          <label className="col-lg-2 control-label">Fecha Hasta</label>
+          <div className="col-lg-4">
+            <input
+              className="form-control input-sm"
+              type="date"
+              id="fechafin"
+              name="fechafin"
+              placeholder="Ingrese fecha "
+              onChange={handleInputChange}
+            ></input>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label className="col-lg-2 control-label">Tipo Predio</label>
+          <div className="col-lg-4">
+            <select
+              id="tipopredioid"
+              className="form-control"
+              name="tipopredioid"
+              onChange={handleInputChange}
+            >
+              <option value="">--SELECCIONE--</option>
+              {resListaTipoPredio.error ? (
+                "Se produjo un error cargando los tipos de plano"
+              ) : resListaTipoPredio.loading ? (
+                "Cargando..."
+              ) : (
+                <ComboOptions
+                  data={resListaTipoPredio.result}
+                  valorkey="valorcodigo"
+                  valornombre="valortexto"
+                />
+              )}
+            </select>
           </div>
 
-          <div className="form-group">
-            <label className="col-lg-2 control-label">Tramo</label>
-            <div className="col-lg-4">
-              <select
-                className="form-control"
-                id="tramoid"
-                name="tramoid"
-                onChange={handleInputChange}
+          <label className="col-lg-2 control-label">Estado</label>
+          <div className="col-lg-4">
+            <select
+              id="estadoatencion"
+              className="form-control"
+              name="estadoatencion"
+              onChange={handleInputChange}
+            >
+              <option value="">--SELECCIONE--</option>
+              <option value="true">ATENDIDO</option>
+              <option value="false">PENDIENTE</option>
+            </select>
+          </div>
+        </div>
+        <div className="form-group">
+          <div className="row mb-3">
+            <div className="col-lg-6 text-center">
+              {contentMessage && (
+                <label className="alert alert-danger">{contentMessage}</label>
+              )}
+            </div>
+          </div>
+          <label className="col-lg-12 text-right">
+            <button
+              type="button"
+              onClick={limpiarPartidaFilter}
+              className="btn btn-default btn-sm fullborder"
+            >
+              <i className="fa fa-eraser"></i> Limpiar Filtro(s)
+            </button>
+            <button
+              type="button"
+              className="btn btn-info btn-sm fullborder "
+              onClick={buscarPartidasFilter}
+            >
+              <i className="fa fa-search"></i> Aplicar Filtro(s)
+            </button>
+          </label>
+        </div>
+        <div className="mt-4  form-group">
+          <div className="row">
+            <div className="col-lg-12 text-right">
+              <Link
+                to={`/partida-add`}
+                className="btn btn-danger pull-right btn-sm fullborder"
               >
-                <option value="">--SELECCIONE--</option>
-                {dataTramo && (
-                  <ComboOptions
-                    data={dataTramo}
-                    valorkey="id"
-                    valornombre="descripcion"
-                  />
-                )}
-              </select>
-            </div>
-            <label className="col-lg-2 control-label">Sub Tramo</label>
-            <div className="col-lg-4">
-              <input
-                type="text"
-                className="form-control "
-                id="subtramoid"
-                name="subtramoid"
-                placeholder="Ingrese el subtramo"
-                onBlur={handleInputChange}
-                // onChange={handleInputChange}
-              />
+                <i className="fa fa-plus"></i> Agregar Partida
+              </Link>
             </div>
           </div>
-
-          <div className="form-group">
-            <label className="col-lg-2 control-label">Fecha Desde</label>
-            <div className="col-lg-4">
-              <input
-                className="form-control input-sm"
-                type="date"
-                id="fechainicio"
-                name="fechainicio"
-                placeholder="Ingrese fecha "
-                onChange={handleInputChange}
-              ></input>
-            </div>
-            <label className="col-lg-2 control-label">Fecha Hasta</label>
-            <div className="col-lg-4">
-              <input
-                className="form-control input-sm"
-                type="date"
-                id="fechafin"
-                name="fechafin"
-                placeholder="Ingrese fecha "
-                onChange={handleInputChange}
-              ></input>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label className="col-lg-2 control-label">Tipo Predio</label>
-            <div className="col-lg-4">
-              <select
-                id="tipopredioid"
-                className="form-control"
-                name="tipopredioid"
-                onChange={handleInputChange}
-              >
-                <option value="">--SELECCIONE--</option>
-                {resListaTipoPredio.error ? (
-                  "Se produjo un error cargando los tipos de plano"
-                ) : resListaTipoPredio.loading ? (
-                  "Cargando..."
-                ) : (
-                  <ComboOptions
-                    data={resListaTipoPredio.result}
-                    valorkey="valorcodigo"
-                    valornombre="valortexto"
-                  />
-                )}
-              </select>
-            </div>
-
-            <label className="col-lg-2 control-label">Estado</label>
-            <div className="col-lg-4">
-              <select
-                id="estadoatencion"
-                className="form-control"
-                name="estadoatencion"
-                onChange={handleInputChange}
-              >
-                <option value="">--SELECCIONE--</option>
-                <option value="true">ATENDIDO</option>
-                <option value="false">PENDIENTE</option>
-              </select>
-            </div>
-          </div>
-          <div className="form-group">
-            <div className="row mb-3">
-              <div className="col-lg-6 text-center">
-                {contentMessage && (
-                  <label className="alert alert-danger">{contentMessage}</label>
-                )}
-              </div>
-            </div>
-            <label className="col-lg-12 text-right">
-              <button
-                type="button"
-                onClick={limpiarPartidaFilter}
-                className="btn btn-default btn-sm fullborder"
-              >
-                <i className="fa fa-eraser"></i> Limpiar Filtro(s)
-              </button>
-              <button type="button" className="btn btn-info btn-sm fullborder " onClick={buscarPartidasFilter}  >
-                <i className="fa fa-search"></i> Aplicar Filtro(s)
-              </button>
-            </label>
-          </div>
-          <div className="mt-4  form-group">
-            <div className="row">
-              <div className="col-lg-12 text-right">
-                <Link
-                  to={`/partida-add`}
-                  className="btn btn-danger pull-right btn-sm fullborder"
-                >
-                  <i className="fa fa-plus"></i> Agregar Partida
-                </Link>
-              </div>
-            </div>
-          </div>
+        </div>
         {/* </form> */}
 
         <div className="panel panel-default">
           {busquedaLocal ? (
-            console.log("cargando datos de planos...")
+            <div className="alert alert-info text-center">Cargando...</div>
           ) : (
             <>
               <TablePartida cabecera={cabecerasTabla}>
-          {/* {console.log(dataPartidas)} */}
                 {dataPartidas.rows.map((partida, i) => (
                   <PartidarRow nro={i} partida={partida}></PartidarRow>
                 ))}
