@@ -22,7 +22,7 @@ const PartidaAdd = ({ history }) => {
   ]);
 
   //const [partida, set_partida] = useState({ observacion: "Nuevo Registro" });
-  const [partida, set_partida,  handleInputChange,  reset,  ] = useForm({}, [""]);
+  const [partida, set_partida, handleInputChange, reset] = useForm({}, [""]);
 
   const [dataTramo, setDataTramo] = useState(null);
   const dispatch = useDispatch();
@@ -49,7 +49,6 @@ const PartidaAdd = ({ history }) => {
   // useEffect(() => {
   //   console.log("Hey");
   // }, [partida]);
-
 
   // const handleInputChange = ({ target }) => {
   //   switch (target.name) {
@@ -141,15 +140,13 @@ const PartidaAdd = ({ history }) => {
                 onChange={handleInputChange}
                 placeholder="Ingrese numero de Partida"
                 value={partida.nropartida || ""}
-                autoComplete = "off"
+                autoComplete="off"
               ></input>
             </div>
           </div>
 
           <div className="form-group">
-            <label className="col-lg-2 control-label">
-              <span className="obligatorio">* </span>Tramo
-            </label>
+            <label className="col-lg-2 control-label">Tramo</label>
             <div className="col-lg-4">
               <select
                 className="form-control input-sm"
@@ -157,7 +154,6 @@ const PartidaAdd = ({ history }) => {
                 id="tramoid"
                 value={partida.tramoid}
                 onChange={handleInputChange}
-                required
                 title="El tramo es requerido"
               >
                 <option value="">--SELECCIONE--</option>
@@ -170,21 +166,6 @@ const PartidaAdd = ({ history }) => {
                 )}
               </select>
             </div>
-            <label className="col-lg-2 control-label">Sub Tramo</label>
-            <div className="col-lg-4">
-              <input
-                className="form-control input-sm"
-                type="text"
-                name="subtramoid"
-                id="subtramoid"
-                onChange={handleInputChange}
-                placeholder="Ingrese el sub tramo"
-                value={partida.subtramoid}
-              ></input>
-            </div>
-          </div>
-
-          <div className="form-group">
             <label className="col-lg-2 control-label">Tipo de Predio</label>
             <div className="col-lg-4">
               <select
@@ -209,6 +190,22 @@ const PartidaAdd = ({ history }) => {
                 )}
               </select>
             </div>
+          </div>
+
+          <div className="form-group">
+            <label className="col-lg-2 control-label">Sub Tramo</label>
+            <div className="col-lg-4">
+              <input
+                className="form-control input-sm"
+                type="text"
+                name="subtramoid"
+                id="subtramoid"
+                onChange={handleInputChange}
+                placeholder="Ingrese el sub tramo"
+                value={partida.subtramoid}
+              ></input>
+            </div>
+
             <label className="col-lg-2 control-label">Asiento</label>
             <div className="col-lg-4">
               <input

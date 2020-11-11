@@ -10,7 +10,7 @@ const {$} = window;
 const Axios = initAxiosInterceptors();
 
 
-const FileMultiple = ({eliminarFile,file}) => {
+const FileMultiple = ({eliminarFile,file, readonly=false}) => {
 
 
     const {filename,path,id,denominacion}=file;
@@ -45,12 +45,12 @@ const FileMultiple = ({eliminarFile,file}) => {
                     <a href={`${serverFile}${path}`} target={'_blank'} className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                        data-original-title={ "Descargar" }>
                         <i className="fa fa-download fa-lg"></i> </a>
-
-                    <a onClick={eliminarArchivo}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
-                       data-original-title={ "Eliminar archivo" }><i
-                        className="fa fa-trash-o fa-lg"></i></a>
-
-
+                    { readonly 
+                    ?""
+                    :<a onClick={eliminarArchivo}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                    data-original-title={ "Eliminar archivo" }><i
+                     className="fa fa-trash-o fa-lg"></i></a>
+                    }
                 </div>
             </li>
         </>
@@ -58,7 +58,7 @@ const FileMultiple = ({eliminarFile,file}) => {
 };
 
 
-const UploadFileMultiple = memo(({form, setForm, handleInputChange, nameUpload, folderSave, accept}) => {
+const UploadFileMultiple = memo(({form, setForm, handleInputChange, nameUpload, folderSave, accept, readonly=false}) => {
 
     // console.error('se genero Multiple Upload')
     const [subiendoImagen, setSubiendoImagen] = useState(false);
@@ -125,18 +125,19 @@ const UploadFileMultiple = memo(({form, setForm, handleInputChange, nameUpload, 
         <>
             {subiendoImagen ? <Loading/> :
                 (<div>
-
+                    {!readonly && 
                     <RowForm>
                         <Row6 title={""}>
-                            <FormGroupInline>
+                            <FormGroupInline> 
                                 <InputInline require={false} onChange={setdenominacionArch} label={"Denominacion"}
                                              placeholder={"Ingrese la denominacion del archivo"}
                                              ayuda={"Aqui vienen los archivos que viene junto a la solicitud de gestion predial como Planos, Base Grafico y otros"}
                                              withControl={8}></InputInline>
+                                          
                             </FormGroupInline>
                         </Row6>
                         <Row6 title={""}>
-                            <FormGroupInline>
+                            <FormGroupInline> 
                                 <label className="col-lg-4 control-label">Digital</label>
                                 <div className="col-lg-8">
                                     <input onClick={validatedenomiancion} onChange={uploadFile} type="file"/>
@@ -144,7 +145,7 @@ const UploadFileMultiple = memo(({form, setForm, handleInputChange, nameUpload, 
                             </FormGroupInline>
                         </Row6>
                     </RowForm>
-
+                    }
                     <RowForm>
                         <Row12 title={""}>
                             <div className="col-lg-8">
@@ -152,7 +153,7 @@ const UploadFileMultiple = memo(({form, setForm, handleInputChange, nameUpload, 
                                     {
                                         (form[nameUpload] ? form[nameUpload] : []).map((file,i) => (
                                             <FileMultiple key={i} serverFile={serverFile} eliminarFile={eliminarFile}
-                                                          file={file}/>
+                                                          file={file} readonly={readonly}/>
                                         ))
                                     }
                                 </ul>

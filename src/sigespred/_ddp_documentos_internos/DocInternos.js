@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { REGISTRO_PLANO_BREADCRUM } from "../../config/breadcrums";
+import { LISTADO_DOCINTERNOS_BREADCRUM } from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import TableDocInterno from "./TablaDocInterno";
 import Pagination from "react-js-pagination";
@@ -260,7 +260,7 @@ const DocInternos = () => {
     <>
       <WraperLarge
         titleForm={"Listado de Documentos internos"}
-        listbreadcrumb={REGISTRO_PLANO_BREADCRUM}
+        listbreadcrumb={LISTADO_DOCINTERNOS_BREADCRUM}
       >
         <div className="form-group">
           <label className="col-lg-2 control-label">

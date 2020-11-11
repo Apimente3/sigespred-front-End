@@ -111,14 +111,8 @@ const PartidaRespuesta = () => {
 
   const registrar = async (e) => {
     e.preventDefault();
+    
 
-    if (Array.isArray(listaArchivos) && listaArchivos.length) {
-      partidaRespuesta.archivos = listaArchivos;
-      setPartidaRespuesta({
-        ...partidaRespuesta,
-        archivos: listaArchivos,
-      });
-    }
     $("#btnguardar").button("loading");
 
     try {
@@ -135,12 +129,6 @@ const PartidaRespuesta = () => {
     }
   };
 
-  // const removerDeLista = (idArchivo) => {
-  //   var data = $.grep(listaArchivos, function (e) {
-  //     return e.archivoid != idArchivo;
-  //   });
-  //   set_listaArchivos(data);
-  // };
 
   const cargarTramo = async (idProyecto) => {
     if (idProyecto) {
@@ -150,16 +138,6 @@ const PartidaRespuesta = () => {
       setDataTramo(null);
     }
   };
-  // const handleChangeProyecto = async (e) => {
-  //   if (e.target.value) {
-  //     let data = await helperGets.helperGetListTramos(e.target.value);
-  //     setDataTramo(data);
-  //   } else {
-  //     setDataTramo(null);
-  //   }
-  // };
-
-  // const cabeceraArchivos = ["Descripcion Archivo", "Archivo", "Eliminar"];
 
   return (
     <>
@@ -217,7 +195,7 @@ const PartidaRespuesta = () => {
 
             <div className="form-group">
               <label className="col-lg-2 control-label">
-                <span className="obligatorio">* </span>Tramo
+                Tramo
               </label>
               <div className="col-lg-4">
                 {dataTramo ? (
@@ -247,24 +225,6 @@ const PartidaRespuesta = () => {
                   </select>
                 )}
               </div>
-              <label className="col-lg-2 control-label">
-                Sub Tramo
-              </label>
-              <div className="col-lg-4">
-                <input
-                  className="form-control input-sm"
-                  type="text"
-                  name="subtramoid"
-                  id="subtramoid"
-                  onChange={handleInputChange}
-                  placeholder="Ingrese el sub tramo"
-                  value={partidaRespuesta.subtramoid}
-                  readOnly
-                ></input>
-              </div>
-            </div>
-
-            <div className="form-group">
               <label className="col-lg-2 control-label">Tipo de Predio</label>
               <div className="col-lg-4">
                 <select
@@ -288,6 +248,26 @@ const PartidaRespuesta = () => {
                     />
                   )}
                 </select>
+              </div>
+
+             
+            </div>
+
+            <div className="form-group">
+            <label className="col-lg-2 control-label">
+                Sub Tramo
+              </label>
+              <div className="col-lg-4">
+                <input
+                  className="form-control input-sm"
+                  type="text"
+                  name="subtramoid"
+                  id="subtramoid"
+                  onChange={handleInputChange}
+                  placeholder="Ingrese el sub tramo"
+                  value={partidaRespuesta.subtramoid}
+                  readOnly
+                ></input>
               </div>
               <label className="col-lg-2 control-label">Asiento</label>
               <div className="col-lg-4">
