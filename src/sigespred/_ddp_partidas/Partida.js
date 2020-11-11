@@ -219,9 +219,12 @@ export const Partida = (history) => {
     <>
       {/* <WizardContext.Provider value={context}> */}
       <WraperLarge
-        titleForm={"Filtros de busquedas de Partidas Registrales"}
+        titleForm={"Listado de Partidas Registrales"}
         listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}
       >
+         <legend className="mleft-20">
+          <i class="fa fa-filter"></i> Filtro de Busqueda de Partidas Registrales
+        </legend>
         <div className="form-group">
           <label className="col-lg-2 control-label">Nro Partida</label>
           <div className="col-lg-4">
@@ -385,7 +388,10 @@ export const Partida = (history) => {
         </div>
         <div className="mt-4  form-group">
           <div className="row">
-            <div className="col-lg-12 text-right">
+          <div className="col-lg-6">
+            <legend className="fullborder">Resultados de Búsqueda de Partidas Registrales</legend>
+          </div>
+            <div className="col-lg-6 text-right">
               <Link
                 to={`/partida-add`}
                 className="btn btn-danger pull-right btn-sm fullborder"
