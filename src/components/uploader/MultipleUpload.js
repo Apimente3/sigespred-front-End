@@ -60,7 +60,7 @@ const FileMultiple = ({eliminarFile,file}) => {
 
 const UploadFileMultiple = memo(({form, setForm, handleInputChange, nameUpload, folderSave, accept}) => {
 
-    console.error('se genero Multiple Upload')
+    // console.error('se genero Multiple Upload')
     const [subiendoImagen, setSubiendoImagen] = useState(false);
     const [denominacionArchivo, setDenominacionArchivo] = useState('');
 
