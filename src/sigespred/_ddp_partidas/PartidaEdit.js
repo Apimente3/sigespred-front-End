@@ -10,6 +10,7 @@ import * as PARAMS from "../../config/parameters";
 import { useDispatch } from "react-redux";
 import { toastr } from "react-redux-toastr";
 import { editar } from "../../actions/_ddp_partida/Actions";
+import MultipleUpload from "../../components/uploader/MultipleUpload";
 
 const { $ } = window;
 const axios = initAxiosInterceptors();
@@ -92,6 +93,8 @@ const PartidaEdit = ({ history, match }) => {
         listbreadcrumb={ACTUALIZAR_PARTIDA_BREADCRUM}
       >
         <form onSubmit={actualizar}>
+        <fieldset className="mleft-20">
+        <legend>Datos de Generales</legend>
           <div className="form-group">
             <label className="col-lg-2 control-label">
               <span className="obligatorio">* </span> Proyecto
@@ -226,6 +229,114 @@ const PartidaEdit = ({ history, match }) => {
                 value={partidaEdicion.observacion}
               ></input>
             </div>
+          </div>
+          </fieldset>
+
+
+          <fieldset className="mleft-20">
+            <legend>Datos de Respuesta</legend>
+            <div className="form-group ">
+
+            <label className="col-lg-2 control-label">
+                Fecha de Atención
+              </label>
+              <div className="col-lg-4">
+                <input
+                  style={{ lineHeight: "1.43" }}
+                  type="date"
+                  id="fechaatencion"
+                  name="fechaatencion"
+                  className="form-control"
+                  value={partidaEdicion.fechaatencion || ""}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <label className="col-lg-2 control-label">
+                Gravamen del Predio
+              </label>
+              <div className="col-lg-4">
+                <select
+                  id="gravamentpredio"
+                  className="form-control"
+                  name="gravamentpredio"
+                  onChange={handleInputChange}
+                  value={partidaEdicion.gravamentpredio}
+                >
+                  <option value="">--SELECCIONE--</option>
+                  <option value="SI">SI</option>
+                  <option value="NO">NO</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="col-lg-2 control-label">
+                Carga {" "}
+              </label>
+              <div className="col-lg-4">
+                <select
+                  id="cargapredio"
+                  className="form-control"
+                  name="cargapredio"
+                  onChange={handleInputChange}
+                  value={partidaEdicion.cargapredio}
+                >
+                  <option value="">--SELECCIONE--</option>
+                  <option value="SI">SI</option>
+                  <option value="NO">NO</option>
+                </select>
+              </div>
+
+              <label className="col-lg-2 control-label">
+                Transferencias del Predio
+              </label>
+              <div className="col-lg-4">
+                <input
+                  className="form-control input-sm"
+                  type="text"
+                  name="transferenciaspredio"
+                  id="transferenciaspredio"
+                  onChange={handleInputChange}
+                  placeholder="Ingrese la transferencia del predio"
+                  value={partidaEdicion.transferenciaspredio}
+                ></input>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label className="col-lg-2 control-label">Observación</label>
+              <div className="col-lg-4">
+                <input
+                  className="form-control input-sm"
+                  type="text"
+                  name="observacionrespuesta"
+                  id="observacionrespuesta"
+                  onChange={handleInputChange}
+                  placeholder="Ingrese alguna observación"
+                  value={partidaEdicion.observacionrespuesta}
+                  
+                ></input>
+              </div>
+            </div> 
+            
+          </fieldset>
+
+          <div className="form-group col-lg-6">
+            <fieldset className="mleft-20">
+              <legend>Archivos</legend>
+
+              <div className="form-group">
+                <MultipleUpload
+                  key="multiple"
+                  accept={".*"}
+                  folderSave={"FotosUsuarios"}
+                  form={partidaEdicion}
+                  setForm={setPartidaEdicion}
+                  nameUpload={"archivos"}
+                ></MultipleUpload>
+              </div>
+            </fieldset>
           </div>
 
           <div className="panel-body">
