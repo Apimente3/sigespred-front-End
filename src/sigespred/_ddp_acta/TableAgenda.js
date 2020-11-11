@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TableActividad = ({cabecera, data=[], deleteActividad}) => {
+const TableAgenda = ({cabecera, data=[], deleteTema}) => {
     return (
         <>
             <table class="table table-bordered table-condensed table-hover table-striped" id="dataTableActividad">
@@ -14,22 +14,18 @@ const TableActividad = ({cabecera, data=[], deleteActividad}) => {
                 </thead>
                 <tbody>
                 {
-                    data.ActaParticipante.map((user, key) => (
+                    data.map((user, key) => (
                         
                             <tr key={key}>
-                                <td>{user.usuarioid}</td>
-                                <td>{user.actividad}</td>
-                                <td>{user.descripcion}</td>
-                                <td>{user.nombre}</td>
-                                <td>{user.fechacomp}</td>
-                                <td>{user.producto}</td>
+                                <td>{key+1}</td>
+                                <td>{user.tema}</td>
                                 <td>
                                     <div className="btn-group pull-right">
 
                                         <button class="btn btn-xs btn-default" type="button">
                                         <i
                                             class="fa fa-trash-o fa-lg"
-                                            onClick={() => deleteActividad(key)}
+                                            onClick={() => deleteTema(key)}
                                         />
                                         </button>
                                     </div>
@@ -45,4 +41,4 @@ const TableActividad = ({cabecera, data=[], deleteActividad}) => {
     );
 };
 
-export default TableActividad;
+export default TableAgenda;

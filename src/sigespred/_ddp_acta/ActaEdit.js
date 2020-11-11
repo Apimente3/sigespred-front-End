@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
-import {REGISTRO_ACTA_BREADCRUM} from "../../config/breadcrums";
+import {ACTUALIZAR_ACTA_BREADCRUM} from "../../config/breadcrums";
 import { Link } from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
 import { toastr } from "react-redux-toastr";
@@ -18,11 +18,18 @@ import TableAgenda from "./TableAgenda";
 const { $ } = window;
 const Axios = initAxiosInterceptors();
 
-// api para insertar
-async function addActa(acta) {
-  const {data} = await Axios.post(`/acta`,acta);
-  return data;
+
+
+async function getActa(id) {
+    const {data} = await Axios.get(`/acta/${id}`);
+    return data;
 }
+
+async function updateActa(acta) {
+    const {data} = await Axios.put(`/acta/${acta.id}`,acta);
+    return data;
+}
+
 const obtenerEquipo = async () => {
   const {data:equipo } = await Axios.get(`/equipolista`);
   return {equipo};
@@ -35,7 +42,9 @@ async function getEquipo(id) {
 
 
 
-const ActaAdd = ({ history }) => {
+const ActaEdit = ({history, match}) => {
+
+  const {id} = match.params;
   
   const resListaEquipos = useAsync(obtenerEquipo, []);
 
@@ -45,80 +54,112 @@ const ActaAdd = ({ history }) => {
   const [actividades, set_actividades] = useState({ActaParticipante:[]});
   const [participantes, set_participantes] = useState({});
   const [fecha, set_fecha ] = useState(new Date());
-  const [codigoacta,set_Codigoacta]  =  useState('')
+  const [codigoacta,set_Codigoacta]  =  useState('');
   const [tema, set_tema] = useState({tema:''});
   const [agenda, set_agenda] = useState([]);  
     
   const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"
   ];
-  const cabeceraActividad = ["ID", "PROCESO","DESCRIPCION","RESPONSABLE", "FECHA ENTREGA", "PRODUCTO", "ACCIONES"];
+  const cabeceraActividad = ["ID", "ACTIVIDAD","DESCRIPCION","RESPONSABLE", "FECHA ENTREGA", "PRODUCTO", "ACCIONES"];
   const cabeceraTema = ["NRO", "TEMA","ACCIONES"];
     
-    
-  const registrar = async e => {
-    let dur = `${('0' + timeLeft.hours).slice(-2)} : ${('0' + timeLeft.mins).slice(-2)} : ${('0' + timeLeft.seconds).slice(-2)}`;
-    acta.duracion=dur;
-    e.preventDefault();
-    if(agenda.length==0){
-      toastr.warning(`Advertencia !!! Ingrese un tema de agenda como minimo.`);
-      return;
-    }
-    acta.ActaParticipante=actividades.ActaParticipante;
-    //console.log(acta);
-    try {
-        await addActa(acta);
-        toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'})
-        history.push("/acta-list")
-
-    }
-    catch (e) {
-        alert(e.message)
-    }
-  }
-
-  const calculateTimeLeft = () => {
-    let de=new Date();
-    let duracion = {};
-    let difference =(de.getTime() - fecha.getTime()) ;
-    if(difference>0){
-      duracion ={
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        mins: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60)
-      }
-    }
-    return duracion;
-  }
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-    return () => clearTimeout(timer);
-  });
-
-  useEffect(() => {
-    async function init() {
+    const actualizar = async e => {
+        e.preventDefault();
+        if(agenda.length==0){
+        toastr.warning(`Advertencia !!! Ingrese un tema de agenda como minimo.`);
+        return;
+        }
+        acta.agenda = agenda;
+        acta.codigoacta = codigoacta;
+        acta.ActaParticipante = actividades.ActaParticipante;
+        console.log(acta);
+        //$('#btnguardar').button('loading');
         try {
-          let codigo = 'AC-' + Math.floor(new Date().valueOf() * Math.random());
-          const toastrConfirmOptions = {
-            onOk: () => {
-              set_Codigoacta(codigo);
-              set_fecha(new Date());
-            },
-            onCancel: () => history.push('/acta-list')
-          };
-          toastr.confirm(`Se registrará el acta 
-                          nro ${codigo}`, toastrConfirmOptions);
-        } catch (error) {
-            alert('Ocurrio un error')
-            console.log(error);
+            await updateActa(acta);
+            toastr.success('Actualización del acta', `El acta ${codigoacta} fue actualizado correctamente.`);
+            history.push('/acta-list');
+        }
+        catch (e) {
+            alert(e.message)
         }
     }
-    init();
-}, []);
+
+    useEffect(() => {
+        async function init() {
+            try {
+                let acta = await getActa(id);
+                set_agenda(acta.agenda);
+                set_Codigoacta(acta.codigoacta);
+                set_Monitor(acta.monitor);
+                set_fecha(new Date(acta.fecha));
+                set_Acta({
+                    id: acta.id,
+                    equipoid : acta.equipoid,
+                    medioid: acta.medioid,
+                    fecha: acta.fecha,
+                    codigoacta: codigoacta,
+                    estado: acta.estado,
+                    monitor: acta.monitor,
+                    agenda: agenda,
+                    duracion: acta.duracion
+                });
+                let equipo = await getEquipo(acta.equipoid);
+
+                let user = [];
+                equipo.UsuarioInEquipo.forEach(function (cabeza,i) {
+                    let filterList = acta.ActaParticipante.filter((user) => {
+                        if(user.usuarioid == cabeza.equipousuario.trabajadorid) {
+                           return true;
+                        }
+                        return false;
+                    })
+                    let asistencia=false;
+                    if(typeof filterList[0].asistencia === 'undefined'){
+                        asistencia = false;
+                    }else{
+                        asistencia = filterList[0].asistencia;
+                    }
+                    
+                    let pro={ 
+                        id: cabeza.equipousuario.trabajadorid,
+                        nombre: cabeza.nombres + ' ' + cabeza.apellidos,
+                        monitor:cabeza.equipousuario.monitor,
+                        asistencia: asistencia 
+                    };
+                    user.push(pro);
+                });
+                set_profesionales({
+                    users: user
+                });
+
+                const ar_participantes = [];
+                acta.ActaParticipante.forEach((item,i) => {
+                let a={
+                    id: item.id,
+                    actaid: item.actaid,
+                    usuarioid: item.usuarioid,
+                    actividad: item.actividad,
+                    producto: item.producto,
+                    descripcion: item.descripcion,
+                    fechacomp: item.fechacomp,
+                    asistencia: item.asistencia,
+                    fechainicio: item.fechainicio,
+                    estadocomp: item.estadocomp,
+                    nombre: `${item.Usuario.nombres} ${item.Usuario.apellidos}`
+                };
+                ar_participantes.push(a);
+                });
+                set_actividades({
+                    ActaParticipante: ar_participantes
+                });
+            } catch (error) {
+                alert('Ocurrio un error')
+                console.log(error);
+            }
+        }
+        init();
+    }, []);
 
  
   const limpiarForm = () => {
@@ -190,6 +231,7 @@ const ActaAdd = ({ history }) => {
       });
       set_participantes({
         ...participantes,
+        actaid: id,
         usuarioid: e.target.value,
         nombre: e.target.options[e.target.selectedIndex].text,
         asistencia: filterList[0].asistencia
@@ -237,7 +279,9 @@ const ActaAdd = ({ history }) => {
   };
 
   const deleteTema = key => {
-    agenda.splice(key, 1);
+    let ag = agenda.splice(key, 1);
+    set_agenda(ag);
+    
   };
 
   const checkAsistencia = (key,e) => {
@@ -249,7 +293,7 @@ const ActaAdd = ({ history }) => {
 
   return (
     <>
-      <WraperLarge titleForm={`Registro del Acta Nro ${codigoacta}`} listbreadcrumb={REGISTRO_ACTA_BREADCRUM}>
+      <WraperLarge titleForm={`Registro del Acta Nro ${codigoacta}`} listbreadcrumb={ACTUALIZAR_ACTA_BREADCRUM}>
         
           <fieldset className="mleft-20"><legend>Agenda</legend>
             <div className="form-group col-lg-6">
@@ -290,7 +334,7 @@ const ActaAdd = ({ history }) => {
                 </div>
             </div>
           </fieldset>
-          <form onSubmit={registrar}>
+          <form onSubmit={actualizar}>
             <fieldset className="mleft-20" disabled={agenda.length > 0 ? false: true}><legend>Equipos</legend>
             <div class="col-lg-offset-1 col-lg-10 text-center">
                 <div class="form-group col-md-1 text-center"></div>
@@ -302,6 +346,7 @@ const ActaAdd = ({ history }) => {
                       name="equipoid"
                       required
                       onChange={handleSelectChange}
+                      value={acta.equipoid}
                     >
                       <option value="">--SELECCIONE--</option>
                       {resListaEquipos.error ? (
@@ -336,6 +381,7 @@ const ActaAdd = ({ history }) => {
                         id="medioid"
                         required
                         onChange={handleInputChangeActa}
+                        value={acta.medioid}
                         >
                             <option value="">--SELECCIONE--</option>
                             <option value="1">ZOOM</option>
@@ -353,12 +399,12 @@ const ActaAdd = ({ history }) => {
                   <div class="form-group col-md-4 text-center">
                     <label className="control-label"><i
                                         class="fa fa-clock-o fa-2x"
-                      /> Hora de inicio : {`${('0' + fecha.getHours()).slice(-2)} : ${('0' + fecha.getMinutes()).slice(-2)} : ${('0' + fecha.getSeconds()).slice(-2)}`}</label>
+                      /> Hora de inicio : {acta.fecha}</label>
                   </div>
                   <div class="form-group col-md-4 text-center">
                     <label className="control-label"><i
                                         class="fa fa-hourglass-half fa-2x"
-                                    /> Duración : {`${('0' + timeLeft.hours).slice(-2)} : ${('0' + timeLeft.mins).slice(-2)} : ${('0' + timeLeft.seconds).slice(-2)}`}</label>
+                                    /> Duración : {acta.duracion}</label>
                   </div>
                 </div>
             </fieldset>
@@ -379,26 +425,24 @@ const ActaAdd = ({ history }) => {
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                     Actividad</label>
                 <div className="col-lg-4">
-                  <input type="text" list="data" 
-                  className="form-control"
-                  id="actividad" 
-                  name="actividad" 
-                  required 
-                  placeholder="Ingrese la actividad"
-                  value={participantes.actividad}
-                  onChange={handleInputChangePart}
-                  />
-                  <datalist id="data">
-                    {actividades.ActaParticipante.map((item, key) =>
-                      <option key={key} value={item.actividad} />
-                    )}
-                  </datalist>
+                    <input type="text" list="data" 
+                    className="form-control"
+                    id="actividad" 
+                    name="actividad"  
+                    placeholder="Ingrese la actividad"
+                    value={participantes.actividad}
+                    onChange={handleInputChangePart}
+                    />
+                    <datalist id="data">
+                        {actividades.ActaParticipante.map((item, key) =>
+                        <option key={key} value={item.actividad} />
+                        )}
+                    </datalist>
                 </div>
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                     Responsable</label>
                 <div className="col-lg-4">
                   <select className="form-control input-sm" id="usuarioid" name="usuarioid" 
-                        required
                         title="El area es requerido"
                         onChange={handleInputChangePart}
                         >
@@ -440,7 +484,6 @@ const ActaAdd = ({ history }) => {
                 <textarea
                   id="descripcion"
                   name="descripcion"
-                  required
                   className="form-control input-sm "
                   rows={3}
                   onChange={handleInputChangePart}
@@ -454,7 +497,7 @@ const ActaAdd = ({ history }) => {
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                     Producto a Entrega</label>
                 <div className="col-lg-4">
-                  <input mayuscula="true" required
+                  <input mayuscula="true"
                       className="form-control input-sm " type="text"
                       id="producto"
                       name="producto"
@@ -509,4 +552,4 @@ const ActaAdd = ({ history }) => {
   );
 };
 
-export default ActaAdd;
+export default ActaEdit;

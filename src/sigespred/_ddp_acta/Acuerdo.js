@@ -4,14 +4,12 @@ import { useAsync } from "react-async-hook";
 import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
-import {LISTADO_ACTA_BREADCRUM} from "../../config/breadcrums";
-import RowActa from "./RowActa";
-import TableActa from "./TableActa";
-import MAgenda from "./MAgenda";
+import {LISTADO_ACUERDO_BREADCRUM} from "../../config/breadcrums";
+import RowAcuerdo from "./RowAcuerdo";
+import TableAcuerdo from "./TableAcuerdo";
 import Pagination from "react-js-pagination";
 import MParticipante from "./MParticipante";
 import { toastr } from "react-redux-toastr";
-
 const queryString = require('query-string');
 //import GridEquipo from "../m000_common/grids/GridEquipo";
 
@@ -24,11 +22,11 @@ async function updateEstado(participante) {
     return data;
 }
 
-export const Acta = () => {
+export const Acuerdo = () => {
 
-  async function buscarActa(query) {
+  async function buscarAcuerdo(query) {
     // alert(query)
-     const {data} = await Axios.get(`/acta`);
+     const {data} = await Axios.get(`/actaproceso`);
      return data;
  }
 
@@ -37,19 +35,22 @@ export const Acta = () => {
   const [limit, setLimit] = useState(10);
   const [totalItemsCount, settotalItemsCount] = useState(3);
   const [activePage, setactivePage] = useState(1);
-  const [actas, setActas] = useState({"count":5,"rows":[]});
-  const [mostrarPopup, setMostrarPopup] = useState(false);
+  const [acuerdos, setAcuerdos] = useState({"count":5,"rows":[]});
+
+  const [mostrarPartPopup, setMostrarPartPopup] = useState(false);
   const [codPlanoPopup, setCodPlanoPopup] = useState('');
-  const [archivosPopup, setArchivosPopup] = useState([]);
+  const [participantesPopup, setParticipantesPopup] = useState([]);
+
+  const [actividades, set_actividades] = useState({ActaParticipante:[]});
 
   useEffect(() => {
       async function init() {
           try {
               let query =  await  queryString.stringify({busqueda,page, limit});
-              let actas = await buscarActa(query)
-              console.log(actas);
-              setActas({rows:actas})
-              settotalItemsCount(actas.length)
+              let acuerdo = await buscarAcuerdo(query)
+              console.log(acuerdo);
+              setAcuerdos({rows:acuerdo})
+              settotalItemsCount(acuerdo.length)
           } catch (error) {
               alert('Ocurrio un error')
               console.log(error);
@@ -59,24 +60,24 @@ export const Acta = () => {
   }, []);
   
 
-  const buscarActaFilter = async (e) => {
+  const buscarAcuerdoFilter = async (e) => {
 
     e.preventDefault();
     let query =  await  queryString.stringify({ busqueda, page, limit});
-    let actas = await buscarActa(query)
-    setActas({rows:actas})
+    let acuerdo = await buscarAcuerdo(query)
+    setAcuerdos({rows:acuerdo})
   }
 
   const descarxls = () => {
 
-    let listexportexcel = actas.rows;
+    let listexportexcel = acuerdos.rows;
     var resultgeojson = alasql(`SELECT *
              FROM ? `, [listexportexcel])
     var opts = [{
         sheetid: 'Reporte',
         headers: true
     }];
-    var res = alasql('SELECT INTO XLSX("ListadoActas.xlsx",?) FROM ?', [opts, [resultgeojson]]);
+    var res = alasql('SELECT INTO XLSX("ListadoAcuerdos.xlsx",?) FROM ?', [opts, [resultgeojson]]);
     return false;
   }
 
@@ -87,28 +88,55 @@ export const Acta = () => {
     setPage(pageNumber)
     console.log(`active page is ${pageNumber}`);
     let query =  await  queryString.stringify({ busqueda, page:pageNumber, limit});
-    let actas= await buscarActa(query)
-    setActas({rows:actas})
+    let acuerdo= await buscarAcuerdo(query)
+    setAcuerdos({rows:acuerdo})
+}
 
+    const cerrarPartModal=async (estado)=>{
+        setMostrarPartPopup(estado);
+        let query =  await  queryString.stringify({busqueda,page, limit});
+        let acuerdo = await buscarAcuerdo(query)
+        setAcuerdos({rows:acuerdo})
     }
-    const cerrarModal=(estado)=>{
-        setMostrarPopup(estado);
-    }
-    
 
-    const cargarPopupDigitales = (codacta, archivos) => {
+    const cargarPopupParticipantes = (codacta, participantes) => {
+        const ar_participantes = [];
+        ar_participantes.push(participantes)
+        actividades.ActaParticipante=ar_participantes;
         setCodPlanoPopup(codacta);
-        setArchivosPopup(archivos);
-        setMostrarPopup(true);
+        setParticipantesPopup(actividades.ActaParticipante);
+        setMostrarPartPopup(true);
     }
 
-  const cabecerasTabla = ["NRO","CÓDIGO ACTA", "EQUIPO", "MONITOR", "PROYECTO", "FECHA", "DURACIÓN","ESTADO","AGENDA", "ACCIONES"]
+    const checkFinalizo = (key,e) => {
+        const { checked } = e.target
+        actividades.ActaParticipante[key].estadocomp = checked ? 'CUMPLIDO' : null ;
+    };
+
+    const handleUpdateClick = async (e) => {
+        e.preventDefault();
+        console.log(actividades);
+        //actividades.ActaParticipante.forEach(async (item,i) => {
+            try {
+                await updateEstado(actividades.ActaParticipante[0]);
+                //if(actividades.ActaParticipante.length ==  i+1){
+                    toastr.success('Estado de compromiso', 'Se registro correctamente.');
+                    cerrarPartModal();
+                //}
+            }
+            catch (e) {
+                alert(e.message)
+            }
+        //});
+    }
+
+  const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","PROFESIONAL","ACTIVIDAD", "PRODUCTO","DESCRIPCION","ASISTENCIA", "FECHA INCIO", "FECHA COMPROMISO","ALERTA","ESTADO","REVISIÓN"]
  
   return (
     <>
-          <WraperLarge titleForm={"Listado de Actas"} listbreadcrumb={LISTADO_ACTA_BREADCRUM}>
+          <WraperLarge titleForm={"Listado de acuerdos"} listbreadcrumb={LISTADO_ACUERDO_BREADCRUM}>
             <fieldset className={'fielsettext'}>
-                <form onSubmit={buscarActaFilter}>
+                <form onSubmit={buscarAcuerdoFilter}>
                     <div className="row">
                         <div className="col-md-6">
                             <div className="input-group">
@@ -123,10 +151,6 @@ export const Acta = () => {
                             </div>
                         </div>
                         <div className="col-md-6">
-                            <Link to={`/acuerdo-list`} className="btn btn-info pull-right btn-sm fullborder">
-                                <i className="fa fa-group"></i> Acuerdos</Link>
-                            <Link to={`/acta-add`} className="btn btn-danger pull-right btn-sm fullborder">
-                                <i className="fa fa-plus"></i> Agregar Acta</Link>
                             <button type="button" onClick={descarxls}
                                     className="btn btn-default pull-right btn-sm fullborder">
                                 <i className="fa fa-file-excel-o"></i> Descargar Excel
@@ -136,11 +160,11 @@ export const Acta = () => {
                 </form>
             </fieldset>
             <div className="panel panel-default">
-                <TableActa cabecera={cabecerasTabla}>
-                   {actas.rows.map((acta, i) => (
-                        <RowActa nro={i} acta={acta} loadfiles={cargarPopupDigitales}></RowActa>
+                <TableAcuerdo cabecera={cabecerasTabla}>
+                   {acuerdos.rows.map((acuerdo, i) => (
+                        <RowAcuerdo nro={i} acuerdo={acuerdo} loadParticipantes={cargarPopupParticipantes}></RowAcuerdo>
                     ))}
-                </TableActa>
+                </TableAcuerdo>
                 <div className="panel-footer clearfix pull-right">
                     <Pagination
                         activePage={activePage}
@@ -151,9 +175,9 @@ export const Acta = () => {
                     ></Pagination>
                 </div>
             </div>
-            {mostrarPopup && <MAgenda closeventana={cerrarModal} codacta={codPlanoPopup} agenda={archivosPopup}/>}
+            {mostrarPartPopup && <MParticipante closeventana={cerrarPartModal} codacta={codPlanoPopup} participante={participantesPopup} checkFinalizo={checkFinalizo} handleUpdateClick={handleUpdateClick}/>}
           </WraperLarge>  
     </>
 );
 };
-export default Acta;
+export default Acuerdo;

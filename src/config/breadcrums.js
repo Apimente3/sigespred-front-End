@@ -115,6 +115,26 @@ export const REGISTRO_ACTA_BREADCRUM = [
     {link: "acta-add", name: "Agregar de acta"}
 ]
 
+export const ELIMINAR_ACTA_BREADCRUM = [
+    {link: "../acta-list", name: "Listado de actas"},
+    {link: "#", name: "Eliminar Acta"}
+]
+
+export const ACTUALIZAR_ACTA_BREADCRUM = [
+    {link: "../acta-list", name: "Listado de actas"},
+    {link: "#", name: "Actualizar Acta"}
+]
+
+export const LISTADO_ACTA_BREADCRUM = [
+    {link: "acta-list", name: "Listado de actas"},
+    {link: "acta-add", name: "Agregar de actas"}
+]
+
+export const LISTADO_ACUERDO_BREADCRUM = [
+    {link: "acuerdo-list", name: "Listado de acuerdos"},
+    {link: "acta-list", name: "Listado de actas"}
+]
+
 export const REGISTRO_SOLICITUD_BREADCRUM = [
     // {link: "solicitud-add", name: "Agregar Solicitud"},
     {link: "solicitud-list", name: "Listado de Solicitudes"},
