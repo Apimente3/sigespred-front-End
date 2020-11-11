@@ -127,6 +127,17 @@ class SidebarAdm extends Component {
                                         <span className="menu-hover"></span>
                                     </Link>
                                 </li>
+                                <li menu="/solicitud-list">
+                                    <Link to={"/solicitud-list"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                            Soli. de Inf. Entidades
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
 
                                 <li menu="/docinternos">
                                     <Link to={"/docinternos"}>
@@ -165,6 +176,9 @@ class SidebarAdm extends Component {
                                         <span className="menu-hover"></span>
                                     </Link>
                                 </li>
+
+
+
 
                             </ul>
 
