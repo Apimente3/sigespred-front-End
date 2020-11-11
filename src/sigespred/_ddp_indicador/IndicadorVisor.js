@@ -1,19 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {REGISTRO_INDICADERES_BREADCRUM as breadcrum} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
-import {
 
-    FormFooter,RowForm,Row12
-} from "../../components/forms";
-
-import Iframe from 'react-iframe'
-
-import SingleUpload from "../../components/uploader/SingleUpload";
 
 import {useForm} from "../../hooks/useForm"
-import {Link} from "react-router-dom";
-import {toastr} from 'react-redux-toastr'
-import {FilesIndicador} from "../../config/parameters";
+
 import {initAxiosInterceptors} from '../../config/axios';
 
 const Axios = initAxiosInterceptors();

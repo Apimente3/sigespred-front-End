@@ -24,6 +24,10 @@ const TrabajadorRow = ({row,nro}) => {
                 <td>
                     <div className="btn-group pull-right">
 
+                        <Link  to={`/gestionpredial-validalist/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                               data-original-title={ "Validacion del Poligono de trabajo" }><i
+                            className="fa fa-edit fa-lg"></i></Link>
+
                         <Link  to={`/gestionpredial-edit/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                                data-original-title={ "Editar" }><i
                             className="fa fa-edit fa-lg"></i></Link>
