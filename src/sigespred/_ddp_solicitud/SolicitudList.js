@@ -211,7 +211,7 @@ const SolicitudList = ({history}) => {
     return (
         <>
         <WraperLarge titleForm={"Listado de Solicitudes"} listbreadcrumb={LISTADO_SOLICITUD_BREADCRUM}>
-            <legend className="mleft-20"><i class="fa fa-filter"></i> Filtros de Búsqueda de Solicitudes</legend>
+            <legend className="mleft-20"><i className="fa fa-filter"></i> Filtros de Búsqueda de Solicitudes</legend>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Número de Oficio</label>
                 <div className="col-lg-4">

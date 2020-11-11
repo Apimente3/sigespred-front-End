@@ -441,9 +441,11 @@ legend {
 }
 
 .mapa-solicitud {
-
     height: 450px;
+}
 
+.mapa-validapoligono {
+    height: 875px;
 }
 
 .fototrabajadorheader {

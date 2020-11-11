@@ -37,7 +37,11 @@ export const LISTASIDS = {
         TIPOSOLICEXT: 7,
         SOLICCANALENVIO: 8,
         REQAREALIST: 9,
-        TIPODOCINTER: 10
+        TIPODOCINTER: 10,
+        TIPOREPGRAFICA: 11,
+        SISTCORDENADAS: 12,
+        TIPORASTER: 13,
+        TIPOGENERAINFO: 14,
     }
 
 export const FilesUsuario={

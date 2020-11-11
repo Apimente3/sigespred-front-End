@@ -22,8 +22,8 @@ const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSa
 
     useEffect(() => {
         const init = async () => {
-            console.log('----------------------')
-            console.log(form[nameUpload])
+            // console.log('----------------------')
+            // console.log(form[nameUpload])
             setSubiendoImagen( form[nameUpload] ? 'subido' : 'ninguno' );
             $('[data-toggle="tooltip"]').tooltip();
             //setoriginalName(form[nameUpload].filename);
@@ -57,7 +57,10 @@ const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSa
             setPorcentajeSubida(0);
             setSubiendoImagen('subido');
             toastr.info('¡ Correcto !', 'Se subio correctamente el Documento', {position: 'top-right'})
-
+            
+            if (handleInputChange) {
+                handleInputChange(file.name,file);
+            }
         } catch (error) {
             setSubiendoImagen(false);
             toastr.error('¡ Error !', 'Se fallo subiendo', {position: 'top-right'})
