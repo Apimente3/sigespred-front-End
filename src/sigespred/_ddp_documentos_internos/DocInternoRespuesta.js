@@ -5,7 +5,7 @@ import { FormFooter } from "../../components/forms";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 import { initAxiosInterceptors } from "../../config/axios";
-import { REGISTRO_PLANO_BREADCRUM } from "../../config/breadcrums";
+import { ACTUALIZAR_DOCINTERNOS_BREADCRUM } from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import MultipleUpload from "../../components/uploader/MultipleUpload";
 import { useForm } from "../../hooks/useForm";
@@ -109,7 +109,7 @@ const DocInternoRespuesta = ({ history }) => {
         titleForm={
           "Edicion del Documento interno en respuesta " + documentosInternos.id
         }
-        listbreadcrumb={REGISTRO_PLANO_BREADCRUM}
+        listbreadcrumb={ACTUALIZAR_DOCINTERNOS_BREADCRUM}
       >
         <form onSubmit={actualizar}>
           <div className="form-group">
@@ -158,6 +158,8 @@ const DocInternoRespuesta = ({ history }) => {
                       required
                       // title="El Tipo de Plano es requerido"
                       onChange={handleInputChange}
+                      value={documentosInternos.equipoid || ""}
+                      readOnly
                     >
                       <option value="">--SELECCIONE--</option>
                       {dataEquipo && (
@@ -171,65 +173,6 @@ const DocInternoRespuesta = ({ history }) => {
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span> Tipo de Documento
-                  </label>
-                  <div className="col-lg-4">
-                    {resListaTipoDocInterno.error ? (
-                      "Se produjo un error cargando los tipos de documento"
-                    ) : resListaTipoDocInterno.loading ? (
-                      "Cargando..."
-                    ) : (
-                      <select
-                        className="form-control input-sm"
-                        id="tipodocumentoid"
-                        name="tipodocumentoid"
-                        value={documentosInternos.tipodocumentoid}
-                        onChange={handleInputChange}
-                        readOnly
-                      >
-                        <option value="">--SELECCIONE--</option>
-                        <ComboOptions
-                          data={resListaTipoDocInterno.result}
-                          valorkey="valorcodigo"
-                          valornombre="valortexto"
-                        />
-                      </select>
-                    )}
-                  </div>
-
-                  <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span>Monitor
-                  </label>
-                  <div className="col-lg-4">
-                    {/* {resListaProyectos.error ? (
-            "Se produjo un error cargando los proyectos"
-          ) : resListaProyectos.loading ? (
-            "Cargando..."
-          ) : ( */}
-                    <select
-                      className="form-control input-sm"
-                      id="monitorid"
-                      name="monitorid"
-                      value={documentosInternos.monitorid}
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
-                      readOnly
-                    >
-                      <option value="">--SELECCIONE--</option>
-                      <option value="4">ERICK SIMON ESCALANTE OLANO </option>
-                      {/* <ComboOptions
-                  //   data={resListaProyectos.result}
-                  valorkey="id"
-                  valornombre="denominacion"
-                /> */}
-                    </select>
-                    {/* )} */}
-                  </div>
-                  {/* </div> */}
-                </div>
 
                 <div className="form-group">
                   <label className="col-lg-2 control-label">
@@ -319,6 +262,7 @@ const DocInternoRespuesta = ({ history }) => {
                       form={documentosInternos}
                       setForm={setDocumentosInternos}
                       nameUpload={"archivorecepcion"}
+                      readonly = {true}
                     ></MultipleUpload>
                   </div>
                 </div>

@@ -20,11 +20,8 @@ const obtenerPartida = async (id) => {
 };
 
 const PartidaEdit = ({ history, match }) => {
-
   const [partidaEdicion, setPartidaEdicion] = useState({});
   const editarPartidaAction = (partida) => dispatch(editar(partida));
-
-
 
   const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPOPRED,
@@ -41,7 +38,6 @@ const PartidaEdit = ({ history, match }) => {
         [e.target.name]: e.target.value,
       });
     }
-
   }
 
   const handleChangeProyecto = async (e) => {
@@ -143,9 +139,7 @@ const PartidaEdit = ({ history, match }) => {
           </div>
 
           <div className="form-group">
-            <label className="col-lg-2 control-label">
-              <span className="obligatorio">* </span>Tramo
-            </label>
+            <label className="col-lg-2 control-label">Tramo</label>
             <div className="col-lg-4">
               <select
                 className="form-control input-sm"
@@ -164,21 +158,6 @@ const PartidaEdit = ({ history, match }) => {
                 )}
               </select>
             </div>
-            <label className="col-lg-2 control-label">Sub Tramo</label>
-            <div className="col-lg-4">
-              <input
-                className="form-control input-sm"
-                type="text"
-                name="subtramoid"
-                id="subtramoid"
-                onChange={handleInputChange}
-                placeholder="Ingrese el sub tramo"
-                value={partidaEdicion.subtramoid}
-              ></input>
-            </div>
-          </div>
-
-          <div className="form-group">
             <label className="col-lg-2 control-label">Tipo de Predio</label>
             <div className="col-lg-4">
               <select
@@ -203,7 +182,21 @@ const PartidaEdit = ({ history, match }) => {
                 )}
               </select>
             </div>
+          </div>
 
+          <div className="form-group">
+            <label className="col-lg-2 control-label">Sub Tramo</label>
+            <div className="col-lg-4">
+              <input
+                className="form-control input-sm"
+                type="text"
+                name="subtramoid"
+                id="subtramoid"
+                onChange={handleInputChange}
+                placeholder="Ingrese el sub tramo"
+                value={partidaEdicion.subtramoid}
+              ></input>
+            </div>
           </div>
 
           <div className="form-group">
@@ -217,6 +210,7 @@ const PartidaEdit = ({ history, match }) => {
                 onChange={handleInputChange}
                 placeholder="Ingrese numero de asiento"
                 value={partidaEdicion.nroasiento}
+                pattern="\d{1,5}"
               ></input>
             </div>
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import { initAxiosInterceptors } from "../../config/axios";
-import { REGISTRO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
+import { REGISTRO_DOCINTERNOS_BREADCRUM } from "../../config/breadcrums";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import { toastr } from "react-redux-toastr";
 import { Link } from "react-router-dom";
@@ -81,22 +81,13 @@ const DocInternoAdd = ({ history }) => {
       setDataEquipo(null);
     }
   };
-  // const handleChangeProyecto = async (e) => {
-  //   if (e.target.value) {
-  //     let data = await helperGets.helperGetListTramos(e.target.value);
-  //     console.log('-***********************-*>')
-  //     console.log(data)
-  //     // setDataTramo(data);
-  //   } else {
-  //     // setDataTramo(null);
-  //   }
-  // };
+  
 
   return (
     <>
       <WraperLarge
         titleForm={"Registro de Documentacion interna "} // + partidaRespuesta.id}
-        listbreadcrumb={REGISTRO_PARTIDA_BREADCRUM}
+        listbreadcrumb={REGISTRO_DOCINTERNOS_BREADCRUM}
       >
         <form onSubmit={registrar}>
           <div className="form-group">
@@ -155,65 +146,7 @@ const DocInternoAdd = ({ history }) => {
                     </select>
                   </div>
                 </div>
-                <div className="form-group">
-                  <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span>Monitor
-                  </label>
-                  <div className="col-lg-4">
-                    {/* {resListaProyectos.error ? (
-                  "Se produjo un error cargando los proyectos"
-                ) : resListaProyectos.loading ? (
-                  "Cargando..."
-                ) : ( */}
-                    <select
-                      className="form-control input-sm"
-                      id="monitorid"
-                      name="monitorid"
-                      value={documentosInternos.monitorid}
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
-                    >
-                      <option value="">--SELECCIONE--</option>
-                      <option value="4">ERICK SIMON ESCALANTE OLANO </option>
-                      {/* <ComboOptions
-                        //   data={resListaProyectos.result}
-                        valorkey="id"
-                        valornombre="denominacion"
-                      /> */}
-                    </select>
-                    {/* )} */}
-                  </div>
-                  <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span>Monitor
-                  </label>
-                  <div className="col-lg-4">
-                    {/* {resListaProyectos.error ? (
-                  "Se produjo un error cargando los proyectos"
-                ) : resListaProyectos.loading ? (
-                  "Cargando..."
-                ) : ( */}
-                    <select
-                      className="form-control input-sm"
-                      id="monitorid"
-                      name="monitorid"
-                      value={documentosInternos.monitorid}
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
-                    >
-                      <option value="">--SELECCIONE--</option>
-                      <option value="4">ERICK SIMON ESCALANTE OLANO </option>
-                      {/* <ComboOptions
-                        //   data={resListaProyectos.result}
-                        valorkey="id"
-                        valornombre="denominacion"
-                      /> */}
-                    </select>
-                    {/* )} */}
-                  </div>
-                  {/* </div> */}
-                </div>
+              
 
                 <div className="form-group">
                   <label className="col-lg-2 control-label">

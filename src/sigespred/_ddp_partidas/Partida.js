@@ -219,7 +219,7 @@ export const Partida = (history) => {
     <>
       {/* <WizardContext.Provider value={context}> */}
       <WraperLarge
-        titleForm={"Listado de Partidas Registrales"}
+        titleForm={"Filtros de busquedas de Partidas Registrales"}
         listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}
       >
         <div className="form-group">
@@ -344,7 +344,7 @@ export const Partida = (history) => {
             </select>
           </div>
 
-          <label className="col-lg-2 control-label">Estado</label>
+          <label className="col-lg-2 control-label">Estado de Atención</label>
           <div className="col-lg-4">
             <select
               id="estadoatencion"

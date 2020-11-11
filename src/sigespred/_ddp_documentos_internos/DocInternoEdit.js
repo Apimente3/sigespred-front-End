@@ -21,7 +21,7 @@ import * as PARAMS from "../../config/parameters";
 import { useForm } from "../../hooks/useForm";
 
 import { initAxiosInterceptors } from "../../config/axios";
-import { REGISTRO_PLANO_BREADCRUM } from "../../config/breadcrums";
+import { ACTUALIZAR_DOCINTERNOS_BREADCRUM } from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import { useAsync } from "react-async-hook";
 import MultipleUpload from "../../components/uploader/MultipleUpload";
@@ -153,7 +153,7 @@ const DocInternoEdit = ({ match, history }) => {
         { position: "top-right" }
       );
       //$("#btnguardar").button("reset");
-      // history.push("/docinternos");
+      history.push("/docinternos");
     } catch (e) {
       toastr.error("Registro Incorrecto", JSON.stringify(e), {
         position: "top-right",
@@ -165,7 +165,7 @@ const DocInternoEdit = ({ match, history }) => {
     <>
       <Wraper
         titleForm={"Edicion del Documento interno " + documentosInternos.id}
-        listbreadcrumb={REGISTRO_PLANO_BREADCRUM}
+        listbreadcrumb={ACTUALIZAR_DOCINTERNOS_BREADCRUM}
       >
         <form onSubmit={actualizar}>
           <div className="form-group">
@@ -228,67 +228,7 @@ const DocInternoEdit = ({ match, history }) => {
                   </div>
                 </div>
 
-                <div className="form-group">
-                  {/* <div className="form-group"> */}
-                  <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span> Equipo de Trabajo
-                  </label>
-                  <div className="col-lg-4">
-                    {/* {resListaProyectos.error ? (
-                  "Se produjo un error cargando los proyectos"
-                ) : resListaProyectos.loading ? (
-                  "Cargando..."
-                ) : ( */}
-                    <select
-                      className="form-control input-sm"
-                      id="equipoid"
-                      name="equipoid"
-                      value={documentosInternos.equipoid}
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
-                    >
-                      <option value="">--SELECCIONE--</option>
-                      <option value="1">SISTEMATIZACION</option>
-                      <option value="2">diagnostico tecnico legal</option>
-                      {/* <ComboOptions
-                        //   data={resListaProyectos.result}
-                        valorkey="id"
-                        valornombre="denominacion"
-                      /> */}
-                    </select>
-                    {/* )} */}
-                  </div>
-                  <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span>Monitor
-                  </label>
-                  <div className="col-lg-4">
-                    {/* {resListaProyectos.error ? (
-                  "Se produjo un error cargando los proyectos"
-                ) : resListaProyectos.loading ? (
-                  "Cargando..."
-                ) : ( */}
-                    <select
-                      className="form-control input-sm"
-                      id="monitorid"
-                      name="monitorid"
-                      value={documentosInternos.monitorid}
-                      onChange={(e) => {
-                        handleInputChange(e);
-                      }}
-                    >
-                      <option value="">--SELECCIONE--</option>
-                      <option value="4">ERICK SIMON ESCALANTE OLANO </option>
-                      {/* <ComboOptions
-                        //   data={resListaProyectos.result}
-                        valorkey="id"
-                        valornombre="denominacion"
-                      /> */}
-                    </select>
-                    {/* )} */}
-                  </div>
-                  {/* </div> */}
-                </div>
+             
 
                 <div className="form-group">
                   <label className="col-lg-2 control-label">
