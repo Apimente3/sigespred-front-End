@@ -52,7 +52,7 @@ const DrpAministrativo = ({history}) => {
                     <a className="dropdown-toggle" data-toggle="dropdown" href="#">
 
                         {
-                            !usuario.foto  ? <h3>Ingrese la Foto</h3> :<img src={serverFile+ usuario.foto.path} className="img-circle fototrabajadorheader" alt="User Avatar"></img>
+                            !usuario.foto  ? <span>Ingrese la Foto</span> :<img src={serverFile+ usuario.foto.path} className="img-circle fototrabajadorheader" alt="User Avatar"></img>
 
                         }
 
