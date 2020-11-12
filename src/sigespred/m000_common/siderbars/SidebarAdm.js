@@ -56,10 +56,10 @@ class SidebarAdm extends Component {
                                 <li menu="/gestionpredial">
                                     <Link to={"/gestionpredial"}>
                                         <span className="menu-icon">
-                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                            <img src="/img/hogar.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
-                                            Gestion Predial
+                                            Gestión Predial
                                         </span>
                                         <span className="menu-hover"></span>
                                     </Link>
@@ -71,7 +71,7 @@ class SidebarAdm extends Component {
                                             <img src="/img/organigrama.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
-                                           Areas
+                                           Áreas
                                         </span>
                                         <span className="menu-hover"></span>
                                     </Link>
@@ -80,7 +80,7 @@ class SidebarAdm extends Component {
                                 <li menu="/list-trabajadores">
                                     <Link to={"/list-trabajadores"}>
                                         <span className="menu-icon">
-                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                            <img src="/img/agregar-usuario.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
                                            Trabajadores

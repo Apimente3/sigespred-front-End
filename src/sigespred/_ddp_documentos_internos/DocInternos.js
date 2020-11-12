@@ -409,14 +409,14 @@ const DocInternos = () => {
               <button
                 type="button"
                 onClick={limpiarDocumentacionInternaFilter}
-                className="btn btn-default btn-sm fullborder"
+                className="btn btn-default btn-sm fullborder  btn-control"
               >
                 <i className="fa fa-eraser"></i> Limpiar Filtro(s)
               </button>
               <button
                 type="button"
                 onClick={buscarDocumentosInternosFilter}
-                className="btn btn-info  btn-sm  fullborder"
+                className="btn btn-info  btn-sm  fullborder  btn-control"
               >
                 <i className="fa fa-search"></i> Aplicar Filtro(s)
               </button>
@@ -435,7 +435,7 @@ const DocInternos = () => {
             <div className="col-md-6 text-right">
               <Link
                 to={`/docinternos-add`}
-                className="btn btn-danger btn-sm fullborder"
+                className="btn btn-danger btn-sm fullborder  btn-control"
               >
                 <i className="fa fa-plus-circle"></i> Agregar
               </Link>

@@ -56,7 +56,7 @@ const DrpAministrativo = ({history}) => {
 
                         }
 
-                        <span>{` ${usuario.nombres} ${usuario.nombres}`} </span>
+                        <span>{` ${usuario.nombres} ${usuario.apellidos}`} </span>
                         <span><i className="fa fa-chevron-down"></i></span>
                     </a>
                     <ul className="dropdown-menu">
