@@ -17,7 +17,7 @@ const Axios = initAxiosInterceptors();
 
 // api para insertar
 async function addArea(area) {
-  const {data} = await Axios.post(`/area`,area);
+  const {data} = await Axios.post(`/area`,{...area,usuarioid:1});
   return data;
 }
 const obtenerArea = async () => {
@@ -33,8 +33,8 @@ const AreaAdd = ({ history }) => {
 
     const [area, set_area] = useState();
     const [selectedDisabled, setSelectedDisabled] = useState(true);
-    
-    
+
+
     const registrar = async e => {
       e.preventDefault();
       try {
@@ -63,7 +63,7 @@ const AreaAdd = ({ history }) => {
               ...area,
               [e.target.name]: e.target.value.toUpperCase()
           });
-        } 
+        }
         if(['subareaid'].includes(e.target.name)) {
             if(selectedDisabled){
                 set_area({
@@ -79,7 +79,7 @@ const AreaAdd = ({ history }) => {
         }
     }
 
-    
+
     function setSolicitante(idLocador,text) {
         set_area({
             ...area,
@@ -88,7 +88,7 @@ const AreaAdd = ({ history }) => {
       console.log(text);
     }
 
- 
+
   const limpiarForm = () => {
     set_area({});
     setSelectedDisabled(true);
@@ -130,7 +130,7 @@ const AreaAdd = ({ history }) => {
                       onChange={handleInputChange}>
                     </input>
                 </div>
-                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                {/* <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                     Profesional</label>
                 <div className="col-lg-4">
                     {resListaSolicitantes.error
@@ -139,6 +139,7 @@ const AreaAdd = ({ history }) => {
                       ? "Cargando..."
                       : <Autocomplete listaDatos={resListaSolicitantes.result} callabck={setSolicitante} />}
                 </div>
+                */}
             </div>
             <div className="form-group">
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>

@@ -17,7 +17,7 @@ import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
-const directorioPlanos = "planosadmin";
+const directorioPlanos = "FilesDDP/planosadmin";
 const currentYear= moment().year();
 
 const PlanoAdd = ({history,  match}) => {
@@ -40,10 +40,10 @@ const PlanoAdd = ({history,  match}) => {
     const [valAncedente, setValAntecedente] = useState('');
     const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
     const [reiniciarValMemoria, setReiniciarValMemoria] = useState(false);
-    
+
 
     const {ante} = match.params;
-    
+
     if(ante && !valAncedente){
         setValAntecedente(ante);
         set_plano({
@@ -186,8 +186,8 @@ const PlanoAdd = ({history,  match}) => {
     }
 
     const removerDeLista = (idLamina) => {
-        var data = $.grep(listaArchivos, function(e){ 
-            return e.laminaid != idLamina; 
+        var data = $.grep(listaArchivos, function(e){
+            return e.laminaid != idLamina;
        });
        set_listaArchivos(data);
     }
@@ -222,7 +222,7 @@ const PlanoAdd = ({history,  match}) => {
                 delete plano[key];
             }
         });
-        
+
         if (Array.isArray(listaArchivos) && listaArchivos.length) {
             plano.archivos = listaArchivos;
             set_plano({
@@ -283,7 +283,7 @@ const PlanoAdd = ({history,  match}) => {
                                         <span className="obligatorio">* </span>Proyecto
                                     </label>
                                     <div className="col-lg-8">
-                                        <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                                        <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid"
                                         required
                                         title="El Proyecto es requerido"
                                         onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
@@ -301,7 +301,7 @@ const PlanoAdd = ({history,  match}) => {
                                         <span className="obligatorio">* </span>Nro. de Expediente
                                     </label>
                                     <div className="col-lg-8">
-                                        <input type="text" className="form-control input-sm uppercaseinput" id="nroexpediente" name="nroexpediente" 
+                                        <input type="text" className="form-control input-sm uppercaseinput" id="nroexpediente" name="nroexpediente"
                                         placeholder="Número de expediente"
                                         required
                                         title="El Número de Expediente es requerido"
@@ -315,7 +315,7 @@ const PlanoAdd = ({history,  match}) => {
                                         <span className="obligatorio">* </span>Año
                                     </label>
                                     <div className="col-lg-8">
-                                        <select className="form-control input-sm" id="periodoid" name="periodoid" 
+                                        <select className="form-control input-sm" id="periodoid" name="periodoid"
                                         required
                                         title="El Año es requerido"
                                         autoComplete = "off"
@@ -381,9 +381,9 @@ const PlanoAdd = ({history,  match}) => {
                                 <div className="form-group">
                                     <label className="col-lg-4 control-label">Plano Antecedente</label>
                                     <div className="col-lg-8">
-                                        <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
+                                        <input type="text" className="form-control input-sm" id="antecedente" name="antecedente"
                                         value={valAncedente}
-                                        readOnly 
+                                        readOnly
                                         onChange={handleInputChange}/>
                                     </div>
                                 </div>
@@ -460,8 +460,8 @@ const PlanoAdd = ({history,  match}) => {
                                     <option value="">--SELECCIONE--</option>
                                     {dataTramo &&
                                     <ComboOptions data={dataTramo} valorkey="id" valornombre="descripcion" />}
-                                    </select>        
-                                </div>                                
+                                    </select>
+                                </div>
                             </div>
                             <div className="form-group">
                                 <label className="col-lg-4 control-label">Subtramo</label>
@@ -477,7 +477,7 @@ const PlanoAdd = ({history,  match}) => {
                             <div className="form-group col-lg-6">
                                 <label className="col-lg-4 control-label">Descripción / Lámina</label>
                                 <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam" 
+                                    <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam"
                                     value = {planoArchTmp.lamina || ''}
                                     onChange={handleChangeLamina}/>
                                 </div>
@@ -520,7 +520,7 @@ const PlanoAdd = ({history,  match}) => {
                             }
                             </div>
                     </div>
-                    
+
                     <div className="panel-body">
                         <div className="form-group">
                             <div className="col-lg-offset-8 col-lg-4">
@@ -529,7 +529,7 @@ const PlanoAdd = ({history,  match}) => {
                                 <button id="btnguardar" type="submit"
                                         className="btn btn-danger btn-sm btn-control">Guardar
                                 </button>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -539,4 +539,4 @@ const PlanoAdd = ({history,  match}) => {
         );
     }
 
-    export default PlanoAdd; 
+    export default PlanoAdd;
