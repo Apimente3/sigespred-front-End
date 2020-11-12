@@ -35,8 +35,6 @@ async function addPoligono(valPoligono) {
 }
 
 async function savePoligono(id, body) {
-    console.log(id);
-    console.log(body);
     const {data} = await Axios.put(`/validagestionpredial/${id}`,body);
     return data;
 }
@@ -64,11 +62,6 @@ const GestionPredialPoligono = ({history, match}) => {
                 let poligonoAsociado= await getPoligono(idpoligono);
                 setValPoligono(poligonoAsociado);
             }
-            // let dataProyecto= await getProyecto(id);
-            // setTituloVentana(`${dataProyecto.denominacion} (${dataProyecto.abreviatura})`);
-            // let query =  await  queryString.stringify({gestionpredialid: id, page: activePage, limit});
-            // let listPoligonos = await buscarPoligonos(query);
-            // changePage(activePage,listPoligonos);
         };
         init();
     }, []);
@@ -83,11 +76,11 @@ const GestionPredialPoligono = ({history, match}) => {
             if (nuevoPoligono) {
                 let resultPoligono = await addPoligono(valPoligono);
                 $('#btnguardar').button('reset');
-                toastr.success('Registro de Polígono', `El polígono fue registyrqado correctamente.`);
+                toastr.success('Registro de Polígono', `El polígono fue registrado correctamente.`);
                 
             } else {
                 await savePoligono(valPoligono.id, valPoligono);
-                toastr.success(`El Polígono con ID: ${id}`, 'Se actualizó correctamente.', {position: 'top-right'})
+                toastr.success(`El Polígono con ID: ${valPoligono.id}`, 'Se actualizó correctamente.', {position: 'top-right'})
             }
             history.push(`/gestionpredial-validalist/${id}`);
         }

@@ -15,14 +15,11 @@ import RouteModPartidas from './_ddp_RouteModPartidas';
 import RouteModEquipo from './_ddp_RouteModEquipo';
 import RouteModArea from './_ddp_RouteModArea';
 import RouteModIndicadores from './_ddp_RouteModIndicadores';
-
 import RouteModSolicitud from './_ddp_RouteModSolicitud';
 import RouteModDocumentosInternos from './_ddp_RouteModDocumentosInternos';
-
-
 import RouteModActa from './_ddp_RouteModActa';
 import RouterModOrdenServicio from './_ddp_RouterModOrdenServicio';
-
+import RouteModTramo from './_ddp_RouteModTramo';
 
 export default [
     ...RouteMod01Login,
@@ -44,5 +41,6 @@ export default [
     ...RouteMod06ProcesoAdquisicionExpropiacion,
 
     ...RouteModArea,
-    ...RouteModActa
+    ...RouteModActa,
+    ...RouteModTramo
 ]

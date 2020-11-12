@@ -22,6 +22,9 @@ const TrabajadorRow = ({row,nro}) => {
 
                 <td>
                     <div className="btn-group pull-right">
+                        <Link  to={`/tramo-list/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                               data-original-title={ "Administración de Sectores o Tramos" }><i
+                            className="fa fa-puzzle-piece fa-lg"></i></Link>
 
                         <Link  to={`/gestionpredial-validalist/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                                data-original-title={ "Validacion del Poligono de trabajo" }><i
@@ -30,10 +33,6 @@ const TrabajadorRow = ({row,nro}) => {
                         <Link  to={`/gestionpredial-edit/${row.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                                data-original-title={ "Editar" }><i
                             className="fa fa-edit fa-lg"></i></Link>
-
-
-
-
                     </div>
                 </td>
             </tr>

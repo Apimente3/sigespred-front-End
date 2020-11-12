@@ -94,8 +94,6 @@ const SolicitudList = ({history}) => {
         setMostrarPopup(true);
     }
 
- 
-
     const ejecutarEliminar = (id) => {
         Axios.delete(`/solicitudentidad/${id}`)
         .then(() => {
@@ -108,7 +106,6 @@ const SolicitudList = ({history}) => {
 
     const callbackEliminarSolicitud = (idsolicitud, nrooficio) => {
         try {
-            console.log(idsolicitud);
             const toastrConfirmOptions = {
                 onOk: () => ejecutarEliminar(idsolicitud),
             };

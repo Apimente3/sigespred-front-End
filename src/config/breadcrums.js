@@ -106,7 +106,7 @@ export const ELIMINAR_AREA_BREADCRUM = [
 ]
 
 export const ACTUALIZAR_AREA_BREADCRUM = [
-    {link: "../area-add", name: "Agregar area"},,
+    {link: "../area-add", name: "Agregar area"},
     {link: "../area-list", name: "Listado de area"},
     {link: "#", name: "Actualizar Area"}
 ]
@@ -217,4 +217,12 @@ export const ACTUALIZAR_DOCINTERNOS_BREADCRUM = [
     {link: "../docinternos-add", name: "Agregar Documentos internos"}
 ]
 
+export const LISTADO_TRAMOS_BREADCRUM = [
+    {link: "/gestionpredial", name: "Listado de Gestión Predial"},
+    {link: "#", name: "Listado de Tramos"}
+]
 
+export const REGISTRO_TRAMOS_BREADCRUM = [
+    {link: "/gestionpredial", name: "Listado de Gestión Predial"},
+    {link: "#", name: "Registro-Edición de Tramo"}
+]

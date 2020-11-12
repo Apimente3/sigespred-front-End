@@ -67,7 +67,7 @@ const GestionPredialPoligonoList = ({history, match}) => {
                         <legend className="fullborder">&nbsp;</legend>
                     </div>
                     <div className="col-md-6 text-right">
-                        <Link to={`/gestionpredial-valida/${id}/${tituloVentana}`} className="btn btn-danger btn-sm">
+                        <Link to={`/gestionpredial-valida/${id}/${tituloVentana}`} className="btn btn-danger btn-sm mright-10">
                             <i className="fa fa-plus-circle"></i>  Agregar Polígono
                         </Link>
                     </div>
