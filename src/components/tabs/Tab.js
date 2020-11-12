@@ -27,6 +27,6 @@ const Tab = ({children}) => {
             </div>
         </>
     );
-};
+};>
 
 export default Tab;

@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Form = ({children,onSubmit}) => {
+const Form = ({children,onSubmit,autocomplete="on"}) => {
     return (
         <>
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit} autocomplete={autocomplete}>
                 {children}
             </form>
         </>

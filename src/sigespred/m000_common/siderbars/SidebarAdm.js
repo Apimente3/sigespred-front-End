@@ -168,7 +168,7 @@ class SidebarAdm extends Component {
                                 <li menu="/indicadores">
                                     <Link to={"/indicadores"}>
                                         <span className="menu-icon">
-                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                            <img src="/img/grafico-de-lineas.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
                                            Indicadores

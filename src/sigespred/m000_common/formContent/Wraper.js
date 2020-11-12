@@ -8,7 +8,7 @@ import {Link} from "react-router-dom";
 import FooterProcess from "../footers/FooterProcess";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
 
-const Wraper = ({children, titleForm, listbreadcrumb}) => {
+const Wraper = ({children, titleForm, listbreadcrumb, header=true}) => {
     return (
         <div>
             <Header/>
@@ -24,7 +24,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
                 </form>
 
                 <div className="panel panel-default form-horizontal no-margin form-border">
-                    <div className="panel-heading" >{titleForm}</div>
+                    {header ? <div className="panel-heading" >{titleForm}</div> : null}
                     <div className="panel-body">
                         {children}
                     </div>

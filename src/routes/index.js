@@ -19,6 +19,8 @@ import RouteModSolicitud from './_ddp_RouteModSolicitud';
 import RouteModDocumentosInternos from './_ddp_RouteModDocumentosInternos';
 import RouteModActa from './_ddp_RouteModActa';
 import RouterModOrdenServicio from './_ddp_RouterModOrdenServicio';
+import RouterModConfUsuario from './_ddp_RouteConfUsuario';
+
 import RouteModTramo from './_ddp_RouteModTramo';
 
 export default [
@@ -31,6 +33,7 @@ export default [
     ...RouteModSolicitud,
     ...RouteModDocumentosInternos,
     ...RouterModOrdenServicio,
+    ...RouterModConfUsuario,
 
 
     ...RouteMod02GestionTrabajadores,

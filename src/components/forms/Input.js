@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Input = ({required,type,placeholder,name,onChange,value,pattern,title,readonly=false}) => {
+const Input = ({required,type,placeholder,name,onChange,value,pattern,title,readonly=false,autocomplete="on"}) => {
     return (
         <>
             <input required={ required ? "required": ""}
@@ -13,6 +13,7 @@ const Input = ({required,type,placeholder,name,onChange,value,pattern,title,read
                    pattern={pattern}
                    title={title}
                    readOnly={readonly}
+                   autocomplete={autocomplete}
             >
             </input>
         </>

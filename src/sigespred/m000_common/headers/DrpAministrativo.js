@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {getToken} from "../../../utils";
 import {initAxiosInterceptors, logout} from '../../../config/axios';
-
+import {serverFile} from '../../../config/axios';
 const axios = initAxiosInterceptors();
 
 
@@ -17,7 +17,6 @@ const DrpAministrativo = ({history}) => {
             if (!token) {
                 console.log('No inicio session')
             }
-
             try {
                 const {data: trabajador} = await axios.post('/quiensoy', {token: token});
                 console.log(trabajador)
@@ -52,22 +51,19 @@ const DrpAministrativo = ({history}) => {
                 <li className="profile dropdown">
                     <a className="dropdown-toggle" data-toggle="dropdown" href="#">
 
-                        <img src={usuario.foto} className="img-circle fototrabajadorheader"
-                             alt="User Avatar"></img>
+                        {
+                            !usuario.foto  ? <h3>Ingrese la Foto</h3> :<img src={serverFile+ usuario.foto.path} className="img-circle fototrabajadorheader" alt="User Avatar"></img>
+
+                        }
 
                         <span>{` ${usuario.nombres} ${usuario.nombres}`} </span>
                         <span><i className="fa fa-chevron-down"></i></span>
                     </a>
                     <ul className="dropdown-menu">
 
-                        {
-                            (usuario.rol == 1 || usuario.rol == 2) ? (<>
-                                    <li><Link tabIndex="-1" to={`/solicitudes`} className="main-link">Administrador</Link>
-                                    </li>
-                                </>)
-                                : null
-                        }
-
+                        <li><Link tabIndex="-1" to={`/configuracion-usuario`} className="main-link"><i className="fa fa-cogs"
+                                                                                             aria-hidden="true"></i> Configuración</Link>
+                        </li>
 
                         <li className="divider"></li>
                         <li><a onClick={cerrarSession} tabIndex="-1" className="main-link logoutConfirm_open"
