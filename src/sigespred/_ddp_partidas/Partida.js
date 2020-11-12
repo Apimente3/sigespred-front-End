@@ -213,6 +213,8 @@ export const Partida = (history) => {
     "FECHA ATENCIÓN",
     "OBSERVACIÓN",
     "ESTADO ATENCIÓN",
+    "USUARIO REGISTRO",
+    "FECHA REGISTRO",
     "ACCIONES",
   ];
   return (

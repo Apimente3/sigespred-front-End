@@ -175,6 +175,32 @@ const DocInternoRespuesta = ({ history }) => {
 
 
                 <div className="form-group">
+                <label className="col-lg-2 control-label">
+                    <span className="obligatorio">* </span> Tipo de Documento
+                  </label>
+                  <div className="col-lg-4">
+                    {resListaTipoDocInterno.error ? (
+                      "Se produjo un error cargando los tipos de documento"
+                    ) : resListaTipoDocInterno.loading ? (
+                      "Cargando..."
+                    ) : (
+                      <select
+                        className="form-control input-sm"
+                        id="tipodocumento"
+                        name="tipodocumento"
+                        value={documentosInternos.tipodocumento}
+                        onChange={handleInputChange}
+                        readOnly
+                      >
+                        <option value="">--SELECCIONE--</option>
+                        <ComboOptions
+                          data={resListaTipoDocInterno.result}
+                          valorkey="valorcodigo"
+                          valornombre="valortexto"
+                        />
+                      </select>
+                    )}
+                  </div>
                   <label className="col-lg-2 control-label">
                     <span className="obligatorio">* </span> Codigo STD
                   </label>
