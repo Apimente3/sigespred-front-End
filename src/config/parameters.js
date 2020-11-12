@@ -45,19 +45,18 @@ export const LISTASIDS = {
     }
 
 export const FilesUsuario={
-    "fotosUsuario":"Usuario/Fotos",
-    "fotos":"Usuario/Fotos"
+    "fotosUsuario":"FilesDDP/Usuario/Fotos",
+    "fotos":"FilesDDP/Usuario/Fotos"
 }
 
 
 export const FilesGestionPredial={
-    "FilesSolicitud":"GestionPredial/Solicitudes",
-    "Files":"GestionPredial/Files"
+    "FilesSolicitud":"FilesDDP/GestionPredial/Solicitudes",
+    "Files":"FilesDDP/GestionPredial/Files"
 }
 
 
-
 export const FilesIndicador={
-    "FilesIndicadores":"GestionPredial/Indicadores",
+    "FilesIndicadores":"FilesDDP/GestionPredial/Indicadores",
 }
 

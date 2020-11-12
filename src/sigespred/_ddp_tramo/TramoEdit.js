@@ -27,7 +27,7 @@ import * as PARAMS from "../../config/parameters";
 
 const Axios = initAxiosInterceptors();
 const {$} = window;
-const directorioTramos = "tramosadmin";
+const directorioTramos = "FilesDDP/tramosadmin";
 
 async function getTramo(id) {
     const {data} = await Axios.get(`/tramo/${id}`);
@@ -74,7 +74,7 @@ const TramoEdit = ({history, match}) => {
                 let resultTramo = await addTramo(tramo);
                 $('#btnguardar').button('reset');
                 toastr.success('Registro de Tramo', `El tramo fue registrado correctamente.`);
-                
+
             } else {
                 await saveTramo(tramo.id, tramo);
                 toastr.success(`El Tramo con ID: ${tramo.id}`, 'Se actualizó correctamente.', {position: 'top-right'})

@@ -17,7 +17,7 @@ import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 
 const {$} = window;
 const axios=initAxiosInterceptors();
-const directorioPlanos = "planosadmin";
+const directorioPlanos = "FilesDDP/planosadmin";
 
 const obtenerPlano = async(id) => {
     const {data} = await axios.get(`/plano?id=${id}`);
@@ -31,19 +31,19 @@ const PlanoEdit = ({history, match}) => {
     const [planoEditado,set_planoEditado]= useState({});
     const [listaArchivos, set_listaArchivos] = useState([]);
     const [planoEdicion, setPlanoEdicion]  = useState({});
-    
+
     useEffect(() => {
         const getPlano=async (idplano)=>{
            let planoDB = await obtenerPlano(idplano);
             setPlanoEdicion(planoDB);
             if (planoDB.archivos) {
                 set_listaArchivos(planoDB.archivos);
-            }            
+            }
             cargarTramo(planoDB.gestionpredialid);
         }
         getPlano(id);
     }, []);
-    
+
     const [planoArchTmp, set_planoArchTmp] = useState({digital: '', memdescriptiva: ''});
     const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, [""]);
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
@@ -59,10 +59,10 @@ const PlanoEdit = ({history, match}) => {
     const [dataDist, set_dataDist] = useState(null);
     const [dataTramo, setDataTramo] = useState(null);
     const [firstLoad, set_firstLoad] = useState(true);
-    
+
     const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
     const [reiniciarValMemoria, setReiniciarValMemoria] = useState(false);
-    
+
     function setProvinciaDistrito(iddep){
         if (firstLoad && resListaProvincia.result && resListaDistrito.result){
             if(iddep){
@@ -87,7 +87,7 @@ const PlanoEdit = ({history, match}) => {
             setDataTramo(null);
         }
     }
-    
+
     function handleChangeDepartmento(e) {
         if(!resListaProvincia.loading){
             let data = resListaProvincia.result;
@@ -177,7 +177,7 @@ const PlanoEdit = ({history, match}) => {
     }
 
     const actualizarLista = () => {
-        
+
         if (planoArchTmp.lamina && planoArchTmp.digital) {
             set_listaArchivos(listaArchivos => [...listaArchivos, planoArchTmp]);
             set_planoArchTmp({
@@ -195,14 +195,14 @@ const PlanoEdit = ({history, match}) => {
     }
 
     const removerDeLista = (idLamina) => {
-        var data = $.grep(listaArchivos, function(e){ 
-            return e.laminaid != idLamina; 
+        var data = $.grep(listaArchivos, function(e){
+            return e.laminaid != idLamina;
        });
        set_listaArchivos(data);
     }
 
     const dispatch = useDispatch();
-    
+
     const actualizar = async e => {
         e.preventDefault();
 
@@ -272,7 +272,7 @@ const PlanoEdit = ({history, match}) => {
                                         : resListaProyectos.loading
                                         ? "Cargando..."
                                         :
-                                        <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                                        <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid"
                                         readOnly
                                         value={planoEdicion.gestionpredialid || ''}
                                         >
@@ -289,7 +289,7 @@ const PlanoEdit = ({history, match}) => {
                                         <span className="obligatorio">* </span>Nro. de Expediente
                                     </label>
                                     <div className="col-lg-8">
-                                        <input type="text" className="form-control input-sm" id="nroexpediente" name="nroexpediente" 
+                                        <input type="text" className="form-control input-sm" id="nroexpediente" name="nroexpediente"
                                         readOnly
                                         value={planoEdicion.nroexpediente || ''}
                                         />
@@ -305,7 +305,7 @@ const PlanoEdit = ({history, match}) => {
                                         : resListaAnios.loading
                                         ? "Cargando..."
                                         :
-                                        <select className="form-control input-sm" id="periodoid" name="periodoid" 
+                                        <select className="form-control input-sm" id="periodoid" name="periodoid"
                                         readOnly
                                         value={planoEdicion.periodoid || ''}
                                         >
@@ -355,7 +355,7 @@ const PlanoEdit = ({history, match}) => {
                                         Estado del Plano
                                     </label>
                                     <div className="col-lg-8">
-                                        <select id="estadoid" name="estadoid" className="form-control input-sm" 
+                                        <select id="estadoid" name="estadoid" className="form-control input-sm"
                                         value={planoEdicion.estadoid || ''}
                                         onChange={handleInputChange}>
                                             <option value="">--SELECCIONE--</option>
@@ -372,7 +372,7 @@ const PlanoEdit = ({history, match}) => {
                                         Plano Antecedente
                                     </label>
                                     <div className="col-lg-8">
-                                        <input type="text" className="form-control input-sm" id="antecedente" name="antecedente" 
+                                        <input type="text" className="form-control input-sm" id="antecedente" name="antecedente"
                                         value={planoEdicion.antecedente || ''}
                                         readOnly onChange={handleInputChange}/>
                                     </div>
@@ -382,7 +382,7 @@ const PlanoEdit = ({history, match}) => {
                                         Fecha de Creación
                                     </label>
                                     <div className="col-lg-8">
-                                        <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control" 
+                                        <input style={{lineHeight: '1.43'}} type="date" id="fechacreacion" name="fechacreacion" className="form-control"
                                         value={planoEdicion.fechacreacion || ''}
                                         onChange={handleInputChange} />
                                     </div>
@@ -392,7 +392,7 @@ const PlanoEdit = ({history, match}) => {
                                         Observaciones
                                     </label>
                                     <div className="col-lg-8">
-                                        <input type="text" className="form-control input-sm" id="observaciones" name="observaciones" 
+                                        <input type="text" className="form-control input-sm" id="observaciones" name="observaciones"
                                             value={planoEdicion.observaciones || ''}
                                             onChange={handleInputChange}/>
                                     </div>
@@ -418,7 +418,7 @@ const PlanoEdit = ({history, match}) => {
                                 : resListaDepartmento.loading
                                 ? "Cargando..."
                                 :
-                                <select className="form-control input-sm" id="departamentoid" name="departamentoid" 
+                                <select className="form-control input-sm" id="departamentoid" name="departamentoid"
                                 value={planoEdicion.departamentoid || ''}
                                 onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
                                     <option value="">--SELECCIONE--</option>
@@ -434,7 +434,7 @@ const PlanoEdit = ({history, match}) => {
                                 Provincia
                             </label>
                             <div className="col-lg-8">
-                                <select id="provinciaid" name="provinciaid" className="form-control input-sm" 
+                                <select id="provinciaid" name="provinciaid" className="form-control input-sm"
                                 value={planoEdicion.provinciaid || ''}
                                 onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
                                     <option value="">--SELECCIONE--</option>
@@ -464,7 +464,7 @@ const PlanoEdit = ({history, match}) => {
                             </label>
                             <div className="col-lg-8">
                             {dataTramo?
-                                <select id="tramoid" name="tramoid" className="form-control input-sm" 
+                                <select id="tramoid" name="tramoid" className="form-control input-sm"
                                     value={planoEdicion.tramoid || ''}
                                     onChange={handleInputChange}>
                                     <option value="">--SELECCIONE--</option>
@@ -482,12 +482,12 @@ const PlanoEdit = ({history, match}) => {
                                 Subtramo
                             </label>
                             <div className="col-lg-8">
-                                <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid" 
+                                <input type="text" className="form-control input-sm" id="subtramoid" name="subtramoid"
                                 value={planoEdicion.subtramoid || ''}
                                 onChange={handleInputChange}/>
                             </div>
                         </div>
-                        
+
                         {/* <div className="form-group">
                             <label className="col-lg-4 control-label">
                                 Referencia Geográfica
@@ -505,7 +505,7 @@ const PlanoEdit = ({history, match}) => {
                             <div className="form-group col-lg-6">
                                 <label className="col-lg-4 control-label">Descripción / Lámina</label>
                                 <div className="col-lg-8">
-                                    <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam" 
+                                    <input type="text" className="form-control input-sm" id="nombrelam" name="nombrelam"
                                     value = {planoArchTmp.lamina || ''}
                                     onChange={handleChangeLamina}/>
                                 </div>
@@ -560,7 +560,7 @@ const PlanoEdit = ({history, match}) => {
                                 <button id="btnguardar" type="submit"
                                         className="btn btn-danger btn-sm btn-control">Actualizar
                                 </button>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -570,4 +570,4 @@ const PlanoEdit = ({history, match}) => {
         );
     }
 
-    export default PlanoEdit; 
+    export default PlanoEdit;

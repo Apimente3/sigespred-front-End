@@ -27,7 +27,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 
 const Axios = initAxiosInterceptors();
-const directorioSolicitudes = "solicitudextadmin";
+const directorioSolicitudes = "FilesDDP/solicitudextadmin";
 
 async function getSolicitud(id) {
     const {data} = await Axios.get(`/solicitudentidad/${id}`);
@@ -216,7 +216,7 @@ const SolicitudRespuesta = ({history, match}) => {
                             <FormGroup label={"Observación"} >
                                 <textarea id="observaciones" name="observaciones" value={respuesta.observaciones || ""} onChange={handleInputChange} className="textarea form-control" placeholder="Ingrese alguna observación o comentario"
                                 style={{resize: 'none'}}
-                                ></textarea> 
+                                ></textarea>
                             </FormGroup>
                         </Row6>
                         <Row6>

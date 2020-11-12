@@ -27,10 +27,10 @@ import SingleUpload from "../../components/uploader/SingleUpload";
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
-const directorioSolicitudes = "solicitudextadmin";
+const directorioSolicitudes = "FilesDDP/solicitudextadmin";
 
 const SolicitudAdd = ({history,  match}) => {
-    
+
     const [solicitud, setSolicitud, handleInputChange, reset ] = useForm({},["nrooficio","codigostd"]);
     const listaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const listaTipoConsulta = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);

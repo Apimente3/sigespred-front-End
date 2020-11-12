@@ -28,7 +28,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 
 const Axios = initAxiosInterceptors();
-const directorioSolicitudes = "solicitudextadmin";
+const directorioSolicitudes = "FilesDDP/solicitudextadmin";
 
 async function getSolicitud(id) {
     const {data} = await Axios.get(`/solicitudentidad/${id}`);
@@ -63,7 +63,7 @@ const SolicitudEdit = ({history, match}) => {
         };
         init();
     }, []);
-    
+
     const cargarChildrenProyecto = async(idProyecto) => {
         if (idProyecto) {
             let dataTramos = await helperGets.helperGetListTramos(idProyecto);
