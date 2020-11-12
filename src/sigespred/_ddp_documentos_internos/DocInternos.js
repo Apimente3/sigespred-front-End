@@ -172,7 +172,7 @@ const DocInternos = () => {
           [e.target.name]: e.target.value,
         });
         break;
-      case "tipodocumentoid":
+      case "tipodocumento":
         set_filtros({
           ...filtros,
           [e.target.name]: e.target.value,
@@ -200,7 +200,7 @@ const DocInternos = () => {
     $("#monitorid").val("");
     $("#fechainicio").val("");
     $("#fechafin").val("");
-    $("#tipodocumentoid").val("");
+    $("#tipodocumento").val("");
     $("#codigostd").val("");
     $("#fecharecepcion").val("");
     $("#numdocrecepcion").val("");
@@ -255,6 +255,8 @@ const DocInternos = () => {
     "FECHA RECEPCION",
     "NRO DOCUMENTO",
     "REMITIR RESPUESTA",
+    "USUARIO REGISTRO",
+    "FECHA REGISTRO",
     "ACCIONES",
   ];
   return (
@@ -324,8 +326,8 @@ const DocInternos = () => {
           <div className="col-lg-4">
             <select
               className="form-control input-sm"
-              id="tipodocumentoid"
-              name="tipodocumentoid"
+              id="tipodocumento"
+              name="tipodocumento"
               onChange={(e) => {
                 handleInputChange(e);
               }}

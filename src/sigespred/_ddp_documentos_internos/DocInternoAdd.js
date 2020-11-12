@@ -160,10 +160,10 @@ const DocInternoAdd = ({ history }) => {
                     ) : (
                       <select
                         className="form-control input-sm"
-                        id="tipodocumentoid"
-                        name="tipodocumentoid"
+                        id="tipodocumento"
+                        name="tipodocumento"
                         required
-                        value={documentosInternos.tipodocumentoid}
+                        value={documentosInternos.tipodocumento}
                         onChange={(e) => {
                           handleInputChange(e);
                         }}

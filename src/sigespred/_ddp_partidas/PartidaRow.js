@@ -17,13 +17,14 @@ const PartidarRow = ({partida,nro}) => {
                 <td>{partida.id}</td>
                 <td>{partida.nropartida}</td>
                 <td>{partida.denominacion}</td>
-                <td>{partida.tramoid}</td>
+                <td>{partida.tramo}</td>
                 <td>{partida.subtramoid}</td>
                 <td>{partida.tipopredio}</td>
                 <td>{partida.fechaatencion}</td>
                 <td>{partida.observacion}</td>
                 { partida.estadoatencion == 'ATENDIDO' ? <td className="colorCeldaAtendido" > <span className="badge badge-info">{partida.estadoatencion}</span></td> : <td className="colorCeldaPendiente"><span className="badge badge-danger">{partida.estadoatencion}</span></td>   }
-                
+                <td>{partida.usuario}</td> 
+                <td>{partida.fecharegistro}</td> 
                 <td>
                     <div className="btn-group pull-right">
                         {/* <Link  to={`/partida-respuesta/${partida.id}`}  className="btn btn-xs btn-default" type="button"  data-toggle="tooltip"  data-original-title={ "Respuesta" }><i

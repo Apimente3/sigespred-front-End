@@ -242,9 +242,9 @@ const DocInternoEdit = ({ match, history }) => {
                     ) : (
                       <select
                         className="form-control input-sm"
-                        id="tipodocumentoid"
-                        name="tipodocumentoid"
-                        value={documentosInternos.tipodocumentoid}
+                        id="tipodocumento"
+                        name="tipodocumento"
+                        value={documentosInternos.tipodocumento}
                         onChange={handleInputChange}
                       >
                         <option value="">--SELECCIONE--</option>
