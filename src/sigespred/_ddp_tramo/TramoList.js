@@ -73,7 +73,7 @@ const TramoList = ({history, match}) => {
         }
     }
 
-    const cabecerasTabla = ["","ID", "DESCRIPCIÓN", "ACCIONES"]
+    const cabecerasTabla = ["","ID", "DESCRIPCIÓN", "ARCHIVO DE ÁMBITO REFERENCIAL","ACCIONES"]
     return (
         <>
         <Wraper titleForm={"Listado de Tramos o Sectores"} listbreadcrumb={LISTADO_TRAMOS_BREADCRUM}>

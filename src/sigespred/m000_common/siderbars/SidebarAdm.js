@@ -68,7 +68,7 @@ class SidebarAdm extends Component {
                                 <li menu="/area-list">
                                     <Link to={"/area-list"}>
                                         <span className="menu-icon">
-                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                            <img src="/img/organigrama.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
                                            Areas
@@ -93,7 +93,7 @@ class SidebarAdm extends Component {
                                 <li menu="/list-equipos2">
                                     <Link to={"/list-equipos2"}>
                                         <span className="menu-icon">
-                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                            <img src="/img/equipo.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
                                            Equipos
@@ -130,7 +130,7 @@ class SidebarAdm extends Component {
                                 <li menu="/solicitud-list">
                                     <Link to={"/solicitud-list"}>
                                         <span className="menu-icon">
-                                            <img src="/img/expediente.svg" className="btn-siderbar" ></img>
+                                            <img src="/img/comunicaciones.svg" className="btn-siderbar" ></img>
                                         </span>
                                         <span className="text text-red">
                                             Soli. de Inf. Entidades

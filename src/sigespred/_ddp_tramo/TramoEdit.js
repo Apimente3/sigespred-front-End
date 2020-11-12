@@ -27,6 +27,7 @@ import * as PARAMS from "../../config/parameters";
 
 const Axios = initAxiosInterceptors();
 const {$} = window;
+const directorioTramos = "tramosadmin";
 
 async function getTramo(id) {
     const {data} = await Axios.get(`/tramo/${id}`);
@@ -94,11 +95,24 @@ const TramoEdit = ({history, match}) => {
             <Form onSubmit={registrar}>
                 <RowForm>
                     <Row6>
-                        <FormGroup label={"Descripción"}>
+                        <FormGroup label={"Descripción"} require={true}>
                             <Input value={tramo.descripcion || ""} onChange={handleInputChange}
                                 name={"descripcion"} placeholder={"Ingrese la descripción"}
-                                type={"text"}>
+                                required={true} type={"text"}>
                             </Input>
+                        </FormGroup>
+                    </Row6>
+                    <Row6>
+                        <FormGroup label={"Archivo de Ámbito del Tramo o Sector"}>
+                            <SingleUpload
+                                    key="urlarchivo"
+                                    accept={'.*'}
+                                    folderSave={directorioTramos}
+                                    form={tramo}
+                                    setForm={setTramo}
+                                    nameUpload={"urlarchivo"}
+                                        >
+                                </SingleUpload>
                         </FormGroup>
                     </Row6>
                 </RowForm>

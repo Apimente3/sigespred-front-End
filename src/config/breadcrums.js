@@ -219,7 +219,7 @@ export const ACTUALIZAR_DOCINTERNOS_BREADCRUM = [
 
 export const LISTADO_TRAMOS_BREADCRUM = [
     {link: "/gestionpredial", name: "Listado de Gestión Predial"},
-    {link: "#", name: "Listado de Tramos"}
+    {link: "#", name: "Listado de Tramos - Sectores"}
 ]
 
 export const REGISTRO_TRAMOS_BREADCRUM = [
