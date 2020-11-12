@@ -29,6 +29,7 @@ import MultipleUpload from "../../components/uploader/MultipleUpload";
 
 const Axios = initAxiosInterceptors();
 const { $ } = window;
+const directorioDocInterno = "FilesDDP/DocumentoInterno";
 
 async function obtenerDocumentoInterno(id) {
   const { data } = await Axios.get(`/docinterno?id=${id}`);
@@ -344,7 +345,7 @@ const DocInternoEdit = ({ match, history }) => {
                     <MultipleUpload
                       key="multiple"
                       accept={".*"}
-                      folderSave={"FotosUsuarios"}
+                      folderSave={directorioDocInterno}
                       form={documentosInternos}
                       setForm={setDocumentosInternos}
                       nameUpload={"archivorecepcion"}

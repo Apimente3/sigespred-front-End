@@ -28,7 +28,7 @@ import * as PARAMS from "../../config/parameters";
 
 const { $ } = window;
 const Axios = initAxiosInterceptors();
-
+const directorioDocInterno = "FilesDDP/DocumentoInterno";
 /*Guardar tipo de infraestrucra*/
 async function saveDocumentosInternos(body) {
   console.log(body);
@@ -255,7 +255,7 @@ const DocInternoAdd = ({ history }) => {
                         <MultipleUpload
                           key="multiple"
                           accept={".*"}
-                          folderSave={"FotosUsuarios"}
+                          folderSave={directorioDocInterno}
                           form={documentosInternos}
                           setForm={setDocumentosInternos}
                           nameUpload={"archivorecepcion"}

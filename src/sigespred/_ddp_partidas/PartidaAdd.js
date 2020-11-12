@@ -15,6 +15,7 @@ import MultipleUpload from "../../components/uploader/MultipleUpload";
 
 const { $ } = window;
 const Axios = initAxiosInterceptors();
+const directorioPartidas = "FilesDDP/Partidas";
 
 const PartidaAdd = ({ history }) => {
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
@@ -314,7 +315,7 @@ const PartidaAdd = ({ history }) => {
                 <MultipleUpload
                   key="multiple"
                   accept={".*"}
-                  folderSave={"FotosUsuarios"}
+                  folderSave={directorioPartidas}
                   form={partida}
                   setForm={set_partida}
                   nameUpload={"archivos"}

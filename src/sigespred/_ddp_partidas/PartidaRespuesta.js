@@ -17,6 +17,7 @@ import MultipleUpload from "../../components/uploader/MultipleUpload";
 
 const { $ } = window;
 const axios = initAxiosInterceptors();
+const directorioPartidas = "FilesDDP/Partidas";
 
 const obtenerPartida = async (id) => {
   const { data } = await axios.get(`/partidaregistral?id=${id}`);
@@ -361,7 +362,7 @@ const PartidaRespuesta = () => {
                 <MultipleUpload
                   key="multiple"
                   accept={".*"}
-                  folderSave={"FotosUsuarios"}
+                  folderSave={directorioPartidas}
                   form={partidaRespuesta}
                   setForm={setPartidaRespuesta}
                   nameUpload={"archivos"}

@@ -15,6 +15,7 @@ import { useAsync } from "react-async-hook";
 
 const { $ } = window;
 const axios = initAxiosInterceptors();
+const directorioDocInterno = "FilesDDP/DocumentoInterno";
 
 async function obtenerDocumentoInterno(id) {
   // const { data } = await axios.get(`/docinterno/${id}`);
@@ -284,7 +285,7 @@ const DocInternoRespuesta = ({ history }) => {
                     <MultipleUpload
                       key="multiple"
                       accept={".*"}
-                      folderSave={"FotosUsuarios"}
+                      folderSave={directorioDocInterno}
                       form={documentosInternos}
                       setForm={setDocumentosInternos}
                       nameUpload={"archivorecepcion"}
@@ -338,7 +339,7 @@ const DocInternoRespuesta = ({ history }) => {
                     <MultipleUpload
                       key="multiple"
                       accept={".*"}
-                      folderSave={"FotosUsuarios"}
+                      folderSave={directorioDocInterno}
                       form={documentosInternos}
                       setForm={setDocumentosInternos}
                       nameUpload={"archivorespuesta"}
