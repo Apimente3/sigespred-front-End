@@ -40,6 +40,11 @@ async function getEquipo(id) {
   return data;
 }
 
+async function getActividades(id) {
+  const {data} = await Axios.get(`/actividades?id=${id}`);
+  return data;
+}
+
 
 
 const ActaEdit = ({history, match}) => {
@@ -56,7 +61,9 @@ const ActaEdit = ({history, match}) => {
   const [fecha, set_fecha ] = useState(new Date());
   const [codigoacta,set_Codigoacta]  =  useState('');
   const [tema, set_tema] = useState({tema:''});
-  const [agenda, set_agenda] = useState([]);  
+  const [agenda, set_agenda] = useState([]); 
+  const [accion, set_accion] = useState('Agregar');  
+  const [listaactividades, set_listaactividades] = useState([]);
     
   const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"
@@ -115,17 +122,24 @@ const ActaEdit = ({history, match}) => {
                         return false;
                     })
                     let asistencia=false;
-                    if(typeof filterList[0].asistencia === 'undefined'){
+                    console.log(filterList);
+                    if(filterList.length>0){
+                      if(typeof filterList[0].asistencia === 'undefined'){
                         asistencia = false;
+                      }else{
+                          asistencia = filterList[0].asistencia;
+                      }
                     }else{
-                        asistencia = filterList[0].asistencia;
+                      asistencia = false;
                     }
+                    
                     
                     let pro={ 
                         id: cabeza.equipousuario.trabajadorid,
                         nombre: cabeza.nombres + ' ' + cabeza.apellidos,
                         monitor:cabeza.equipousuario.monitor,
-                        asistencia: asistencia 
+                        asistencia: asistencia,
+                        foto: cabeza.foto
                     };
                     user.push(pro);
                 });
@@ -196,6 +210,7 @@ const ActaEdit = ({history, match}) => {
           id: cabeza.equipousuario.trabajadorid,
           nombre: cabeza.nombres + ' ' + cabeza.apellidos,
           monitor:cabeza.equipousuario.monitor,
+          foto: cabeza.foto,
           asistencia: false 
       }));
       
@@ -210,7 +225,7 @@ const ActaEdit = ({history, match}) => {
     
   }
 
-  const handleInputChangePart = (e) => {
+  const handleInputChangePart = async (e) => {
     if (['producto','descripcion','actividad'].includes(e.target.name)) {
       set_participantes({
         ...participantes,
@@ -229,6 +244,8 @@ const ActaEdit = ({history, match}) => {
         }
         return false;
       });
+      let listact = await getActividades(e.target.value);
+      set_listaactividades(listact);
       set_participantes({
         ...participantes,
         actaid: id,
@@ -256,12 +273,23 @@ const ActaEdit = ({history, match}) => {
 
   const handleClick = (e) => {
     
-    set_actividades({
-      ActaParticipante: [
-         ...actividades.ActaParticipante,
-         participantes
-      ]
-    });
+    if(accion == 'Agregar'){
+      set_actividades({
+        ActaParticipante: [
+           ...actividades.ActaParticipante,
+           participantes
+        ]
+      });
+    }else{
+      const key = actividades.ActaParticipante.findIndex(x => x.usuarioid == participantes.usuarioid);
+      let { ActaParticipante } = actividades;
+      ActaParticipante[key]= participantes;
+      set_actividades({
+        ActaParticipante: [...ActaParticipante]
+      });
+      set_accion('Agregar');
+    }
+    
     console.log(actividades);
   }
 
@@ -277,6 +305,14 @@ const ActaEdit = ({history, match}) => {
       ActaParticipante: [...ActaParticipante]
     });
   };
+
+  const updateActividad = async key => {
+    let { ActaParticipante } = actividades;
+    set_accion('Actualizar');
+    set_participantes(ActaParticipante[key])
+    let listact = await getActividades(ActaParticipante[key].usuarioid);
+    set_listaactividades(listact);
+ };
 
   const deleteTema = key => {
     let ag = agenda.splice(key, 1);
@@ -423,6 +459,18 @@ const ActaEdit = ({history, match}) => {
 
             <div className="form-group">
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
+                    Responsable</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="usuarioid" name="usuarioid" 
+                        title="El area es requerido"
+                        onChange={handleInputChangePart}
+                        value={participantes.usuarioid}
+                        >
+                        <option value="">--SELECCIONE--</option>
+                        {profesionales.users.map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}  
+                    </select>
+                </div>
+                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                     Actividad</label>
                 <div className="col-lg-4">
                     <input type="text" list="data" 
@@ -434,21 +482,10 @@ const ActaEdit = ({history, match}) => {
                     onChange={handleInputChangePart}
                     />
                     <datalist id="data">
-                        {actividades.ActaParticipante.map((item, key) =>
+                        {listaactividades.map((item, key) =>
                         <option key={key} value={item.actividad} />
                         )}
                     </datalist>
-                </div>
-                <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
-                    Responsable</label>
-                <div className="col-lg-4">
-                  <select className="form-control input-sm" id="usuarioid" name="usuarioid" 
-                        title="El area es requerido"
-                        onChange={handleInputChangePart}
-                        >
-                        <option value="">--SELECCIONE--</option>
-                        {profesionales.users.map((item) => <option key={item.id} value={item.id}>{item.nombre}</option>)}  
-                    </select>
                 </div>
             </div>
             <div className="form-group">
@@ -461,6 +498,7 @@ const ActaEdit = ({history, match}) => {
                     id="fechainicio"
                     name="fechainicio"
                     className="form-control"
+                    value={participantes.fechainicio}
                     onChange={handleInputChangePart}
                   />
                 </div>
@@ -473,6 +511,7 @@ const ActaEdit = ({history, match}) => {
                     id="fechacomp"
                     name="fechacomp"
                     className="form-control"
+                    value={participantes.fechacomp}
                     onChange={handleInputChangePart}
                   />
                 </div>
@@ -514,7 +553,7 @@ const ActaEdit = ({history, match}) => {
               <div class="col-lg-10 text-right">
                   <button class="btn btn-sm btn-info" type="button" onClick={handleClick}><i
                                         class="fa fa-plus fa-lg"
-                                    /> Añadir Actividad </button>
+                                    /> {accion} Actividad </button>
               </div>
             </div>
             
@@ -522,7 +561,8 @@ const ActaEdit = ({history, match}) => {
               <TableActividad 
                 cabecera={cabeceraActividad} 
                 data={actividades}
-                deleteActividad={deleteActividad}>
+                deleteActividad={deleteActividad}
+                updateActividad={updateActividad}>
               </TableActividad>
             </div>
             </fieldset>

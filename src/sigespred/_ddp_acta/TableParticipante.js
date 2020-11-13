@@ -1,4 +1,5 @@
 import React,{useState, useEffect} from 'react';
+import {initAxiosInterceptors, serverFile} from '../../config/axios';
 
 const TableParticipante = ({data=[], checkAsistencia}) => {
     
@@ -8,7 +9,9 @@ const TableParticipante = ({data=[], checkAsistencia}) => {
         data.forEach((item, key) => {
             nro++;
             children.push(<td key={item.id}><div class="list-group-item-text">
-            <img class="img-circle-pro" src="//dummyimage.com/100x100.jpg" />
+            {
+                ! item.foto ? <img class="img-circle-pro" src="//dummyimage.com/100x100.jpg" /> : <img src={serverFile+item.foto.path} className="img-circle-pro"></img>
+            }
             <div class="pull-left m-left-sm m-bottom-sm">
             <br></br>
                 <strong>{` ${item.nombre}`}</strong>

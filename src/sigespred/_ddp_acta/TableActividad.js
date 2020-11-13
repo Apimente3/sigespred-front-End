@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TableActividad = ({cabecera, data=[], deleteActividad}) => {
+const TableActividad = ({cabecera, data=[], deleteActividad, updateActividad}) => {
     return (
         <>
             <table class="table table-bordered table-condensed table-hover table-striped" id="dataTableActividad">
@@ -23,6 +23,17 @@ const TableActividad = ({cabecera, data=[], deleteActividad}) => {
                                 <td>{user.nombre}</td>
                                 <td>{user.fechacomp}</td>
                                 <td>{user.producto}</td>
+                                <td>
+                                    <div className="btn-group pull-right">
+
+                                        <button class="btn btn-xs btn-default" type="button">
+                                        <i
+                                            class="fa fa-edit fa-lg"
+                                            onClick={() => updateActividad(key)}
+                                        />
+                                        </button>
+                                    </div>
+                                </td>
                                 <td>
                                     <div className="btn-group pull-right">
 

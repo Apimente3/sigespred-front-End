@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {LISTADO_ACUERDO_BREADCRUM} from "../../config/breadcrums";
+import * as funcGlob from "../../components/helpers/FuncionesGlobales";
+import ComboOptions from "../../components/helpers/ComboOptions";
 import RowAcuerdo from "./RowAcuerdo";
 import TableAcuerdo from "./TableAcuerdo";
 import Pagination from "react-js-pagination";
@@ -22,15 +24,21 @@ async function updateEstado(participante) {
     return data;
 }
 
+const obtenerEquipo = async () => {
+    const {data:equipo } = await Axios.get(`/equipolista`);
+    return {equipo};
+  };
+
 export const Acuerdo = () => {
 
   async function buscarAcuerdo(query) {
     // alert(query)
-     const {data} = await Axios.get(`/actaproceso`);
+     const {data} = await Axios.get(`/actaproceso?`+ query);
      return data;
  }
 
- const [busqueda, setBusqueda] = useState('');
+  const [busqueda, setBusqueda] = useState('');
+  const [filtros, set_filtros] = useState({});
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [totalItemsCount, settotalItemsCount] = useState(3);
@@ -43,14 +51,21 @@ export const Acuerdo = () => {
 
   const [actividades, set_actividades] = useState({ActaParticipante:[]});
 
+  const [busquedaLocal, set_busquedaLocal] = useState(true);
+  const [contentMessage, set_contentMessage] = useState('');
+
+  const resListaEquipos = useAsync(obtenerEquipo, []);
+
   useEffect(() => {
       async function init() {
           try {
+              set_busquedaLocal(false);
+
               let query =  await  queryString.stringify({busqueda,page, limit});
               let acuerdo = await buscarAcuerdo(query)
               console.log(acuerdo);
-              setAcuerdos({rows:acuerdo})
-              settotalItemsCount(acuerdo.length)
+              setAcuerdos(acuerdo)
+              settotalItemsCount(acuerdo.count)
           } catch (error) {
               alert('Ocurrio un error')
               console.log(error);
@@ -60,12 +75,82 @@ export const Acuerdo = () => {
   }, []);
   
 
+  const ejecutarPlanosFilter=async (datosfiltro)=>{
+    set_busquedaLocal(true)
+    setBusqueda(datosfiltro);
+    await setPage(1)
+    setactivePage(1)
+    let query =  await  queryString.stringify({page:1, limit});
+    if(datosfiltro) {
+        query += `&${datosfiltro}`;
+    }
+    let listaAcuerdo = await buscarAcuerdo(query)
+    setAcuerdos(listaAcuerdo)
+    settotalItemsCount(listaAcuerdo.count)
+    set_busquedaLocal(false)
+}
+
+const limpiarAcuerdoFilter =(e)=>{
+    $('#codigoacta').val('');
+    $('#equipoid').val('');
+    $('#fechainicio').val('');
+    $('#fechafin').val('');
+    $('#profesional').val('');
+    $('#alerta').val('');
+    
+    set_filtros({});
+    ejecutarPlanosFilter('');
+}
+
   const buscarAcuerdoFilter = async (e) => {
 
     e.preventDefault();
-    let query =  await  queryString.stringify({ busqueda, page, limit});
-    let acuerdo = await buscarAcuerdo(query)
-    setAcuerdos({rows:acuerdo})
+    
+    if ((filtros.fechainicio && !filtros.fechafin) || (!filtros.fechainicio && filtros.fechafin)){
+        set_contentMessage('El filtro Fecha de Creación, debe tener un inicio y fin');
+        return;
+    } else {
+        set_contentMessage('');
+    }
+
+    if (filtros.fechainicio && filtros.fechafin){
+        let resultFechaInicio = funcGlob.helperValidarFecha(filtros.fechainicio, true);
+        let resultFechaFin = funcGlob.helperValidarFecha(filtros.fechafin, true);
+        
+        if (resultFechaFin < resultFechaInicio) {
+            set_contentMessage('La Fecha de Creación de inicio no puede ser mayor a la de fin');
+            return;
+        } else {
+            set_filtros({
+                ...filtros,
+                fechainicio: resultFechaInicio,
+                fechafin: resultFechaFin
+            });
+            $.each(filtros, function(key, value){
+                if (key === "fechainicio"){
+                    filtros[key] = resultFechaInicio;
+                }
+                if (key === "fechafin"){
+                    filtros[key] = resultFechaFin;
+                }
+            });
+
+        }
+    }
+
+    let valorFiltros = '';
+    if (filtros) {
+        $.each(filtros, function(key, value){
+            if (value === "" || value === null){
+                delete filtros[key];
+            }
+        });
+        valorFiltros = $.param(filtros);
+        console.log('valorFiltros');
+        console.log(valorFiltros);
+    }
+    ejecutarPlanosFilter(valorFiltros);
+
   }
 
   const descarxls = () => {
@@ -89,14 +174,14 @@ export const Acuerdo = () => {
     console.log(`active page is ${pageNumber}`);
     let query =  await  queryString.stringify({ busqueda, page:pageNumber, limit});
     let acuerdo= await buscarAcuerdo(query)
-    setAcuerdos({rows:acuerdo})
+    setAcuerdos(acuerdo)
 }
 
     const cerrarPartModal=async (estado)=>{
         setMostrarPartPopup(estado);
         let query =  await  queryString.stringify({busqueda,page, limit});
         let acuerdo = await buscarAcuerdo(query)
-        setAcuerdos({rows:acuerdo})
+        setAcuerdos(acuerdo)
     }
 
     const cargarPopupParticipantes = (codacta, participantes) => {
@@ -130,50 +215,196 @@ export const Acuerdo = () => {
         //});
     }
 
+    function handleInputChange(e) {
+        switch(e.target.name){
+            case 'codigoacta':
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value.toUpperCase()
+                });
+                break;
+            case 'equipoid':
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value
+                });
+                break;
+            case 'profesional':
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value.toUpperCase()
+                });
+                break;
+            case 'alerta':
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value
+                });
+                break;
+            default:
+                set_filtros({
+                    ...filtros,
+                    [e.target.name]: e.target.value
+                });
+        }
+        //TODO: remover console
+        console.log(filtros);
+        
+    }
+
   const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","PROFESIONAL","ACTIVIDAD", "PRODUCTO","DESCRIPCION","ASISTENCIA", "FECHA INCIO", "FECHA COMPROMISO","ALERTA","ESTADO","REVISIÓN"]
  
   return (
     <>
           <WraperLarge titleForm={"Listado de acuerdos"} listbreadcrumb={LISTADO_ACUERDO_BREADCRUM}>
             <fieldset className={'fielsettext'}>
-                <form onSubmit={buscarAcuerdoFilter}>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="input-group">
-                                <input type="text" className="form-control "
-                                       placeholder="Escriba el codigo de acta"
-                                       onChange={e => setBusqueda(e.target.value)}
-                                ></input>
-                                <span className="input-group-btn">
-                                                            <button className="btn btn-default " type="submit"><i
-                                                                className="fa fa-search"></i></button>
-                                                        </span>
+                <form>
+                <div className="form-group">
+                    <label className="col-lg-2 control-label">
+                        Fecha de Inicio</label>
+                    <div className="col-lg-2">
+                    <input
+                        style={{ lineHeight: "1.43" }}
+                        type="date"
+                        id="fechainicio"
+                        name="fechainicio"
+                        className="form-control"
+                        onChange={handleInputChange}
+                    />
+                    </div>
+                    <label className="col-lg-2 control-label">
+                        Fecha de Fin</label>
+                    <div className="col-lg-2">
+                    <input
+                        style={{ lineHeight: "1.43" }}
+                        type="date"
+                        id="fechafin"
+                        name="fechafin"
+                        className="form-control"
+                        onChange={handleInputChange}
+                    />
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-lg-2 control-label">
+                        Equipo</label>
+                    <div className="col-lg-2">
+                    <select
+                      className="form-control input-sm-3"
+                      id="equipoid"
+                      name="equipoid"
+                      onChange={handleInputChange}
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      {resListaEquipos.error ? (
+                        "Se produjo un error cargando los equipos"
+                      ) : resListaEquipos.loading ? (
+                        "Cargando..."
+                      ) : (
+                        <ComboOptions
+                          data={resListaEquipos.result}
+                          valorkey="id"
+                          valornombre="equipo"
+                        />
+                      )}
+                    </select>
+                    </div>
+                    <label className="col-lg-2 control-label">
+                        Código Acta</label>
+                    <div className="col-lg-2">
+                    <input mayuscula="true"
+                        className="form-control input-sm " type="text"
+                        id="codigoacta"
+                        name="codigoacta"
+                        placeholder="Ingrese el código"
+                        onChange={handleInputChange}
+                        >
+                    </input>
+                    </div>
+                </div>
+                <div className="form-group">
+                    <label className="col-lg-2 control-label">
+                        Profesiona</label>
+                    <div className="col-lg-2">
+                    <input mayuscula="true"
+                        className="form-control input-sm " type="text"
+                        id="profesional"
+                        name="profesional"
+                        placeholder="Ingrese el profesional"
+                        onChange={handleInputChange}
+                        >
+                    </input>
+                    </div>
+                    <label className="col-lg-2 control-label">
+                        Tipo de Alerta</label>
+                    <div className="col-lg-2">
+                    <input type="text" list="data" 
+                    className="form-control"
+                    id="alerta" 
+                    name="alerta" 
+                    placeholder="Ingrese la alerta"
+                    onChange={handleInputChange}
+                    />
+                    <datalist id="data">
+                        {acuerdos.rows.map((item, key) =>
+                        <option key={key} value={item.alerta} />
+                        )}
+                    </datalist>
+                    </div>
+                </div>
+                    
+                    <div className="form-group">
+                        <div className="row mb-3">
+                            <div className="col-lg-6 text-center">
+                            {contentMessage && (
+                                <label className="alert alert-danger">{contentMessage}</label>
+                            )}  
                             </div>
-                        </div>
-                        <div className="col-md-6">
-                            <button type="button" onClick={descarxls}
-                                    className="btn btn-default pull-right btn-sm fullborder">
-                                <i className="fa fa-file-excel-o"></i> Descargar Excel
-                            </button>
+                            <div className="col-lg-8">
+                                <button type="button" onClick={limpiarAcuerdoFilter} className="btn btn-default pull-right btn-sm fullborder">
+                                    <i className="fa fa-eraser"></i> Limpiar Filtro(s)
+                                </button>
+                                <button type="button" onClick={buscarAcuerdoFilter} className="btn btn-info pull-right  btn-sm  fullborder">
+                                    <i className="fa fa-search"></i> Aplicar Filtro(s)
+                                </button>
+                            </div>
+                            <div className="col-lg-4">
+                                <Link to={`/acta-add`} className="btn btn-danger pull-right btn-sm fullborder">
+                                    <i className="fa fa-plus"></i> Agregar Acta</Link>
+                                <button type="button" onClick={descarxls}
+                                        className="btn btn-default pull-right btn-sm fullborder">
+                                    <i className="fa fa-file-excel-o"></i> Descargar Excel
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>
             </fieldset>
             <div className="panel panel-default">
-                <TableAcuerdo cabecera={cabecerasTabla}>
-                   {acuerdos.rows.map((acuerdo, i) => (
-                        <RowAcuerdo nro={i} acuerdo={acuerdo} loadParticipantes={cargarPopupParticipantes}></RowAcuerdo>
-                    ))}
-                </TableAcuerdo>
-                <div className="panel-footer clearfix pull-right">
-                    <Pagination
-                        activePage={activePage}
-                        itemsCountPerPage={limit}
-                        totalItemsCount={totalItemsCount}
-                        pageRangeDisplayed={3}
-                        onChange={handlePageChange}
-                    ></Pagination>
-                </div>
+                {
+                    (busquedaLocal)?
+                        console.log('cargando datos acuerdos...')
+                        :
+                        (
+                        <>
+                        <TableAcuerdo cabecera={cabecerasTabla}>
+                        {acuerdos.rows.map((acuerdo, i) => (
+                                <RowAcuerdo nro={i} acuerdo={acuerdo} loadParticipantes={cargarPopupParticipantes}></RowAcuerdo>
+                            ))}
+                        </TableAcuerdo>
+                        <div className="panel-footer clearfix pull-right">
+                            <Pagination
+                                activePage={activePage}
+                                itemsCountPerPage={limit}
+                                totalItemsCount={totalItemsCount}
+                                pageRangeDisplayed={3}
+                                onChange={handlePageChange}
+                            ></Pagination>
+                        </div>
+                        </>
+                        )
+                    }
+                
             </div>
             {mostrarPartPopup && <MParticipante closeventana={cerrarPartModal} codacta={codPlanoPopup} participante={participantesPopup} checkFinalizo={checkFinalizo} handleUpdateClick={handleUpdateClick}/>}
           </WraperLarge>  
