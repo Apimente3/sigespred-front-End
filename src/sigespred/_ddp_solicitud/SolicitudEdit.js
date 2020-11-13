@@ -187,7 +187,7 @@ const SolicitudEdit = ({history, match}) => {
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
-                            <FormGroup label={"Digital de Documento Enviado"}>
+                            <FormGroup label={"Digital de Documento Enviado"} require={true}>
                                 <SingleUpload
                                         key="urlarcoficio"
                                         accept={'.*'}
