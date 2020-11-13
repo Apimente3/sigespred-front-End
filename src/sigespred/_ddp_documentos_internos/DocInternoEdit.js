@@ -25,7 +25,7 @@ import { ACTUALIZAR_DOCINTERNOS_BREADCRUM } from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import { useAsync } from "react-async-hook";
 import MultipleUpload from "../../components/uploader/MultipleUpload";
-
+import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
 
 const Axios = initAxiosInterceptors();
 const { $ } = window;
@@ -51,7 +51,7 @@ const DocInternoEdit = ({ match, history }) => {
     setDocumentosInternos,
     handleInputChange,
     reset,
-  ] = useForm({ archivos: [] }, ['comentario']);
+  ] = useForm({ archivos: [] }, ["comentario"]);
   //const [documentosInternos, setDocumentosInternos] = useState({});
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
   const [documentosInternosEditado, set_DocumentosInternosEditado] = useState(
@@ -64,17 +64,17 @@ const DocInternoEdit = ({ match, history }) => {
     PARAMS.LISTASIDS.TIPODOCINTER,
   ]);
   const [dataEquipo, setDataEquipo] = useState(null);
-  
+  const resListaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
 
-    /*Valiables Globales*/
-    useEffect(() => {
-      const init = async () => {
-        let docInterno = await obtenerDocumentoInterno(id);
-        cargarEquipo(docInterno.gestionpredialid);
-        setDocumentosInternos(docInterno);
-      };
-      init();
-    }, []);
+  /*Valiables Globales*/
+  useEffect(() => {
+    const init = async () => {
+      let docInterno = await obtenerDocumentoInterno(id);
+      cargarEquipo(docInterno.gestionpredialid);
+      setDocumentosInternos(docInterno);
+    };
+    init();
+  }, []);
   //const { id } = useParams();
 
   // useEffect(() => {
@@ -125,10 +125,6 @@ const DocInternoEdit = ({ match, history }) => {
   //   getDocumentoInterno(id);
   // }, []);
 
-
-
-
-  
   const cargarEquipo = async (idProyecto) => {
     if (idProyecto) {
       let data = await helperGets.helperGetListEquipos(idProyecto);
@@ -229,8 +225,6 @@ const DocInternoEdit = ({ match, history }) => {
                   </div>
                 </div>
 
-             
-
                 <div className="form-group">
                   <label className="col-lg-2 control-label">
                     <span className="obligatorio">* </span> Tipo de Documento
@@ -275,6 +269,39 @@ const DocInternoEdit = ({ match, history }) => {
                     />
                   </div>
                 </div>
+
+                <div className="form-group">
+                  <label className="col-lg-2 control-label">
+                    <span className="obligatorio">* </span> Respuesta
+                  </label>
+                  <div className="col-lg-4">
+                    {/* {resListaTipoDocInterno.error ? (
+                      "Se produjo un error cargando el tipo de documento"
+                    ) : resListaTipoDocInterno.loading ? (
+                      "Cargando..."
+                    ) : ( */}
+                    <select
+                      className="form-control input-sm"
+                      id="respuesta"
+                      name="respuesta"
+                      required
+                      value={documentosInternos.respuesta}
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      <option value="EN ATENCION">EN ATENCION</option>
+                      <option value="EN CONOCIMIENTO">EN CONOCIMIENTO</option>
+                      {/* <ComboOptions
+                          data={resListaTipoDocInterno.result}
+                          valorkey="valorcodigo"
+                          valornombre="valortexto"
+                        /> */}
+                    </select>
+                    {/* )} */}
+                  </div>
+                </div>
               </fieldset>
             </div>
 
@@ -315,21 +342,65 @@ const DocInternoEdit = ({ match, history }) => {
                 </div>
 
                 <div className="form-group">
-                  <label className="col-lg-2 control-label">Comentario</label>
+                  <label className="col-lg-2 control-label">Asunto</label>
                   <div className="col-lg-4">
                     <input
                       type="text"
                       className="form-control input-sm uppercaseinput"
-                      id="comentariorecepcion"
-                      name="comentariorecepcion"
-                      placeholder="comentario"
-                      title="El codigo STD  es requerido"
+                      id="asuntorecepcion"
+                      name="asuntorecepcion"
+                      placeholder="asunto"
+                      title="ingrese el asunto"
                       autoComplete="off"
                       onChange={handleInputChange}
-                      value={documentosInternos.comentariorecepcion || ""}
+                      value={documentosInternos.asuntorecepcion || ""}
                     />
                   </div>
 
+                  <label className="col-lg-2 control-label">Referencia</label>
+                  <div className="col-lg-4">
+                    <input
+                      type="text"
+                      className="form-control input-sm uppercaseinput"
+                      id="referencia"
+                      name="referencia"
+                      placeholder="referencia"
+                      title="El codigo STD  es requerido"
+                      autoComplete="off"
+                      onChange={handleInputChange}
+                      value={documentosInternos.referencia || ""}
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                <label className="col-lg-2 control-label">Areas</label>
+                  <div className="col-lg-4">
+                    <select
+                      className="form-control input-sm"
+                      id="areaid"
+                      name="areaid"
+                      // required
+                      // title="El area es requerido"
+                      onChange={handleInputChange}
+                      value={documentosInternos.areaid || ""}
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      {resListaSubAreas.error ? (
+                        "Se produjo un error cargando las sub areas"
+                      ) : resListaSubAreas.loading ? (
+                        "Cargando..."
+                      ) : (
+                        <ComboOptionsGroup
+                          data={resListaSubAreas.result}
+                          valorkey="id"
+                          valornombre="nombre"
+                          valornombregrupo="nombre"
+                          grupojson="SubArea"
+                        />
+                      )}
+                    </select>
+                  </div>
                   <div className="col-lg-4">
                     {/* <UploadMemo
                       key="upload_portada_imagen"
