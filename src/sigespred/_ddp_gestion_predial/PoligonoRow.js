@@ -20,6 +20,7 @@ const PoligonoRow = ({poligono, nro, callback, loadfiles, idproyecto, titproyect
             <tr key={`trrowkey_${nro}`}>
                 <td key={`tdrowkey_1${nro}`}>{nro+1}</td>
                 <td key={`tdrowkey_15${nro}`}>{poligono.id}</td>
+                <td key={`tdrowkey_16${nro}`}>{poligono.usuarioregistra}</td>
                 <td key={`tdrowkey_2${nro}`}>{poligono.representaciongrafica}</td>
                 <td key={`tdrowkey_3${nro}`}>{poligono.sistcoordenadasvector}</td>
                 <td key={`tdrowkey_4${nro}`}>

@@ -252,7 +252,7 @@ return (
                             </label>
                         </div>
                         <div className="mleft-5 mtop-5">
-                            <Input required={true} value={valPoligono.resolucionespacial || ""} onChange={handleInputChange}
+                            <Input value={valPoligono.resolucionespacial || ""} onChange={handleInputChange}
                                 name={"resolucionespacial"} placeholder={"Ingrese la resolución o escala"}
                                 pattern="(\d*).?(\d+)(m|cm)"
                                 type={"text"}>

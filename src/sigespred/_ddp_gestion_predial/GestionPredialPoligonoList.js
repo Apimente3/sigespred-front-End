@@ -56,7 +56,7 @@ const GestionPredialPoligonoList = ({history, match}) => {
 
     
 
-    const cabecerasTabla = ["", "ID","REPR. GRÁFICA", "SIST. COORDENADAS VECTOR.", "CONTROL TOPOLÓGICO", "FECHA INFO. VECTOR.","TIPO RASTER", "SIST. COORDENADAS RASTER", "RES. ESPACIAL", "FECHA INFO. RASTER", "ARCHIVO","ACCIONES"]
+    const cabecerasTabla = ["", "ID", "REGISTRADO POR","REPR. GRÁFICA", "SIST. COORDENADAS VECTOR.", "CONTROL TOPOLÓGICO", "FECHA INFO. VECTOR.","TIPO RASTER", "SIST. COORDENADAS RASTER", "RES. ESPACIAL", "FECHA INFO. RASTER", "ARCHIVO","ACCIONES"]
     return (
         <>
             <WraperLarge titleForm={"Listado de Polígonos"} listbreadcrumb={LISTAR_GESTIONPREDIALPOLIGONO_BREADCRUM}>
