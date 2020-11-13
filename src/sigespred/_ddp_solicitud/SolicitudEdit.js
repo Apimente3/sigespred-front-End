@@ -42,6 +42,7 @@ async function saveSolicitud(id, body) {
 
 const SolicitudEdit = ({history, match}) => {
     const {id}=match.params;
+    const [locadorResp, setLocadorResp] = useState(null);
     const [solicitud, setSolicitud, handleInputChange, reset ] = useForm({},["nrooficio"]);
 
     const listaProyectos = useAsync(helperGets.helperGetListProyectos, []);
@@ -86,10 +87,7 @@ const SolicitudEdit = ({history, match}) => {
     }
 
     function setResponsable(idLocador) {
-        setSolicitud({
-            ...solicitud,
-            responsableid: idLocador
-        });
+        setLocadorResp(idLocador);
     }
 
     const handleFiltrarChildrenProyecto = async(e) => {
@@ -102,6 +100,8 @@ const SolicitudEdit = ({history, match}) => {
 
     const actualizar = async e => {
         e.preventDefault();
+        solicitud.responsableid = locadorResp;
+        
         try {
             await saveSolicitud(id, solicitud)
             toastr.success(`Actualización de la solicitud: ${id}`, 'Se actualizó correctamente.', {position: 'top-right'})
@@ -160,7 +160,7 @@ const SolicitudEdit = ({history, match}) => {
                             </FormGroup>
                             <FormGroup label={"Profesional Responsable"}>
                                 {listaResponsables.result
-                                ? <Autocomplete listaDatos={listaResponsables.result} callabck={setResponsable} />
+                                ? <Autocomplete listaDatos={listaResponsables.result} callabck={setResponsable} valorinit={solicitud.responsableid} />
                                 : "Cargando..."}
                             </FormGroup>
                         </Row6>

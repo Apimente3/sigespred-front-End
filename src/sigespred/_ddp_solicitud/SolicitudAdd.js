@@ -30,7 +30,7 @@ const Axios = initAxiosInterceptors();
 const directorioSolicitudes = "FilesDDP/solicitudextadmin";
 
 const SolicitudAdd = ({history,  match}) => {
-
+    const [locadorResp, setLocadorResp] = useState(null);
     const [solicitud, setSolicitud, handleInputChange, reset ] = useForm({},["nrooficio","codigostd"]);
     const listaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const listaTipoConsulta = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
@@ -72,10 +72,7 @@ const SolicitudAdd = ({history,  match}) => {
     }
 
     function setResponsable(idLocador) {
-        setSolicitud({
-            ...solicitud,
-            responsableid: idLocador
-        });
+        setLocadorResp(idLocador);
     }
 
     async function addSolicitud(solicitud) {
@@ -85,7 +82,7 @@ const SolicitudAdd = ({history,  match}) => {
 
     const registrar = async e => {
         e.preventDefault();
-        console.log(solicitud);
+        solicitud.responsableid = locadorResp;
         $('#btnguardar').button('loading');
         try {
             let resultPlano = await addSolicitud(solicitud);

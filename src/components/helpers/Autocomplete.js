@@ -10,7 +10,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit, resetContenido=false}) =
     const [fisrtLoad, setfisrtLoad] = useState(true);
     const [valorBuscar, setValorBuscar] = useState('');
     const [resetDone, setResetDone] = useState(false);
-
+    
     useEffect(() => {
         async function initialLoad() {
             try {
@@ -27,7 +27,7 @@ const Autocomplete = ({listaDatos, callabck, valorinit, resetContenido=false}) =
             }
         }
         initialLoad();
-    }, []);
+    }, [valorinit]);
 
     const saveInput = async (e) => {
         let id = e.target.getAttribute('value');
