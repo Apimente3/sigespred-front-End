@@ -41,11 +41,11 @@ const SolicitudRow = ({solicitud, nro, callback, loadfiles}) => {
                 }
                 
                 <td key={`tdrowkey_12${nro}`}>{solicitud.accion}</td>
-                <td key={`tdrowkey_13${nro}`}>
+                <td key={`tdrowkey_13${nro}`} className="acciones-3bot">
                     <div key={`divrowkey_${nro}`} className="btn-group pull-right">
-                        <Link  to={`/solicitud-respuesta/${solicitud.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Respuesta a Solicitud" }><i
+                        <Link  to={`/solicitud-respuesta/${solicitud.id}`}  className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip" data-placement="bottom" data-original-title={ "Respuesta a Solicitud" }><i
                             className="fa fa-envelope fa-lg "></i></Link>
-                        <Link  to={`/solicitud-edit/${solicitud.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Editar Solicitud" }><i
+                        <Link  to={`/solicitud-edit/${solicitud.id}`}  className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip" data-original-title={ "Editar Solicitud" }><i
                             className="fa fa-edit fa-lg"></i></Link>
                         <a key={`arowkey_${nro}`} onClick={() => eliminar(solicitud.id, solicitud.nrooficio)}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Eliminar Solicitud" }><i
                             className="fa fa-trash-o fa-lg"></i></a>
