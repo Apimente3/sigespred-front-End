@@ -25,6 +25,7 @@ import MultipleUpload from "../../components/uploader/MultipleUpload";
 import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
+import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
 
 const { $ } = window;
 const Axios = initAxiosInterceptors();
@@ -48,6 +49,7 @@ const DocInternoAdd = ({ history }) => {
   const resListaTipoDocInterno = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPODOCINTER,
   ]);
+  const resListaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
   //   /*Valiables Globales*/
   //   useEffect(() => {
   //     const init = async () => {
@@ -59,6 +61,8 @@ const DocInternoAdd = ({ history }) => {
   // }, []);
 
   const registrar = async (e) => {
+    console.log("*******************************************");
+    console.log(documentosInternos);
     e.preventDefault();
     try {
       await saveDocumentosInternos(documentosInternos);
@@ -81,7 +85,6 @@ const DocInternoAdd = ({ history }) => {
       setDataEquipo(null);
     }
   };
-  
 
   return (
     <>
@@ -146,7 +149,6 @@ const DocInternoAdd = ({ history }) => {
                     </select>
                   </div>
                 </div>
-              
 
                 <div className="form-group">
                   <label className="col-lg-2 control-label">
@@ -194,6 +196,39 @@ const DocInternoAdd = ({ history }) => {
                     />
                   </div>
                 </div>
+
+                <div className="form-group">
+                  <label className="col-lg-2 control-label">
+                    <span className="obligatorio">* </span> Respuesta
+                  </label>
+                  <div className="col-lg-4">
+                    {/* {resListaTipoDocInterno.error ? (
+                      "Se produjo un error cargando el tipo de documento"
+                    ) : resListaTipoDocInterno.loading ? (
+                      "Cargando..."
+                    ) : ( */}
+                    <select
+                      className="form-control input-sm"
+                      id="respuesta"
+                      name="respuesta"
+                      required
+                      value={documentosInternos.respuesta}
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      <option value="EN ATENCION">EN ATENCION</option>
+                      <option value="EN CONOCIMIENTO">EN CONOCIMIENTO</option>
+                      {/* <ComboOptions
+                          data={resListaTipoDocInterno.result}
+                          valorkey="valorcodigo"
+                          valornombre="valortexto"
+                        /> */}
+                    </select>
+                    {/* )} */}
+                  </div>
+                </div>
               </fieldset>
             </div>
 
@@ -232,15 +267,15 @@ const DocInternoAdd = ({ history }) => {
                 </div>
 
                 <div className="form-group">
-                  <label className="col-lg-2 control-label">Comentario</label>
+                  <label className="col-lg-2 control-label">Asunto</label>
                   <div className="col-lg-4">
                     <input
                       type="text"
                       className="form-control input-sm uppercaseinput"
-                      id="comentariorecepcion"
-                      name="comentariorecepcion"
-                      placeholder="comentario"
-                      title="El codigo STD  es requerido"
+                      id="asuntorecepcion"
+                      name="asuntorecepcion"
+                      placeholder="asunto"
+                      title="ingrese el asunto"
                       autoComplete="off"
                       onChange={handleInputChange}
                     />
@@ -250,21 +285,62 @@ const DocInternoAdd = ({ history }) => {
                   </label> */}
                   {/* <div className="form-group col-lg-6"> */}
 
-                    <div className="col-lg-6">
-                      <div className="form-group">
-                        <MultipleUpload
-                          key="multiple"
-                          accept={".*"}
-                          folderSave={directorioDocInterno}
-                          form={documentosInternos}
-                          setForm={setDocumentosInternos}
-                          nameUpload={"archivorecepcion"}
-                        ></MultipleUpload>
-                      </div>
-                    </div>
-                  
+                  <label className="col-lg-2 control-label">Referencia</label>
+                  <div className="col-lg-4">
+                    <input
+                      type="text"
+                      className="form-control input-sm uppercaseinput"
+                      id="referencia"
+                      name="referencia"
+                      placeholder="referencia"
+                      title="El codigo STD  es requerido"
+                      autoComplete="off"
+                      onChange={handleInputChange}
+                    />
+                  </div>
 
                   {/* </div> */}
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-2 control-label">Areas</label>
+                  <div className="col-lg-4">
+                    <select
+                      className="form-control input-sm"
+                      id="areaid"
+                      name="areaid"
+                      // required
+                      // title="El area es requerido"
+                      onChange={handleInputChange}
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      {resListaSubAreas.error ? (
+                        "Se produjo un error cargando las sub areas"
+                      ) : resListaSubAreas.loading ? (
+                        "Cargando..."
+                      ) : (
+                        <ComboOptionsGroup
+                          data={resListaSubAreas.result}
+                          valorkey="id"
+                          valornombre="nombre"
+                          valornombregrupo="nombre"
+                          grupojson="SubArea"
+                        />
+                      )}
+                    </select>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="form-group">
+                      <MultipleUpload
+                        key="multiple"
+                        accept={".*"}
+                        folderSave={directorioDocInterno}
+                        form={documentosInternos}
+                        setForm={setDocumentosInternos}
+                        nameUpload={"archivorecepcion"}
+                      ></MultipleUpload>
+                    </div>
+                  </div>
                 </div>
               </fieldset>
             </div>

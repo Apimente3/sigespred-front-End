@@ -12,6 +12,7 @@ import { useForm } from "../../hooks/useForm";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import { useAsync } from "react-async-hook";
+import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
 
 const { $ } = window;
 const axios = initAxiosInterceptors();
@@ -48,6 +49,7 @@ const DocInternoRespuesta = ({ history }) => {
   const resListaTipoDocInterno = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPODOCINTER,
   ]);
+  const resListaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
   // function handleInputChange(e) {
   //   if (e.target.name) {
   //     documentosInternos[e.target.name] = e.target.value;
@@ -174,9 +176,8 @@ const DocInternoRespuesta = ({ history }) => {
                   </div>
                 </div>
 
-
                 <div className="form-group">
-                <label className="col-lg-2 control-label">
+                  <label className="col-lg-2 control-label">
                     <span className="obligatorio">* </span> Tipo de Documento
                   </label>
                   <div className="col-lg-4">
@@ -221,6 +222,40 @@ const DocInternoRespuesta = ({ history }) => {
                     />
                   </div>
                 </div>
+
+                <div className="form-group">
+                  <label className="col-lg-2 control-label">
+                    <span className="obligatorio">* </span> Respuesta
+                  </label>
+                  <div className="col-lg-4">
+                    {/* {resListaTipoDocInterno.error ? (
+                      "Se produjo un error cargando el tipo de documento"
+                    ) : resListaTipoDocInterno.loading ? (
+                      "Cargando..."
+                    ) : ( */}
+                    <select
+                      className="form-control input-sm"
+                      id="respuesta"
+                      name="respuesta"
+                      required
+                      readOnly
+                      value={documentosInternos.respuesta}
+                      onChange={(e) => {
+                        handleInputChange(e);
+                      }}
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      <option value="EN ATENCION">EN ATENCION</option>
+                      <option value="EN CONOCIMIENTO">EN CONOCIMIENTO</option>
+                      {/* <ComboOptions
+                          data={resListaTipoDocInterno.result}
+                          valorkey="valorcodigo"
+                          valornombre="valortexto"
+                        /> */}
+                    </select>
+                    {/* )} */}
+                  </div>
+                </div>
               </fieldset>
             </div>
 
@@ -263,22 +298,70 @@ const DocInternoRespuesta = ({ history }) => {
                 </div>
 
                 <div className="form-group">
-                  <label className="col-lg-2 control-label">Comentario</label>
+                <label className="col-lg-2 control-label">Asunto</label>
                   <div className="col-lg-4">
                     <input
                       type="text"
                       className="form-control input-sm uppercaseinput"
-                      id="comentariorecepcion"
-                      name="comentariorecepcion"
-                      placeholder="comentario"
-                      title="El codigo STD  es requerido"
+                      id="asuntorecepcion"
+                      name="asuntorecepcion"
+                      placeholder="asunto"
+                      title="ingrese el asunto"
                       autoComplete="off"
                       onChange={handleInputChange}
-                      value={documentosInternos.comentariorecepcion}
+                      value={documentosInternos.asuntorecepcion || ""}
                       readOnly
                     />
                   </div>
-                  <label className="col-lg-2 control-label">
+                  <label className="col-lg-2 control-label">Referencia</label>
+                  <div className="col-lg-4">
+                    <input
+                      type="text"
+                      className="form-control input-sm uppercaseinput"
+                      id="referencia"
+                      name="referencia"
+                      placeholder="referencia"
+                      title="El codigo STD  es requerido"
+                      autoComplete="off"
+                      onChange={handleInputChange}
+                      value={documentosInternos.referencia || ""}
+                      readOnly
+                    />
+                  </div>
+                 
+                </div>
+
+                
+                <div className="form-group">
+                <label className="col-lg-2 control-label">Areas</label>
+                  <div className="col-lg-4">
+                    <select
+                      className="form-control input-sm"
+                      id="areaid"
+                      name="areaid"
+                      // required
+                      // title="El area es requerido"
+                      onChange={handleInputChange}
+                      value={documentosInternos.areaid || ""}
+                      readOnly
+                    >
+                      <option value="">--SELECCIONE--</option>
+                      {resListaSubAreas.error ? (
+                        "Se produjo un error cargando las sub areas"
+                      ) : resListaSubAreas.loading ? (
+                        "Cargando..."
+                      ) : (
+                        <ComboOptionsGroup
+                          data={resListaSubAreas.result}
+                          valorkey="id"
+                          valornombre="nombre"
+                          valornombregrupo="nombre"
+                          grupojson="SubArea"
+                        />
+                      )}
+                    </select>
+                  </div>
+                <label className="col-lg-2 control-label">
                     Adjuntar Documento
                   </label>
                   <div className="col-lg-4">
@@ -289,10 +372,11 @@ const DocInternoRespuesta = ({ history }) => {
                       form={documentosInternos}
                       setForm={setDocumentosInternos}
                       nameUpload={"archivorecepcion"}
-                      readonly = {true}
+                      readonly={true}
                     ></MultipleUpload>
                   </div>
                 </div>
+
               </fieldset>
             </div>
             <div className="form-group col-lg-11">
@@ -346,18 +430,18 @@ const DocInternoRespuesta = ({ history }) => {
                     ></MultipleUpload>
                   </div>
 
-                  <label className="col-lg-2 control-label">Comentario</label>
+                  <label className="col-lg-2 control-label">Asunto</label>
                   <div className="col-lg-4">
                     <input
                       type="text"
                       className="form-control input-sm uppercaseinput"
-                      id="comentariorespuesta"
-                      name="comentariorespuesta"
-                      placeholder="Nro Documento"
+                      id="asuntorespuesta"
+                      name="asuntorespuesta"
+                      placeholder="Asunto"
                       //title="El codigo STD  es requerido"
                       autoComplete="off"
                       onChange={handleInputChange}
-                      value={documentosInternos.comentariorespuesta}
+                      value={documentosInternos.asuntorespuesta}
                     />
                   </div>
                 </div>
