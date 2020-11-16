@@ -74,7 +74,7 @@ const Trabajadores = ({history}) => {
 
     }
 
-    const cabecerasTabla = ["DNI", "Nombres", "Apellidos", "Telefonos", "Correos", "Acciones"]
+    const cabecerasTabla = ["DNI", "NOMBRES", "APELLIDOS", "TELÉFONOS", "CORREOS", "ACCIONES"]
 
     return (
         <>
