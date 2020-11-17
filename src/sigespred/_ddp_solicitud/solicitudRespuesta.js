@@ -57,6 +57,7 @@ const SolicitudRespuesta = ({history, match}) => {
     const listaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const listaTipoConsulta = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
     const listaCanalEnvio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.SOLICCANALENVIO]);
+    const listaTiposDocumento = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOCCONSULTA]);
     const listaTipoEntidades = useAsync(helperGets.helperGetListTipoEntidades, []);
 
     const [listaEntidades, setListaEntidades] = useState(null);
@@ -118,6 +119,15 @@ const SolicitudRespuesta = ({history, match}) => {
                                     : "Cargando..."}
                                 </Select>
                             </FormGroup>
+                            <FormGroup label={"Tipo de Documento Remitido"} ayuda={"Tipo de documento utilizado para la solicitud"}>
+                                <Select value={solicitud.tipodocumentoid || ""}
+                                        readonly={true}
+                                        name={"tipodocumentoid"}>
+                                    {listaTiposDocumento.result?
+                                    <ComboOptions data={listaTiposDocumento.result} valorkey="id" valornombre="valortexto"/>
+                                    : "Cargando..."}
+                                </Select>
+                            </FormGroup>
                             <FormGroup label={"Código STD"} ayuda={"Código de Sistema de Trámite Documentario"}>
                                 <Input value={solicitud.codigostd || ""}
                                     name={"codigostd"}
@@ -148,13 +158,6 @@ const SolicitudRespuesta = ({history, match}) => {
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
-                            <FormGroup label={"Contacto"}>
-                                <Input value={solicitud.contacto || ""}
-                                    name={"contacto"}
-                                    readonly={true}
-                                    type={"text"}>
-                                </Input>
-                            </FormGroup>
                         </Row6>
                         <Row6>
                             <FormGroup label={"Tipo de Consulta"}>
@@ -166,7 +169,7 @@ const SolicitudRespuesta = ({history, match}) => {
                                     : "Cargando..."}
                                 </Select>
                             </FormGroup>
-                            <FormGroup label={"Número de Oficio"}>
+                            <FormGroup label={"Número de Documento"}>
                                 <Input value={solicitud.nrooficio || ""}
                                     name={"nrooficio"}
                                     readonly={true}

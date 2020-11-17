@@ -36,6 +36,7 @@ const SolicitudAdd = ({history,  match}) => {
     const listaTipoConsulta = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
     const listaResponsables = useAsync(helperGets.helperGetListaLocadores, []);
     const listaCanalEnvio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.SOLICCANALENVIO]);
+    const listaTiposDocumento = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOCCONSULTA]);
     const listaTipoEntidades = useAsync(helperGets.helperGetListTipoEntidades, []);
 
     const [listaTramos, setListaTramos] = useState(null);
@@ -152,23 +153,18 @@ const SolicitudAdd = ({history,  match}) => {
                         </Row12>
                         <Row12 title={"Datos de Envío"}>
                             <Row6>
+                                <FormGroup label={"Tipo de Documento Remitido"} require={true} ayuda={"Tipo de documento utilizado para la solicitud"}>
+                                    <Select required={true} value={solicitud.tipodocumentoid || ""}
+                                            onChange={handleInputChange}
+                                            name={"tipodocumentoid"}>
+                                        {listaTiposDocumento.result?
+                                        <ComboOptions data={listaTiposDocumento.result} valorkey="id" valornombre="valortexto"/>
+                                        : "Cargando..."}
+                                    </Select>
+                                </FormGroup>
                                 <FormGroup label={"Código STD"} require={true} ayuda={"Código de Sistema de Trámite Documentario"}>
                                     <Input required={true} value={solicitud.codigostd || ""} onChange={handleInputChange}
                                         name={"codigostd"} placeholder={"Ingrese el código STD"}
-                                        type={"text"}>
-                                    </Input>
-                                </FormGroup>
-                                <FormGroup label={"Fecha de Elaboración de Oficio"} >
-                                    <Input value={solicitud.fechaelaboficio || ""} onChange={handleInputChange}
-                                        name={"fechaelaboficio"}
-                                        type={"date"}>
-                                    </Input>
-                                </FormGroup>
-                            </Row6>
-                            <Row6>
-                                <FormGroup label={"Número de Oficio"} require={true}>
-                                    <Input required={true} value={solicitud.nrooficio || ""} onChange={handleInputChange}
-                                        name={"nrooficio"} placeholder={"Ingrese el número de oficio"}
                                         type={"text"}>
                                     </Input>
                                 </FormGroup>
@@ -182,6 +178,20 @@ const SolicitudAdd = ({history,  match}) => {
                                         nameUpload={"urlarcoficio"}
                                             >
                                     </SingleUpload>
+                                </FormGroup>
+                            </Row6>
+                            <Row6>
+                                <FormGroup label={"Número de Documento"} require={true}>
+                                    <Input required={true} value={solicitud.nrooficio || ""} onChange={handleInputChange}
+                                        name={"nrooficio"} placeholder={"Ingrese el número de documento"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Fecha de Elaboración de Documento"} >
+                                    <Input value={solicitud.fechaelaboficio || ""} onChange={handleInputChange}
+                                        name={"fechaelaboficio"}
+                                        type={"date"}>
+                                    </Input>
                                 </FormGroup>
                             </Row6>
                         </Row12>
@@ -203,8 +213,8 @@ const SolicitudAdd = ({history,  match}) => {
                                         <ComboOptions data={listaEntidades} valorkey="id" valornombre="nombre" />
                                     </Select>
                                 </FormGroup>
-                                <FormGroup label={"Área u oficina"} require={true}>
-                                    <Input required={true} value={solicitud.oficinaentidad || ""} onChange={handleInputChange}
+                                <FormGroup label={"Área u oficina"} >
+                                    <Input value={solicitud.oficinaentidad || ""} onChange={handleInputChange}
                                         name={"oficinaentidad"} placeholder={"Ingrese el área u oficina"}
                                         type={"text"}>
                                     </Input>
