@@ -22,6 +22,7 @@ const SolicitudRow = ({solicitud, nro, callback, loadfiles}) => {
                 <td key={`tdrowkey_3${nro}`}>{solicitud.entidad}</td>
                 <td key={`tdrowkey_4${nro}`}>{solicitud.proyecto}</td>
                 <td key={`tdrowkey_6${nro}`}>{solicitud.tipoconsulta}</td>
+                <td key={`tdrowkey_20${nro}`}>{solicitud.tipodocumento}</td>
                 <td key={`tdrowkey_7${nro}`}>{solicitud.codigostd}</td>
                 <td key={`tdrowkey_8${nro}`}>{solicitud.nrooficio}</td>
                 <td key={`tdrowkey_9${nro}`}>{solicitud.fecharecepcion}</td>

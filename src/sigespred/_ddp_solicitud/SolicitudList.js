@@ -193,7 +193,7 @@ const SolicitudList = ({history}) => {
         let listexportexcel = list.rows;
         
         //var resultjson = alasql(`SELECT *
-        var resultjson = alasql(`SELECT id,entidad,proyecto,tramo,tipoconsulta,codigostd,nrooficio,fechaelaboficio,fecharecepcion,
+        var resultjson = alasql(`SELECT id,entidad,proyecto,tramo,tipoconsulta,tipodocumento, codigostd,nrooficio,fechaelaboficio,fecharecepcion,
                                 recibiorespuesta,fecharespuesta,nrodocrespuesta,plazo_atencion,estado,accion,observaciones
                                 FROM ? `, [listexportexcel])
         var opts = [{
@@ -204,7 +204,7 @@ const SolicitudList = ({history}) => {
         return false;
     }
 
-    const cabecerasTabla = ["","ID", "ENTIDAD", "PROYECTO", "TIPO DE CONSULTA", "CÓDIGO STD","NRO. OFICIO", "FECHA DE RECEPCIÓN", "ATENDIDO", "FECHA DE ATENCIÓN", "DOCUMENTO ATENCIÓN", "PLAZO ATENCIÓN", "SEG. ESTADO", "SEG. ACCIÖN", "ACCIONES"]
+    const cabecerasTabla = ["","ID", "ENTIDAD", "PROYECTO", "TIPO DE CONSULTA", "TIPO DE DOC.", "CÓDIGO STD","NRO. DOC.", "FECHA DE RECEPCIÓN", "ATENDIDO", "FECHA DE ATENCIÓN", "DOCUMENTO ATENCIÓN", "PLAZO ATENCIÓN", "SEG. ESTADO", "SEG. ACCIÖN", "ACCIONES"]
     return (
         <>
         <WraperLarge titleForm={"Listado de Solicitudes"} listbreadcrumb={LISTADO_SOLICITUD_BREADCRUM}>
