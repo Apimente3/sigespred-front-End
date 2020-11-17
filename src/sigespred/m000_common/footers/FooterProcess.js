@@ -1,4 +1,5 @@
 import React from 'react';
+import * as version from '../../../config/appversion'
 
 const FooterProcess = () => {
     return (
@@ -8,7 +9,9 @@ const FooterProcess = () => {
                     <div className="limiter pb24 footer-proce">
                         <div className="txt-s color-darken50">
                             <a className="color-blue-on-hover mr18"
-                               href="https://www.mtc.gob.pe/">© MTC</a><a
+                               href="https://www.mtc.gob.pe/">© MTC</a>
+                               <a className="mr18">{version.version} - {version.fechaversion}</a>
+                               <a
                             className="color-blue-on-hover mr18" href="#">Direccion de Disponibilidad de Predios</a><a
                             className="color-blue-on-hover mr18" href="#">Ayuda</a><a
                             className="color-blue-on-hover"
