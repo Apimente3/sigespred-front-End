@@ -17,17 +17,17 @@ const RowAcuerdo = ({acuerdo,nro,loadParticipantes}) => {
 
     let alerta;
     if(acuerdo.alerta=='Vencido'){
-        alerta = <span className="badge badge-danger">{acuerdo.alerta}</span>;
+        alerta = <span key={`span_1_${nro}`} className="badge badge-danger">{acuerdo.alerta}</span>;
     }else if(acuerdo.alerta=='Por vencer'){
-        alerta = <span className="badge badge-warning">{acuerdo.alerta}</span>;
+        alerta = <span key={`span_1_${nro}`} className="badge badge-warning">{acuerdo.alerta}</span>;
     }else if(acuerdo.alerta=='Cumplido'){
-        alerta = <span className="badge badge-success">{acuerdo.alerta}</span>;
+        alerta = <span key={`span_1_${nro}`} className="badge badge-success">{acuerdo.alerta}</span>;
     }else{
-        alerta = <span className="badge badge-info">{acuerdo.alerta}</span>;
+        alerta = <span key={`span_1_${nro}`} className="badge badge-info">{acuerdo.alerta}</span>;
     }
     return (
         <>
-            <tr key={nro}>
+            <tr key={`tr_${nro}`}>
                 <td key={`td_1_${nro}`}>{nro+1}</td>
                 <td key={`td_2_${nro}`}>{acuerdo.codigoacta}</td>
                 <td key={`td_3_${nro}`}>{acuerdo.denominacion}</td>

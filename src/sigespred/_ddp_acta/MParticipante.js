@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {Link} from "react-router-dom";
+import { toastr } from "react-redux-toastr";
 import ComboOptions from "../../components/helpers/ComboOptions";
 
 const MParticipante = ({closeventana, codacta, participante, handleUpdateClick, listadovalores}) => { 
@@ -9,6 +10,11 @@ const MParticipante = ({closeventana, codacta, participante, handleUpdateClick, 
     }
 
     const ejecutarUpdate=(e)=> {
+        if (!participantePopup.estadocomp) {
+            toastr.warning('Actualizar Actividad', 'Es necesario seleccionar un estado', {position: 'top-center'});
+            return;
+        }
+
         handleUpdateClick(e, participantePopup)
     }
 
@@ -104,8 +110,8 @@ const MParticipante = ({closeventana, codacta, participante, handleUpdateClick, 
                                 </div>
 
                                 <div className="modal-footer">
-                                    <button class="btn btn-sm btn-info" type="button" onClick={(e) => ejecutarUpdate(e)}><i
-                                        class="fa fa-plus fa-lg"
+                                    <button className="btn btn-sm btn-info" type="button" onClick={(e) => ejecutarUpdate(e)}><i
+                                        className="fa fa-plus fa-lg"
                                     /> Actualizar </button>
                                     <button onClick={closeModal} type="button"
                                             className="btn btn-default btn-sm btn-control">Cancelar

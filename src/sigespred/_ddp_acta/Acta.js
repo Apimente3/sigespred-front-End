@@ -24,7 +24,7 @@ const obtenerEquipo = async () => {
     return {equipo};
   };
 
-export const Acta = () => {
+const Acta = () => {
 
   async function buscarActa(query) {
      const {data} = await Axios.get(`/acta?`+ query);

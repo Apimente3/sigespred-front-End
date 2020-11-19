@@ -30,7 +30,7 @@ const obtenerEquipo = async () => {
     return {equipo};
   };
 
-export const Acuerdo = () => {
+const Acuerdo = () => {
 
   async function buscarAcuerdo(query) {
      const {data} = await Axios.get(`/actaproceso?`+ query);
@@ -64,12 +64,10 @@ export const Acuerdo = () => {
 
               let query =  await  queryString.stringify({busqueda,page, limit});
               let acuerdo = await buscarAcuerdo(query)
-              console.log(acuerdo);
               setAcuerdos(acuerdo)
               settotalItemsCount(acuerdo.count)
-          } catch (error) {
-              alert('Ocurrio un error')
-              console.log(error);
+          } catch (e) {
+                toastr.error('Acuerdos', e.message, {position: 'top-center'})
           }
       }
       init();
@@ -386,7 +384,7 @@ const limpiarAcuerdoFilter =(e)=>{
                             <Pagination
                                 activePage={activePage}
                                 itemsCountPerPage={limit}
-                                totalItemsCount={totalItemsCount}
+                                totalItemsCount={parseInt(totalItemsCount)}
                                 pageRangeDisplayed={3}
                                 onChange={handlePageChange}
                             ></Pagination>
