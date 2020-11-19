@@ -19,7 +19,7 @@ const DrpAministrativo = ({history}) => {
             }
             try {
                 const {data: trabajador} = await axios.post('/quiensoy', {token: token});
-                console.log(trabajador)
+
                 if (!trabajador) {
                     history.push('/login');
                 }
