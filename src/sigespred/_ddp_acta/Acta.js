@@ -11,11 +11,8 @@ import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import TableActa from "./TableActa";
 import MAgenda from "./MAgenda";
 import Pagination from "react-js-pagination";
-import MParticipante from "./MParticipante";
-import { toastr } from "react-redux-toastr";
 
 const queryString = require('query-string');
-//import GridEquipo from "../m000_common/grids/GridEquipo";
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -30,7 +27,6 @@ const obtenerEquipo = async () => {
 export const Acta = () => {
 
   async function buscarActa(query) {
-    // alert(query)
      const {data} = await Axios.get(`/acta?`+ query);
      return data;
  }
@@ -65,15 +61,6 @@ export const Acta = () => {
       }
       init();
   }, []);
-  
-
-  /*const buscarActaFilter = async (e) => {
-
-    e.preventDefault();
-    let query =  await  queryString.stringify({ busqueda, page, limit});
-    let actas = await buscarActa(query)
-    setActas({rows:actas})
-  }*/
 
   const descarxls = () => {
 
@@ -90,7 +77,6 @@ export const Acta = () => {
 
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber)
-    //alert(pageNumber)
     setactivePage(pageNumber)
     setPage(pageNumber)
     console.log(`active page is ${pageNumber}`);
@@ -291,11 +277,11 @@ export const Acta = () => {
                             )}  
                             </div>
                             <div className="col-lg-8">
+                                <button type="button" onClick={buscarActaFilter} className="btn btn-info pull-right btn-sm fullborder">
+                                    <i className="fa fa-search"></i> Aplicar Filtro(s)
+                                </button>
                                 <button type="button" onClick={limpiarActaFilter} className="btn btn-default pull-right btn-sm fullborder">
                                     <i className="fa fa-eraser"></i> Limpiar Filtro(s)
-                                </button>
-                                <button type="button" onClick={buscarActaFilter} className="btn btn-info pull-right  btn-sm  fullborder">
-                                    <i className="fa fa-search"></i> Aplicar Filtro(s)
                                 </button>
                             </div>
                             <div className="col-lg-4">

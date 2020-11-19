@@ -42,7 +42,9 @@ export const LISTASIDS = {
         SISTCORDENADAS: 12,
         TIPORASTER: 13,
         TIPOGENERAINFO: 14,
-        TIPODOCCONSULTA: 15
+        TIPODOCCONSULTA: 15,
+        TIPOACTAACTIVIDAD: 16,
+        TIPOACTAACUERDO: 17,
     }
 
 export const FilesUsuario={
