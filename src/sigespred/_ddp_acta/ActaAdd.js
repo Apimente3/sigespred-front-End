@@ -493,21 +493,6 @@ const cerrarModal=(estado)=>{
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                     Actividad</label>
                 <div className="col-lg-4">
-                {/* <input type="text" list="data" 
-                  className="form-control"
-                  id="actividad" 
-                  name="actividad" 
-                  required 
-                  placeholder="Ingrese la actividad"
-                  value={participantes.actividad || ""}
-                  onChange={handleInputChangePart}
-                  />
-                  <datalist id="data">
-                    {listaactividades.map((item, key) =>
-                      <option key={key} value={item.actividad} />
-                    )}
-                  </datalist> */}
-                  
                   <select className="form-control input-sm" id="actividad" name="actividad" 
                       onChange={handleInputChangePart}
                       value={participantes.actividad || ""}

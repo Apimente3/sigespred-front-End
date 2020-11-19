@@ -292,7 +292,7 @@ const Planos = ({history}) => {
     return (
         <>
         <WraperLarge titleForm={"Listado de Planos"} listbreadcrumb={LISTADO_PLANO_BREADCRUM}>
-            <legend className="mleft-20"><i class="fa fa-filter"></i> Filtros de Búsqueda de Planos</legend>
+            <legend className="mleft-20"><i className="fa fa-filter"></i> Filtros de Búsqueda de Planos</legend>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Código de Plano</label>
                 <div className="col-lg-4">
@@ -467,7 +467,7 @@ const Planos = ({history}) => {
                         <Pagination
                             activePage={activePage}
                             itemsCountPerPage={limit}
-                            totalItemsCount={totalItemsCount}
+                            totalItemsCount={parseInt(totalItemsCount)}
                             pageRangeDisplayed={3}
                             onChange={handlePageChange}
                         ></Pagination>

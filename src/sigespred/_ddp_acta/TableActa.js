@@ -6,7 +6,7 @@ const TableActa = ({children,cabecera}) => {
         <>
             <table className="table table-striped" id="dataTableActa">
                 <thead>
-                <tr>
+                <tr key="mainheader">
                     { cabecera.map((cabeza,i)=>(
                         <th key={i}>{cabeza}</th>
                     ))

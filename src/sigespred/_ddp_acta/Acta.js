@@ -11,6 +11,7 @@ import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import TableActa from "./TableActa";
 import MAgenda from "./MAgenda";
 import Pagination from "react-js-pagination";
+import { toastr } from "react-redux-toastr";
 
 const queryString = require('query-string');
 
@@ -51,12 +52,10 @@ const Acta = () => {
           try {
               let query =  await  queryString.stringify({busqueda,page, limit});
               let actas = await buscarActa(query)
-              console.log(actas);
               setActas({rows:actas})
               settotalItemsCount(actas.length)
-          } catch (error) {
-              alert('Ocurrio un error')
-              console.log(error);
+          } catch (e) {
+            toastr.error('Actas', e.message, {position: 'top-center'})
           }
       }
       init();
@@ -79,7 +78,7 @@ const Acta = () => {
     await setPage(pageNumber)
     setactivePage(pageNumber)
     setPage(pageNumber)
-    console.log(`active page is ${pageNumber}`);
+
     let query =  await  queryString.stringify({ busqueda, page:pageNumber, limit});
     let actas= await buscarActa(query)
     setActas({rows:actas})
@@ -163,8 +162,6 @@ const Acta = () => {
                 }
             });
             valorFiltros = $.param(filtros);
-            console.log('valorFiltros');
-            console.log(valorFiltros);
         }
         ejecutarPlanosFilter(valorFiltros);
     }
@@ -190,8 +187,6 @@ const Acta = () => {
                     [e.target.name]: e.target.value
                 });
         }
-        //TODO: remover console
-        console.log(filtros);
         
     }
 
@@ -311,7 +306,7 @@ const Acta = () => {
                     <Pagination
                         activePage={activePage}
                         itemsCountPerPage={limit}
-                        totalItemsCount={totalItemsCount}
+                        totalItemsCount={parseInt(totalItemsCount)}
                         pageRangeDisplayed={3}
                         onChange={handlePageChange}
                     ></Pagination>

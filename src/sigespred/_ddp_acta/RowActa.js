@@ -12,7 +12,6 @@ const RowActa = ({acta,nro,loadfiles}) => {
     }, []);
 
     const cargarPopup = (codacta, jsoncontent) => {
-        console.log(jsoncontent);
         loadfiles(codacta, jsoncontent);
     }
     return (
