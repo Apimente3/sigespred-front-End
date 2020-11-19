@@ -224,8 +224,9 @@ export const Partida = (history) => {
         titleForm={"Listado de Partidas Registrales"}
         listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}
       >
-         <legend className="mleft-20">
-          <i class="fa fa-filter"></i> Filtro de Busqueda de Partidas Registrales
+        <legend className="mleft-20">
+          <i class="fa fa-filter"></i> Filtro de Busqueda de Partidas
+          Registrales
         </legend>
         <div className="form-group">
           <label className="col-lg-2 control-label">Nro Partida</label>
@@ -390,15 +391,23 @@ export const Partida = (history) => {
         </div>
         <div className="mt-4  form-group">
           <div className="row">
-          <div className="col-lg-6">
-            <legend className="fullborder">Resultados de Búsqueda de Partidas Registrales</legend>
-          </div>
+            <div className="col-lg-6">
+              <legend className="fullborder">
+                Resultados de Búsqueda de Partidas Registrales
+              </legend>
+            </div>
             <div className="col-lg-6 text-right">
               <Link
                 to={`/partida-add`}
                 className="btn btn-danger pull-right btn-sm fullborder"
               >
                 <i className="fa fa-plus"></i> Agregar Partida
+              </Link>
+              <Link
+                to={`/partida-upload`}
+                className="btn btn-danger pull-right btn-sm fullborder"
+              >
+                <i className="fa fa-clone"></i> Carga Masiva
               </Link>
             </div>
           </div>
