@@ -3,7 +3,7 @@ import React from 'react';
 const TableActividad = ({cabecera, data=[], deleteActividad, updateActividad}) => {
     return (
         <>
-            <table class="table table-bordered table-condensed table-hover table-striped" id="dataTableActividad">
+            <table className="table table-bordered table-condensed table-hover table-striped" id="dataTableActividad">
                 <thead>
                 <tr>
                     { cabecera.map((cabeza,i)=>(
@@ -23,25 +23,13 @@ const TableActividad = ({cabecera, data=[], deleteActividad, updateActividad}) =
                                 <td>{user.nombre}</td>
                                 <td>{user.fechacomp}</td>
                                 <td>{user.producto}</td>
-                                <td>
-                                    <div className="btn-group pull-right">
-
-                                        <button class="btn btn-xs btn-default" type="button">
-                                        <i
-                                            class="fa fa-edit fa-lg"
-                                            onClick={() => updateActividad(key)}
-                                        />
+                                <td className="acciones-2bot pull-center">
+                                    <div className="btn-group">
+                                        <button className="btn btn-xs btn-default mright-5" type="button">
+                                            <i className="fa fa-edit fa-lg" onClick={() => updateActividad(key)} />
                                         </button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className="btn-group pull-right">
-
-                                        <button class="btn btn-xs btn-default" type="button">
-                                        <i
-                                            class="fa fa-trash-o fa-lg"
-                                            onClick={() => deleteActividad(key)}
-                                        />
+                                        <button className="btn btn-xs btn-default" type="button">
+                                            <i className="fa fa-trash-o fa-lg" onClick={() => deleteActividad(key)} />
                                         </button>
                                     </div>
                                 </td>

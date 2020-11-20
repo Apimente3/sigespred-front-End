@@ -11,11 +11,9 @@ import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import TableActa from "./TableActa";
 import MAgenda from "./MAgenda";
 import Pagination from "react-js-pagination";
-import MParticipante from "./MParticipante";
 import { toastr } from "react-redux-toastr";
 
 const queryString = require('query-string');
-//import GridEquipo from "../m000_common/grids/GridEquipo";
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -27,10 +25,9 @@ const obtenerEquipo = async () => {
     return {equipo};
   };
 
-export const Acta = () => {
+const Acta = () => {
 
   async function buscarActa(query) {
-    // alert(query)
      const {data} = await Axios.get(`/acta?`+ query);
      return data;
  }
@@ -55,25 +52,14 @@ export const Acta = () => {
           try {
               let query =  await  queryString.stringify({busqueda,page, limit});
               let actas = await buscarActa(query)
-              console.log(actas);
               setActas({rows:actas})
               settotalItemsCount(actas.length)
-          } catch (error) {
-              alert('Ocurrio un error')
-              console.log(error);
+          } catch (e) {
+            toastr.error('Actas', e.message, {position: 'top-center'})
           }
       }
       init();
   }, []);
-  
-
-  /*const buscarActaFilter = async (e) => {
-
-    e.preventDefault();
-    let query =  await  queryString.stringify({ busqueda, page, limit});
-    let actas = await buscarActa(query)
-    setActas({rows:actas})
-  }*/
 
   const descarxls = () => {
 
@@ -90,10 +76,9 @@ export const Acta = () => {
 
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber)
-    //alert(pageNumber)
     setactivePage(pageNumber)
     setPage(pageNumber)
-    console.log(`active page is ${pageNumber}`);
+
     let query =  await  queryString.stringify({ busqueda, page:pageNumber, limit});
     let actas= await buscarActa(query)
     setActas({rows:actas})
@@ -177,8 +162,6 @@ export const Acta = () => {
                 }
             });
             valorFiltros = $.param(filtros);
-            console.log('valorFiltros');
-            console.log(valorFiltros);
         }
         ejecutarPlanosFilter(valorFiltros);
     }
@@ -204,8 +187,6 @@ export const Acta = () => {
                     [e.target.name]: e.target.value
                 });
         }
-        //TODO: remover console
-        console.log(filtros);
         
     }
 
@@ -291,11 +272,11 @@ export const Acta = () => {
                             )}  
                             </div>
                             <div className="col-lg-8">
+                                <button type="button" onClick={buscarActaFilter} className="btn btn-info pull-right btn-sm fullborder">
+                                    <i className="fa fa-search"></i> Aplicar Filtro(s)
+                                </button>
                                 <button type="button" onClick={limpiarActaFilter} className="btn btn-default pull-right btn-sm fullborder">
                                     <i className="fa fa-eraser"></i> Limpiar Filtro(s)
-                                </button>
-                                <button type="button" onClick={buscarActaFilter} className="btn btn-info pull-right  btn-sm  fullborder">
-                                    <i className="fa fa-search"></i> Aplicar Filtro(s)
                                 </button>
                             </div>
                             <div className="col-lg-4">
@@ -325,7 +306,7 @@ export const Acta = () => {
                     <Pagination
                         activePage={activePage}
                         itemsCountPerPage={limit}
-                        totalItemsCount={totalItemsCount}
+                        totalItemsCount={parseInt(totalItemsCount)}
                         pageRangeDisplayed={3}
                         onChange={handlePageChange}
                     ></Pagination>

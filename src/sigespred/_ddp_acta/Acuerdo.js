@@ -6,6 +6,8 @@ import { initAxiosInterceptors } from "../../config/axios";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {LISTADO_ACUERDO_BREADCRUM} from "../../config/breadcrums";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
+import * as helperGets from "../../components/helpers/LoadMaestros";
+import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import RowAcuerdo from "./RowAcuerdo";
 import TableAcuerdo from "./TableAcuerdo";
@@ -13,7 +15,6 @@ import Pagination from "react-js-pagination";
 import MParticipante from "./MParticipante";
 import { toastr } from "react-redux-toastr";
 const queryString = require('query-string');
-//import GridEquipo from "../m000_common/grids/GridEquipo";
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -29,10 +30,9 @@ const obtenerEquipo = async () => {
     return {equipo};
   };
 
-export const Acuerdo = () => {
+const Acuerdo = () => {
 
   async function buscarAcuerdo(query) {
-    // alert(query)
      const {data} = await Axios.get(`/actaproceso?`+ query);
      return data;
  }
@@ -55,6 +55,7 @@ export const Acuerdo = () => {
   const [contentMessage, set_contentMessage] = useState('');
 
   const resListaEquipos = useAsync(obtenerEquipo, []);
+  const listaEstadoActividad = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOACTAACUERDO]);
 
   useEffect(() => {
       async function init() {
@@ -63,12 +64,10 @@ export const Acuerdo = () => {
 
               let query =  await  queryString.stringify({busqueda,page, limit});
               let acuerdo = await buscarAcuerdo(query)
-              console.log(acuerdo);
               setAcuerdos(acuerdo)
               settotalItemsCount(acuerdo.count)
-          } catch (error) {
-              alert('Ocurrio un error')
-              console.log(error);
+          } catch (e) {
+                toastr.error('Acuerdos', e.message, {position: 'top-center'})
           }
       }
       init();
@@ -168,7 +167,6 @@ const limpiarAcuerdoFilter =(e)=>{
 
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber)
-    //alert(pageNumber)
     setactivePage(pageNumber)
     setPage(pageNumber)
     console.log(`active page is ${pageNumber}`);
@@ -193,26 +191,16 @@ const limpiarAcuerdoFilter =(e)=>{
         setMostrarPartPopup(true);
     }
 
-    const checkFinalizo = (key,e) => {
-        const { checked } = e.target
-        actividades.ActaParticipante[key].estadocomp = checked ? 'CUMPLIDO' : null ;
-    };
-
-    const handleUpdateClick = async (e) => {
+    const handleUpdateClick = async (e, actividad) => {
         e.preventDefault();
-        console.log(actividades);
-        //actividades.ActaParticipante.forEach(async (item,i) => {
-            try {
-                await updateEstado(actividades.ActaParticipante[0]);
-                //if(actividades.ActaParticipante.length ==  i+1){
-                    toastr.success('Estado de compromiso', 'Se registro correctamente.');
-                    cerrarPartModal();
-                //}
-            }
-            catch (e) {
-                alert(e.message)
-            }
-        //});
+        try {
+            await updateEstado(actividad);
+            toastr.success('Estado de compromiso', 'Se registro correctamente.');
+            cerrarPartModal();
+        }
+        catch (e) {
+            alert(e.message)
+        }
     }
 
     function handleInputChange(e) {
@@ -361,11 +349,11 @@ const limpiarAcuerdoFilter =(e)=>{
                             )}  
                             </div>
                             <div className="col-lg-8">
-                                <button type="button" onClick={limpiarAcuerdoFilter} className="btn btn-default pull-right btn-sm fullborder">
-                                    <i className="fa fa-eraser"></i> Limpiar Filtro(s)
-                                </button>
                                 <button type="button" onClick={buscarAcuerdoFilter} className="btn btn-info pull-right  btn-sm  fullborder">
                                     <i className="fa fa-search"></i> Aplicar Filtro(s)
+                                </button>
+                                <button type="button" onClick={limpiarAcuerdoFilter} className="btn btn-default pull-right btn-sm fullborder">
+                                    <i className="fa fa-eraser"></i> Limpiar Filtro(s)
                                 </button>
                             </div>
                             <div className="col-lg-4">
@@ -396,7 +384,7 @@ const limpiarAcuerdoFilter =(e)=>{
                             <Pagination
                                 activePage={activePage}
                                 itemsCountPerPage={limit}
-                                totalItemsCount={totalItemsCount}
+                                totalItemsCount={parseInt(totalItemsCount)}
                                 pageRangeDisplayed={3}
                                 onChange={handlePageChange}
                             ></Pagination>
@@ -406,7 +394,8 @@ const limpiarAcuerdoFilter =(e)=>{
                     }
                 
             </div>
-            {mostrarPartPopup && <MParticipante closeventana={cerrarPartModal} codacta={codPlanoPopup} participante={participantesPopup} checkFinalizo={checkFinalizo} handleUpdateClick={handleUpdateClick}/>}
+            {mostrarPartPopup && <MParticipante closeventana={cerrarPartModal} codacta={codPlanoPopup} participante={participantesPopup} 
+                                handleUpdateClick={handleUpdateClick} listadovalores={listaEstadoActividad} />}
           </WraperLarge>  
     </>
 );

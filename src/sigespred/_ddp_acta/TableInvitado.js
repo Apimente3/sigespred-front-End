@@ -1,31 +1,33 @@
 import React from 'react';
 
-const TableAgenda = ({cabecera, data=[], deleteTema}) => {
+const TableInvitado = ({data=[], deleteinvitado}) => {
+    const cabecera = ["ID", "NOMBRE", "ÁREA O ENTIDAD","ACCIONES"];
     return (
         <>
-            <table className="table table-bordered table-condensed table-hover table-striped" id="dataTableActividad">
+            <table className="table table-bordered table-condensed table-hover table-striped" id="dataTableInvitado">
                 <thead>
                 <tr>
-                    { cabecera.map((cabeza,i)=>(
-                        <th key={i}>{cabeza}</th>
+                    { cabecera.map((item,i)=>(
+                        <th key={i}>{item}</th>
                     ))
                     }
                 </tr>
                 </thead>
                 <tbody>
                 {
-                    data.map((user, key) => (
+                    data.map((invitado, key) => (
                         
                             <tr key={key}>
-                                <td>{key+1}</td>
-                                <td>{user.tema}</td>
-                                <td className="acciones-1bot pull-center">
+                                <td key={`td_${key}_1`}>{key+1}</td>
+                                <td key={`td_${key}_2`}>{invitado.nombreinvitado}</td>
+                                <td key={`td_${key}_3`}>{invitado.areaentidad}</td>
+                                <td key={`td_${key}_4`} className="acciones-1bot pull-center">
                                     <div className="btn-group">
 
                                         <button className="btn btn-xs btn-default" type="button">
                                         <i
                                             className="fa fa-trash-o fa-lg"
-                                            onClick={() => deleteTema(key)}
+                                            onClick={() => deleteinvitado(invitado.id)}
                                         />
                                         </button>
                                     </div>
@@ -41,4 +43,4 @@ const TableAgenda = ({cabecera, data=[], deleteTema}) => {
     );
 };
 
-export default TableAgenda;
+export default TableInvitado;

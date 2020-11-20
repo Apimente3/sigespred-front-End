@@ -1,12 +1,32 @@
 import React,{useState,useEffect} from 'react';
 import {Link} from "react-router-dom";
+import { toastr } from "react-redux-toastr";
+import ComboOptions from "../../components/helpers/ComboOptions";
 
-const MParticipante = ({closeventana, codacta, participante, checkFinalizo, handleUpdateClick}) => { 
+const MParticipante = ({closeventana, codacta, participante, handleUpdateClick, listadovalores}) => { 
     
     const closeModal=()=>{      
         closeventana(false);
     }
-    
+
+    const ejecutarUpdate=(e)=> {
+        if (!participantePopup.estadocomp) {
+            toastr.warning('Actualizar Actividad', 'Es necesario seleccionar un estado', {position: 'top-center'});
+            return;
+        }
+
+        handleUpdateClick(e, participantePopup)
+    }
+
+    const [participantePopup, setParticipantePopup] = useState(participante[0]);
+
+    function handleInputChange(e) {
+        setParticipantePopup({
+            ...participantePopup,
+            [ e.target.name ]: e.target.value
+        });
+        
+    }
 
     return (
         <>
@@ -39,7 +59,7 @@ const MParticipante = ({closeventana, codacta, participante, checkFinalizo, hand
                                                     <th key="descripcion">DESCRIPCION</th>
                                                     <th key="fechainicio">FECHA INICIO</th>
                                                     <th key="fechacomp">FECHA COMP.</th>
-                                                    <th key="finalizo">FINALIZO</th>
+                                                    <th key="finalizo">ESTADO</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -52,17 +72,46 @@ const MParticipante = ({closeventana, codacta, participante, checkFinalizo, hand
                                                             <td key={`descripcion_${item.descripcion}`}>{item.descripcion}</td>
                                                             <td key={`fechainicio_${item.fechainicio}`}>{item.fechainicio}</td>
                                                             <td key={`fechacomp_${item.fechacomp}`}>{item.fechacomp}</td>
-                                                            <td key={`estado_${item.estadocomp}`}><input type="checkbox" name="finalizo" onChange={(e) => checkFinalizo(i,e)} defaultChecked={item.estadocomp=='CUMPLIDO'? true: false}/></td>
+                                                            <td key={`estado_${item.estadocomp}`}>{item.estadocomp}</td>
                                                         </tr>)
                                             })}
                                             </tbody>
                                         </table>
                                     </div>
+                                    <div className="form-group">
+                                        <label className="col-lg-4 control-label">
+                                            <span className="obligatorio">* </span>Estado
+                                        </label>
+                                        <div className="col-lg-8">
+                                            <select className="form-control input-sm" id="estadocomp" name="estadocomp"
+                                            value={participantePopup.estadocomp || ""}
+                                            onChange={handleInputChange}
+                                            >
+                                                <option value="">--SELECCIONE--</option>
+                                                {listadovalores.result &&
+                                                    <ComboOptions data={listadovalores.result} valorkey="valorcodigo" valornombre="valortexto"/>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="col-lg-4 control-label">
+                                            Observación
+                                        </label>
+                                        <div className="col-lg-8">
+                                            <input type="text" className="form-control input-sm uppercaseinput" id="observacion" name="observacion"
+                                            placeholder="Ingrese alguna observación o comentario"
+                                            autoComplete = "off"
+                                            value={participantePopup.observacion || ""}
+                                            onChange={handleInputChange}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div className="modal-footer">
-                                    <button class="btn btn-sm btn-info" type="button" onClick={(e) => handleUpdateClick(e)}><i
-                                        class="fa fa-plus fa-lg"
+                                    <button className="btn btn-sm btn-info" type="button" onClick={(e) => ejecutarUpdate(e)}><i
+                                        className="fa fa-plus fa-lg"
                                     /> Actualizar </button>
                                     <button onClick={closeModal} type="button"
                                             className="btn btn-default btn-sm btn-control">Cancelar

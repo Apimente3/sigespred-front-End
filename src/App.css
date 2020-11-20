@@ -294,6 +294,10 @@ legend {
     text-align: center;
 }
 
+.pull-center {
+    text-align: center;
+}
+
 .ant-modal-centered::before {
     display: inline-block;
     width: 0;
@@ -598,8 +602,20 @@ legend {
     margin-bottom: 10px;
 }
 
+.mbot-20 {
+    margin-bottom: 20px;
+}
+
 .acciones-3bot {
     width: 105px;
+}
+
+.acciones-2bot {
+    width: 90px;
+}
+
+.acciones-1bot {
+    width: 75px;
 }
 
 .footer {

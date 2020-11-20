@@ -6,15 +6,14 @@ import {initAxiosInterceptors} from "../../config/axios";
 import { toastr } from "react-redux-toastr";
 import { useAsync } from "react-async-hook";
 import ComboOptions from "../../components/helpers/ComboOptions";
-import Autocomplete from '../../components/helpers/Autocomplete';
+import MAddEditInvitado from "./MAddEditInvitado";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
-import { useDispatch, useSelector } from "react-redux";
 import TableActividad from "./TableActividad";
 import TableParticipante from "./TableParticipante";
 import TableAgenda from "./TableAgenda";
+import TableInvitado from "./TableInvitado";
 import { act } from "react-dom/test-utils";
-//import { agregar } from "../../actions/_ddp_partida/Actions";
 
 const { $ } = window;
 const Axios = initAxiosInterceptors();
@@ -61,6 +60,10 @@ const ActaAdd = ({ history }) => {
   const [agenda, set_agenda] = useState([]); 
   const [accion, set_accion] = useState('Agregar'); 
   const [listaactividades, set_listaactividades] = useState([]);
+  const [listaAsistencia, setListaAsitencia] = useState([]);
+  const [modalInvitado, setModalInvitado] = useState(false);
+  const [listaInvitados, setListaInvitados] = useState([]);
+  const listaTipoActividad = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOACTAACTIVIDAD]);
     
   const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"
@@ -77,8 +80,19 @@ const ActaAdd = ({ history }) => {
       toastr.warning(`Advertencia !!! Ingrese un tema de agenda como minimo.`);
       return;
     }
+
+    for(let item of actividades.ActaParticipante)  {
+        if(listaAsistencia.some(p => p.id === item.usuarioid)){
+            let elementoAsistencia = listaAsistencia.find(p => {return p.id === item.usuarioid});
+            item.asistencia = elementoAsistencia.asistencia;
+        }
+    }
+    
+    acta.asistentes = listaAsistencia;
+    acta.invitados = listaInvitados;
     acta.ActaParticipante=actividades.ActaParticipante;
-    //console.log(acta);
+
+    $('#btnguardar').button('loading');
     try {
         await addActa(acta);
         toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'})
@@ -86,8 +100,9 @@ const ActaAdd = ({ history }) => {
 
     }
     catch (e) {
-        alert(e.message)
+        toastr.error('Registro de Acta', e.message, {position: 'top-center'})
     }
+    $('#btnguardar').button('reset');
   }
 
   const calculateTimeLeft = () => {
@@ -116,7 +131,6 @@ const ActaAdd = ({ history }) => {
     async function init() {
         try {
           let generarcodigo = await getCodigoActa();
-          console.log(generarcodigo[0].codigo);
           const toastrConfirmOptions = {
             onOk: () => {
               set_Codigoacta(generarcodigo[0].codigo);
@@ -126,18 +140,17 @@ const ActaAdd = ({ history }) => {
           };
           toastr.confirm(`Se registrará el acta 
                           nro ${generarcodigo[0].codigo}`, toastrConfirmOptions);
-        } catch (error) {
-            alert('Ocurrio un error')
-            console.log(error);
+        } catch (e) {
+            toastr.error('Actualización del acta', e.message, {position: 'top-right'})
         }
     }
     init();
 }, []);
 
  
-  const limpiarForm = () => {
-    set_Acta({});
-  };
+//   const limpiarForm = () => {
+//     set_Acta({});
+//   };
 
   const handleSelectChange = async (e) => {
     e.preventDefault();
@@ -182,7 +195,6 @@ const ActaAdd = ({ history }) => {
       set_profesionales({
           users: user
       });
-      console.log(profesionales);
       
     }else{
       set_Monitor('');
@@ -234,9 +246,35 @@ const ActaAdd = ({ history }) => {
     })
   }
 
+const updatevaluesinvitado=(invitado)=>{
+    setListaInvitados([...listaInvitados,invitado])
+    setModalInvitado(false);
+}
+
+const deleteInvitado = key => {
+    var data = $.grep(listaInvitados, function(e){
+        return e.id !== key;
+   });
+   setListaInvitados(data);
+
+};
+
+const cerrarModal=(estado)=>{
+    setModalInvitado(estado);
+}
+
+  const handleClickAddEditInvitado = (e) => {
+    setModalInvitado(true);
+  }
 
   const handleClick = (e) => {
-    if(accion == 'Agregar'){
+    if (!(participantes.usuarioid && participantes.actividad && participantes.descripcion && participantes.fechacomp &&
+        participantes.producto)) {
+        toastr.error('Actividades', 'Es necesario agregar todos los campos para la actividad', {position: 'top-center'});
+        return;
+    }
+
+    if(accion === 'Agregar'){
       set_actividades({
         ActaParticipante: [
            ...actividades.ActaParticipante,
@@ -255,6 +293,11 @@ const ActaAdd = ({ history }) => {
   }
 
   const handleClickTema = (e) => {
+      if (!tema.tema || tema.tema.trim() === "") {
+        toastr.error('Añadir Tema', 'El tema no puede ser un valor vacío', {position: 'top-right'})
+        return;
+      }
+    
     set_agenda(agenda => [...agenda, tema]);
     set_tema({tema:''});
   }
@@ -282,58 +325,64 @@ const ActaAdd = ({ history }) => {
   const checkAsistencia = (key,e) => {
     const { checked } = e.target
     profesionales.users[key].asistencia = checked;
-    //console.log(profesionales.users[key])
+    
+    if(listaAsistencia.some(p => p.id === profesionales.users[key].id)){
+        const nextState = listaAsistencia.map(p => p.id === profesionales.users[key].id ? { ...p, 'asistencia': profesionales.users[key].asistencia } : p);
+        setListaAsitencia(nextState);
+    } else{
+        setListaAsitencia([...listaAsistencia,{id: profesionales.users[key].id, asistencia: profesionales.users[key].asistencia} ])
+    }
   };
 
 
   return (
     <>
       <WraperLarge titleForm={`Registro del Acta Nro ${codigoacta}`} listbreadcrumb={REGISTRO_ACTA_BREADCRUM}>
-        
-          <fieldset className="mleft-20"><legend>Agenda</legend>
+
+        <fieldset className="mleft-20">
+            <legend>Agenda</legend>
             <div className="form-group col-lg-6">
-              <div className="form-group">
-                <label className="col-lg-4 control-label"><span className="obligatorio">* </span>
+                <div className="form-group">
+                    <label className="col-lg-4 control-label"><span className="obligatorio">* </span>
                     Tema</label>
-                <div className="col-lg-8">
-                  <input mayuscula="true" required
-                      className="form-control input-sm " type="text"
-                      id="tema"
-                      name="tema"
-                      placeholder="Ingrese el tema de agenda"
-                      value={tema.tema}
-                      onChange={handleInputChangeTema}
-                      >
-                  </input>
-                </div>
-              </div>
-              <div className="form-group">
-                <div class="col-lg-12 text-right">
-                  <button class="btn btn-sm btn-info" type="button" onClick={handleClickTema}><i
-                                        class="fa fa-plus fa-lg"
-                                    /> Añadir Tema </button>
-                </div>
-              </div> 
+                    <div className="col-lg-8">
+                        <input mayuscula="true" required
+                            className="form-control input-sm " type="text"
+                            id="tema"
+                            name="tema"
+                            placeholder="Ingrese el tema de agenda"
+                            value={tema.tema}
+                            onChange={handleInputChangeTema}
+                            >
+                        </input>
+                    </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="col-lg-12 text-right">
+                            <button className="btn btn-sm btn-info" type="button" onClick={handleClickTema}>
+                                <i className="fa fa-plus fa-lg" /> Añadir Tema</button>
+                        </div>
+                </div> 
             </div>
             <div className="form-group col-lg-6">
-            <div className="col-lg-2"></div>
-              <div className="col-lg-10">
-                  <div class="panel panel-default">
+                <div className="col-lg-2"></div>
+                <div className="col-lg-10">
+                    <div className="panel panel-default">
                     <TableAgenda 
-                      cabecera={cabeceraTema} 
-                      data={agenda}
-                      deleteTema={deleteTema}>
+                        cabecera={cabeceraTema} 
+                        data={agenda}
+                        deleteTema={deleteTema}>
                     </TableAgenda>
-                  </div>
-                  
+                    </div>
                 </div>
             </div>
-          </fieldset>
+        </fieldset>
+
           <form onSubmit={registrar}>
             <fieldset className="mleft-20" disabled={agenda.length > 0 ? false: true}><legend>Equipos</legend>
-            <div class="col-lg-offset-1 col-lg-10 text-center">
-                <div class="form-group col-md-1 text-center"></div>
-                <div class="form-group col-md-3 text-center">
+            <div className="col-lg-offset-1 col-lg-10 text-center">
+                <div className="form-group col-md-1 text-center"></div>
+                <div className="form-group col-md-3 text-center">
                     <label className="control-label"><span className="obligatorio">* </span>Equipo</label>
                     <select
                       className="form-control input-sm-3"
@@ -356,18 +405,18 @@ const ActaAdd = ({ history }) => {
                       )}
                     </select>
                 </div>
-                <div class="form-group col-md-1 text-center"></div>
-                <div class="form-group col-md-3 text-center">
+                <div className="form-group col-md-1 text-center"></div>
+                <div className="form-group col-md-3 text-center">
                     <label className="control-label">Monitor</label>
                     <input mayuscula="true" 
                       className="form-control input-sm-3" type="text"
                       id="monitor"
                       name="monitor"
-                      value={monitor}>
+                      value={monitor || ""}>
                     </input>
                 </div>
-                <div class="form-group col-md-1 text-center"></div>
-                <div class="form-group col-md-3 text-center">
+                <div className="form-group col-md-1 text-center"></div>
+                <div className="form-group col-md-3 text-center">
                     <label className="control-label"><span className="obligatorio">* </span>Medio</label>                    
                         <select
                         className="form-control input-sm-3"
@@ -383,35 +432,49 @@ const ActaAdd = ({ history }) => {
                         </select>
                 </div>
                 </div>
-                <div class="col-lg-offset-1 col-lg-10 text-center">
-                  <div class="form-group col-md-4 text-center">
+                <div className="col-lg-offset-1 col-lg-10 text-center">
+                  <div className="form-group col-md-4 text-center">
                     <label className="control-label"><i
-                                        class="fa fa-calendar fa-2x"
+                                        className="fa fa-calendar fa-2x"
                                     /> {` ${fecha.getDate()} ${meses[fecha.getMonth()]}`}</label>
                   </div>
-                  <div class="form-group col-md-4 text-center">
+                  <div className="form-group col-md-4 text-center">
                     <label className="control-label"><i
-                                        class="fa fa-clock-o fa-2x"
+                                        className="fa fa-clock-o fa-2x"
                       /> Hora de inicio : {`${('0' + fecha.getHours()).slice(-2)} : ${('0' + fecha.getMinutes()).slice(-2)} : ${('0' + fecha.getSeconds()).slice(-2)}`}</label>
                   </div>
-                  <div class="form-group col-md-4 text-center">
+                  <div className="form-group col-md-4 text-center">
                     <label className="control-label"><i
-                                        class="fa fa-hourglass-half fa-2x"
+                                        className="fa fa-hourglass-half fa-2x"
                                     /> Duración : {`${('0' + timeLeft.hours).slice(-2)} : ${('0' + timeLeft.mins).slice(-2)} : ${('0' + timeLeft.seconds).slice(-2)}`}</label>
                   </div>
                 </div>
             </fieldset>
             
             <fieldset className="mleft-20" disabled={agenda.length > 0 ? false: true}><legend>Participantes</legend>
-            <div className="panel panel-default">
-            <TableParticipante  
-                data={profesionales.users}
-                checkAsistencia={checkAsistencia}>
-            </TableParticipante>                   
-											
-													
-            </div>
+                <div className="panel panel-default">
+                    <TableParticipante  
+                        data={profesionales.users}
+                        checkAsistencia={checkAsistencia}>
+                    </TableParticipante>                                       
+                </div>
             </fieldset>
+
+            <fieldset className="mleft-20 mbot-20" disabled={agenda.length > 0 ? false: true}><legend>Invitados</legend>
+                <div>
+                    <div className="col-lg-10">
+                        <TableInvitado 
+                            data={listaInvitados}
+                            deleteinvitado={deleteInvitado}>
+                        </TableInvitado>
+                    </div>
+                    <div className="col-lg-2 text-right">
+                        <button className="btn btn-sm btn-info" type="button" value={accion} onClick={handleClickAddEditInvitado}>
+                            <i className="fa fa-user-plus fa-lg"/> Añador Invitado</button>
+                    </div>
+                </div>
+            </fieldset>
+
             <fieldset className="mleft-20" disabled={agenda.length > 0 ? false: true}><legend>Actividades</legend>
 
             <div className="form-group">
@@ -430,20 +493,16 @@ const ActaAdd = ({ history }) => {
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                     Actividad</label>
                 <div className="col-lg-4">
-                <input type="text" list="data" 
-                  className="form-control"
-                  id="actividad" 
-                  name="actividad" 
-                  required 
-                  placeholder="Ingrese la actividad"
-                  value={participantes.actividad}
-                  onChange={handleInputChangePart}
-                  />
-                  <datalist id="data">
-                    {listaactividades.map((item, key) =>
-                      <option key={key} value={item.actividad} />
-                    )}
-                  </datalist>
+                  <select className="form-control input-sm" id="actividad" name="actividad" 
+                      onChange={handleInputChangePart}
+                      value={participantes.actividad || ""}
+                      >
+                      <option value="">--SELECCIONE--</option>
+                      {listaTipoActividad.result ? 
+                        <ComboOptions data={listaTipoActividad.result} valorkey="valorcodigo" valornombre="valortexto" /> 
+                        : "Cargando..."}
+                      
+                  </select>
                   
                 </div>
             </div>
@@ -494,7 +553,7 @@ const ActaAdd = ({ history }) => {
                   
                 </div>
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
-                    Producto a Entrega</label>
+                    Producto a Entregar</label>
                 <div className="col-lg-4">
                   <input mayuscula="true" required
                       className="form-control input-sm " type="text"
@@ -510,9 +569,9 @@ const ActaAdd = ({ history }) => {
             
             <div className="form-group">
                 
-              <div class="col-lg-10 text-right">
-                  <button class="btn btn-sm btn-info" type="button" value={accion} onClick={handleClick}><i
-                                        class="fa fa-plus fa-lg"
+              <div className="col-lg-10 text-right">
+                  <button className="btn btn-sm btn-info" type="button" value={accion} onClick={handleClick}><i
+                                        className="fa fa-plus fa-lg"
                                     /> {accion} Actividad </button>
               </div>
             </div>
@@ -529,24 +588,17 @@ const ActaAdd = ({ history }) => {
             <div className="panel-body">
               <div className="form-group ">
                 <div className="col-lg-offset-2 col-lg-10 text-right">
-                  <button
-                    id="btnguardar"
-                    type="submit"
-                    className="btn btn-danger btn-sm btn-control"
-                  >
-                    Guardar
-                  </button>
-                  <Link
-                    to={`/acta-list`}
-                    className="btn btn-default btn-sm btn-control"
-                  >
-                    Cancelar
-                  </Link>
+                    <Link to={`/acta-list`} className="btn btn-default btn-sm btn-control" >
+                        Cancelar
+                    </Link>
+                    <button id="btnguardar" type="submit" className="btn btn-danger btn-sm btn-control" >
+                        Guardar
+                    </button>
                 </div>
               </div>
             </div>
-           
         </form>
+        {modalInvitado && <MAddEditInvitado closeventana={cerrarModal} usevalue={updatevaluesinvitado} /> }
       </WraperLarge>
     </>
   );
