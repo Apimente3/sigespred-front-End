@@ -61,8 +61,6 @@ const DocInternoAdd = ({ history }) => {
   // }, []);
 
   const registrar = async (e) => {
-    console.log("*******************************************");
-    console.log(documentosInternos);
     e.preventDefault();
     try {
       await saveDocumentosInternos(documentosInternos);

@@ -2,7 +2,7 @@ import React,{useEffect} from 'react';
 import {Link} from "react-router-dom";
 const {$} = window;
 
-const RowAcuerdo = ({acuerdo,nro,loadParticipantes}) => {
+const RowAcuerdo = ({acuerdo,nro,loadParticipantes, showaction=true}) => {
 
     useEffect(() => {
         const init = async () => {
@@ -41,16 +41,19 @@ const RowAcuerdo = ({acuerdo,nro,loadParticipantes}) => {
                 <td key={`td_11_${nro}`}>{acuerdo.fechacomp}</td>
                 <td key={`td_12_${nro}`}>{alerta}</td>
                 <td key={`td_13_${nro}`}>{acuerdo.estadocomp}</td>
-                <td key={`btnaccion_${nro}`}>
-                    <div className="btn-group pull-right" key={`div_${nro}`}>
-                        <button className="btn btn-xs btn-default cursorpointer" type="button" data-toggle="tooltip" key={`btn_${nro}`}
-                        data-original-title={ "Actualizar estados de compromiso" }>
-                            <i className="fa fa-check-circle fa-lg" key={`i_${nro}`}
-                                onClick={() => cargarPartPopup(acuerdo.codigoacta, acuerdo)}
-                            />
-                        </button>
-                    </div>
-                </td>
+                {
+                    showaction &&
+                        <td key={`btnaccion_${nro}`}>
+                            <div className="btn-group pull-right" key={`div_${nro}`}>
+                                <button className="btn btn-xs btn-default cursorpointer" type="button" data-toggle="tooltip" key={`btn_${nro}`}
+                                data-original-title={ "Actualizar estados de compromiso" }>
+                                    <i className="fa fa-check-circle fa-lg" key={`i_${nro}`}
+                                        onClick={() => cargarPartPopup(acuerdo.codigoacta, acuerdo)}
+                                    />
+                                </button>
+                            </div>
+                        </td>
+                }
             </tr>
         </>
     );
