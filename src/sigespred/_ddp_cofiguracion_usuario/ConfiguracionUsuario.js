@@ -22,13 +22,18 @@ class ConfiguracionUsuario extends Component {
                             <Tab>
                                 Perfil
                             </Tab>
-
+                            <Tab>
+                                Mis Actividades Diarias
+                            </Tab>
                         </TabList>
                         <TabPanel>
                             <CambiarContrasenia></CambiarContrasenia>
                         </TabPanel>
                         <TabPanel>
                             <h1>En construccion</h1>
+                        </TabPanel>
+                        <TabPanel>
+                            <h1>Mis Actividades del dia -  Felix Miranda</h1>
                         </TabPanel>
 
                     </Tabs>

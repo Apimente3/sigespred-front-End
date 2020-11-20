@@ -291,6 +291,7 @@ const SolicitudList = ({history}) => {
                     </div>
                 </div>
             </div>
+            
             <div className="mt-4 form-group">
                 <div className="row">
                     <div className="col-md-6">

@@ -22,6 +22,7 @@ import RouterModOrdenServicio from './_ddp_RouterModOrdenServicio';
 import RouterModConfUsuario from './_ddp_RouteConfUsuario';
 
 import RouteModTramo from './_ddp_RouteModTramo';
+import RouteModPredio from './_ddp_RouteModPredio';
 
 export default [
     ...RouteMod01Login,
@@ -34,6 +35,7 @@ export default [
     ...RouteModDocumentosInternos,
     ...RouterModOrdenServicio,
     ...RouterModConfUsuario,
+    ...RouteModPredio,
 
 
     ...RouteMod02GestionTrabajadores,
