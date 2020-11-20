@@ -6,6 +6,7 @@ import TrabajadorAdd from "../m002_gestion_trabajadores/m002_01_trabajadores/Tra
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import {toastr} from "react-redux-toastr";
+import { MisActividades } from "../m002_gestion_trabajadores/m002_01_trabajadores/MisActividades";
 
 
 class ConfiguracionUsuario extends Component {
@@ -33,7 +34,8 @@ class ConfiguracionUsuario extends Component {
                             <h1>En construccion</h1>
                         </TabPanel>
                         <TabPanel>
-                            <h1>Mis Actividades del dia -  Felix Miranda</h1>
+                            <MisActividades></MisActividades>
+                            
                         </TabPanel>
 
                     </Tabs>
