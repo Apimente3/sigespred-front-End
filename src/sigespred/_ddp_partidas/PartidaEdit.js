@@ -18,6 +18,8 @@ const directorioPartidas = "FilesDDP/Partidas";
 
 const obtenerPartida = async (id) => {
   const { data } = await axios.get(`/partidaregistral?id=${id}`);
+  console.log('--------------------------------')
+  console.log(id);
   return data;
 };
 
@@ -30,7 +32,8 @@ const PartidaEdit = ({ history, match }) => {
   ]);
   const [partidaEditado, set_partidaEditado] = useState({});
   const [dataTramo, setDataTramo] = useState(null);
-  const { id } = useParams();
+  //const { id } = useParams();
+  const {id} = match.params;
 
   function handleInputChange(e) {
     if (e.target.name) {
