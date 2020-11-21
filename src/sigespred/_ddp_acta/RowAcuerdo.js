@@ -2,7 +2,7 @@ import React,{useEffect} from 'react';
 import {Link} from "react-router-dom";
 const {$} = window;
 
-const RowAcuerdo = ({acuerdo,nro,loadParticipantes, showaction=true}) => {
+const RowAcuerdo = ({acuerdo,nro,loadParticipantes, showaction=false}) => {
 
     useEffect(() => {
         const init = async () => {
@@ -42,7 +42,7 @@ const RowAcuerdo = ({acuerdo,nro,loadParticipantes, showaction=true}) => {
                 <td key={`td_12_${nro}`}>{alerta}</td>
                 <td key={`td_13_${nro}`}>{acuerdo.estadocomp}</td>
                 {
-                    showaction &&
+                    !showaction &&
                         <td key={`btnaccion_${nro}`}>
                             <div className="btn-group pull-right" key={`div_${nro}`}>
                                 <button className="btn btn-xs btn-default cursorpointer" type="button" data-toggle="tooltip" key={`btn_${nro}`}
