@@ -570,8 +570,16 @@ legend {
     margin-top: 50px;
 }
 
+.mtop-35 {
+    margin-top: 35px;
+}
+
 .mtop-25 {
     margin-top: 25px;
+}
+
+.mtop-15 {
+    margin-top: 15px;
 }
 
 .mtop-10 {

@@ -1,0 +1,2 @@
+export const ACTUALIZAR_VALOR = 'ACTUALIZAR_VALOR';
+export const LEER_VALOR = 'LEER_VALOR';

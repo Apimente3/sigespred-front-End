@@ -80,7 +80,7 @@ export const REGISTRO_EQUIPO_BREADCRUM = [
 ]
 
 export const ACTUALIZAR_EQUIPO_BREADCRUM = [
-    {link: "../equipo-add", name: "Agregar Equipos"},,
+    {link: "../equipo-add", name: "Agregar Equipos"},
     {link: "../list-equipos2", name: "Listado de Equipos"},
     {link: "#", name: "Actualizar Equipo"}
 ]
@@ -225,4 +225,13 @@ export const LISTADO_TRAMOS_BREADCRUM = [
 export const REGISTRO_TRAMOS_BREADCRUM = [
     {link: "/gestionpredial", name: "Listado de Gestión Predial"},
     {link: "#", name: "Registro-Edición de Tramo"}
+]
+
+export const LISTADO_PREDIOS_BREADCRUM = [
+    {link: "#", name: "Listado de Predios"}
+]
+
+export const REGISTRO_PREDIOS_BREADCRUM = [
+    {link: "/predio-list", name: "Listado de Predios"},
+    {link: "#", name: "Registro de Predio"}
 ]

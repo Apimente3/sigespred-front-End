@@ -55,11 +55,11 @@ export const FilesUsuario={
 
 export const FilesGestionPredial={
     "FilesSolicitud":"FilesDDP/GestionPredial/Solicitudes",
-    "Files":"FilesDDP/GestionPredial/Files"
+    "Files":"FilesDDP/GestionPredial/Files",
+    "FilesPredios":"FilesDDP/GestionPredial/Predios"
 }
 
 
 export const FilesIndicador={
     "FilesIndicadores":"FilesDDP/GestionPredial/Indicadores",
 }
-
