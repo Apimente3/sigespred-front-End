@@ -9,6 +9,7 @@ import prediosReducers from "./prediosReducers";
 import sujetopasivoReducers from "./sujetopasivoReducers";
 import proyectoReducers from "./proyectoReducers";
 import expedienteReducers from "./expedienteReducers";
+import variableReducers from "./_variableReducers";
 
 export default combineReducers({
     plano: planoReducers,
@@ -20,5 +21,6 @@ export default combineReducers({
     sujetopasivo: sujetopasivoReducers,
     proyecto: proyectoReducers,
     expediente: expedienteReducers,
+    variable : variableReducers,
     toastr: toastrReducer
 });
