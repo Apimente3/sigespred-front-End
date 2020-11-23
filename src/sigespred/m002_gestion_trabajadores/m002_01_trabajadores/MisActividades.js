@@ -296,7 +296,7 @@ const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","ACTIVIDAD", "
                         <>
                         <TableAcuerdo cabecera={cabecerasTabla}>
                         {acuerdos.rows.map((acuerdo, i) => (
-                            <RowAcuerdo nro={i} acuerdo={acuerdo} loadParticipantes={cargarPopupParticipantes} showaction={true}  ></RowAcuerdo>
+                            <RowAcuerdo nro={i} acuerdo={acuerdo} loadParticipantes={cargarPopupParticipantes} showaction={true} notshowprofesional={true}  ></RowAcuerdo>
                         ))}
                         </TableAcuerdo>
                         <div className="panel-footer clearfix pull-right">
