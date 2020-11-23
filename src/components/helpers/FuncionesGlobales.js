@@ -28,7 +28,7 @@ export const helperObtenerRangoFechas = (fechas, fortmatotexto = false) => {
 }
 
 export const helperValidarFecha = (fecha, fortmatotexto = false) => {
-
+console.log('validacion formato fecha: ' + fecha)
     if(fecha){
         if (moment(fecha,'YYYY-MM-DD', true).isValid()){
             if(fortmatotexto){

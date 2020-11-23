@@ -3,19 +3,6 @@ import {Link} from "react-router-dom";
 
 const SubListaDelete = ({data, cabecera, deleterow}) => {
 
-    const sampleJSON = [
-        {
-          "descripcion": "Descripcion",
-          "digital": "hola.doc",
-          "memoria": ""
-        },
-        {
-            "lamina": "Lámina 1",
-            "digital": "hola.doc",
-            "memoria": "ddd"
-          }
-        ];
-
     const removerElemento = (idelem) => {
         deleterow(idelem)
     }
