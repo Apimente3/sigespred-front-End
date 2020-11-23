@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import { useAsync } from "react-async-hook";
 import {toastr} from 'react-redux-toastr';
 import TablePlano from "./TablePlano";
-import PredioLinks from "./PredioLinks";
 import PlanoRow from "./PlanoRow";
 import Pagination from "react-js-pagination";
 import {Link} from "react-router-dom";
@@ -14,8 +13,6 @@ import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import MArcDigital from './MArcDigital';
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {LISTADO_PLANO_BREADCRUM} from "../../config/breadcrums";
-import {useDispatch} from 'react-redux';
-import { actualizar } from '../../actions/_ddp_variable/Actions';
 
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
@@ -28,10 +25,6 @@ async function buscarPlano(query) {
  }
 
 const Planos = ({history}) => {
-    const dispatch = useDispatch();
-    const setIdPredioAccion = (variable) => dispatch(actualizar(variable));
-    setIdPredioAccion('20');
-
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const resListaTipoPlano = useAsync(helperGets.helperGetListTipoPlano, []);
     const resListaDepartmento = useAsync(helperGets.helperGetListDepartamento, []);
@@ -299,7 +292,6 @@ const Planos = ({history}) => {
     return (
         <>
         <WraperLarge titleForm={"Listado de Planos"} listbreadcrumb={LISTADO_PLANO_BREADCRUM}>
-            <PredioLinks></PredioLinks>
             <legend className="mleft-20"><i className="fa fa-filter"></i> Filtros de Búsqueda de Planos</legend>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Código de Plano</label>

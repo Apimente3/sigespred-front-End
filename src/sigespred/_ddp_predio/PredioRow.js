@@ -26,7 +26,7 @@ export const PredioRow = ( {predio, nro}) => {
                     <div key={`divrowkey_${nro}`} className="btn-group pull-right">
                         {/* <Link  to={`/solicitud-respuesta/${predio.id}`}  className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip" data-placement="bottom" data-original-title={ "Respuesta a Solicitud" }><i
                             className="fa fa-envelope fa-lg "></i></Link> */}
-                        <Link  to={`/solicitud-edit/${predio.id}`}  className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip" data-original-title={ "Editar Datos de Predio" }><i
+                        <Link  to={`/predio-gen-edit/${predio.id}`}  className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip" data-original-title={ "Editar Datos de Predio" }><i
                             className="fa fa-edit fa-lg"></i></Link>
                         {/* <a key={`arowkey_${nro}`} onClick={() => eliminar(solicitud.id, solicitud.nrooficio)}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Eliminar Solicitud" }><i
                             className="fa fa-trash-o fa-lg"></i></a> */}
