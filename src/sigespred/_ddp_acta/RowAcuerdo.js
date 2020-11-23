@@ -2,7 +2,7 @@ import React,{useEffect} from 'react';
 import {Link} from "react-router-dom";
 const {$} = window;
 
-const RowAcuerdo = ({acuerdo,nro,loadParticipantes, showaction=false}) => {
+const RowAcuerdo = ({acuerdo,nro,loadParticipantes, showaction=false, notshowprofesional=false} ) => {
 
     useEffect(() => {
         const init = async () => {
@@ -32,7 +32,9 @@ const RowAcuerdo = ({acuerdo,nro,loadParticipantes, showaction=false}) => {
                 <td key={`td_2_${nro}`}>{acuerdo.codigoacta}</td>
                 <td key={`td_3_${nro}`}>{acuerdo.denominacion}</td>
                 <td key={`td_4_${nro}`}>{acuerdo.equipo}</td>
-                {/* <td key={`td_5_${nro}`}>{acuerdo.usuario}</td> */}
+                {!notshowprofesional && 
+                    <td key={`td_5_${nro}`}>{acuerdo.usuario}</td>
+                }
                 <td key={`td_6_${nro}`}>{acuerdo.actividad}</td>
                 <td key={`td_7_${nro}`}>{acuerdo.producto}</td>
                 <td key={`td_8_${nro}`}>{acuerdo.descripcion}</td>
