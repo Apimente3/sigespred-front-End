@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Wraper from "../m000_common/formContent/Wraper";
+import Wraper from "../m000_common/formContent/WraperLarge";
 import {REGISTRO_EQUIPO_BREADCRUM} from "../../config/breadcrums";
 import { Link } from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";

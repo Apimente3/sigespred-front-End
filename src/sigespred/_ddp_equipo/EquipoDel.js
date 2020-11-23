@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { ELIMINAR_EQUIPO_BREADCRUM } from "../../config/breadcrums";
-import Wraper from "../m000_common/formContent/Wraper";
+import Wraper from "../m000_common/formContent/WraperLarge";
 //import {initAxiosInterceptors, serverFile} from '../../../config/axios';
 import {Link, useParams} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'

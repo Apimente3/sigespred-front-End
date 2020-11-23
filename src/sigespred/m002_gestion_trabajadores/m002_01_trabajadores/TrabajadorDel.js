@@ -1,7 +1,7 @@
 
 import React, {useState, useEffect, useRef} from 'react';
 import {ELIMINAR_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
-import Wraper from "../../m000_common/formContent/Wraper";
+import Wraper from "../../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";

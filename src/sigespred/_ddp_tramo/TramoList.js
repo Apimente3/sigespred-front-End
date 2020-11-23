@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {initAxiosInterceptors} from "../../config/axios";
-import Wraper from "../m000_common/formContent/Wraper";
+import Wraper from "../m000_common/formContent/WraperLarge";
 import {LISTADO_TRAMOS_BREADCRUM} from "../../config/breadcrums";
 import {useTable} from "../../hooks/useTable";
 import TableTramo  from "./TableTramo";

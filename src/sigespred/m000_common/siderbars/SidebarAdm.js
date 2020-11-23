@@ -6,7 +6,7 @@ class SidebarAdm extends Component {
     render() {
         return (
             <div>
-                <aside className="fixed skin-1">
+                <aside className="skin-1">
                     <div className="sidebar-inner scrollable-sidebar">
                         <div className="user-block clearfix">
                             <div className="detail">

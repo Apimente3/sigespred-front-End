@@ -3,7 +3,7 @@ import moment from "moment";
 import { useAsync } from "react-async-hook";
 import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
-import Wraper from "../m000_common/formContent/Wraper";
+import Wraper from "../m000_common/formContent/WraperLarge";
 import {LISTADO_AREA_BREADCRUM} from "../../config/breadcrums";
 import Pagination from "react-js-pagination";
 import TableArea from "./TableArea";

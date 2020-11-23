@@ -1,6 +1,6 @@
 import React, {useEffect, useState, createContext} from 'react';
 import {Link} from "react-router-dom";
-import Wraper from "../../m000_common/formContent/Wraper";
+import Wraper from "../../m000_common/formContent/WraperLarge";
 import {LISTADO_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
 import {initAxiosInterceptors, serverFile} from '../../../config/axios';
 import TableTrabajador from "./TableTrabajador";

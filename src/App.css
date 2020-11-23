@@ -781,6 +781,7 @@ legend {
 
 aside {
     width: 230px !important;
+    position: relative !important;
 }
 
 div.user-block > div > strong {
@@ -894,4 +895,12 @@ video {
     border: 0;
 }
 
-
+.bg-main {
+    background-image: url("img/bggob01.svg");
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

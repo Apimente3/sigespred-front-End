@@ -3,7 +3,7 @@ import moment from "moment";
 import { useAsync } from "react-async-hook";
 import { Link } from "react-router-dom";
 import { initAxiosInterceptors } from "../../config/axios";
-import Wraper from "../m000_common/formContent/Wraper";
+import Wraper from "../m000_common/formContent/WraperLarge";
 import {LISTADO_EQUIPO_BREADCRUM} from "../../config/breadcrums";
 import RowEquipo from "./RowEquipo";
 import TableEquipo from "./TableEquipo";
