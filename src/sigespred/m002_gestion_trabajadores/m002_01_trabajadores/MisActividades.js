@@ -58,7 +58,7 @@ useEffect(() => {
             setAcuerdos(acuerdo)
             settotalItemsCount(acuerdo.count)
         }catch (e) {
-                toastr.error('Acuerdos', e.message, {position: 'top-center'})
+                toastr.error('Mis Actividades', e.message, {position: 'top-center'})
         }
     }
     init();
@@ -68,7 +68,7 @@ useEffect(() => {
 const limpiarAcuerdoFilter =(e)=>{
     $('#fechainicio').val('');
     $('#fechafin').val('');
-    $('#alerta').val('');
+    
     $('#estadocomp').val('');
     
     set_filtros({});
@@ -115,6 +115,8 @@ function handleInputChange(e) {
 
 
 const ejecutarPlanosFilter=async (datosfiltro)=>{
+    console.log('------FMR------')
+    console.log(datosfiltro)
     set_busquedaLocal(true)
     setBusqueda(datosfiltro);
     await setPage(1)
@@ -127,11 +129,15 @@ const ejecutarPlanosFilter=async (datosfiltro)=>{
     setAcuerdos(listaAcuerdo)
     settotalItemsCount(listaAcuerdo.count)
     set_busquedaLocal(false)
+    
 }
 
 const buscarAcuerdoFilter = async (e) => {
 
     e.preventDefault();
+    console.log('FECHA INICIO: ' + filtros.fechainicio)
+    console.log('FECHA FIN: ' + filtros.fechafin)
+    
     
     if ((filtros.fechainicio && !filtros.fechafin) || (!filtros.fechainicio && filtros.fechafin)){
         set_contentMessage('El filtro Fecha de Creación, debe tener un inicio y fin');
@@ -203,16 +209,19 @@ const buscarAcuerdoFilter = async (e) => {
     setAcuerdos(acuerdo)
 }
 
-const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","PROFESIONAL","ACTIVIDAD", "PRODUCTO","DESCRIPCION","ASISTENCIA", "FECHA INCIO", "FECHA COMPROMISO","ALERTA","ESTADO"]
+const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","ACTIVIDAD", "PRODUCTO","DESCRIPCION","ASISTENCIA", "FECHA INCIO", "FECHA COMPROMISO","ALERTA","ESTADO"]
 
   return (
     <div>
+        <Row12 title={"Filtro de Busqueda"}>
+
+        
         <fieldset className={'fielsettext'}>
             <form>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">
                         Fecha de Inicio</label>
-                    <div className="col-lg-2">
+                    <div className="col-lg-4">
                     <input
                         style={{ lineHeight: "1.43" }}
                         type="date"
@@ -224,7 +233,7 @@ const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","PROFESIONAL",
                     </div>
                     <label className="col-lg-2 control-label">
                         Fecha de Fin</label>
-                    <div className="col-lg-2">
+                    <div className="col-lg-4">
                     <input
                         style={{ lineHeight: "1.43" }}
                         type="date"
@@ -239,7 +248,7 @@ const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","PROFESIONAL",
                 <label className="col-lg-2 control-label">
                         Estado
                     </label>
-                    <div className="col-lg-2">
+                    <div className="col-lg-4">
                         <select className="form-control input-sm" id="estadocomp" name="estadocomp"
                         // value={participantePopup.estadocomp || ""}
                         onChange={handleInputChange}
@@ -258,7 +267,7 @@ const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","PROFESIONAL",
                                 <label className="alert alert-danger">{contentMessage}</label>
                             )}  
                             </div>
-                            <div className="col-lg-8">
+                            <div className="col-lg-6">
                                 <button type="button" onClick={buscarAcuerdoFilter} className="btn btn-info pull-right  btn-sm  fullborder">
                                     <i className="fa fa-search"></i> Aplicar Filtro(s)
                                 </button>
@@ -266,16 +275,17 @@ const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","PROFESIONAL",
                                     <i className="fa fa-eraser"></i> Limpiar Filtro(s)
                                 </button>
                             </div>
-                            <div className="col-lg-4">
+                            {/* <div className="col-lg-4">
                                 <button type="button" onClick={descarxls}
                                         className="btn btn-default pull-right btn-sm fullborder">
                                     <i className="fa fa-file-excel-o"></i> Descargar Excel
                                 </button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
             </form>
         </fieldset>
+        </Row12>
         <Row12 title={"Mis Actividades"}>
             <div className="panel panel-default">
                 {
