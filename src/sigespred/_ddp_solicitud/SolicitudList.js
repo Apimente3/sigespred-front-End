@@ -125,41 +125,30 @@ const SolicitudList = ({history}) => {
             set_contentMessage('');
         }
 
-        if (filtros.fechainicio && filtros.fechafin){
-            let resultFechaInicio = funcGlob.helperValidarFecha(filtros.fechainicio, true);
-            let resultFechaFin = funcGlob.helperValidarFecha(filtros.fechafin, true);
+        let filtrosEnviar = Object.assign({}, filtros);
+
+        if (filtrosEnviar.fechainicio && filtrosEnviar.fechafin) {
+    
+            var resultFechaInicio = funcGlob.helperValidarFecha(filtrosEnviar.fechainicio, true);
+            var resultFechaFin = funcGlob.helperValidarFecha(filtrosEnviar.fechafin, true);
             
             if (resultFechaFin < resultFechaInicio) {
-                set_contentMessage('La Fecha de Elaboración de inicio no puede ser mayor a la de fin');
+                set_contentMessage('La Fecha de Creación de inicio no puede ser mayor a la de fin');
                 return;
             } else {
-                set_filtros({
-                    ...filtros,
-                    fechainicio: resultFechaInicio,
-                    fechafin: resultFechaFin
-                });
-                $.each(filtros, function(key, value){
-                    if (key === "fechainicio"){
-                        filtros[key] = resultFechaInicio;
-                    }
-                    if (key === "fechafin"){
-                        filtros[key] = resultFechaFin;
-                    }
-                });
-
+                filtrosEnviar.fechainicio = resultFechaInicio;
+                filtrosEnviar.fechafin = resultFechaFin;
             }
         }
 
         let valorFiltros = '';
-        if (filtros) {
-            $.each(filtros, function(key, value){
+        if (filtrosEnviar) {
+            $.each(filtrosEnviar, function(key, value){
                 if (value === "" || value === null){
-                    delete filtros[key];
+                    delete filtrosEnviar[key];
                 }
             });
-            valorFiltros = $.param(filtros);
-            console.log('valorFiltros');
-            console.log(valorFiltros);
+            valorFiltros = $.param(filtrosEnviar);
         }
         ejecutarSolicitudesFilter(valorFiltros);
     }

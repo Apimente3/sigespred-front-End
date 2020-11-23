@@ -32,7 +32,7 @@ const Planos = ({history}) => {
     const resListaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
     const resListaSolicitantes = useAsync(helperGets.helperGetListaLocadores, []);
 
-    const [filtros, set_filtros] = useState({});
+    const [filtros, setFiltros] = useState({});
     const [busquedaLocal, set_busquedaLocal] = useState(true);
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
@@ -98,20 +98,20 @@ const Planos = ({history}) => {
     function handleInputChange(e) {
         switch(e.target.name){
             case 'codplano':
-                set_filtros({
+                setFiltros({
                     ...filtros,
                     [e.target.name]: e.target.value.toUpperCase()
                 });
                 break;
             case 'gestionpredialid':
-                set_filtros({
+                setFiltros({
                     ...filtros,
                     [e.target.name]: e.target.value,
                     tramoid: ''
                 });
                 break;
             case 'departamentoid':
-                set_filtros({
+                setFiltros({
                     ...filtros,
                     [e.target.name]: e.target.value,
                     provinciaid: '',
@@ -119,30 +119,26 @@ const Planos = ({history}) => {
                 });
                 break;
                 case 'provinciaid':
-                    set_filtros({
+                    setFiltros({
                         ...filtros,
                         [e.target.name]: e.target.value.toUpperCase(),
                         distritoid: ''
                     });
                     break;
             default:
-                set_filtros({
+                setFiltros({
                     ...filtros,
                     [e.target.name]: e.target.value
                 });
         }
-        //TODO: remover console
-        console.log(filtros);
-        
     }
 
     function setSolicitante(idLocador, nameLocador) {
         setReiniciarSolicitante(false);
-        set_filtros({
+        setFiltros({
             ...filtros,
             profesionalid: idLocador
         });
-        console.log(filtros);
     }
 
     const limpiarPlanosFilter =(e)=>{
@@ -158,7 +154,7 @@ const Planos = ({history}) => {
         handleChangeProyecto('');
         handleChangeDepartmento('');
         
-        set_filtros({});
+        setFiltros({});
         setReiniciarSolicitante(true);
         ejecutarPlanosFilter('');
     }
@@ -185,7 +181,6 @@ const Planos = ({history}) => {
 
     const callbackEliminarPlano = (idplano, codplano) => {
         try {
-            console.log(idplano);
             const toastrConfirmOptions = {
                 onOk: () => ejecutarEliminar(idplano),
             };
@@ -205,41 +200,30 @@ const Planos = ({history}) => {
             set_contentMessage('');
         }
 
-        if (filtros.fechainicio && filtros.fechafin){
-            let resultFechaInicio = funcGlob.helperValidarFecha(filtros.fechainicio, true);
-            let resultFechaFin = funcGlob.helperValidarFecha(filtros.fechafin, true);
+        let filtrosEnviar = Object.assign({}, filtros);
+
+        if (filtrosEnviar.fechainicio && filtrosEnviar.fechafin) {
+    
+            var resultFechaInicio = funcGlob.helperValidarFecha(filtrosEnviar.fechainicio, true);
+            var resultFechaFin = funcGlob.helperValidarFecha(filtrosEnviar.fechafin, true);
             
             if (resultFechaFin < resultFechaInicio) {
                 set_contentMessage('La Fecha de Creación de inicio no puede ser mayor a la de fin');
                 return;
             } else {
-                set_filtros({
-                    ...filtros,
-                    fechainicio: resultFechaInicio,
-                    fechafin: resultFechaFin
-                });
-                $.each(filtros, function(key, value){
-                    if (key === "fechainicio"){
-                        filtros[key] = resultFechaInicio;
-                    }
-                    if (key === "fechafin"){
-                        filtros[key] = resultFechaFin;
-                    }
-                });
-
+                filtrosEnviar.fechainicio = resultFechaInicio;
+                filtrosEnviar.fechafin = resultFechaFin;
             }
         }
 
         let valorFiltros = '';
-        if (filtros) {
-            $.each(filtros, function(key, value){
+        if (filtrosEnviar) {
+            $.each(filtrosEnviar, function(key, value){
                 if (value === "" || value === null){
-                    delete filtros[key];
+                    delete filtrosEnviar[key];
                 }
             });
-            valorFiltros = $.param(filtros);
-            console.log('valorFiltros');
-            console.log(valorFiltros);
+            valorFiltros = $.param(filtrosEnviar);
         }
         ejecutarPlanosFilter(valorFiltros);
     }

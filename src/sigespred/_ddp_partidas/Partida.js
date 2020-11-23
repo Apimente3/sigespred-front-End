@@ -74,23 +74,25 @@ export const Partida = (history) => {
           ...filtros,
           [e.target.name]: e.target.value,
         });
+        break;
       case "tramoid":
         set_filtros({
           ...filtros,
           [e.target.name]: e.target.value,
         });
+        break;
       case "subtramoid":
         set_filtros({
           ...filtros,
           [e.target.name]: e.target.value.toUpperCase(),
         });
+        break;
       default:
         set_filtros({
           ...filtros,
           [e.target.name]: e.target.value,
         });
     }
-    console.log(filtros);
   }
 
   const buscarPartidasFilter = async (e) => {
@@ -105,46 +107,30 @@ export const Partida = (history) => {
     } else {
       set_contentMessage("");
     }
+    let filtrosEnviar = Object.assign({}, filtros);
 
-    if (filtros.fechainicio && filtros.fechafin) {
-      let resultFechaInicio = funcGlob.helperValidarFecha(
-        filtros.fechainicio,
-        true
-      );
-      let resultFechaFin = funcGlob.helperValidarFecha(filtros.fechafin, true);
+    if (filtrosEnviar.fechainicio && filtrosEnviar.fechafin) {
 
-      if (resultFechaFin < resultFechaInicio) {
-        set_contentMessage(
-          "La Fecha de Creación de inicio no puede ser mayor a la de fin"
-        );
-        return;
-      } else {
-        set_filtros({
-          ...filtros,
-          fechainicio: resultFechaInicio,
-          fechafin: resultFechaFin,
-        });
-        $.each(filtros, function (key, value) {
-          if (key === "fechainicio") {
-            filtros[key] = resultFechaInicio;
-          }
-          if (key === "fechafin") {
-            filtros[key] = resultFechaFin;
-          }
-        });
-      }
+        var resultFechaInicio = funcGlob.helperValidarFecha(filtrosEnviar.fechainicio, true);
+        var resultFechaFin = funcGlob.helperValidarFecha(filtrosEnviar.fechafin, true);
+        
+        if (resultFechaFin < resultFechaInicio) {
+            set_contentMessage('La Fecha de Creación de inicio no puede ser mayor a la de fin');
+            return;
+        } else {
+            filtrosEnviar.fechainicio = resultFechaInicio;
+            filtrosEnviar.fechafin = resultFechaFin;
+        }
     }
 
     let valorFiltros = "";
-    if (filtros) {
-      $.each(filtros, function (key, value) {
+    if (filtrosEnviar) {
+      $.each(filtrosEnviar, function (key, value) {
         if (value === "" || value === null) {
-          delete filtros[key];
+          delete filtrosEnviar[key];
         }
       });
-      valorFiltros = $.param(filtros);
-      console.log("valorFiltros");
-      console.log(valorFiltros);
+      valorFiltros = $.param(filtrosEnviar);
     }
 
     ejecutarPartidasFilter(valorFiltros);
@@ -187,7 +173,6 @@ export const Partida = (history) => {
     await setPage(pageNumber);
     setactivePage(pageNumber);
     setPage(pageNumber);
-    //console.log(`active page is ${pageNumber}`);
     let query = await queryString.stringify({
       page: pageNumber,
       limit,
