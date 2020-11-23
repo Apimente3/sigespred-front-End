@@ -35,8 +35,6 @@ export const MisActividades = () => {
   
   async function buscarMisActividades(query) {
     const {data} = await Axios.get(`/actaproceso/misactividades?`+ query);
-    console.log('---------------')
-    console.log(data)
     return data;
 }
 const cargarPopupParticipantes = (codacta, participantes) => {
@@ -107,16 +105,11 @@ function handleInputChange(e) {
                 ...filtros,
                 [e.target.name]: e.target.value
             });
-    }
-    //TODO: remover console
-    console.log(filtros);
-    
+    }    
 }
 
 
 const ejecutarPlanosFilter=async (datosfiltro)=>{
-    console.log('------FMR------')
-    console.log(datosfiltro)
     set_busquedaLocal(true)
     setBusqueda(datosfiltro);
     await setPage(1)
@@ -133,11 +126,7 @@ const ejecutarPlanosFilter=async (datosfiltro)=>{
 }
 
 const buscarAcuerdoFilter = async (e) => {
-
     e.preventDefault();
-    console.log('FECHA INICIO: ' + filtros.fechainicio)
-    console.log('FECHA FIN: ' + filtros.fechafin)
-    
     
     if ((filtros.fechainicio && !filtros.fechafin) || (!filtros.fechainicio && filtros.fechafin)){
         set_contentMessage('El filtro Fecha de Creación, debe tener un inicio y fin');
@@ -146,41 +135,30 @@ const buscarAcuerdoFilter = async (e) => {
         set_contentMessage('');
     }
 
-    if (filtros.fechainicio && filtros.fechafin){
-        let resultFechaInicio = funcGlob.helperValidarFecha(filtros.fechainicio, true);
-        let resultFechaFin = funcGlob.helperValidarFecha(filtros.fechafin, true);
+    let filtrosEnviar = Object.assign({}, filtros);
+
+    if (filtrosEnviar.fechainicio && filtrosEnviar.fechafin) {
+
+        var resultFechaInicio = funcGlob.helperValidarFecha(filtrosEnviar.fechainicio, true);
+        var resultFechaFin = funcGlob.helperValidarFecha(filtrosEnviar.fechafin, true);
         
         if (resultFechaFin < resultFechaInicio) {
             set_contentMessage('La Fecha de Creación de inicio no puede ser mayor a la de fin');
             return;
         } else {
-            set_filtros({
-                ...filtros,
-                fechainicio: resultFechaInicio,
-                fechafin: resultFechaFin
-            });
-            $.each(filtros, function(key, value){
-                if (key === "fechainicio"){
-                    filtros[key] = resultFechaInicio;
-                }
-                if (key === "fechafin"){
-                    filtros[key] = resultFechaFin;
-                }
-            });
-
+            filtrosEnviar.fechainicio = resultFechaInicio;
+            filtrosEnviar.fechafin = resultFechaFin;
         }
     }
 
     let valorFiltros = '';
-    if (filtros) {
-        $.each(filtros, function(key, value){
+    if (filtrosEnviar) {
+        $.each(filtrosEnviar, function(key, value){
             if (value === "" || value === null){
-                delete filtros[key];
+                delete filtrosEnviar[key];
             }
         });
-        valorFiltros = $.param(filtros);
-        console.log('valorFiltros');
-        console.log(valorFiltros);
+        valorFiltros = $.param(filtrosEnviar);
     }
     ejecutarPlanosFilter(valorFiltros);
 
@@ -203,7 +181,6 @@ const buscarAcuerdoFilter = async (e) => {
     await setPage(pageNumber)
     setactivePage(pageNumber)
     setPage(pageNumber)
-    console.log(`active page is ${pageNumber}`);
     let query =  await  queryString.stringify({ busqueda, page:pageNumber, limit});
     let acuerdo= await buscarMisActividades(query)
     setAcuerdos(acuerdo)

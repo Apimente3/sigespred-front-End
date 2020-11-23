@@ -35,7 +35,7 @@ console.log('validacion formato fecha: ' + fecha)
                 var formattedDate = fecha.replace(/-/g, "");
                 return formattedDate;
             }
-        
+            return fecha;
         } else {
             console.log('El formata de las fechas es inválido.')
         }
