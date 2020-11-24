@@ -87,7 +87,7 @@ const GestionPredialAdd = ({match,history}) => {
 
     const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({archivos:[]}, ['resoministerial','nrodocumento']);
     const [listTipoInfraestructura, setlistTipoInfraestructura] = useState([]);
-    const [listInfraestructura, setlistInfraestructura] = useState([]);
+        const [listInfraestructura, setlistInfraestructura] = useState([]);
     /*Files multiple */
     const [filesstate, setFilesstate] = useState([]);
 

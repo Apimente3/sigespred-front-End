@@ -7,6 +7,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import {toastr} from "react-redux-toastr";
 import { MisActividades } from "../m002_gestion_trabajadores/m002_01_trabajadores/MisActividades";
+import  Perfil  from "../_ddp_perfil/Perfil";
 
 
 class ConfiguracionUsuario extends Component {
@@ -31,11 +32,11 @@ class ConfiguracionUsuario extends Component {
                             <CambiarContrasenia></CambiarContrasenia>
                         </TabPanel>
                         <TabPanel>
-                            <h1>En construccion</h1>
+                            <Perfil></Perfil>
                         </TabPanel>
                         <TabPanel>
                             <MisActividades></MisActividades>
-                            
+
                         </TabPanel>
 
                     </Tabs>
