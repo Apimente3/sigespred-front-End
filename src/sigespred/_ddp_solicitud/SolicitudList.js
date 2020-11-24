@@ -30,7 +30,7 @@ const SolicitudList = ({history}) => {
     const resListaTipoSolic = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
 
     const [filtros, set_filtros] = useState({});
-    const [busquedaLocal, set_busquedaLocal] = useState(true);
+    const [cargandoGrid, set_cargandoGrid] = useState(true);
     const [contentMessage, set_contentMessage] = useState('');
     const [mostrarPopup, setMostrarPopup] = useState(false);
     const [archivosPopup, setArchivosPopup] = useState([]);
@@ -42,11 +42,10 @@ const SolicitudList = ({history}) => {
     useEffect(() => {
         async function initialLoad() {
             try {
-                set_busquedaLocal(false);
-
                 let query =  await  queryString.stringify({busqueda, page: activePage, limit});
                 let listSolicitud = await buscarSolicitud(query);
                 changePage(activePage,listSolicitud);
+                set_cargandoGrid(false);
             } catch (error) {
                 console.log(error);
             }
@@ -154,7 +153,7 @@ const SolicitudList = ({history}) => {
     }
 
     const ejecutarSolicitudesFilter=async (datosfiltro)=>{
-        set_busquedaLocal(true)
+        set_cargandoGrid(true)
         setBusqueda(datosfiltro);
         let query =  await  queryString.stringify({page:1, limit});
         if(datosfiltro) {
@@ -162,7 +161,7 @@ const SolicitudList = ({history}) => {
         }
         let listSolicitud = await buscarSolicitud(query);
         changePage(1, listSolicitud);
-        set_busquedaLocal(false)
+        set_cargandoGrid(false)
     }
 
     const handlePageChange = async (pageNumber) => {
@@ -299,8 +298,8 @@ const SolicitudList = ({history}) => {
             </div>
             <div className="panel panel-default">
                 {
-                (busquedaLocal)?
-                    console.log('cargando datos de solicitudes...')
+                (cargandoGrid)?
+                    <div className="alert alert-danger text-center">Cargando...</div>
                     :
                     (
                     <>

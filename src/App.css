@@ -904,3 +904,7 @@ video {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.center-date {
+    line-height: 1.43 !important;
+}

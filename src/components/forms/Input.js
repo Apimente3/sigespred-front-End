@@ -5,7 +5,7 @@ const Input = ({required,type,placeholder,name,onChange,value,pattern,title,read
         <>
             <input required={ required ? "required": ""}
                    type={type}
-                   className="form-control input-sm"
+                   className="form-control input-sm center-date"
                    placeholder={placeholder}
                    name={name}
                    onChange={onChange}
