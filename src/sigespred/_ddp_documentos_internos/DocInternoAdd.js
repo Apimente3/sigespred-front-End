@@ -178,7 +178,7 @@ const DocInternoAdd = ({ history }) => {
                     )}
                   </div>
                   <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span> Codigo STD
+                     Codigo STD
                   </label>
                   <div className="col-lg-4">
                     <input
@@ -187,7 +187,6 @@ const DocInternoAdd = ({ history }) => {
                       id="codigostd"
                       name="codigostd"
                       placeholder="Codigo STD"
-                      required
                       title="El codigo STD  es requerido"
                       autoComplete="off"
                       onChange={handleInputChange}
@@ -197,7 +196,7 @@ const DocInternoAdd = ({ history }) => {
 
                 <div className="form-group">
                   <label className="col-lg-2 control-label">
-                    <span className="obligatorio">* </span> Respuesta
+                    Respuesta
                   </label>
                   <div className="col-lg-4">
                     {/* {resListaTipoDocInterno.error ? (
@@ -209,7 +208,6 @@ const DocInternoAdd = ({ history }) => {
                       className="form-control input-sm"
                       id="respuesta"
                       name="respuesta"
-                      required
                       value={documentosInternos.respuesta}
                       onChange={(e) => {
                         handleInputChange(e);
