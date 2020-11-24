@@ -28,6 +28,7 @@ const PredioList = ({history,  match}) => {
   const [contentMessage, set_contentMessage] = useState("");
   const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
   const [busqueda, setBusqueda] = useState("");
+  const [cargandoGrid, setCargandoGrid] = useState(true);
 
   useEffect(() => {
     async function initialLoad() {
@@ -39,6 +40,7 @@ const PredioList = ({history,  match}) => {
         });
         let listPredios = await buscarPredios(query);
         changePage(activePage, listPredios);
+        setCargandoGrid(false);
       } catch (e) {
           toastr.error('Listado de Predios', `Se ha encontrado un error: ${e.message}`, {position: 'top-right'})
       }
@@ -78,12 +80,14 @@ const buscarPrediosFilter =async (e)=>{
 
 const ejecutarPrediosFilter=async (datosfiltro)=>{
     setBusqueda(datosfiltro);
+    setCargandoGrid(true);
     let query =  await  queryString.stringify({page:1, limit});
     if(datosfiltro) {
         query += `&${datosfiltro}`;
     }
     let listPredios= await buscarPredios(query);
     changePage(1, listPredios);
+    setCargandoGrid(false);
 }
 
 function handleInputChange(e) {
@@ -187,21 +191,29 @@ const descargarXls=()=>{
                 </div>
             </div>
             <div className="panel panel-default">
-                <Table cabecera={cabecerasTabla}>
-                    {list.rows.map((predio, i) => (
-                        <PredioRow nro={i} predio={predio}></PredioRow>
-                    ))}        
-                </Table>
-                <div className="panel-footer clearfix pull-right">
-                    <Pagination
-                    activePage={activePage}
-                    itemsCountPerPage={limit}
-                    totalItemsCount={parseInt(totalItemsCount)}
-                    pageRangeDisplayed={pageRangeDisplayed}
-                    onChange={handlePageChange}
-                    ></Pagination>
-
-                </div>
+                {
+                (cargandoGrid)?
+                    <div className="alert alert-danger text-center">Cargando...</div>
+                    :
+                    (
+                    <>
+                    <Table cabecera={cabecerasTabla}>
+                        {list.rows.map((predio, i) => (
+                            <PredioRow nro={i} predio={predio}></PredioRow>
+                        ))}        
+                    </Table>
+                    <div className="panel-footer clearfix pull-right">
+                        <Pagination
+                        activePage={activePage}
+                        itemsCountPerPage={limit}
+                        totalItemsCount={parseInt(totalItemsCount)}
+                        pageRangeDisplayed={pageRangeDisplayed}
+                        onChange={handlePageChange}
+                        ></Pagination>
+                    </div>
+                    </>
+                    )
+                }
             </div>
       </Wraper>
     </>

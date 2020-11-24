@@ -33,7 +33,7 @@ const Planos = ({history}) => {
     const resListaSolicitantes = useAsync(helperGets.helperGetListaLocadores, []);
 
     const [filtros, setFiltros] = useState({});
-    const [busquedaLocal, set_busquedaLocal] = useState(true);
+    const [cargandoGrid, set_cargandoGrid] = useState(true);
     const [dataProv, set_dataProv] = useState(null);
     const [dataDist, set_dataDist] = useState(null);
     const [dataTramo, setDataTramo] = useState(null);
@@ -53,12 +53,11 @@ const Planos = ({history}) => {
     useEffect(() => {
         async function initialLoad() {
             try {
-                set_busquedaLocal(false);
-
                 let query =  await  queryString.stringify({busqueda, page, limit});
                 let listPlanos = await buscarPlano(query);
                 setDataPlanos(listPlanos)
                 settotalItemsCount(listPlanos.count)
+                set_cargandoGrid(false);
             } catch (error) {
                 console.log(error);
             }
@@ -229,7 +228,7 @@ const Planos = ({history}) => {
     }
 
     const ejecutarPlanosFilter=async (datosfiltro)=>{
-        set_busquedaLocal(true)
+        set_cargandoGrid(true)
         setBusqueda(datosfiltro);
         await setPage(1)
         setactivePage(1)
@@ -240,7 +239,7 @@ const Planos = ({history}) => {
         let listPlanos = await buscarPlano(query);
         setDataPlanos(listPlanos);
         settotalItemsCount(listPlanos.count);
-        set_busquedaLocal(false)
+        set_cargandoGrid(false)
     }
 
     const handlePageChange = async (pageNumber) => {
@@ -437,8 +436,8 @@ const Planos = ({history}) => {
             </div>
             <div className="panel panel-default">
                 {
-                (busquedaLocal)?
-                    console.log('cargando datos de planos...')
+                (cargandoGrid)?
+                    <div className="alert alert-danger text-center">Cargando...</div>
                     :
                     (
                     <>

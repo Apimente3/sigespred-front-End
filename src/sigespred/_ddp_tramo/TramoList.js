@@ -3,7 +3,7 @@ import {initAxiosInterceptors} from "../../config/axios";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import {LISTADO_TRAMOS_BREADCRUM} from "../../config/breadcrums";
 import {useTable} from "../../hooks/useTable";
-import TableTramo  from "./TableTramo";
+import { Table } from "../../components/forms";
 import TramoRow from "./TramoRow";
 import Pagination from "react-js-pagination";
 import {Link} from "react-router-dom";
@@ -28,6 +28,7 @@ const TramoList = ({history, match}) => {
     const {id}=match.params;
     const [tituloVentana, setTituloVentana] = useState('');
     const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable(100);
+    const [cargandoGrid, setCargandoGrid] = useState(true);
 
     useEffect(() => {
         const init = async () => {
@@ -36,6 +37,7 @@ const TramoList = ({history, match}) => {
             let query =  await  queryString.stringify({gestionpredialid: id, page: activePage, limit});
             let listTramos = await buscarTramo(query);
             changePage(activePage,listTramos);
+            setCargandoGrid(false);
         };
         init();
     }, []);
@@ -73,7 +75,7 @@ const TramoList = ({history, match}) => {
         }
     }
 
-    const cabecerasTabla = ["","ID", "DESCRIPCIÓN", "ARCHIVO DE ÁMBITO REFERENCIAL","ACCIONES"]
+    const cabecerasTabla = ["","ID", "DESCRIPCIÓN", "ABREVIATURA", "ARCHIVO DE ÁMBITO REFERENCIAL","ACCIONES"]
     return (
         <>
         <Wraper titleForm={"Listado de Tramos o Sectores"} listbreadcrumb={LISTADO_TRAMOS_BREADCRUM}>
@@ -91,11 +93,17 @@ const TramoList = ({history, match}) => {
                 </div>
             </div>
             <div className="panel panel-default">
-                    <TableTramo cabecera={cabecerasTabla}>
+                {
+                (cargandoGrid)?
+                    <div className="alert alert-danger text-center">Cargando...</div>
+                    :
+                    (
+                    <>
+                    <Table cabecera={cabecerasTabla}>
                         {list.rows.map((tramo, i) => (
                             <TramoRow nro={i} tramo={tramo} callback={callbackEliminarTramo} idproyecto={id} titproyecto={tituloVentana}></TramoRow>
                         ))}
-                    </TableTramo>
+                    </Table>
                     <div className="panel-footer clearfix pull-right">
                         <Pagination
                             activePage={activePage}
@@ -105,6 +113,9 @@ const TramoList = ({history, match}) => {
                             onChange={handlePageChange}
                         ></Pagination>
                     </div>
+                    </>
+                    )
+                }
             </div>
         </Wraper>
         </>

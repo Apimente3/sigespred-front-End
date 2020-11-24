@@ -42,8 +42,8 @@ const Acta = () => {
   const [codPlanoPopup, setCodPlanoPopup] = useState('');
   const [archivosPopup, setArchivosPopup] = useState([]);
   const [filtros, set_filtros] = useState({});
-  const [busquedaLocal, set_busquedaLocal] = useState(true);
   const [contentMessage, set_contentMessage] = useState('');
+  const [cargandoGrid, setCargandoGrid] = useState(true);
 
   const resListaEquipos = useAsync(obtenerEquipo, []);
 
@@ -54,6 +54,7 @@ const Acta = () => {
               let actas = await buscarActa(query)
               setActas({rows:actas})
               settotalItemsCount(actas.length)
+              setCargandoGrid(false);
           } catch (e) {
             toastr.error('Actas', e.message, {position: 'top-center'})
           }
@@ -106,7 +107,7 @@ const Acta = () => {
     }
 
     const ejecutarPlanosFilter=async (datosfiltro)=>{
-        set_busquedaLocal(true)
+        setCargandoGrid(true);
         setBusqueda(datosfiltro);
         await setPage(1)
         setactivePage(1)
@@ -117,7 +118,7 @@ const Acta = () => {
         let listActas = await buscarActa(query);
         setActas({rows:listActas})
         settotalItemsCount(listActas.length)
-        set_busquedaLocal(false)
+        setCargandoGrid(false);
     }
 
     const buscarActaFilter=async (e)=>{
@@ -288,6 +289,12 @@ const Acta = () => {
                 </form>
             </fieldset>
             <div className="panel panel-default">
+            {
+                (cargandoGrid)?
+                <div className="alert alert-danger text-center">Cargando...</div>
+                :
+                (
+                <>
                 <TableActa cabecera={cabecerasTabla}>
                    {actas.rows.map((acta, i) => (
                         <RowActa nro={i} acta={acta} loadfiles={cargarPopupDigitales}></RowActa>
@@ -302,6 +309,9 @@ const Acta = () => {
                         onChange={handlePageChange}
                     ></Pagination>
                 </div>
+                </>
+                    )
+                }
             </div>
             {mostrarPopup && <MAgenda closeventana={cerrarModal} codacta={codPlanoPopup} agenda={archivosPopup}/>}
           </WraperLarge>  

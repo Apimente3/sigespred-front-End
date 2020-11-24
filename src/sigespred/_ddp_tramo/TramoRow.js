@@ -23,6 +23,7 @@ const TramoRow = ({tramo, nro, callback, idproyecto, titproyecto}) => {
                 <td key={`tdrowkey_1${nro}`}>{nro+1}</td>
                 <td key={`tdrowkey_2${nro}`}>{tramo.id}</td>
                 <td key={`tdrowkey_3${nro}`}>{tramo.descripcion}</td>
+                <td key={`tdrowkey_15${nro}`}>{tramo.abreviatura}</td>
                 <td key={`tdrowkey_14${nro}`}>
                     {tramo.urlarchivo
                     ?<a key={`adigmapa_${nro}`} href={serverFile + tramo.urlarchivo.path} target="_blank" rel="noreferrer noopener">{tramo.urlarchivo.filename}</a>
