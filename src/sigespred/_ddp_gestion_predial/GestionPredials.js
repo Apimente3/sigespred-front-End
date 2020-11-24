@@ -13,21 +13,16 @@ const {alasql} = window;
 
 const Axios = initAxiosInterceptors();
 
-
-
-
 async function buscarTrabajador(query) {
     // alert(query)
     const {data} = await Axios.get(`/gestionpredialpaginate?`+ query);
     return data;
 }
 
-
 const GestionPredials = ({history}) => {
-
-
     const [busqueda, setBusqueda] = useState('');
     const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
+    const [cargandoGrid, setCargandoGrid] = useState(true);
 
     useEffect(() => {
         async function init() {
@@ -35,7 +30,7 @@ const GestionPredials = ({history}) => {
                 let query =  await  queryString.stringify({busqueda,page: activePage, limit});
                 let resultList=await buscarTrabajador(query)
                 changePage(activePage,resultList);
-
+                setCargandoGrid(false);
             } catch (error) {
                 alert('Ocurrio un error')
                 console.log(error);
@@ -45,16 +40,13 @@ const GestionPredials = ({history}) => {
     }, []);
 
     const buscarTrabadorFilter = async (e) => {
-
+        setCargandoGrid(true);
         e.preventDefault();
         let query =  await  queryString.stringify({busqueda, page:activePage, limit});
         let list=await buscarTrabajador(query)
         changePage(activePage,list);
-
+        setCargandoGrid(false);
     }
-
-    //const trabajadores = useSelector(state => state.trabajador.trabajadors);
-    //const loading = useSelector(state => state.trabajador.cargando);
 
     const descarxls = () => {
 
@@ -71,10 +63,11 @@ const GestionPredials = ({history}) => {
 
 
     const handlePageChange = async (pageNumber) => {
+        setCargandoGrid(true);
         let query =  await  queryString.stringify({busqueda, page:activePage, limit});
         let resultList=await buscarTrabajador(query)
         changePage(pageNumber,resultList);
-
+        setCargandoGrid(false);
     }
 
     const cabecerasTabla = ["TIPO DE INFRAESTRUCTURA", "INFRAESTRUCTURA", "ABREVIATURA", "RESO. MINISTERIAL", "NRO DOCUMENTO", "Acciones"]
@@ -110,6 +103,12 @@ const GestionPredials = ({history}) => {
                         </form>
                     </fieldset>
                     <div className="panel panel-default">
+                    {
+                    (cargandoGrid)?
+                        <div className="alert alert-danger text-center">Cargando...</div>
+                        :
+                        (
+                        <>
                         <TableTrabajador cabecera={cabecerasTabla}>
                             {list.rows.map((trabajador, i) => (
                                 <TrabajadorRow nro={i} row={trabajador}></TrabajadorRow>
@@ -124,6 +123,9 @@ const GestionPredials = ({history}) => {
                                 onChange={handlePageChange}
                             ></Pagination>
                         </div>
+                        </>
+                        )
+                    }
                     </div>
                 </Wraper>
         </>

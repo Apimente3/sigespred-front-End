@@ -48,7 +48,7 @@ const TramoEdit = ({history, match}) => {
     const {id}=match.params;
     const {ti}=match.params;
     const {idtramo}=match.params;
-    const [tramo, setTramo, handleInputChange, reset ] = useForm({},[""]);
+    const [tramo, setTramo, handleInputChange, reset ] = useForm({},["abreviatura", "descripcion"]);
     const [nuevoTramo, setNuevoTramo] = useState(true);
 
     useEffect(() => {
@@ -101,8 +101,12 @@ const TramoEdit = ({history, match}) => {
                                 required={true} type={"text"}>
                             </Input>
                         </FormGroup>
-                    </Row6>
-                    <Row6>
+                        <FormGroup label={"Abreviatura"} require={true}>
+                            <Input value={tramo.abreviatura || ""} onChange={handleInputChange}
+                                name={"abreviatura"} placeholder={"Ingrese la abreviatura"}
+                                required={true} type={"text"}>
+                            </Input>
+                        </FormGroup>
                         <FormGroup label={"Archivo de Ámbito del Tramo o Sector"}>
                             <SingleUpload
                                     key="urlarchivo"
@@ -115,14 +119,18 @@ const TramoEdit = ({history, match}) => {
                                 </SingleUpload>
                         </FormGroup>
                     </Row6>
+                    <Row6>
+                        
+                    </Row6>
                 </RowForm>
-
                 <FormFooter>
-                    <Link to={`/tramo-list/${id}`}
-                        className="btn btn-default btn-sm btn-control">Cancelar</Link>
-                    <button id="btnguardar" type="submit"
-                            className="btn btn-danger btn-sm btn-control">Guardar
-                    </button>
+                    <Row6>
+                        <Link to={`/tramo-list/${id}`}
+                            className="btn btn-default btn-sm btn-control">Cancelar</Link>
+                        <button id="btnguardar" type="submit"
+                                className="btn btn-danger btn-sm btn-control">Guardar
+                        </button>
+                    </Row6>
                 </FormFooter>
             </Form>
         </Wraper>

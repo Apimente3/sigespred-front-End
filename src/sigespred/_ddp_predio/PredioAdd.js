@@ -33,11 +33,33 @@ const PredioAdd = ({history,  match}) => {
     const [predio, setPredio, handleInputChange, reset ] = useForm({},["tramo"]);
     const listaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const listaTipoPredio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOPRED]);
+    const listaDepartmento = useAsync(helperGets.helperGetListDepartamento, []);
+    const listaProvincia = useAsync(helperGets.helperGetListProvincia,[]);
+    const listaDistrito = useAsync(helperGets.helperGetListDistrito,[]);
     const [listaTramos, setListaTramos] = useState(null);
+    const [dataProvincia, setDataProvincia] = useState(null);
+    const [dataDisttrito, setDataDisttrito] = useState(null);
 
     async function addPredio(predio) {
         const {data} = await Axios.post(`/predio`,predio);
         return data;
+    }
+
+    function handleChangeDepartmento(e) {
+        if(!listaProvincia.loading){
+            let data = listaProvincia.result;
+            let provList = data[Object.keys(data)[0]].filter( o => o.id_dpto === e.target.value);
+            setDataProvincia({data: provList});
+            setDataDisttrito(null);
+        }
+    }
+
+    function handleChangeProvincia(e) {
+        if(!listaDistrito.loading){
+            let data = listaDistrito.result;
+            let distList = data[Object.keys(data)[0]].filter( o => o.id_prov === e.target.value);
+            setDataDisttrito({data: distList});
+        }
     }
 
     const registrar = async e => {
@@ -68,7 +90,6 @@ const PredioAdd = ({history,  match}) => {
         }
     }
 
-    
   return (
     <>
         <WraperLarge titleForm={"Registro de Predio (Generación de Código)"} listbreadcrumb={REGISTRO_PREDIOS_BREADCRUM} >
@@ -91,11 +112,11 @@ const PredioAdd = ({history,  match}) => {
                             </div>
                             <div className="mtop-5">
                                 <label className="control-label">
-                                    Sector / Tramo:
+                                <span className="obligatorio">* </span> Sector / Tramo:
                                 </label>
                             </div>
                             <div className="mtop-5">
-                                <Select value={predio.tramoid || ""}
+                                <Select value={predio.tramoid || ""} required={true}
                                         onChange={handleInputChange}
                                         name={"tramoid"}>
                                     <ComboOptions data={listaTramos} valorkey="id" valornombre="descripcion" />
@@ -128,6 +149,44 @@ const PredioAdd = ({history,  match}) => {
                             </div>
                             <div className="mtop-5">
                                 <label className="control-label">
+                                <span className="obligatorio">* </span> Departamento:
+                                </label>
+                            </div>
+                            <div className="mtop-5">
+                                <Select required={true} value={predio.departamentoid || ""}
+                                    onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}
+                                    name={"departamentoid"}>
+                                    {listaDepartmento.result?
+                                    <ComboOptions data={listaDepartmento.result} valorkey="id_dpto" valornombre="nombre"/>
+                                    : "Cargando..."}
+                                </Select>
+                            </div>
+                            <div className="mtop-5">
+                                <label className="control-label">
+                                <span className="obligatorio">* </span> Provincia:
+                                </label>
+                            </div>
+                            <div className="mtop-5">
+                                <Select required={true} value={predio.provinciaid || ""}
+                                    onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}
+                                    name={"provinciaid"}>
+                                    <ComboOptions data={dataProvincia} valorkey="id_prov" valornombre="nombre" />
+                                </Select>
+                            </div>
+                            <div className="mtop-5">
+                                <label className="control-label">
+                                <span className="obligatorio">* </span> Distrito:
+                                </label>
+                            </div>
+                            <div className="mtop-5">
+                                <Select required={true} value={predio.distritoid || ""}
+                                            onChange={handleInputChange}
+                                        name={"distritoid"}>
+                                    <ComboOptions data={dataDisttrito} valorkey="id_dist" valornombre="nombre" />
+                                </Select>
+                            </div>
+                            <div className="mtop-5">
+                                <label className="control-label">
                                 Archivo con Geometria del Predio:
                                 </label>
                             </div>
@@ -142,7 +201,7 @@ const PredioAdd = ({history,  match}) => {
                                                 >
                                 </SingleUpload>
                             </div>
-                            <div className="mtop-35">
+                            <div className="mtop-35 pull-right">
                                 <Link to={`/predio-list`}
                                 className="btn btn-default btn-sm btn-control">Cancelar</Link>
                                 <button id="btnguardar" 
