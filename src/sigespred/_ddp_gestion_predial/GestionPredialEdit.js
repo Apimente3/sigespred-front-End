@@ -90,6 +90,7 @@ const GestionPredialAdd = ({match,history}) => {
         const [listInfraestructura, setlistInfraestructura] = useState([]);
     /*Files multiple */
     const [filesstate, setFilesstate] = useState([]);
+    const [valorDenominacion, setValorDenominacion] = useState("");
 
     /*Valiables Globales*/
     useEffect(() => {
@@ -98,19 +99,23 @@ const GestionPredialAdd = ({match,history}) => {
             listInfraestructuraGlobal = await getListInfraestructura()
             setlistInfraestructura(listInfraestructuraGlobal);
             let gestPredial= await getGestionPredial(id);
-           // alert(JSON.stringify(gestPredial))
             setGestionPredial(gestPredial)
 
         };
         init();
     }, []);
 
-    const limpiarForm = () => {
-        //  set_trabajador({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'})
+    const updateValueDenominacion = async(e) => {
+        if (e.target.value) {
+            setValorDenominacion(e.target.options[e.target.selectedIndex].text);
+            return;
+        }
+        setValorDenominacion("");
     }
 
     const registrar = async e => {
         e.preventDefault();
+        gestionPredial.denominacion = valorDenominacion;
         try {
             await saveGestioPredial(gestionPredial)
             toastr.success('Actualización Correcto', 'Se actualizo correctamente.', {position: 'top-right'})
@@ -152,7 +157,7 @@ const GestionPredialAdd = ({match,history}) => {
                         </FormGroup>
                         <FormGroup label={"Proyecto"} require={true}>
                             <Select required={true} value={gestionPredial.infraestructuraid} disable={false}
-                                    onChange={handleInputChange}
+                                    onChange={(e) => {updateValueDenominacion(e); handleInputChange(e);}}
                                     name={"infraestructuraid"}>
                                 <Options options={listInfraestructura} index={"id"} valor={"descripcion"}></Options>
                             </Select>
