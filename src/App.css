@@ -765,6 +765,10 @@ legend {
     background: #F7F2F3 !important;
 }
 
+.border-abajo {
+    border-bottom: 1px solid #ccc;
+}
+
 .wordwrap {
     word-wrap: break-word;
 }

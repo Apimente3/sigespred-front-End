@@ -49,9 +49,11 @@ async function addDatoReg(respuesta) {
 
 const PredioEditReg = ({history,  match}) => {
     const {id} = match.params;
-    const dispatch = useDispatch();
-    const setIdPredioAccion = (variable) => dispatch(actualizar(variable));
-    setIdPredioAccion(id);
+    const {codpred}=match.params;
+    // const dispatch = useDispatch();
+    // const dataPredio = { predioid:id, codigopredio:codpred};
+    // const setIdPredioAccion = (variable) => dispatch(actualizar(variable));
+    // setIdPredioAccion(dataPredio);
 
     const [predioReg, setPredioReg, handleInputChange, reset ] = useForm({},["cuc"]);
     const [nuevoDatoReg, setNuevoDatoReg] = useState(true);
@@ -93,7 +95,7 @@ const PredioEditReg = ({history,  match}) => {
 
     return (
         <>
-            <WraperLarge listbreadcrumb={EDICION_PREDIOS_BREADCRUM} >
+            <WraperLarge titleForm={"PREDIO: " + codpred + " / DATOS REGISTRALES"} listbreadcrumb={EDICION_PREDIOS_BREADCRUM} >
                 <PredioLinks active="3"></PredioLinks>
                 <Form onSubmit={registrar}>
                     <div className="mtop-35"></div>
@@ -122,7 +124,7 @@ const PredioEditReg = ({history,  match}) => {
                                 </Select>
                             </FormGroup>
                         </Row6>
-                        <div class="col-lg-12">
+                        <div className="col-lg-12">
                             <fieldset className="mleft-20"><legend>Datos y Documentos de Inscripción</legend>
                                 <Row6>{predioReg.inscrito}
                                     <FormGroup label={"Fecha de Inscripción"} >
@@ -133,8 +135,8 @@ const PredioEditReg = ({history,  match}) => {
                                     </FormGroup>
                                 </Row6>
                                 <Row6>
-                                    <label class="col-lg-4 control-label">Área Inscrita - m<sup>2</sup></label>
-                                    <div class="col-lg-8">
+                                    <label className="col-lg-4 control-label">Área Inscrita - m<sup>2</sup></label>
+                                    <div className="col-lg-8">
                                         <Input value={predioReg.areainscrita || ""} onChange={handleInputChange}
                                             name={"areainscrita"} placeholder={"Ingrese el valor de área inscrita"}
                                             pattern="^\d{1,10}(\.\d{1,4})?$"

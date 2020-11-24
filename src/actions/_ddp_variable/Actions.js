@@ -4,10 +4,10 @@ import {
 } from './types';
 
 
-export const actualizar = predioid => dispatch => {
+export const actualizar = predio => dispatch => {
     dispatch({
         type: ACTUALIZAR_VALOR,
-        payload: predioid
+        payload: predio
     })
 }
 

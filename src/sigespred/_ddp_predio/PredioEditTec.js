@@ -39,15 +39,11 @@ async function obtenerDatosPredio(id) {
   }
 
 const PredioEditTec = ({history,  match}) => {
+    const {id} = match.params;
+    const {codpred}=match.params;
     const listaTipoPredio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOPRED]);
     // const resListaDepartmento = useAsync(helperGets.helperGetListDepartamento, []);
     const [datoTecnico, setDatoTecnico, handleInputChange, reset ] = useForm({},[""]);
-    const {id} = match.params;
-    const dispatch = useDispatch();
-    const setIdPredioAccion = (variable) => dispatch(actualizar(variable));
-    setIdPredioAccion(id);
-    console.log('ed');
-    console.log(id)
 
     useEffect(() => {
         const init = async () => {
@@ -86,7 +82,7 @@ const PredioEditTec = ({history,  match}) => {
 
     return (
         <>
-            <WraperLarge listbreadcrumb={EDICION_PREDIOS_BREADCRUM} >
+            <WraperLarge titleForm={"PREDIO: " + codpred + " / DATOS TÉCNICOS"} listbreadcrumb={EDICION_PREDIOS_BREADCRUM} >
             <Form onSubmit={registrar}>
                 <PredioLinks active="2"></PredioLinks>
                 <RowForm>

@@ -34,13 +34,15 @@ const Axios = initAxiosInterceptors();
 
 const PredioEditGen = ({history,  match}) => {
     const {id} = match.params;
+    const {codpred}=match.params;
     const dispatch = useDispatch();
+    const dataPredio = { predioid:id, codigopredio:codpred};
     const setIdPredioAccion = (variable) => dispatch(actualizar(variable));
-    setIdPredioAccion(id);
+    setIdPredioAccion(dataPredio);
 
     return (
         <>
-            <WraperLarge listbreadcrumb={EDICION_PREDIOS_BREADCRUM} >
+            <WraperLarge titleForm={"PREDIO: " + codpred + " / DATOS GENERALES"} listbreadcrumb={EDICION_PREDIOS_BREADCRUM} >
             <PredioLinks active="1"></PredioLinks>
                 
             </WraperLarge>

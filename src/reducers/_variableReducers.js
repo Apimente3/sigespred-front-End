@@ -4,7 +4,8 @@ import {
 } from '../actions/_ddp_variable/types';
 
 const initialState = {
-    predioid: '0'
+    predioid: '0',
+    predio: { predioid:'0', codigopredio:'NA'},
 }
 
 export default function(state = initialState, action) {
@@ -12,7 +13,7 @@ export default function(state = initialState, action) {
         case ACTUALIZAR_VALOR:
             return {
                 ...state,
-                predioid: action.payload
+                predio: action.payload
             }
             case LEER_VALOR:
                 return state;
