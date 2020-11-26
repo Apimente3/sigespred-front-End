@@ -63,6 +63,7 @@ const PredioEditReg = ({history,  match}) => {
     const listaTipoTitularidad = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOCONDTITULAR]);
     const listaTipoDocumento = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOC]);
     const listaEstadoCivil = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.ESTADOCIVIL]);
+    const listaTipoAdquisicion = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOADQUISICION]);
 
     useEffect(() => {
         const init = async () => {
@@ -266,7 +267,6 @@ const PredioEditReg = ({history,  match}) => {
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
-
                                 </Row6>
                             </fieldset>
                         </div>
@@ -329,6 +329,29 @@ const PredioEditReg = ({history,  match}) => {
                             <fieldset className="mleft-20">
                                 <legend>Datos de Forma de Adquisición del Predio</legend>
                                 <Row6>
+                                    <FormGroup label={"Forma de Adquisición"}>
+                                        <Select value={predioReg.formaadquisicionid || ""}
+                                                    onChange={handleInputChange}
+                                                    name={"formaadquisicionid"}>
+                                            {listaTipoAdquisicion.result?
+                                            <ComboOptions data={listaTipoAdquisicion.result} valorkey="id" valornombre="valortexto"/>
+                                            : "Cargando..."}
+                                        </Select>
+                                    </FormGroup>
+                                    <FormGroup label={"Fecha de Emisión del Documento"} >
+                                        <Input value={predioReg.fechadocumentoacredita || ""} onChange={handleInputChange}
+                                            name={"fechadocumentoacredita"}
+                                            type={"date"}>
+                                        </Input>
+                                    </FormGroup>
+                                </Row6>
+                                <Row6>
+                                    <FormGroup label={"Documento de Acreditación"} >
+                                        <Input value={predioReg.documentoacredita || ""} onChange={handleInputChange}
+                                        name={"documentoacredita"} placeholder={"Ingrese los detalles del documento"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
                                 </Row6>
                             </fieldset>
                         </div>

@@ -70,9 +70,6 @@ const SolicitudList = ({history}) => {
                     [e.target.name]: e.target.value
                 });
         }
-        //TODO: remover console
-        console.log(filtros);
-        
     }
 
     const limpiarSolicitudesFilter =(e)=>{
@@ -81,7 +78,8 @@ const SolicitudList = ({history}) => {
         $('#fechainicio').val('');
         $('#fechafin').val('');
         $('#entidadid').val('');
-        $('#tipoconsultaid').val('');    
+        $('#tipoconsultaid').val('');
+        $('#estado').val('');    
         
         handleChangeProyecto('');
         set_filtros({});
@@ -257,6 +255,19 @@ const SolicitudList = ({history}) => {
                         {resListaTipoSolic.result
                         ? <ComboOptions data={resListaTipoSolic.result} valorkey="id" valornombre="valortexto" />
                         : "Cargando..."}
+                    </select>
+                </div>
+            </div>
+            <div className="form-group">
+                <label className="col-lg-2 control-label">Estado de Seguimiento</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="estado" name="estado" 
+                        onChange={handleInputChange}>
+                        <option value="">--SELECCIONE--</option>
+                        <option value="Atendido">Atendido</option>
+                        <option value="Dentro del plazo">Dentro del plazo</option>
+                        <option value="En tolerancia">En tolerancia</option>
+                        <option value="Fuera de plazo">Fuera de plazo</option>
                     </select>
                 </div>
             </div>

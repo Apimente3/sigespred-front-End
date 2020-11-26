@@ -50,6 +50,7 @@ export const LISTASIDS = {
         PREDIOTIPOPERSONAJURI: 24,
         PREDIOTIPOCONDTITULAR: 25,
         ESTADOCIVIL: 26,
+        TIPOADQUISICION: 27,
     }
 
 export const FilesUsuario={
