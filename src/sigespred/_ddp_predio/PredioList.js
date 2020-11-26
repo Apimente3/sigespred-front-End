@@ -185,7 +185,7 @@ const descargarXls=()=>{
                             <i className="fa fa-file-excel-o"></i> Descargar Excel
                         </button>
                         <Link to={`/predio-add`} className="btn btn-danger btn-sm fullborder" >
-                            <i className="fa fa-plus-circle"></i> Agregar Predio
+                            <i className="fa fa-plus-circle"></i> Agregar Predio Individualizado
                         </Link>
                     </div>
                 </div>

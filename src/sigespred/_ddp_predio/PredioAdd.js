@@ -92,7 +92,7 @@ const PredioAdd = ({history,  match}) => {
 
   return (
     <>
-        <WraperLarge titleForm={"Registro de Predio (Generación de Código)"} listbreadcrumb={REGISTRO_PREDIOS_BREADCRUM} >
+        <WraperLarge titleForm={"Registro de Predio Individualizado (Generación de Código)"} listbreadcrumb={REGISTRO_PREDIOS_BREADCRUM} >
                 <div className="row mleft-5">
                     <div className="form-group col-lg-4 mleft-5">
                         <Form onSubmit={registrar}>

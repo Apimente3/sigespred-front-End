@@ -28,6 +28,8 @@ import {FilesGestionPredial} from "../../config/parameters";
 import PredioLinks from "./PredioLinks";
 import {useDispatch} from 'react-redux';
 import { actualizar } from '../../actions/_ddp_variable/Actions';
+import MAddTitularPredio from "./MAddTitularPredio";
+import TableTitularPredio from "./TableTitularPredio";
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
@@ -50,13 +52,17 @@ async function addDatoReg(respuesta) {
 const PredioEditReg = ({history,  match}) => {
     const {id} = match.params;
     const {codpred}=match.params;
-    // const dispatch = useDispatch();
-    // const dataPredio = { predioid:id, codigopredio:codpred};
-    // const setIdPredioAccion = (variable) => dispatch(actualizar(variable));
-    // setIdPredioAccion(dataPredio);
 
     const [predioReg, setPredioReg, handleInputChange, reset ] = useForm({},["cuc"]);
     const [nuevoDatoReg, setNuevoDatoReg] = useState(true);
+    const [modalTitular, setModalTitular] = useState(false);
+    const [listaTitulares, setListaTitulares] = useState([]);
+    const listaTipoCarga = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOCARGA]);
+    const listaTipoPersona = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOPERSONA]);
+    const listaTipoPersonaJuridica = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOPERSONAJURI]);
+    const listaTipoTitularidad = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOCONDTITULAR]);
+    const listaTipoDocumento = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOC]);
+    const listaEstadoCivil = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.ESTADOCIVIL]);
 
     useEffect(() => {
         const init = async () => {
@@ -70,6 +76,25 @@ const PredioEditReg = ({history,  match}) => {
         init();
     }, []);
 
+    const showModalTitular = () => {
+        setModalTitular(true);
+     }
+
+     const cerrarModal=(estado)=>{
+        setModalTitular(estado);
+    }
+
+    const updatevaluestitular=(titular)=>{
+        setListaTitulares([...listaTitulares,titular])
+        setModalTitular(false);
+    }
+    
+    const deleteTitular = key => {
+        var data = $.grep(listaTitulares, function(e){
+            return e.id !== key;
+       });
+       setListaTitulares(data);
+    };
 
     const registrar = async e => {
         e.preventDefault();
@@ -84,7 +109,6 @@ const PredioEditReg = ({history,  match}) => {
                 await saveDatoReg(predioReg.id, predioReg);
                 toastr.success(`Los datos registrales del predio: ${id}`, 'Se actualizarón correctamente.', {position: 'top-center'})
             }
-            //history.push('/solicitud-list');
         }
         catch (e) {
             toastr.error('Se encontrarón errores al intentar realizar el registro de datos registrales', JSON.stringify(e), {position: 'top-right'})
@@ -107,14 +131,6 @@ const PredioEditReg = ({history,  match}) => {
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
-                        </Row6>
-                        <Row6>
-                            <FormGroup label={"CUC"}>
-                                <Input value={predioReg.cuc || ""} onChange={handleInputChange}
-                                    name={"cuc"} placeholder={"Ingrese el valor del CUC"}
-                                    type={"text"}>
-                                </Input>
-                            </FormGroup>
                             <FormGroup label={"¿Tiene Derecho Inscrito?"}>
                                 <Select value={predioReg.inscrito || ""}
                                             onChange={handleInputChange}
@@ -124,25 +140,195 @@ const PredioEditReg = ({history,  match}) => {
                                 </Select>
                             </FormGroup>
                         </Row6>
+                        <Row6>
+                            <FormGroup label={"CUC"}>
+                                <Input value={predioReg.cuc || ""} onChange={handleInputChange}
+                                    name={"cuc"} placeholder={"Ingrese el valor del CUC"}
+                                    type={"text"}>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup label={"Número de ITL"}>
+                                <Input value={predioReg.numeroitl || ""} onChange={handleInputChange}
+                                    name={"numeroitl"} placeholder={"Ingrese el número de informe"}
+                                    type={"text"}>
+                                </Input>
+                            </FormGroup>
+                        </Row6>
                         <div className="col-lg-12">
-                            <fieldset className="mleft-20"><legend>Datos y Documentos de Inscripción</legend>
-                                <Row6>{predioReg.inscrito}
+                            <fieldset className="mleft-20">
+                                <legend>Datos y Documentos de Inscripción</legend>
+                                <Row6>
                                     <FormGroup label={"Fecha de Inscripción"} >
                                         <Input value={predioReg.fechainscripcion || ""} onChange={handleInputChange}
                                             name={"fechainscripcion"}
                                             type={"date"}>
                                         </Input>
                                     </FormGroup>
+                                    <FormGroup label={"Número de Asiento"} >
+                                        <Input value={predioReg.numeroasiento || ""} onChange={handleInputChange}
+                                        name={"numeroasiento"} placeholder={"Ingrese el número de asiento"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Número de Tomo"} >
+                                        <Input value={predioReg.numerotomo || ""} onChange={handleInputChange}
+                                        name={"numerotomo"} placeholder={"Ingrese el número de tomo"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Número de Partida Electrónica"} >
+                                        <Input value={predioReg.numeropartida || ""} onChange={handleInputChange}
+                                        name={"numeropartida"} placeholder={"Ingrese el número de partida"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Fecha de Inscripción de Fábrica"} >
+                                        <Input value={predioReg.fechainscripcionfabrica || ""} onChange={handleInputChange}
+                                            name={"fechainscripcionfabrica"}
+                                            type={"date"}>
+                                        </Input>
+                                    </FormGroup>
+                                    
                                 </Row6>
                                 <Row6>
-                                    <label className="col-lg-4 control-label">Área Inscrita - m<sup>2</sup></label>
-                                    <div className="col-lg-8">
-                                        <Input value={predioReg.areainscrita || ""} onChange={handleInputChange}
-                                            name={"areainscrita"} placeholder={"Ingrese el valor de área inscrita"}
-                                            pattern="^\d{1,10}(\.\d{1,4})?$"
-                                            type={"text"}>
-                                        </Input>
+                                    <div class="form-group ">
+                                        <label className="col-lg-4 control-label">Área Inscrita - m<sup>2</sup></label>
+                                        <div className="col-lg-8">
+                                            <Input value={predioReg.areainscrita || ""} onChange={handleInputChange}
+                                                name={"areainscrita"} placeholder={"Ingrese el valor de área inscrita"}
+                                                pattern="^\d{1,10}(\.\d{1,4})?$"
+                                                type={"text"}>
+                                            </Input>
+                                        </div>
                                     </div>
+                                    <FormGroup label={"Número de Folio"} >
+                                        <Input value={predioReg.numerofolio || ""} onChange={handleInputChange}
+                                        name={"numerofolio"} placeholder={"Ingrese el número de folio"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Número de Ficha"} >
+                                        <Input value={predioReg.numeroficha || ""} onChange={handleInputChange}
+                                        name={"numeroficha"} placeholder={"Ingrese el número de ficha"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Número de Título Archivado"} >
+                                        <Input value={predioReg.numerotitulo || ""} onChange={handleInputChange}
+                                        name={"numerotitulo"} placeholder={"Ingrese el número de Título Archivado"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Número de Fábrica"} >
+                                        <Input value={predioReg.numerofabrica || ""} onChange={handleInputChange}
+                                        name={"numerofabrica"} placeholder={"Ingrese el número de Título Archivado"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+
+                                </Row6>
+                            </fieldset>
+                        </div>
+                        <div className="col-lg-12">
+                            <fieldset className="mleft-20">
+                                <legend>Datos de Anotaciones Preventivas, Cargas y Gravámenes (Activas)</legend>
+                                <Row6>
+                                    <FormGroup label={"¿Tiene Anotación Preventiva?"}>
+                                        <Select value={predioReg.anotacionpreventiva || ""}
+                                                    onChange={handleInputChange}
+                                                    name={"anotacionpreventiva"}>
+                                                <option value="true">Sí</option>
+                                                <option value="false">No</option>
+                                        </Select>
+                                    </FormGroup>
+                                    <FormGroup label={"Tipo de Carga (Si Aplica)"}>
+                                        <Select value={predioReg.tipocarga || ""}
+                                                    onChange={handleInputChange}
+                                                    name={"tipocarga"}>
+                                            {listaTipoCarga.result?
+                                            <ComboOptions data={listaTipoCarga.result} valorkey="id" valornombre="valortexto"/>
+                                            : "Cargando..."}
+                                        </Select>
+                                    </FormGroup>
+                                </Row6>
+                                <Row6>
+                                    <FormGroup label={"¿Tiene Gravamen?"}>
+                                        <Select value={predioReg.gravamen || ""}
+                                                    onChange={handleInputChange}
+                                                    name={"gravamen"}>
+                                                <option value="true">Sí</option>
+                                                <option value="false">No</option>
+                                        </Select>
+                                    </FormGroup>
+                                    <FormGroup label={"Detalle de Carga"} >
+                                        <Input value={predioReg.cargadetalle || ""} onChange={handleInputChange}
+                                        name={"numerofabrica"} placeholder={"Ingrese el detalle de la carga"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+
+                                </Row6>
+                            </fieldset>
+                        </div>
+                        <div className="col-lg-12">
+                            <fieldset className="mleft-20">
+                                <legend>Datos de Titularidad del Predio</legend>
+                                <Row6>
+                                    <FormGroup label={"Tipo del Titular de Propiedad"}>
+                                        <Select value={predioReg.tipotitular || ""}
+                                                    onChange={handleInputChange}
+                                                    name={"tipotitular"}>
+                                            {listaTipoPersona.result?
+                                            <ComboOptions data={listaTipoPersona.result} valorkey="id" valornombre="valortexto"/>
+                                            : "Cargando..."}
+                                        </Select>
+                                    </FormGroup>
+                                    <FormGroup label={"Condición del Titular de Propiedad"}>
+                                        <Select value={predioReg.condiciontitular || ""}
+                                                    onChange={handleInputChange}
+                                                    name={"condiciontitular"}>
+                                            {listaTipoTitularidad.result?
+                                            <ComboOptions data={listaTipoTitularidad.result} valorkey="id" valornombre="valortexto"/>
+                                            : "Cargando..."}
+                                        </Select>
+                                    </FormGroup>
+                                </Row6>
+                                <Row6>
+                                    <FormGroup label={"Tipo de Persona Jurídica"}>
+                                        <Select value={predioReg.tipopersonajuri || ""}
+                                                    onChange={handleInputChange}
+                                                    name={"tipopersonajuri"}>
+                                            {listaTipoPersonaJuridica.result?
+                                            <ComboOptions data={listaTipoPersonaJuridica.result} valorkey="id" valornombre="valortexto"/>
+                                            : "Cargando..."}
+                                        </Select>
+                                    </FormGroup>
+                                </Row6>
+                                <div className="col-lg-12">
+                                    <fieldset className="mleft-20 mbot-20">
+                                        <legend>Titular(es) del Predio</legend>
+                                        <div>
+                                            <div className="col-lg-10">
+                                                {(listaTitulares && Array.isArray(listaTitulares) && listaTitulares.length > 0) &&
+                                                <TableTitularPredio 
+                                                    data={listaTitulares}
+                                                    deletetitular={deleteTitular}>
+                                                </TableTitularPredio>
+                                                }
+                                            </div>
+                                            <div className="col-lg-2 text-right">
+                                                <button className="btn btn-sm btn-info" type="button" onClick={showModalTitular}>
+                                                <i className="fa fa-plus fa-lg" /> Añadir Titular</button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div className="col-lg-12">
+                            <fieldset className="mleft-20">
+                                <legend>Datos de Forma de Adquisición del Predio</legend>
+                                <Row6>
                                 </Row6>
                             </fieldset>
                         </div>
@@ -155,7 +341,8 @@ const PredioEditReg = ({history,  match}) => {
                         </button>
                     </FormFooter>
                 </Form>
-                
+                {modalTitular && <MAddTitularPredio closeventana={cerrarModal} usevalue={updatevaluestitular} 
+                            listatipodoc={listaTipoDocumento.result} listaestadocivil={listaEstadoCivil.result}/> }
             </WraperLarge>
         </>
   );

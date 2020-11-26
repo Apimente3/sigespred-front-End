@@ -45,6 +45,11 @@ export const LISTASIDS = {
         TIPODOCCONSULTA: 15,
         TIPOACTAACTIVIDAD: 16,
         TIPOACTAACUERDO: 17,
+        PREDIOTIPOCARGA: 22,
+        PREDIOTIPOPERSONA: 23,
+        PREDIOTIPOPERSONAJURI: 24,
+        PREDIOTIPOCONDTITULAR: 25,
+        ESTADOCIVIL: 26,
     }
 
 export const FilesUsuario={
