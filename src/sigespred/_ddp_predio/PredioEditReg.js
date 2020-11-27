@@ -72,6 +72,9 @@ const PredioEditReg = ({history,  match}) => {
             if (datoRegistral) {
                 setNuevoDatoReg(false);
                 setPredioReg(datoRegistral);
+                if (datoRegistral.titularpredio) {
+                    setListaTitulares(datoRegistral.titularpredio);
+                }
             }
         };
         init();
@@ -100,6 +103,7 @@ const PredioEditReg = ({history,  match}) => {
     const registrar = async e => {
         e.preventDefault();
         $('#btnguardar').button('loading');
+        predioReg.titularpredio = listaTitulares;
 
         try {
             if (nuevoDatoReg) {
@@ -133,7 +137,7 @@ const PredioEditReg = ({history,  match}) => {
                                 </Input>
                             </FormGroup>
                             <FormGroup label={"¿Tiene Derecho Inscrito?"}>
-                                <Select value={predioReg.inscrito || ""}
+                                <Select value={('inscrito' in predioReg) ? predioReg.inscrito : ""}
                                             onChange={handleInputChange}
                                             name={"inscrito"}>
                                         <option value="true">Sí</option>
@@ -183,22 +187,12 @@ const PredioEditReg = ({history,  match}) => {
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
-                                    <FormGroup label={"Fecha de Inscripción de Fábrica"} >
-                                        <Input value={predioReg.fechainscripcionfabrica || ""} onChange={handleInputChange}
-                                            name={"fechainscripcionfabrica"}
-                                            type={"date"}>
+                                    <FormGroup label={"Número de Título Archivado"} >
+                                        <Input value={predioReg.numerotituloarc || ""} onChange={handleInputChange}
+                                        name={"numerotituloarc"} placeholder={"Ingrese el número de Título Archivado"}
+                                        type={"text"}>
                                         </Input>
                                     </FormGroup>
-                                    <div class="form-group ">
-                                        <label className="col-lg-4 control-label">Área Dispuesta - m<sup>2</sup></label>
-                                        <div className="col-lg-8">
-                                            <Input value={predioReg.areadispuesta || ""} onChange={handleInputChange}
-                                                name={"areadispuesta"} placeholder={"Ingrese el valor de área dispuesta"}
-                                                pattern="^\d{1,10}(\.\d{1,4})?$"
-                                                type={"text"}>
-                                            </Input>
-                                        </div>
-                                    </div>
                                 </Row6>
                                 <Row6>
                                     <div class="form-group ">
@@ -223,37 +217,85 @@ const PredioEditReg = ({history,  match}) => {
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
-                                    <FormGroup label={"Número de Título Archivado"} >
-                                        <Input value={predioReg.numerotitulo || ""} onChange={handleInputChange}
-                                        name={"numerotitulo"} placeholder={"Ingrese el número de Título Archivado"}
+                                    <FormGroup label={"Código Predio Registral"} >
+                                        <Input value={predioReg.codpredioregistral || ""} onChange={handleInputChange}
+                                        name={"codpredioregistral"} placeholder={"Ingrese el Código de Predio Registral"}
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
+                                </Row6>
+                            </fieldset>
+                        </div>
+                        
+                        <div className="col-lg-12">
+                            <fieldset className="mleft-20">
+                                <legend></legend>
+                                <Row6>
+                                    <FormGroup label={"Fecha de Inscripción de Fábrica"} >
+                                        <Input value={predioReg.fechainscripcionfabrica || ""} onChange={handleInputChange}
+                                            name={"fechainscripcionfabrica"}
+                                            type={"date"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <div class="form-group ">
+                                        <label className="col-lg-4 control-label">Área Construida - m<sup>2</sup></label>
+                                        <div className="col-lg-8">
+                                            <Input value={predioReg.fabareaconstruida || ""} onChange={handleInputChange}
+                                                name={"fabareaconstruida"} placeholder={"Ingrese el valor de área dispuesta"}
+                                                pattern="^\d{1,10}(\.\d{1,4})?$"
+                                                type={"text"}>
+                                            </Input>
+                                        </div>
+                                    </div>
+                                    <FormGroup label={"Número de Folio"} >
+                                        <Input value={predioReg.fabnumerofolio || ""} onChange={handleInputChange}
+                                        name={"fabnumerofolio"} placeholder={"Ingrese el número de folio"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Número de Ficha"} >
+                                        <Input value={predioReg.fabnumeroficha || ""} onChange={handleInputChange}
+                                        name={"fabnumeroficha"} placeholder={"Ingrese el número de ficha"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                </Row6>
+                                <Row6>
                                     <FormGroup label={"Número de Fábrica"} >
                                         <Input value={predioReg.numerofabrica || ""} onChange={handleInputChange}
                                         name={"numerofabrica"} placeholder={"Ingrese el número de Título Archivado"}
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
-                                    <div class="form-group ">
-                                        <label className="col-lg-4 control-label">Área Remanente - m<sup>2</sup></label>
-                                        <div className="col-lg-8">
-                                            <Input value={predioReg.arearemanente || ""} onChange={handleInputChange}
-                                                name={"arearemanente"} placeholder={"Ingrese el valor de área remanente"}
-                                                pattern="^\d{1,10}(\.\d{1,4})?$"
+                                    <FormGroup label={"Número de Asiento"} >
+                                            <Input value={predioReg.fabnumeroasiento || ""} onChange={handleInputChange}
+                                                name={"fabnumeroasiento"} placeholder={"Ingrese el número de asiento"}
                                                 type={"text"}>
                                             </Input>
-                                        </div>
-                                    </div>
+                                    </FormGroup>
+                                    <FormGroup label={"Número de Tomo"} >
+                                        <Input value={predioReg.fabnumerotomo || ""} onChange={handleInputChange}
+                                        name={"fabnumerotomo"} placeholder={"Ingrese el número de tomo"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Número de Partida Electrónica"} >
+                                        <Input value={predioReg.fabnumeropartida || ""} onChange={handleInputChange}
+                                        name={"fabnumeropartida"} placeholder={"Ingrese el número de partida"}
+                                        type={"text"}>
+                                        </Input>
+                                    </FormGroup>
                                 </Row6>
                             </fieldset>
                         </div>
+                        
                         <div className="col-lg-12">
                             <fieldset className="mleft-20">
-                                <legend>Datos de Anotaciones Preventivas, Cargas y Gravámenes (Activas)</legend>
+                                <legend>Datos de Anotaciones Preventivas, Cargas y Gravámenes (Activas){predioReg.anotacionpreventiva && predioReg.anotacionpreventiva.toString()}{predioReg.gravamen}</legend>
+                                
                                 <Row6>
                                     <FormGroup label={"¿Tiene Anotación Preventiva?"}>
-                                        <Select value={predioReg.anotacionpreventiva || ""}
+                                        <Select value={('anotacionpreventiva' in predioReg) ? predioReg.anotacionpreventiva : ""}
                                                     onChange={handleInputChange}
                                                     name={"anotacionpreventiva"}>
                                                 <option value="true">Sí</option>
@@ -272,7 +314,7 @@ const PredioEditReg = ({history,  match}) => {
                                 </Row6>
                                 <Row6>
                                     <FormGroup label={"¿Tiene Gravamen?"}>
-                                        <Select value={predioReg.gravamen || ""}
+                                        <Select value={('gravamen' in predioReg) ? predioReg.gravamen : ""}
                                                     onChange={handleInputChange}
                                                     name={"gravamen"}>
                                                 <option value="true">Sí</option>
@@ -281,7 +323,7 @@ const PredioEditReg = ({history,  match}) => {
                                     </FormGroup>
                                     <FormGroup label={"Detalle de Carga"} >
                                         <Input value={predioReg.cargadetalle || ""} onChange={handleInputChange}
-                                        name={"numerofabrica"} placeholder={"Ingrese el detalle de la carga"}
+                                        name={"cargadetalle"} placeholder={"Ingrese el detalle de la carga"}
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
@@ -348,9 +390,9 @@ const PredioEditReg = ({history,  match}) => {
                                 <legend>Datos de Forma de Adquisición del Predio</legend>
                                 <Row6>
                                     <FormGroup label={"Forma de Adquisición"}>
-                                        <Select value={predioReg.formaadquisicionid || ""}
+                                        <Select value={predioReg.formaadquisicion || ""}
                                                     onChange={handleInputChange}
-                                                    name={"formaadquisicionid"}>
+                                                    name={"formaadquisicion"}>
                                             {listaTipoAdquisicion.result?
                                             <ComboOptions data={listaTipoAdquisicion.result} valorkey="id" valornombre="valortexto"/>
                                             : "Cargando..."}

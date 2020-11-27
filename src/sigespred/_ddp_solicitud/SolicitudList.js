@@ -80,7 +80,8 @@ const SolicitudList = ({history}) => {
         $('#fechafin').val('');
         $('#entidadid').val('');
         $('#tipoconsultaid').val('');
-        $('#estado').val('');    
+        $('#estado').val('');
+        $('#contienearchivo').val('');
         
         handleChangeProyecto('');
         set_filtros({});
@@ -271,8 +272,17 @@ const SolicitudList = ({history}) => {
                         <option value="Fuera de plazo">Fuera de plazo</option>
                     </select>
                 </div>
-            </div>
 
+                <label className="col-lg-2 control-label">¿Contiene Archivo de Respuesta?</label>
+                <div className="col-lg-4">
+                    <select className="form-control input-sm" id="contienearchivo" name="contienearchivo" 
+                        onChange={handleInputChange}>
+                        <option value="">--SELECCIONE--</option>
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
 
             <div className="form-group">
                 <div className="row mb-3">
