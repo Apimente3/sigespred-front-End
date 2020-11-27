@@ -162,9 +162,17 @@ class SidebarAdm extends Component {
                                         <span className="menu-hover"></span>
                                     </Link>
                                 </li>
-
-
-
+                                <li menu="/predio-list">
+                                    <Link to={"/predio-list"}>
+                                        <span className="menu-icon">
+                                            <img src="/img/map.svg" className="btn-siderbar" ></img>
+                                        </span>
+                                        <span className="text text-red">
+                                           Predios Individualizados
+                                        </span>
+                                        <span className="menu-hover"></span>
+                                    </Link>
+                                </li>
                                 <li menu="/indicadores">
                                     <Link to={"/indicadores"}>
                                         <span className="menu-icon">

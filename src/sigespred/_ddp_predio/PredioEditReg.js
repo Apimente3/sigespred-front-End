@@ -142,13 +142,13 @@ const PredioEditReg = ({history,  match}) => {
                             </FormGroup>
                         </Row6>
                         <Row6>
-                            <FormGroup label={"CUC"}>
+                            <FormGroup label={"CUC"} ayuda="Código Único Catastral">
                                 <Input value={predioReg.cuc || ""} onChange={handleInputChange}
                                     name={"cuc"} placeholder={"Ingrese el valor del CUC"}
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
-                            <FormGroup label={"Número de ITL"}>
+                            <FormGroup label={"Número de ITL"} ayuda="Número de Informe Técnico Legal">
                                 <Input value={predioReg.numeroitl || ""} onChange={handleInputChange}
                                     name={"numeroitl"} placeholder={"Ingrese el número de informe"}
                                     type={"text"}>
@@ -189,7 +189,16 @@ const PredioEditReg = ({history,  match}) => {
                                             type={"date"}>
                                         </Input>
                                     </FormGroup>
-                                    
+                                    <div class="form-group ">
+                                        <label className="col-lg-4 control-label">Área Dispuesta - m<sup>2</sup></label>
+                                        <div className="col-lg-8">
+                                            <Input value={predioReg.areadispuesta || ""} onChange={handleInputChange}
+                                                name={"areadispuesta"} placeholder={"Ingrese el valor de área dispuesta"}
+                                                pattern="^\d{1,10}(\.\d{1,4})?$"
+                                                type={"text"}>
+                                            </Input>
+                                        </div>
+                                    </div>
                                 </Row6>
                                 <Row6>
                                     <div class="form-group ">
@@ -226,7 +235,16 @@ const PredioEditReg = ({history,  match}) => {
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
-
+                                    <div class="form-group ">
+                                        <label className="col-lg-4 control-label">Área Remanente - m<sup>2</sup></label>
+                                        <div className="col-lg-8">
+                                            <Input value={predioReg.arearemanente || ""} onChange={handleInputChange}
+                                                name={"arearemanente"} placeholder={"Ingrese el valor de área remanente"}
+                                                pattern="^\d{1,10}(\.\d{1,4})?$"
+                                                type={"text"}>
+                                            </Input>
+                                        </div>
+                                    </div>
                                 </Row6>
                             </fieldset>
                         </div>

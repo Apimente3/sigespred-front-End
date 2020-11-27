@@ -12,6 +12,7 @@ import FormFooter from "./FormFooter";
 import FormGroupInline from "./FormGroupInline";
 import Table from "./Table";
 import TextArea from "./TextArea";
+import Loading from "./Loading";
 
 export {
     Form,
@@ -27,5 +28,6 @@ export {
     FormFooter,
     FormGroupInline,
     Table,
-    TextArea
+    TextArea,
+    Loading
 }

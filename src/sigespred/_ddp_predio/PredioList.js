@@ -11,6 +11,7 @@ import { Table } from "../../components/forms";
 import { toastr } from "react-redux-toastr";
 import { PredioRow } from "./PredioRow";
 import Pagination from "react-js-pagination";
+import { Loading } from "../../components/forms";
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -193,7 +194,7 @@ const descargarXls=()=>{
             <div className="panel panel-default">
                 {
                 (cargandoGrid)?
-                    <div className="alert alert-danger text-center">Cargando...</div>
+                    <Loading></Loading>
                     :
                     (
                     <>

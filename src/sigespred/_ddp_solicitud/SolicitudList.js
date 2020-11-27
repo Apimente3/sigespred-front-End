@@ -13,6 +13,7 @@ import * as PARAMS from "../../config/parameters";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {LISTADO_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
+import { Loading } from "../../components/forms";
 
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
@@ -302,15 +303,14 @@ const SolicitudList = ({history}) => {
                         </button>
                         <Link to={`/solicitud-add`} className="btn btn-danger btn-sm fullborder">
                             <i className="fa fa-plus-circle"></i>  Agregar Solicitud
-                        </Link>
-                        
+                        </Link>    
                     </div>
                 </div>
             </div>
             <div className="panel panel-default">
                 {
                 (cargandoGrid)?
-                    <div className="alert alert-danger text-center">Cargando...</div>
+                    <Loading></Loading>
                     :
                     (
                     <>
