@@ -25,6 +25,7 @@ const SolicitudRow = ({solicitud, nro, callback, loadfiles}) => {
                 <td key={`tdrowkey_20${nro}`}>{solicitud.tipodocumento}</td>
                 <td key={`tdrowkey_7${nro}`}>{solicitud.codigostd}</td>
                 <td key={`tdrowkey_8${nro}`}>{solicitud.nrooficio}</td>
+                <td key={`tdrowkey_8${nro}`}>{solicitud.oficioreferencia}</td>
                 <td key={`tdrowkey_9${nro}`}>{solicitud.fecharecepcion}</td>
                 <td key={`tdrowkey_5${nro}`}>{solicitud.recibiorespuesta}</td>
                 <td key={`tdrowkey_14${nro}`}>{solicitud.fecharespuesta}</td>
@@ -37,7 +38,14 @@ const SolicitudRow = ({solicitud, nro, callback, loadfiles}) => {
                 :(solicitud.estado && solicitud.estado.toUpperCase()  === 'EN TOLERANCIA')
                 ?<td key={`tdrowkey_16${nro}`}><span className="badge badge-warning">{solicitud.estado}</span></td>
                 :(solicitud.estado && solicitud.estado.toUpperCase()  === 'FUERA DE PLAZO')
-                ?<td key={`tdrowkey_17${nro}`}><span className="badge badge-danger">{solicitud.estado}</span></td>
+                ?<td key={`tdrowkey_17${nro}`}>
+                    <Link  to={`/solicitud-add/${solicitud.nrooficio}`} data-toggle="tooltip" 
+                        data-placement="bottom" data-original-title={ "Generar nuevo documento reiterativo" }>
+                        <span className="badge badge-danger">
+                            {solicitud.estado}
+                        </span>
+                    </Link>
+                 </td>
                 :<td key={`tdrowkey_18${nro}`}>{solicitud.estado}</td>
                 }
                 

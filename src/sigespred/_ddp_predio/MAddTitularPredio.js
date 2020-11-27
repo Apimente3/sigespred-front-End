@@ -3,16 +3,20 @@ import { toastr } from "react-redux-toastr";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import moment from 'moment';
 
-const MAddTitularPredio = ({closeventana, usevalue, listatipodoc, listaestadocivil}) => {
+const MAddTitularPredio = ({closeventana, usevalue, listatipodoc, listaestadocivil, datatitular = null}) => {
     const [titular, setTitular] = useState({});
 
     useEffect(() => {
         function initialLoad() {
-                var idDate = moment().format("HHmmss");
-                setTitular({
-                    ...titular,
-                    id: idDate
-                });
+                if(datatitular){
+                    setTitular(datatitular);
+                } else { 
+                    var idDate = moment().format("HHmmss");
+                    setTitular({
+                        ...titular,
+                        id: idDate
+                    });
+                }
         }
         initialLoad();
     }, []);

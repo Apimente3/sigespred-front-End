@@ -22,9 +22,6 @@ import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
-import MapRegistroPredio from "../../components/helpers/maps/MapRegistroPredio";
-import SingleUpload from "../../components/uploader/SingleUpload";
-import {FilesGestionPredial} from "../../config/parameters";
 import PredioLinks from "./PredioLinks";
 import {useDispatch} from 'react-redux';
 import { actualizar } from '../../actions/_ddp_variable/Actions';
@@ -57,6 +54,7 @@ const PredioEditReg = ({history,  match}) => {
     const [nuevoDatoReg, setNuevoDatoReg] = useState(true);
     const [modalTitular, setModalTitular] = useState(false);
     const [listaTitulares, setListaTitulares] = useState([]);
+    const [titularEdit, setTitularEdit] = useState(null);
     const listaTipoCarga = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOCARGA]);
     const listaTipoPersona = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOPERSONA]);
     const listaTipoPersonaJuridica = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOPERSONAJURI]);
@@ -80,16 +78,35 @@ const PredioEditReg = ({history,  match}) => {
         init();
     }, []);
 
+    const cargarEditarTitular = (titularid) => {
+        var  titularvalue =  listaTitulares.find(x => x.id === titularid);
+        setTitularEdit(titularvalue);
+        setModalTitular(true);
+    }
+
     const showModalTitular = () => {
         setModalTitular(true);
      }
 
      const cerrarModal=(estado)=>{
+        setTitularEdit(null);
         setModalTitular(estado);
     }
 
     const updatevaluestitular=(titular)=>{
-        setListaTitulares([...listaTitulares,titular])
+        var  titularindex =  listaTitulares.findIndex(x => x.id === titular.id);
+
+        if (titularindex >= 0) {
+            listaTitulares[titularindex].nombretitular = titular.nombretitular;
+            listaTitulares[titularindex].tipodocumento = titular.tipodocumento;
+            listaTitulares[titularindex].numerodocumento = titular.numerodocumento;
+            listaTitulares[titularindex].estadocivil = titular.estadocivil;
+           setListaTitulares(listaTitulares);
+        } else {
+            setListaTitulares([...listaTitulares,titular])
+        }
+        
+        setTitularEdit(null);
         setModalTitular(false);
     }
     
@@ -200,7 +217,7 @@ const PredioEditReg = ({history,  match}) => {
                                         <div className="col-lg-8">
                                             <Input value={predioReg.areainscrita || ""} onChange={handleInputChange}
                                                 name={"areainscrita"} placeholder={"Ingrese el valor de área inscrita"}
-                                                pattern="^\d{1,10}(\.\d{1,4})?$"
+                                                pattern="^\d{1,10}(\.\d{1,6})?$"
                                                 type={"text"}>
                                             </Input>
                                         </div>
@@ -242,7 +259,7 @@ const PredioEditReg = ({history,  match}) => {
                                         <div className="col-lg-8">
                                             <Input value={predioReg.fabareaconstruida || ""} onChange={handleInputChange}
                                                 name={"fabareaconstruida"} placeholder={"Ingrese el valor de área dispuesta"}
-                                                pattern="^\d{1,10}(\.\d{1,4})?$"
+                                                pattern="^\d{1,10}(\.\d{1,6})?$"
                                                 type={"text"}>
                                             </Input>
                                         </div>
@@ -372,7 +389,8 @@ const PredioEditReg = ({history,  match}) => {
                                                 {(listaTitulares && Array.isArray(listaTitulares) && listaTitulares.length > 0) &&
                                                 <TableTitularPredio 
                                                     data={listaTitulares}
-                                                    deletetitular={deleteTitular}>
+                                                    deletetitular={deleteTitular}
+                                                    edittitular={cargarEditarTitular} >
                                                 </TableTitularPredio>
                                                 }
                                             </div>
@@ -425,7 +443,7 @@ const PredioEditReg = ({history,  match}) => {
                     </FormFooter>
                 </Form>
                 {modalTitular && <MAddTitularPredio closeventana={cerrarModal} usevalue={updatevaluestitular} 
-                            listatipodoc={listaTipoDocumento.result} listaestadocivil={listaEstadoCivil.result}/> }
+                            listatipodoc={listaTipoDocumento.result} listaestadocivil={listaEstadoCivil.result} datatitular={titularEdit}/> }
             </WraperLarge>
         </>
   );

@@ -209,6 +209,12 @@ const SolicitudEdit = ({history, match}) => {
                                     type={"date"}>
                                 </Input>
                             </FormGroup>
+                            <FormGroup label={"Número de Documento Anterior (Reiteración)"}>
+                                    <Input readonly={true} value={solicitud.oficioreferencia || ""} onChange={handleInputChange}
+                                        name={"oficioreferencia"}
+                                        type={"text"}>
+                                    </Input>
+                            </FormGroup>
                         </Row6>
                     </Row12>
                     <Row12>

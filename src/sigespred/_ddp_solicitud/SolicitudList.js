@@ -192,7 +192,7 @@ const SolicitudList = ({history}) => {
         return false;
     }
 
-    const cabecerasTabla = ["","ID", "ENTIDAD", "PROYECTO", "TIPO DE CONSULTA", "TIPO DE DOC.", "CÓDIGO STD","NRO. DOC.", "FECHA DE RECEPCIÓN", "ATENDIDO", "FECHA DE ATENCIÓN", "DOCUMENTO ATENCIÓN", "PLAZO ATENCIÓN", "SEG. ESTADO", "SEG. ACCIÖN", "ACCIONES"]
+    const cabecerasTabla = ["","ID", "ENTIDAD", "PROYECTO", "TIPO DE CONSULTA", "TIPO DE DOC.", "CÓDIGO STD","NRO. DOC.", "NRO. DOC. ANTECEDENTE", "FECHA DE RECEPCIÓN", "ATENDIDO", "FECHA DE ATENCIÓN", "DOCUMENTO ATENCIÓN", "PLAZO ATENCIÓN", "SEG. ESTADO", "SEG. ACCIÖN", "ACCIONES"]
     return (
         <>
         <WraperLarge titleForm={"Listado de Solicitudes"} listbreadcrumb={LISTADO_SOLICITUD_BREADCRUM}>

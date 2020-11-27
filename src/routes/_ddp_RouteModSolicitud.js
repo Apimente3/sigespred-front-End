@@ -5,7 +5,7 @@ import SolicitudRespuesta from "../sigespred/_ddp_solicitud/solicitudRespuesta";
 
 const RouteModSolicitud = [
     {path: "/solicitud-list", component: SolicitudList},
-    {path: "/solicitud-add", component: SolicitudAdd},
+    {path: "/solicitud-add/:ante?", component: SolicitudAdd},
     {path: "/solicitud-edit/:id", component: SolicitudEdit},
     {path: "/solicitud-respuesta/:id", component: SolicitudRespuesta}
 ]

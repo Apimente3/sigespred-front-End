@@ -42,6 +42,17 @@ const SolicitudAdd = ({history,  match}) => {
     const [listaTramos, setListaTramos] = useState(null);
     const [listaEquipos, setListaEquipos] = useState(null);
     const [listaEntidades, setListaEntidades] = useState(null);
+    const [valAncedente, setValAntecedente] = useState('');
+
+    const {ante} = match.params;
+
+    if(ante && !valAncedente){
+        setValAntecedente(ante);
+        setSolicitud({
+            ...solicitud,
+            oficioreferencia: ante
+        });
+    }
 
     const cargarChildrenProyecto = async(idProyecto) => {
         if (idProyecto) {
@@ -191,6 +202,12 @@ const SolicitudAdd = ({history,  match}) => {
                                     <Input value={solicitud.fechaelaboficio || ""} onChange={handleInputChange}
                                         name={"fechaelaboficio"}
                                         type={"date"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Número de Documento Anterior (Reiteración)"}>
+                                    <Input readonly={true} value={solicitud.oficioreferencia || ""} onChange={handleInputChange}
+                                        name={"oficioreferencia"}
+                                        type={"text"}>
                                     </Input>
                                 </FormGroup>
                             </Row6>
