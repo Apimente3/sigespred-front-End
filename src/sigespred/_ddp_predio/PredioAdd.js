@@ -93,9 +93,10 @@ const PredioAdd = ({history,  match}) => {
   return (
     <>
         <WraperLarge titleForm={"Registro de Predio Individualizado (Generación de Código)"} listbreadcrumb={REGISTRO_PREDIOS_BREADCRUM} >
+        <Form onSubmit={registrar}>
                 <div className="row mleft-5">
                     <div className="form-group col-lg-4 mleft-5">
-                        <Form onSubmit={registrar}>
+                        
                             <div>
                                 <label className="control-label">
                                     <span className="obligatorio">* </span> Proyecto:
@@ -208,12 +209,13 @@ const PredioAdd = ({history,  match}) => {
                                         className="btn btn-danger btn-sm btn-control">Guardar
                                 </button>
                             </div>
-                        </Form>
+                        
                     </div>
                     <div className="col-lg-8 mright-5">
                         <MapRegistroPredio></MapRegistroPredio>
                     </div>
                 </div>
+                </Form>
         </WraperLarge>
     </>
   );
