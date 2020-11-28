@@ -55,6 +55,7 @@ const PredioEditReg = ({history,  match}) => {
     const [modalTitular, setModalTitular] = useState(false);
     const [listaTitulares, setListaTitulares] = useState([]);
     const [titularEdit, setTitularEdit] = useState(null);
+    const [mandatorioInscripcion, setMandatorioInscripcion] = useState(false);
     const listaTipoCarga = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOCARGA]);
     const listaTipoPersona = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOPERSONA]);
     const listaTipoPersonaJuridica = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.PREDIOTIPOPERSONAJURI]);
@@ -70,6 +71,7 @@ const PredioEditReg = ({history,  match}) => {
             if (datoRegistral) {
                 setNuevoDatoReg(false);
                 setPredioReg(datoRegistral);
+                setValorMandatorio(datoRegistral.inscrito);
                 if (datoRegistral.titularpredio) {
                     setListaTitulares(datoRegistral.titularpredio);
                 }
@@ -77,6 +79,20 @@ const PredioEditReg = ({history,  match}) => {
         };
         init();
     }, []);
+
+    const handleChangeMandatorio = (e) => {
+        setValorMandatorio(e.target.value);
+    }
+
+    const setValorMandatorio= (valor) => {
+        
+        if ((typeof(valor) === 'string' && valor == 'true') || (typeof(valor) === 'boolean' && valor === true)){
+            setMandatorioInscripcion(true);
+            return;
+        }
+        
+        setMandatorioInscripcion(false);
+    }
 
     const cargarEditarTitular = (titularid) => {
         var  titularvalue =  listaTitulares.find(x => x.id === titularid);
@@ -155,7 +171,7 @@ const PredioEditReg = ({history,  match}) => {
                             </FormGroup>
                             <FormGroup label={"¿Tiene Derecho Inscrito?"}>
                                 <Select value={('inscrito' in predioReg) ? predioReg.inscrito : ""}
-                                            onChange={handleInputChange}
+                                            onChange={(e) => {handleChangeMandatorio(e); handleInputChange(e);}}
                                             name={"inscrito"}>
                                         <option value="true">Sí</option>
                                         <option value="false">No</option>
@@ -180,9 +196,9 @@ const PredioEditReg = ({history,  match}) => {
                             <fieldset className="mleft-20">
                                 <legend>Datos y Documentos de Inscripción</legend>
                                 <Row6>
-                                    <FormGroup label={"Fecha de Inscripción"} >
+                                    <FormGroup label={"Fecha de Inscripción"} require={mandatorioInscripcion}>
                                         <Input value={predioReg.fechainscripcion || ""} onChange={handleInputChange}
-                                            name={"fechainscripcion"}
+                                            name={"fechainscripcion"} required={mandatorioInscripcion}
                                             type={"date"}>
                                         </Input>
                                     </FormGroup>
@@ -198,9 +214,10 @@ const PredioEditReg = ({history,  match}) => {
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
-                                    <FormGroup label={"Número de Partida Electrónica"} >
+                                    <FormGroup label={"Número de Partida Electrónica"} require={mandatorioInscripcion}>
                                         <Input value={predioReg.numeropartida || ""} onChange={handleInputChange}
                                         name={"numeropartida"} placeholder={"Ingrese el número de partida"}
+                                        required={mandatorioInscripcion}
                                         type={"text"}>
                                         </Input>
                                     </FormGroup>
@@ -213,11 +230,15 @@ const PredioEditReg = ({history,  match}) => {
                                 </Row6>
                                 <Row6>
                                     <div class="form-group ">
-                                        <label className="col-lg-4 control-label">Área Inscrita - m<sup>2</sup></label>
+                                        {mandatorioInscripcion?
+                                        <label className="col-lg-4 control-label"><span className="obligatorio">* </span>Área Inscrita - m<sup>2</sup></label>
+                                        :<label className="col-lg-4 control-label">Área Inscrita - m<sup>2</sup></label>
+                                        }
                                         <div className="col-lg-8">
                                             <Input value={predioReg.areainscrita || ""} onChange={handleInputChange}
                                                 name={"areainscrita"} placeholder={"Ingrese el valor de área inscrita"}
                                                 pattern="^\d{1,10}(\.\d{1,6})?$"
+                                                required={mandatorioInscripcion}
                                                 type={"text"}>
                                             </Input>
                                         </div>
@@ -311,17 +332,17 @@ const PredioEditReg = ({history,  match}) => {
                                 <legend>Datos de Anotaciones Preventivas, Cargas y Gravámenes (Activas){predioReg.anotacionpreventiva && predioReg.anotacionpreventiva.toString()}{predioReg.gravamen}</legend>
                                 
                                 <Row6>
-                                    <FormGroup label={"¿Tiene Anotación Preventiva?"}>
+                                    <FormGroup label={"¿Tiene Anotación Preventiva?"} require={true}>
                                         <Select value={('anotacionpreventiva' in predioReg) ? predioReg.anotacionpreventiva : ""}
-                                                    onChange={handleInputChange}
+                                                    onChange={handleInputChange} required={true}
                                                     name={"anotacionpreventiva"}>
                                                 <option value="true">Sí</option>
                                                 <option value="false">No</option>
                                         </Select>
                                     </FormGroup>
-                                    <FormGroup label={"Tipo de Carga (Si Aplica)"}>
+                                    <FormGroup label={"Tipo de Carga (Si Aplica)"} require={true}>
                                         <Select value={predioReg.tipocarga || ""}
-                                                    onChange={handleInputChange}
+                                                    onChange={handleInputChange} required={true}
                                                     name={"tipocarga"}>
                                             {listaTipoCarga.result?
                                             <ComboOptions data={listaTipoCarga.result} valorkey="id" valornombre="valortexto"/>
@@ -330,9 +351,9 @@ const PredioEditReg = ({history,  match}) => {
                                     </FormGroup>
                                 </Row6>
                                 <Row6>
-                                    <FormGroup label={"¿Tiene Gravamen?"}>
+                                    <FormGroup label={"¿Tiene Gravamen?"} require={true}>
                                         <Select value={('gravamen' in predioReg) ? predioReg.gravamen : ""}
-                                                    onChange={handleInputChange}
+                                                    onChange={handleInputChange} required={true}
                                                     name={"gravamen"}>
                                                 <option value="true">Sí</option>
                                                 <option value="false">No</option>

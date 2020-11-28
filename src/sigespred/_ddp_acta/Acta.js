@@ -188,7 +188,7 @@ const Acta = () => {
     <>
           <WraperLarge titleForm={"Listado de Actas"} listbreadcrumb={LISTADO_ACTA_BREADCRUM}>
             <fieldset className={'fielsettext'}>
-                <form >
+                <form className={"form-horizontal"}>
                 
                 <div className="form-group">
                     <label className="col-lg-2 control-label">

@@ -275,9 +275,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
             // Tooltip
             $("[data-toggle=tooltip]").tooltip();
 
-
           //  $(`#${location.pathname}`).parent.parent
-alert(location.pathname)
 
         };
         init();

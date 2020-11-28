@@ -128,6 +128,7 @@ const descargarXls=()=>{
   return (
     <>
         <Wraper titleForm={"Listado de Predios"} listbreadcrumb={LISTADO_PREDIOS_BREADCRUM} >
+        <form className={"form-horizontal"}>
             <legend className="mleft-20">
                 <i className="fa fa-filter"></i> Filtros de Búsqueda de Predios
             </legend>
@@ -157,6 +158,7 @@ const descargarXls=()=>{
                     />
                 </div>
             </div>
+        </form>
             <div className="form-group">
                 <div className="row mb-3">
                     <div className="col-lg-6 text-center">
