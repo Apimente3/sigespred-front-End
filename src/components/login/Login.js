@@ -12,21 +12,21 @@ import Boton from "../helpers/Boton";
 const axios = initAxiosInterceptors();
 
 const Login = ({history}) => {
-    
-    
+
+
     const [usuario, setUsuario] = useState(null); // Estado del Usuario
     const [auhtError, setAuhtError] = useState(false); // no sabemos si hay un usuario autenticado
     const [error, setError] = useState(null); // no sabemos si hay un usuario autenticado
     const [procesando, setProcesando] = useState(false); // no sabemos si hay un usuario autenticado
-    
+
     const [emailYPassword, setEmailYPassword] = useState({
         dni: '',
         password: ''
     });
 
     /**/
-    
-    
+
+
     useEffect(() => {
 
         async function cargarUsuario() {
@@ -53,6 +53,7 @@ const Login = ({history}) => {
 
     async function login(dni, password) {
         try {
+            debugger;
             const {data} = await axios.post('/login', {
                 dni,
                 password
@@ -61,9 +62,9 @@ const Login = ({history}) => {
                 history.push('/list-proyectos');
                 setAuhtError(false)
             }else{
-                
+
             }
-            
+
         }
         catch (e) {
             console.log(e.response)
@@ -74,10 +75,10 @@ const Login = ({history}) => {
 
     async function login2(dni, password) {
         try {
-          
+
 
                 history.push('/predios-list');
-            
+
         }
         catch (e) {
             console.log(e.response)

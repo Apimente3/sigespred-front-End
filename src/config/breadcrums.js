@@ -17,6 +17,13 @@ export const ELIMINAR_TRABAJADOR_BREADCRUM = [
 ]
 
 
+export const CHANGEPASS_TRABAJADOR_BREADCRUM = [
+    {link: "/", name: "Gestion Predial"},
+    {link: "../list-trabajadores", name: "Listado de Trabajadores"},
+    {link: "#", name: "Cambiar la contraseña"}
+]
+
+
 export const LISTADO_TRABAJADOR_BREADCRUM = [
     {link: "trabajador-add", name: "Gestion Predial"},
     {link: "list-trabajadores", name: "Listado de Trabajadores"}

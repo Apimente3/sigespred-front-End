@@ -61,7 +61,6 @@ const GestionPredialAdd = ({history}) => {
     const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({}, ['resoministerial','abreviatura']);
     const [listTipoInfraestructura, setlistTipoInfraestructura] = useState([]);
     const [listInfraestructura, setlistInfraestructura] = useState([]);
-    const [valorDenominacion, setValorDenominacion] = useState("");
     /*Files multiple */
     const [filesstate, setFilesstate] = useState([]);
 
@@ -76,17 +75,12 @@ const GestionPredialAdd = ({history}) => {
         init();
     }, []);
 
-    const updateValueDenominacion = async(e) => {
-        if (e.target.value) {
-            setValorDenominacion(e.target.options[e.target.selectedIndex].text);
-            return;
-        }
-        setValorDenominacion("");
+    const limpiarForm = () => {
+        //  set_trabajador({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'})
     }
 
     const registrar = async e => {
         e.preventDefault();
-        gestionPredial.denominacion = valorDenominacion;
         try {
             await saveGestioPredial(gestionPredial)
             toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'});
@@ -97,6 +91,7 @@ const GestionPredialAdd = ({history}) => {
         }
     }
 
+
     /*Permite Filtrar la infraestructura en relacion a una tipo de infraestrucutra*/
     const FiltrarInfraestructura = (e) => {
 
@@ -104,6 +99,8 @@ const GestionPredialAdd = ({history}) => {
         let listInfraes = listInfraestructuraGlobal.filter(row => {
             return parseInt(row.tipoinfraestructuraid) == value;
         });
+
+        console.log(listInfraes)
         setlistInfraestructura(listInfraes);
     }
 
@@ -118,8 +115,9 @@ const GestionPredialAdd = ({history}) => {
     }
 
     /*Permite agregar un file multiple*/
-    const deleteFilesArchivodigital = () => {
-        setGestionPredial({...gestionPredial, archivodigital: null});
+    const setDenominacion = (event) => {
+        var index = event.nativeEvent.target.selectedIndex;
+        setGestionPredial({...gestionPredial, denominacion: event.nativeEvent.target[index].text});
     }
 
     /*Permite eliminar  un file multiple*/
@@ -145,10 +143,17 @@ const GestionPredialAdd = ({history}) => {
                         </FormGroup>
                         <FormGroup label={"Proyecto"} require={true}>
                             <Select required={true} value={gestionPredial.infraestructuraid}
-                                    onChange={(e) => {updateValueDenominacion(e); handleInputChange(e);}}
+                                    onChange={(e)=>{ handleInputChange(e); setDenominacion(e); }}
                                     name={"infraestructuraid"}>
                                 <Options options={listInfraestructura} index={"id"} valor={"descripcion"}></Options>
                             </Select>
+                        </FormGroup>
+
+                        <FormGroup label={"Denominacion"} require={true} ayuda={"Esta abreviatura será utilizada para la generacion de planos"}>
+                            <Input required={true} value={gestionPredial.denominacion} onChange={handleInputChange}
+                                   name={"denominacion"} placeholder={"Ingrese la denominacion de la Gestión Predial"}
+                                   type={"text"}>
+                            </Input>
                         </FormGroup>
 
                         <FormGroup label={"Abreviatura"} require={true} ayuda={"Esta abreviatura será utilizada para la generacion de planos"}>

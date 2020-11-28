@@ -149,10 +149,10 @@ const Planos = ({history}) => {
         $('#subtramoid').val('');
         $('#tipoplanoid').val('');
         $('#departamentoid').val('');
-    
+
         handleChangeProyecto('');
         handleChangeDepartmento('');
-        
+
         setFiltros({});
         setReiniciarSolicitante(true);
         ejecutarPlanosFilter('');
@@ -176,7 +176,7 @@ const Planos = ({history}) => {
         .catch(error => {
             console.log(error)
         });
-    }    
+    }
 
     const callbackEliminarPlano = (idplano, codplano) => {
         try {
@@ -202,10 +202,10 @@ const Planos = ({history}) => {
         let filtrosEnviar = Object.assign({}, filtros);
 
         if (filtrosEnviar.fechainicio && filtrosEnviar.fechafin) {
-    
+
             var resultFechaInicio = funcGlob.helperValidarFecha(filtrosEnviar.fechainicio, true);
             var resultFechaFin = funcGlob.helperValidarFecha(filtrosEnviar.fechafin, true);
-            
+
             if (resultFechaFin < resultFechaInicio) {
                 set_contentMessage('La Fecha de Creación de inicio no puede ser mayor a la de fin');
                 return;
@@ -246,7 +246,7 @@ const Planos = ({history}) => {
         await setPage(pageNumber)
         setactivePage(pageNumber)
         setPage(pageNumber)
-        
+
         let query =  await  queryString.stringify({page:pageNumber, limit});
         if(busqueda) {
             query += `&${busqueda}`;
@@ -256,7 +256,7 @@ const Planos = ({history}) => {
         setDataPlanos(listPlanos);
         settotalItemsCount(listPlanos.count);
     }
- 
+
     // TODO: Revisar procedimiento de exportación
     const descarxls=()=>{
 
@@ -276,15 +276,16 @@ const Planos = ({history}) => {
         <>
         <WraperLarge titleForm={"Listado de Planos"} listbreadcrumb={LISTADO_PLANO_BREADCRUM}>
             <legend className="mleft-20"><i className="fa fa-filter"></i> Filtros de Búsqueda de Planos</legend>
+            <form className={"form-horizontal"}>
             <div className="form-group">
                 <label className="col-lg-2 control-label">Código de Plano</label>
                 <div className="col-lg-4">
-                    <input type="text" className="form-control input-sm" id="codplano" name="codplano" 
+                    <input type="text" className="form-control input-sm" id="codplano" name="codplano"
                     placeholder="Código del plano" onBlur={handleInputChange}/>
                 </div>
                 <label className="col-lg-2 control-label">Tipo de Plano</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid" 
+                    <select className="form-control input-sm" id="tipoplanoid" name="tipoplanoid"
                     onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
                         {resListaTipoPlano.error
@@ -320,7 +321,7 @@ const Planos = ({history}) => {
             <div className="form-group">
                 <label className="col-lg-2 control-label">¿Contiene Archivo Dígital?</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="contienedigital" name="contienedigital" 
+                    <select className="form-control input-sm" id="contienedigital" name="contienedigital"
                     onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
                         <option value="true">Sí</option>
@@ -341,7 +342,7 @@ const Planos = ({history}) => {
             <div className="form-group">
                 <label className="col-lg-2 control-label">Proyecto</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid"
                     onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
                         <option value="">--SELECCIONE--</option>
                         {resListaProyectos.error
@@ -353,7 +354,7 @@ const Planos = ({history}) => {
                 </div>
                 <label className="col-lg-2 control-label">Departamento</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="departamentoid" name="departamentoid" 
+                    <select className="form-control input-sm" id="departamentoid" name="departamentoid"
                         onChange={(e) => {handleChangeDepartmento(e); handleInputChange(e);}}>
                         <option value="">--SELECCIONE--</option>
                         {resListaDepartmento.error
@@ -362,13 +363,13 @@ const Planos = ({history}) => {
                         ? "Cargando..."
                         : <ComboOptions data={resListaDepartmento.result} valorkey="id_dpto" valornombre="nombre" />}
                     </select>
-                </div>                
+                </div>
             </div>
 
             <div className="form-group">
                 <label className="col-lg-2 control-label">Tramo</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm"  id="tramoid" name="tramoid" 
+                    <select className="form-control input-sm"  id="tramoid" name="tramoid"
                     onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
                         {dataTramo &&
@@ -377,7 +378,7 @@ const Planos = ({history}) => {
                 </div>
                 <label className="col-lg-2 control-label">Provincia</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="provinciaid" name="provinciaid" 
+                    <select className="form-control input-sm" id="provinciaid" name="provinciaid"
                     onChange={(e) => {handleChangeProvincia(e); handleInputChange(e);}}>
                         <option value="0">--SELECCIONE--</option>
                         <ComboOptions data={dataProv} valorkey="id_prov" valornombre="nombre" />
@@ -393,19 +394,21 @@ const Planos = ({history}) => {
                 </div>
                 <label className="col-lg-2 control-label">Distrito</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="distritoid" name="distritoid" 
+                    <select className="form-control input-sm" id="distritoid" name="distritoid"
                     onChange={handleInputChange}>
                         <option value="0">--SELECCIONE--</option>
                         <ComboOptions data={dataDist} valorkey="id_dist" valornombre="nombre" />
                     </select>
                 </div>
             </div>
+
+            </form>
             <div className="form-group">
                 <div className="row mb-3">
                     <div className="col-lg-6 text-center">
                     {contentMessage && (
                         <label className="alert alert-danger">{contentMessage}</label>
-                    )}  
+                    )}
                     </div>
                     <div className="col-lg-6 text-right">
                         <button type="button" onClick={limpiarPlanosFilter} className="btn btn-default btn-sm fullborder">
@@ -431,7 +434,7 @@ const Planos = ({history}) => {
                     <Link to={`/plano-add`} className="btn btn-danger btn-sm fullborder">
                         <i className="fa fa-plus-circle"></i>  Agregar Plano
                     </Link>
-                    
+
                 </div>
             </div>
             <div className="panel panel-default">

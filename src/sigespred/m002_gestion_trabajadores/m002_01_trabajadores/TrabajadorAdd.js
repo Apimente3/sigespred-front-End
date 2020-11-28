@@ -128,7 +128,7 @@ const TrabajadorAdd = ({history}) => {
     return (
         <Wraper titleForm={"Registro de Trabajador"} listbreadcrumb={REGISTRO_TRABAJADOR_BREADCRUM}>
 
-            <form onSubmit={registrar}>
+            <form onSubmit={registrar} className={"form-horizontal"}>
                 <legend>{"Datos del Trabajador  "}</legend>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">

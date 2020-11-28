@@ -1,12 +1,10 @@
 
 import React, {useState, useEffect, useRef} from 'react';
-import {ELIMINAR_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
+import {CHANGEPASS_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
 import Wraper from "../../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
-import {toastr} from 'react-redux-toastr'
-import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
-import {FilesUsuario} from "../../../config/parameters";
 import {initAxiosInterceptors, serverFile} from '../../../config/axios';
+import {toastr} from "react-redux-toastr";
 const Axios = initAxiosInterceptors();
 
 const {$} = window;
@@ -19,27 +17,26 @@ async function getTrabajador(id) {
 
 
 /*Obtiene la solcitud de polygonos*/
-async function deleteTrabajador(usuario) {
-    const {data} = await Axios.delete(`/usuario/${usuario.id}`,usuario);
+async function changePass(usuario) {
+    const {data} = await Axios.put(`/usuario/updated-password/${usuario.id}`,usuario);
     return data;
 }
 
 
 
-const TrabajadorDel = ({history, match}) => {
+const TrabajadorChangePass = ({history, match}) => {
 
     const {id} = match.params;
     const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro',rol:3});
-    const [detalletrabajador, setdetalltreasd] = useState([]);
 
 
     useEffect(() => {
         async function init() {
             try {
                 let traba = await getTrabajador(id)
-                delete traba.contrasenia
-                traba.contrasenia="****"
-                set_trabajador(traba)
+                //traba.contrasenia;
+                traba.contrasenia="";
+                set_trabajador(traba);
             } catch (error) {
                 alert('Ocurrio un error')
                 console.log(error);
@@ -52,11 +49,13 @@ const TrabajadorDel = ({history, match}) => {
 
 
     const eliminar = async e => {
+
         e.preventDefault();
         $('#btnguardar').button('loading');
         try {
 
-            deleteTrabajador(trabajador);
+            changePass(trabajador);
+            toastr.success('Actualizacion Correcta', 'Se actualizo correctamente la contraseña.', {position: 'top-right'})
             history.push('/list-trabajadores');
 
 
@@ -82,11 +81,11 @@ const TrabajadorDel = ({history, match}) => {
 
     // const {foto} = this.state;
     return (
-        <Wraper titleForm={"Eliminacion del Trabajador"} listbreadcrumb={ELIMINAR_TRABAJADOR_BREADCRUM}>
-            <form onSubmit={eliminar} className={"form-horizontal"}>
+        <Wraper titleForm={"Eliminacion del Trabajador"} listbreadcrumb={CHANGEPASS_TRABAJADOR_BREADCRUM}>
+            <form onSubmit={eliminar}>
                 <div className="form-group">
                 <div className="col-xs-6 col-sm-12 col-md-6">
-                    <strong className="font-16">¿Desea eliminar al trabajador {trabajador.nombres}  {trabajador.apellidos}?</strong>
+                    <strong className="font-16">¿Desea cambias el Password al trabajador {trabajador.nombres}  {trabajador.apellidos}?</strong>
                     <small className="block text-muted">
                        DNI : {trabajador.dni}
                     </small>
@@ -99,23 +98,21 @@ const TrabajadorDel = ({history, match}) => {
 
                     </label>
                     <div className="col-lg-4">
-                        <span className="obligatorio">Ingrese su DNI para verificar la eliminación</span>
-
-
+                        <span className="obligatorio">Ingrese su nuevo Password</span>
                     </div>
 
 
                 </div>
                 <div className="form-group">
                     <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
-                        DNI</label>
+                        Password</label>
                     <div className="col-lg-4">
-                        <input required type="text" className="form-control input-sm "
-                               name="dni"
+                        <input required type="password" className="form-control input-sm "
+                               name="contrasenia"
                                onChange={handleInputChange}
-                               value={trabajador.dni}
-                               title="El DNI debe ser numerico y tener 8 digitos"
-                               placeholder={trabajador.dni} pattern="\d\d\d\d\d\d\d\d"
+                               value={trabajador.contrasenia}
+                               title="La contraseña"
+                               placeholder={"Ingrese la Contraseña"}
                                maxLength={8}
                                autoComplete="off"
 
@@ -124,10 +121,7 @@ const TrabajadorDel = ({history, match}) => {
 
                     </div>
                     <div className="col-lg-1">
-                        <a className="btn btn-default btn-sm dropdown-toggle pull-left"
-                           data-toggle="dropdown" data-toggle="tooltip"
-                           data-original-title={`Permite Sincronizar con la RENIEC`}>
-                            <i className="fa fa-refresh"></i></a>
+
                     </div>
 
                 </div>
@@ -138,7 +132,7 @@ const TrabajadorDel = ({history, match}) => {
                             <Link to={`/list-trabajadores`}
                                   className="btn btn-default btn-sm btn-control">Cancelar</Link>
                             <button id="btnguardar" type="submit"
-                                    className="btn btn-danger btn-sm btn-control">Eliminar
+                                    className="btn btn-danger btn-sm btn-control">Cambiar
                             </button>
 
 
@@ -155,4 +149,4 @@ const TrabajadorDel = ({history, match}) => {
 }
 
 
-export default TrabajadorDel;
+export default TrabajadorChangePass;

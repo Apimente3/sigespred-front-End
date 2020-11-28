@@ -61,7 +61,7 @@ async function updateTrabajador(usuario) {
 const TrabajadorEdit = ({history, match}) => {
 
     const {id} = match.params;
-    const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro',rol:3});
+    const [trabajador, set_trabajador] = useState({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro',rol:3,contrasenia:""});
     const [listAreas, setListAreas] = useState([]);
     const [listRoles, setListRoles] = useState([]);
     const [detalletrabajador, setdetalltreasd] = useState([]);
@@ -74,7 +74,7 @@ const TrabajadorEdit = ({history, match}) => {
                 setListRoles(await loadRoles())
                 let traba = await getTrabajador(id)
                 delete traba.contrasenia
-                traba.contrasenia="****"
+                traba.contrasenia=""
                 set_trabajador(traba)
             } catch (error) {
                 alert('Ocurrio un error')
@@ -144,7 +144,7 @@ const TrabajadorEdit = ({history, match}) => {
     // const {foto} = this.state;
     return (
         <Wraper titleForm={"Actualización de Trabajador"} listbreadcrumb={ACTUALIZAR_TRABAJADOR_BREADCRUM}>
-            <form onSubmit={actualizar}>
+            <form onSubmit={actualizar} className={"form-horizontal"}>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">
                         <span className="obligatorio">*</span>

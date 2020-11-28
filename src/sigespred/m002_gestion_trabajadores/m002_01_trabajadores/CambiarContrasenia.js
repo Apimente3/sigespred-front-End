@@ -28,9 +28,7 @@ async function changePassword(object) {
 
 
 const CambiarContrasenia = () => {
-
     const [usuario, setusuario, handleInputChange, reset] = useForm({contraseniaAnterior:"",contraseniaNueva1:"",contraseniaNueva2:""}, ['resoministerial', 'abreviatura']);
-
     const save = async e => {
         e.preventDefault();
         try {
@@ -39,7 +37,6 @@ const CambiarContrasenia = () => {
             reset()
         }
         catch (e) {
-
             toastr.error('Registro Incorrecto', e.response.data, {position: 'top-center'})
         }
 

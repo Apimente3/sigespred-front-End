@@ -783,10 +783,7 @@ legend {
     position: relative !important;
 }
 
-aside {
-    width: 230px !important;
-    position: relative !important;
-}
+
 
 div.user-block > div > strong {
     font-size: 11px;
@@ -913,6 +910,24 @@ video {
     line-height: 1.43 !important;
 }
 
+.textmenu-principal {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color:#b02b7c;
+
+
+}
+
+.color-red{
+    color:#FB5A43;
+}
+
+.scrollable{
+    overflow-y: auto;
+}
+
 /* common */
 .loading {
     font-size: 20px;
@@ -951,7 +966,7 @@ video {
   .loading01 span:nth-child(7) {
     animation-delay: 0.6s;
   }
-  
+
   @keyframes loading01 {
     0% {
       opacity: 1;

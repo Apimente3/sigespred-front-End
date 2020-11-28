@@ -90,7 +90,6 @@ const GestionPredialAdd = ({match,history}) => {
         const [listInfraestructura, setlistInfraestructura] = useState([]);
     /*Files multiple */
     const [filesstate, setFilesstate] = useState([]);
-    const [valorDenominacion, setValorDenominacion] = useState("");
 
     /*Valiables Globales*/
     useEffect(() => {
@@ -99,23 +98,19 @@ const GestionPredialAdd = ({match,history}) => {
             listInfraestructuraGlobal = await getListInfraestructura()
             setlistInfraestructura(listInfraestructuraGlobal);
             let gestPredial= await getGestionPredial(id);
+           // alert(JSON.stringify(gestPredial))
             setGestionPredial(gestPredial)
 
         };
         init();
     }, []);
 
-    const updateValueDenominacion = async(e) => {
-        if (e.target.value) {
-            setValorDenominacion(e.target.options[e.target.selectedIndex].text);
-            return;
-        }
-        setValorDenominacion("");
+    const limpiarForm = () => {
+        //  set_trabajador({foto: 'img/userblank.jpg', observacion: 'Nuevo Registro'})
     }
 
     const registrar = async e => {
         e.preventDefault();
-        gestionPredial.denominacion = valorDenominacion;
         try {
             await saveGestioPredial(gestionPredial)
             toastr.success('Actualización Correcto', 'Se actualizo correctamente.', {position: 'top-right'})
@@ -140,6 +135,20 @@ const GestionPredialAdd = ({match,history}) => {
         setlistInfraestructura(listInfraes);
     }
 
+    /*Permite agregar un file multiple*/
+    const changeInfraestructura  = async (event) => {
+        handleInputChange(event)
+        let index = event.nativeEvent.target.selectedIndex;
+        let idInfraestructura=event.nativeEvent.target[index].value;
+        let denominacion=event.nativeEvent.target[index].text
+
+      await  setGestionPredial({...gestionPredial, "infraestructuraid":idInfraestructura});
+
+      await  setGestionPredial({...gestionPredial, "denominacion": denominacion});
+       // console.log(event.nativeEvent.target[index].value);
+
+    }
+
 
 
     return (
@@ -157,11 +166,19 @@ const GestionPredialAdd = ({match,history}) => {
                         </FormGroup>
                         <FormGroup label={"Proyecto"} require={true}>
                             <Select required={true} value={gestionPredial.infraestructuraid} disable={false}
-                                    onChange={(e) => {updateValueDenominacion(e); handleInputChange(e);}}
+                                    onChange={changeInfraestructura}
                                     name={"infraestructuraid"}>
                                 <Options options={listInfraestructura} index={"id"} valor={"descripcion"}></Options>
                             </Select>
                         </FormGroup>
+
+                        <FormGroup label={"Denominacion"} require={true} ayuda={"Esta abreviatura será utilizada para la generacion de planos"}>
+                            <Input required={true} value={gestionPredial.denominacion} onChange={handleInputChange}
+                                   name={"denominacion"} placeholder={"Ingrese la denominacion de la Gestión Predial"}
+                                   type={"text"}>
+                            </Input>
+                        </FormGroup>
+
                         <FormGroup label={"Abreviatura"} require={true} ayuda={"Esta abreviatura será utilizada para la generacion de planos"}>
                             <Input required={true} value={gestionPredial.abreviatura} onChange={handleInputChange}
                                    name={"abreviatura"} placeholder={"Ingrese la abreviatura del proyecto"}

@@ -5,7 +5,7 @@ const HeaderLogin = () => {
         <div className="text-center">
             <h2 className="fadeInUp title-prin">
                 <img className="logoweigth" src="img/logoMTC.jpg"/><br></br>
-                <span className="text-success text-system">SISTEMA DE GESTIÓN DE PREDIOS</span>
+                <span className="text-success text-system">PLATAFORMA DE GESTIÓN PREDIAL</span>
                 <span className="subtitle1"></span>
             </h2>
         </div>

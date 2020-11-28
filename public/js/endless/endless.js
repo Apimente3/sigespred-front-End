@@ -43,7 +43,7 @@ $(function	()	{
         $('#top-nav').addClass($(this).attr('id'));
     });
 
-    // Delete values stored in cookies 
+    // Delete values stored in cookies
     // uncomment code to activate
     //	$.removeCookie('skin_color');
     //
@@ -112,7 +112,12 @@ $(function	()	{
 
     //Toggle Menu
     $('#sidebarToggle').click(function()	{
+
+
+
         $('#wrapper').toggleClass('sidebar-display');
+
+
         $('.main-menu').find('.openable').removeClass('open');
         $('.main-menu').find('.submenu').removeAttr('style');
     });
@@ -120,7 +125,7 @@ $(function	()	{
     $('#sizeToggle').click(function()	{
 
         $('#wrapper').off("resize");
-
+        $('.hrefMenu').toggleClass('textmenu-principal');
         $('#wrapper').toggleClass('sidebar-mini');
         $('.main-menu').find('.openable').removeClass('open');
         $('.main-menu').find('.submenu').removeAttr('style');
@@ -327,6 +332,7 @@ $(function	()	{
 
     // Tooltip
     $("[data-toggle=tooltip]").tooltip();
+
 
 });
 

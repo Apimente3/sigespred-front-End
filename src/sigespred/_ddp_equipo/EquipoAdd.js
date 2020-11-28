@@ -25,6 +25,8 @@ async function addEquipo(equipo) {
 
 const EquipoAdd = ({ history }) => {
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
+
+    console.log(resListaProyectos)
     const resListaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
     const resListaSolicitantes = useAsync(helperGets.helperGetListaLocadores, []);
 
@@ -40,10 +42,10 @@ const EquipoAdd = ({ history }) => {
 
     const registrar = async e => {
       e.preventDefault();
-      
+
       let objEquipo = {
           equipo:equipo,
-          profesionales: profesionales.users    
+          profesionales: profesionales.users
       };
 
       try {
@@ -94,9 +96,9 @@ const EquipoAdd = ({ history }) => {
       }
     }
 
-    
+
     function setSolicitante(idLocador,text) {
-      
+
       set_filtros({
           ...filtros,
           id: idLocador,
@@ -127,7 +129,7 @@ const EquipoAdd = ({ history }) => {
         if(filterList.length>0){
           toastr.info(`Información !!! Ya existe un profesional asignado como monitor.`);
           return;
-        } 
+        }
       }
 
       if(filterList.length>0){
@@ -138,15 +140,15 @@ const EquipoAdd = ({ history }) => {
       set_profesionales({
         users: [
            ...profesionales.users,
-           {              
+           {
               id: filtros.id,
               nombre: filtros.nombre,
               monitor:monitor.checked
            }
         ]
       });
-      
-      
+
+
     }
 
     const deleteUser = key => {
@@ -156,7 +158,7 @@ const EquipoAdd = ({ history }) => {
          users: [...users]
       });
    };
- 
+
   const limpiarForm = () => {
     set_monitor({checked: false });
     set_activoequipo({ checked: false});
@@ -213,7 +215,7 @@ const EquipoAdd = ({ history }) => {
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>
                     Areas</label>
                 <div className="col-lg-4">
-                  <select className="form-control input-sm" id="areaid" name="areaid" 
+                  <select className="form-control input-sm" id="areaid" name="areaid"
                       required
                       title="El area es requerido"
                       onChange={handleInputChange}>
@@ -269,8 +271,8 @@ const EquipoAdd = ({ history }) => {
               </div>
             </fieldset>
             <div className="panel panel-default">
-              <EquipoTable 
-                cabecera={cabeceraEquipo} 
+              <EquipoTable
+                cabecera={cabeceraEquipo}
                 data={profesionales}
                 deleteUser={deleteUser}>
               </EquipoTable>
