@@ -18,8 +18,6 @@ const directorioPartidas = "FilesDDP/Partidas";
 
 const obtenerPartida = async (id) => {
   const { data } = await axios.get(`/partidaregistral?id=${id}`);
-  console.log('--------------------------------')
-  console.log(id);
   return data;
 };
 
