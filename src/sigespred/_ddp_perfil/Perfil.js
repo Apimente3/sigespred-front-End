@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState,useCallback,useMemo} from 'react';
-import L from 'leaflet';
-import { MapContainer, TileLayer,GeoJSON, Marker, Popup, useMap} from 'react-leaflet';
+    import React, {useEffect, useRef, useState,useCallback,useMemo} from 'react';
+    import L from 'leaflet';
+    import { MapContainer, TileLayer,GeoJSON, Marker, Popup, useMap} from 'react-leaflet';
 
-import UploadGeo from '../../components/uploadgeo/UploadGeo';
+    import UploadGeo from '../../components/uploadgeo/UploadGeo';
 import {useForm} from "../../hooks/useForm"
 import {toastr} from "react-redux-toastr";
 
