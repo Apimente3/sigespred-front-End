@@ -63,6 +63,8 @@ const PredioEditGen = ({history,  match}) => {
         const init = async () => {
             
             let datoGeneral= await getDatoGen(id);
+            console.log('FRELIXXXXX')
+            console.log(datoGeneral)
             setPredioGen(datoGeneral);
             cargarFiltroTramo(datoGeneral.gestionpredialid);
         };
