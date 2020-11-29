@@ -21,20 +21,21 @@ const UploadGeo = ({form, setForm, nameUpload}) => {
             let extension = file.name.split(".").pop();
             switch (extension) {
                 case "zip":
-                    setForm({...form,[nameUpload]: await handleZipFile(file)});
+                    let result= await handleZipFile(file);
+                    setForm({...form,[nameUpload]: result});
                     toastr.info('¡ Correcto !', 'Se cargo correctamente el Shape Zipeado .zip', {position: 'top-right'})
                     break;
                 case "kml":
-                    setForm({...form,[nameUpload]: await  getextfromfilekml(file)});
-                    toastr.info('¡ Correcto !', 'Se cargo correctamente el .kml', {position: 'top-right'})
+                    /*setForm({...form,[nameUpload]: await  getextfromfilekml(file)});
+                    toastr.info('¡ Correcto !', 'Se cargo correctamente el .kml', {position: 'top-right'})*/
                     break;
                 case "gpx":
-                    setForm({...form,[nameUpload]: await getextfromfilegpx(file)});
-                    toastr.info('¡ Correcto !', 'Se cargo correctamente el .gpx', {position: 'top-right'})
+                   /* setForm({...form,[nameUpload]: await getextfromfilegpx(file)});
+                    toastr.info('¡ Correcto !', 'Se cargo correctamente el .gpx', {position: 'top-right'})*/
                     break;
                 case "json":
-                    setForm({...form,[nameUpload]: await getextfromfilegeojson(file)});
-                    toastr.info('¡ Correcto !', 'Se cargo correctamente el .geojson', {position: 'top-right'})
+                    /*setForm({...form,[nameUpload]: await getextfromfilegeojson(file)});
+                    toastr.info('¡ Correcto !', 'Se cargo correctamente el .geojson', {position: 'top-right'})*/
                     break;
                 default:
                     toastr.error('¡ Error !', 'Selecione un shape zipeado,kml o GPX', {position: 'top-right'})

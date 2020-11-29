@@ -5,7 +5,7 @@ const {L, shp} = window;
 * Funcion que convierte un Shape Zipeado a un Objeto geojson
 * */
 export function handleZipFile(file) {
-    debugger
+
     var reader = new FileReader();
     return new Promise((resolve, reject) => {
         try {
