@@ -62,7 +62,7 @@ const EquipoDel = ({ history, match }) => {
       titleForm={"Eliminacion del Equipo"}
       listbreadcrumb={ELIMINAR_EQUIPO_BREADCRUM}
     >
-      <form onSubmit={eliminar}>
+      <form onSubmit={eliminar} className={"form-horizontal"}>
         <div className="form-group">
           <div className="col-xs-6 col-sm-12 col-md-6">
             <strong className="font-16">

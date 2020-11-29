@@ -37,6 +37,7 @@ const MAddEditInvitado = ({closeventana, usevalue}) => {
     
     return (
         <>
+            <form className={"form-horizontal"}>
             <div>
                 <div id="lightCustomModal_background" className="popup_background backblq"></div>
                 <div id="lightCustomModal_wrapper" className="popup_wrapper bloqueador">
@@ -95,6 +96,7 @@ const MAddEditInvitado = ({closeventana, usevalue}) => {
                     </div>
                 </div>
             </div>
+            </form>
         </>
     );
 };

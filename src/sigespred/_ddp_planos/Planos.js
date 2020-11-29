@@ -402,7 +402,7 @@ const Planos = ({history}) => {
                 </div>
             </div>
 
-            </form>
+            
             <div className="form-group">
                 <div className="row mb-3">
                     <div className="col-lg-6 text-center">
@@ -463,6 +463,7 @@ const Planos = ({history}) => {
                 }
             </div>
             {mostrarPopup && <MArcDigital closeventana={cerrarModal} codplano={codPlanoPopup} archivosdescargar={archivosPopup}/>}
+            </form>
         </WraperLarge>
         </>
     );

@@ -171,7 +171,7 @@ const EquipoAdd = ({ history }) => {
   return (
     <>
       <Wraper titleForm={"Asignar el equipo"} listbreadcrumb={REGISTRO_EQUIPO_BREADCRUM}>
-      <form onSubmit={registrar}>
+      <form onSubmit={registrar} className={"form-horizontal"}>
             <fieldset><legend>Datos del Equipo</legend>
             <div className="form-group">
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>

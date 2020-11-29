@@ -238,7 +238,7 @@ const PlanoEdit = ({history, match}) => {
         return (
             <>
             <WraperLarge titleForm={"Edición de Plano: " + planoEdicion.codplano} listbreadcrumb={ACTUALIZAR_PLANO_BREADCRUM}>
-                <form onSubmit={actualizar}>
+                <form onSubmit={actualizar} className={"form-horizontal"}>
                     <div className="form-group">
                         <div className="form-group col-lg-6">
                             <fieldset className="mleft-20">

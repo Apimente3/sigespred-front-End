@@ -235,7 +235,7 @@ const limpiarAcuerdoFilter =(e)=>{
     <>
           <WraperLarge titleForm={"Listado de acuerdos"} listbreadcrumb={LISTADO_ACUERDO_BREADCRUM}>
             <fieldset className={'fielsettext'}>
-                <form>
+                <form className={"form-horizontal"}>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">
                         Fecha de Inicio</label>

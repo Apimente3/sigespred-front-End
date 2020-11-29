@@ -30,6 +30,7 @@ const MParticipante = ({closeventana, codacta, participante, handleUpdateClick, 
 
     return (
         <>
+        <form className={"form-horizontal"}>
             <div>
                 <div id="lightCustomModal_background" className="popup_background backblq"></div>
                 <div id="lightCustomModal_wrapper" className="popup_wrapper bloqueador">
@@ -127,6 +128,7 @@ const MParticipante = ({closeventana, codacta, participante, handleUpdateClick, 
                     </div>
                 </div>
             </div>
+        </form>
         </>
     );
 };

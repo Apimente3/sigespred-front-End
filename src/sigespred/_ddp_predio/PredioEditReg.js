@@ -63,6 +63,7 @@ const PredioEditReg = ({history,  match}) => {
     const listaTipoDocumento = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOC]);
     const listaEstadoCivil = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.ESTADOCIVIL]);
     const listaTipoAdquisicion = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOADQUISICION]);
+    const listaEntidadesRegistrales = useAsync(helperGets.helperGetListEntidadesRegistrales, []);
 
     useEffect(() => {
         const init = async () => {
@@ -260,6 +261,15 @@ const PredioEditReg = ({history,  match}) => {
                                         name={"codpredioregistral"} placeholder={"Ingrese el Código de Predio Registral"}
                                         type={"text"}>
                                         </Input>
+                                    </FormGroup>
+                                    <FormGroup label={"Oficina Registral"} >
+                                        <Select value={predioReg.oficinaregistral || ""}
+                                                    onChange={handleInputChange}
+                                                    name={"oficinaregistral"}>
+                                            {listaEntidadesRegistrales.result?
+                                            <ComboOptions data={listaEntidadesRegistrales.result} valorkey="nombre" valornombre="nombre"/>
+                                            : "Cargando..."}
+                                        </Select>
                                     </FormGroup>
                                 </Row6>
                             </fieldset>

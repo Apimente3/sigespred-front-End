@@ -172,14 +172,14 @@ const PredioEditGen = ({history,  match}) => {
                             <FormGroup label={"Progresiva - Inicio (Km)"}>
                                 <Input value={predioGen.progreinicio || ""} onChange={handleInputChange}
                                     name={"progreinicio"} placeholder={"Ingrese el valor de inicio de la progresiva"}
-                                    pattern="^\d{1,10}(\.\d{1,4})?$"
+                                    pattern="^\d{1,10}(\.\d{1,6})?$"
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
                             <FormGroup label={"Progresiva - Final (Km)"}>
                                 <Input value={predioGen.progrefinal || ""} onChange={handleInputChange}
                                     name={"progrefinal"} placeholder={"Ingrese el valor de fin de la progresiva"}
-                                    pattern="^\d{1,10}(\.\d{1,4})?$"
+                                    pattern="^\d{1,10}(\.\d{1,6})?$"
                                     type={"text"}>
                                 </Input>
                             </FormGroup>

@@ -402,7 +402,7 @@ setModalInvitado(true);
                 </div>
             </div>
           </fieldset>
-          <form onSubmit={actualizar}>
+          <form onSubmit={actualizar} className={"form-horizontal"}>
             <fieldset className="mleft-20" disabled={agenda.length > 0 ? false: true}><legend>Equipos</legend>
             <div className="col-lg-offset-1 col-lg-10 text-center">
                 <div className="form-group col-md-1 text-center"></div>

@@ -202,7 +202,7 @@ const EquipoEdit = ({history, match}) => {
     return (
         <>
         <Wraper titleForm={"Actualización del equipo"} listbreadcrumb={ACTUALIZAR_EQUIPO_BREADCRUM}>
-          <form onSubmit={actualizar}>
+          <form onSubmit={actualizar} className={"form-horizontal"}>
             <fieldset><legend>Datos del Equipo</legend>
               <div className="form-group">
                 <label className="col-lg-2 control-label"><span className="obligatorio">* </span>

@@ -74,7 +74,7 @@ const PartidaAdd = ({ history }) => {
         titleForm={"Registro de Partida Registral"}
         listbreadcrumb={REGISTRO_PARTIDA_BREADCRUM}
       >
-        <form onSubmit={registrar}>
+        <form onSubmit={registrar} className={"form-horizontal"}>
           <fieldset className="mleft-20">
             <div className="form-group">
               <legend>Datos de Generales</legend>

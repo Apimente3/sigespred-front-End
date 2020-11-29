@@ -96,7 +96,7 @@ const PartidaEdit = ({ history, match }) => {
         titleForm={"Edición de Partida: " + partidaEdicion.id}
         listbreadcrumb={ACTUALIZAR_PARTIDA_BREADCRUM}
       >
-        <form onSubmit={actualizar}>
+        <form onSubmit={actualizar} className={"form-horizontal"}>
         <fieldset className="mleft-20">
         <legend>Datos de Generales</legend>
           <div className="form-group">

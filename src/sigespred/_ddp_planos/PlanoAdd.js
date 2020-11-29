@@ -6,7 +6,6 @@ import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 import { useAsync } from "react-async-hook";
-import {agregar, setcontinuarAgregar} from '../../actions/_ddp_plano/Actions';
 import ComboOptions from "../../components/helpers/ComboOptions";
 import Autocomplete from '../../components/helpers/Autocomplete';
 import SubLista from './SubListaDelete';
@@ -18,7 +17,6 @@ import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
 const {$} = window;
 const Axios = initAxiosInterceptors();
 const directorioPlanos = "FilesDDP/planosadmin";
-const currentYear= moment().year();
 
 const PlanoAdd = ({history,  match}) => {
     const [plano, set_plano] = useState({observaciones: ''});
@@ -78,10 +76,6 @@ const PlanoAdd = ({history,  match}) => {
         }
     }
 
-    const limpiarForm = () => {
-        set_plano({observaciones: ''})
-    }
-
     function handleInputChange(e) {
         switch(e.target.name){
             case 'nroexpediente':
@@ -118,8 +112,6 @@ const PlanoAdd = ({history,  match}) => {
                     [e.target.name]: e.target.value
                 });
         }
-        //TODO: remover console
-        console.log(plano);
     }
 
     const saveArchivoDigital = (file) => {
@@ -199,15 +191,6 @@ const PlanoAdd = ({history,  match}) => {
         });
     }
 
-    const dispatch = useDispatch();
-    const agregarPlanoAction = (plano) => dispatch(agregar(plano));
-    const setcontinuarAgregarAction = (estado) => dispatch(setcontinuarAgregar(estado));
-
-    // useEffect(() => {
-    //     $('[data-toggle="tooltip"]').tooltip()
-    //     setcontinuarAgregarAction(true)
-    // }, []);
-
     async function addPlano(plano) {
         const {data} = await Axios.post(`/plano`,plano);
         return data;
@@ -235,11 +218,6 @@ const PlanoAdd = ({history,  match}) => {
         try {
             let resultPlano = await addPlano(plano);
             $('#btnguardar').button('reset');
-            // const toastrConfirmOptions = {
-            //     onOk: () => limpiarForm(),
-            //     onCancel: () => history.push('/planos')
-            // };
-            // toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
             toastr.success('Registro de Plano', `El plano ${resultPlano.codplano} fue ingresado correctamente.`);
             history.push('/planos');
         }
@@ -254,7 +232,7 @@ const PlanoAdd = ({history,  match}) => {
         return (
             <>
             <WraperLarge titleForm={"Registro de Plano"} listbreadcrumb={REGISTRO_PLANO_BREADCRUM}>
-                <form onSubmit={registrar}>
+                <form onSubmit={registrar} className={"form-horizontal"}>
                     <div className="form-group">
                         <div className="form-group col-lg-6">
                             <fieldset className="mleft-20">
@@ -441,14 +419,6 @@ const PlanoAdd = ({history,  match}) => {
                                     </select>
                                 </div>
                             </div>
-                            {/* <div className="form-group">
-                                <label className="col-lg-4 control-label">Referencia Geográfica</label>
-                                <div className="col-lg-8">
-                                    <UploadMemo key="refgeografica" file={{urlDocumento:''}}
-                                    accept={'.jpg,.png,.gif'}
-                                    setFile={saveArchivoDigital} folderSave={directorioPlanos} eliminar={deleteArchivoDigital}></UploadMemo>
-                                </div>
-                            </div> */}
                         </fieldset>
                     </div>
 
