@@ -924,11 +924,11 @@ video {
     width: 100vw;
     height: 100vh;
 }
-/*
+
 .color-red{
     color:#FB5A43;
 }
-*/
+
 .scrollable{
     overflow-y: auto;
 }

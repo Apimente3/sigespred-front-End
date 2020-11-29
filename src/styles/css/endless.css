@@ -734,7 +734,7 @@ aside .main-menu .alert {
     display: none;
   }
   #wrapper.sidebar-mini aside {
-    width: 90px;
+    width: 90px !important;
   }
   #wrapper.sidebar-mini aside .slimScrollDiv {
     overflow: visible !important;
