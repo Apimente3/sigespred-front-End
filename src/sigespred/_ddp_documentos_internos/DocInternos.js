@@ -268,6 +268,8 @@ const DocInternos = () => {
         <legend className="mleft-20">
           <i class="fa fa-filter"></i> Filtro de Busqueda de Documentos internos
         </legend>
+
+          <form className="form-horizontal">
         <div className="form-group">
           <label className="col-lg-2 control-label">
             <span className="obligatorio">* </span>Proyecto
@@ -442,7 +444,7 @@ const DocInternos = () => {
             </div>
           </div>
         </div>
-
+          </form>
         <div className="panel panel-default">
           {busquedaLocal ? (
             console.log("cargando datos de planos...")

@@ -90,7 +90,7 @@ const DocInternoAdd = ({ history }) => {
         titleForm={"Registro de Documentacion interna "} // + partidaRespuesta.id}
         listbreadcrumb={REGISTRO_DOCINTERNOS_BREADCRUM}
       >
-        <form onSubmit={registrar}>
+        <form onSubmit={registrar} className="form-horizontal">
           <div className="form-group">
             <div className="form-group col-lg-11">
               <fieldset className="mleft-20">

@@ -21,9 +21,7 @@ class ConfiguracionUsuario extends Component {
                                 Cambiar tu contraseña
                             </Tab>
 
-                            <Tab>
-                                Perfil
-                            </Tab>
+
                             <Tab>
                                 Mis Actividades Diarias
                             </Tab>
@@ -31,9 +29,7 @@ class ConfiguracionUsuario extends Component {
                         <TabPanel>
                             <CambiarContrasenia></CambiarContrasenia>
                         </TabPanel>
-                        <TabPanel>
-                            <Perfil></Perfil>
-                        </TabPanel>
+
                         <TabPanel>
                             <MisActividades></MisActividades>
 

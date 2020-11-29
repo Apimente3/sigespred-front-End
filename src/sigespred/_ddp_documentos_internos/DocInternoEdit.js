@@ -164,7 +164,7 @@ const DocInternoEdit = ({ match, history }) => {
         titleForm={"Edicion del Documento interno " + documentosInternos.id}
         listbreadcrumb={ACTUALIZAR_DOCINTERNOS_BREADCRUM}
       >
-        <form onSubmit={actualizar}>
+        <form onSubmit={actualizar} className="form-horizontal">
           <div className="form-group">
             <div className="form-group col-lg-11">
               <fieldset className="mleft-20">

@@ -318,7 +318,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
                                     [
 
                                         {to:"/solicitud-list",denominacion:"Solicitudes a Entidades"},
-                                        {to:"/gestionpredial",denominacion:"Registro de Proyecto Multimodal (Gestión Predial)"},
+                                        {to:"/docinternos",denominacion:"Documentos Internos"},
                                     ]
                                 }>
 
