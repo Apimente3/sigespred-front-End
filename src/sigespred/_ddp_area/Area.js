@@ -18,17 +18,7 @@ const { $ } = window;
 export const Area = () => {
 
   async function buscarArea(query) {
-    // alert(query)
     const {data} = await Axios.get(`/areajerarquizado?`+ query);
-    
-    /*const a = [];
-    data.forEach(area => {
-        a.push(area)
-        area.SubArea.forEach(subarea => {
-            a.push(subarea)
-            
-        });
-    });*/
     return data;
  }
     
@@ -73,7 +63,7 @@ export const Area = () => {
     return false;
   }
 
-  const cabecerasTabla = ["ID", "ID PADRE", "AREA", "DESCRIPCION", "USUARIO", "Acciones"]
+  const cabecerasTabla = ["ID", "ID PADRE", "AREA", "DESCRIPCION", "USUARIO", "ACCIONES"]
 
  
 

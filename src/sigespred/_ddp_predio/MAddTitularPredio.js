@@ -42,6 +42,7 @@ const MAddTitularPredio = ({closeventana, usevalue, listatipodoc, listaestadociv
     
     return (
         <>
+        <form className={"form-horizontal"}>
             <div>
                 <div id="lightCustomModal_background" className="popup_background backblq"></div>
                 <div id="lightCustomModal_wrapper" className="popup_wrapper bloqueador">
@@ -131,6 +132,7 @@ const MAddTitularPredio = ({closeventana, usevalue, listatipodoc, listaestadociv
                     </div>
                 </div>
             </div>
+            </form>
         </>
     );
 };

@@ -143,10 +143,10 @@ const PredioEditReg = ({history,  match}) => {
             if (nuevoDatoReg) {
                 predioReg.id = id;
                 await addDatoReg(predioReg);
-                toastr.success(`Los datos registrales del predio: ${id}`, 'Se generarón correctamente.', {position: 'top-center'})
+                toastr.success(`Los datos registrales del predio: ${codpred}`, 'Se generarón correctamente.', {position: 'top-center'})
             } else {
                 await saveDatoReg(predioReg.id, predioReg);
-                toastr.success(`Los datos registrales del predio: ${id}`, 'Se actualizarón correctamente.', {position: 'top-center'})
+                toastr.success(`Los datos registrales del predio: ${codpred}`, 'Se actualizarón correctamente.', {position: 'top-center'})
             }
         }
         catch (e) {

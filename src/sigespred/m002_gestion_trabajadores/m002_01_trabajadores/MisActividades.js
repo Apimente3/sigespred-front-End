@@ -38,12 +38,7 @@ export const MisActividades = () => {
     return data;
 }
 const cargarPopupParticipantes = (codacta, participantes) => {
-    // const ar_participantes = [];
-    // ar_participantes.push(participantes)
-    // actividades.ActaParticipante=ar_participantes;
-    // setCodPlanoPopup(codacta);
-    // setParticipantesPopup(actividades.ActaParticipante);
-    // setMostrarPartPopup(true);
+
 }
 
 useEffect(() => {
@@ -194,7 +189,7 @@ const cabecerasTabla = ["NRO","CÓDIGO ACTA", "PROYECTO","EQUIPO","ACTIVIDAD", "
 
         
         <fieldset className={'fielsettext'}>
-            <form>
+            <form className={"form-horizontal"}>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">
                         Fecha de Inicio</label>

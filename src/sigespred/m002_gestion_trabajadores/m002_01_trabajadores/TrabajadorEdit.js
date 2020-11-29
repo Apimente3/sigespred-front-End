@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {ACTUALIZAR_TRABAJADOR_BREADCRUM} from "../../../config/breadcrums";
-import Wraper from "../../m000_common/formContent/Wraper";
+import WraperLarge from "../../m000_common/formContent/WraperLarge";
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
-import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
+
 import {
     Form,
     FormGroup,
@@ -66,7 +66,6 @@ const TrabajadorEdit = ({history, match}) => {
     const [listRoles, setListRoles] = useState([]);
     const [detalletrabajador, setdetalltreasd] = useState([]);
 
-
     useEffect(() => {
         async function init() {
             try {
@@ -90,10 +89,6 @@ const TrabajadorEdit = ({history, match}) => {
         e.preventDefault();
          $('#btnguardar').button('loading');
         try {
-         //   await agregarTrabajadorComp(trabajador);
-            // $('#btnguardar').button('reset');
-
-            // let person =  window.confirm("¿Desea seguir registrando ?");
             updateTrabajador(trabajador)
             toastr.success('Actualizacion Correcta', 'Se actualizo correctamente.', {position: 'top-right'})
             history.push('/list-trabajadores')
@@ -121,29 +116,8 @@ const TrabajadorEdit = ({history, match}) => {
 
     }
 
-    /*Guardando la foto del trbajador*/
-    const saveFotoPortada = (pmd) => {
-        // alert(JSON.stringify(pmd))
-        set_trabajador({
-            ...trabajador,
-            "foto": pmd.path
-        });
-    }
-    // const {foto} = this.state;
-    /*Guardando la foto del trbajador*/
-    const eliminarFotoPortada = () => {
-        // alert(JSON.stringify(pmd))
-        set_trabajador({
-            ...trabajador,
-            "foto": ''
-        });
-    }
-
-
-
-    // const {foto} = this.state;
     return (
-        <Wraper titleForm={"Actualización de Trabajador"} listbreadcrumb={ACTUALIZAR_TRABAJADOR_BREADCRUM}>
+        <WraperLarge titleForm={"Actualización de Trabajador"} listbreadcrumb={ACTUALIZAR_TRABAJADOR_BREADCRUM}>
             <form onSubmit={actualizar} className={"form-horizontal"}>
                 <div className="form-group">
                     <label className="col-lg-2 control-label">
@@ -399,7 +373,7 @@ const TrabajadorEdit = ({history, match}) => {
 
 
             </form>
-        </Wraper>
+        </WraperLarge>
     );
 
 }

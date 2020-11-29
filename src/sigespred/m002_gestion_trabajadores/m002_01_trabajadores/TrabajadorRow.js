@@ -21,28 +21,20 @@ const TrabajadorRow = ({trabajador,nro}) => {
                 <td>{trabajador.telefonos}</td>
                 <td>{trabajador.correo}</td>
 
-                <td>
+                <td className="acciones-3bot">
                     <div className="btn-group pull-right">
-
-                        <Link  to={`/trabajador-edit/${trabajador.id}`}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                        <Link  to={`/trabajador-edit/${trabajador.id}`}  className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip"
                                data-original-title={ "Editar Trabajador" }>
-                            <i className="far fa-edit"></i>
+                            <i className="fa fa-edit fa-lg"></i>
                         </Link>
-                        <Link  to={`/trabajador-del/${trabajador.id}`}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
+                        <Link  to={`/trabajador-del/${trabajador.id}`}   className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip"
                                data-original-title={ "Eliminar Trabajador" }>
-
-                            <i className="fas fa-trash"></i>
+                            <i className="fa fa-trash fa-lg"></i>
                         </Link>
-
                         <Link  to={`/trabajador-psw/${trabajador.id}`}   className="btn btn-xs btn-default" type="button" data-toggle="tooltip"
                                data-original-title={ "Cambiar Password" }>
-                            <i className="fas fa-lock"></i>
+                            <i className="fa fa-lock fa-lg"></i>
                         </Link>
-
-
-
-
-
                     </div>
                 </td>
             </tr>
