@@ -64,7 +64,7 @@ const UploadGeo = ({form, setForm, nameUpload}) => {
                 </label>
                 <input type="file" className="upload-demo" onChange={EventUpload} accept=".zip,.kml,.gpx,.json"/>
             </div>
-            <a onClick={reset}>Limpiar</a>
+
         </>
     );
 };

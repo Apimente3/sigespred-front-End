@@ -1,4 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useRef, useState,useCallback,useMemo} from 'react';
+import L from 'leaflet';
+import { MapContainer, TileLayer,GeoJSON, Marker, Popup, useMap} from 'react-leaflet';
+
+import UploadGeo from '../../components/uploadgeo/UploadGeo';
+
 import {initAxiosInterceptors} from '../../config/axios';
 import { REGISTRO_PREDIOS_BREADCRUM } from "../../config/breadcrums";
 import {Link} from "react-router-dom";
@@ -29,6 +34,44 @@ import {FilesGestionPredial} from "../../config/parameters";
 const {$} = window;
 const Axios = initAxiosInterceptors();
 
+
+const center = [51.505, -0.09]
+const zoom = 13
+
+
+function DisplayPosition({ map,geojson,setGeom }) {
+
+    console.log(geojson)
+    if(geojson.features.length>1){
+        toastr.error('¡ Error !', 'El poligono seleccionado posee más de 01 geometrias.', {position: 'top-right'})
+        return null
+    }else{
+
+       // setGeom(geojson.features[0].geometry);
+        let geojsonLayer= L.geoJson(geojson,{
+            onEachFeature: function (feature, layer) {
+                if (feature.properties) {
+                    layer.bindPopup(Object.keys(feature.properties).map(function (k) {
+                        return k + ": " + feature.properties[k];
+                    }).join("<br />"), {
+                        maxHeight: 200
+                    });
+                }
+            }
+        }).addTo(map);
+
+        map.fitBounds(geojsonLayer.getBounds());
+        let geometria=geojson.features[0].geometry;
+        setGeom(geometria);
+        console.log(geometria);
+        toastr.info('Carga correcta', 'El poligono seleccionado es correcto.', {position: 'top-right'})
+        return null
+    }
+
+}
+
+
+
 const PredioAdd = ({history,  match}) => {
     const [predio, setPredio, handleInputChange, reset ] = useForm({},["tramo"]);
     const listaProyectos = useAsync(helperGets.helperGetListProyectos, []);
@@ -39,11 +82,18 @@ const PredioAdd = ({history,  match}) => {
     const [listaTramos, setListaTramos] = useState(null);
     const [dataProvincia, setDataProvincia] = useState(null);
     const [dataDisttrito, setDataDisttrito] = useState(null);
+    /*add ESEO*/
+    const [geometria, setGeometria] = useState(null);
+
+    /*Map Eseo*/
+
+    const [map, setMap] = useState(null)
 
     async function addPredio(predio) {
         const {data} = await Axios.post(`/predio`,predio);
         return data;
     }
+
 
     function handleChangeDepartmento(e) {
         if(!listaProvincia.loading){
@@ -67,7 +117,7 @@ const PredioAdd = ({history,  match}) => {
         $('#btnguardar').button('loading');
 
         try {
-            let predioResult = await addPredio(predio);
+            let predioResult = await addPredio({...predio,geom:geometria});
             toastr.success('Registro de Predio', `Se generó el predio con código ${predioResult.codigopredio}.`);
             history.push('/predio-list');
         }
@@ -90,13 +140,33 @@ const PredioAdd = ({history,  match}) => {
         }
     }
 
-  return (
+
+    /*Add eseo*/
+    const displayMap = useMemo(
+        () => (
+            <MapContainer
+                style={{width: "100%", heigth:"150"}}
+                center={center}
+                zoom={zoom}
+                scrollWheelZoom={false}
+                whenCreated={setMap}>
+                <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+            </MapContainer>
+        ),
+        [],
+    )
+
+
+    return (
     <>
         <WraperLarge titleForm={"Registro de Predio Individualizado (Generación de Código)"} listbreadcrumb={REGISTRO_PREDIOS_BREADCRUM} >
         <Form onSubmit={registrar}>
                 <div className="row mleft-5">
                     <div className="form-group col-lg-4 mleft-5">
-                        
+
                             <div>
                                 <label className="control-label">
                                     <span className="obligatorio">* </span> Proyecto:
@@ -192,27 +262,23 @@ const PredioAdd = ({history,  match}) => {
                                 </label>
                             </div>
                             <div className="mtop-5">
-                                <SingleUpload
-                                            key="archivopredio"
-                                            accept={'.*'}
-                                            folderSave={FilesGestionPredial.FilesPredios}
-                                            form={predio}
-                                            setForm={setPredio}
-                                            nameUpload={"archivopredio"}
-                                                >
-                                </SingleUpload>
+
+
+                                <UploadGeo form={predio} setForm={setPredio} nameUpload={"geojson"} ></UploadGeo>
+
                             </div>
                             <div className="mtop-35 pull-right">
                                 <Link to={`/predio-list`}
                                 className="btn btn-default btn-sm btn-control">Cancelar</Link>
-                                <button id="btnguardar" 
+                                <button id="btnguardar"
                                         className="btn btn-danger btn-sm btn-control">Guardar
                                 </button>
                             </div>
-                        
+
                     </div>
                     <div className="col-lg-8 mright-5">
-                        <MapRegistroPredio></MapRegistroPredio>
+                        {predio.geojson ? <DisplayPosition setGeom={setGeometria} geojson={predio.geojson} map={map} /> : null}
+                        {displayMap}
                     </div>
                 </div>
                 </Form>
