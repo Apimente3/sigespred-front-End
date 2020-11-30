@@ -1,6 +1,7 @@
 const TOKEN_KEY = 'SIGESPRED_TOKEN';
 export const USUARIO = 'USUARIO';
 export const USUARIO_ID = 'IDUSUARIO';
+export const PROYECTO_GESTION_PREDIAL = 'PROYECTO_GESTION_PREDIAL';
 
 export function setToken(token) {
     localStorage.setItem(TOKEN_KEY, token);
@@ -24,6 +25,17 @@ export const login = ({token, usuario }) => {
     localStorage.setItem(USUARIO_ID, usuario.id)
     return true;
 }
+
+
+export const selectProyecto = (proyecto) => {
+    console.log(proyecto)
+    localStorage.setItem(PROYECTO_GESTION_PREDIAL, JSON.stringify(proyecto));
+}
+
+export const getselectProyecto = () => {
+    return JSON.parse(localStorage.getItem(PROYECTO_GESTION_PREDIAL))
+}
+
 
 export const logout = () => {
     localStorage.removeItem(TOKEN_KEY);
