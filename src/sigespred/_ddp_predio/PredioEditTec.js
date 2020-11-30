@@ -23,9 +23,7 @@ import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
-import MapRegistroPredio from "../../components/helpers/maps/MapRegistroPredio";
-import SingleUpload from "../../components/uploader/SingleUpload";
-import {FilesGestionPredial} from "../../config/parameters";
+
 import PredioLinks from "./PredioLinks";
 import {useDispatch} from 'react-redux';
 import { actualizar } from '../../actions/_ddp_variable/Actions';
@@ -410,7 +408,40 @@ const PredioEditTec = ({history,  match}) => {
                         
                         <Row12>
                             <Row6>
-                                
+                                <FormGroup label={"Metros cuadrados"} >
+                                    <Input 
+                                        value={datoTecnico.metroscuadrados || ""} 
+                                        onChange={handleInputChange}
+                                        name={"metroscuadrados"} placeholder={"Metros cuadrados"}
+                                        type={"checkbox"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Area del terreno (m2)"} >
+                                    <Input 
+                                        value={datoTecnico.areaterreno || ""} 
+                                        onChange={handleInputChange}
+                                        name={"areaterreno"} placeholder={"Codigo del predio"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                            </Row6>
+                            <Row6>
+                                <FormGroup label={"Perimetro (m)"}>
+                                    <Input
+                                        value={datoTecnico.perimetro || ""} 
+                                        onChange={handleInputChange}
+                                        name={"perimetro"} placeholder={"Perimetro (m)"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup label={"Area Remanente (m2 o ha)"}>
+                                    <Input
+                                        value={datoTecnico.arearemanente || ""} 
+                                        onChange={handleInputChange}
+                                        name={"arearemanente"} placeholder={"Area Remanente"}
+                                        type={"text"}>
+                                    </Input>
+                                </FormGroup>
                             </Row6>
                         </Row12>
                     </RowForm>

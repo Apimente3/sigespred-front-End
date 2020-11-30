@@ -87,10 +87,10 @@ const DocInternoAdd = ({ history }) => {
   return (
     <>
       <WraperLarge
-        titleForm={"Registro de Documentacion interna "} // + partidaRespuesta.id}
+        titleForm={"Registro de Documentación Interna "} // + partidaRespuesta.id}
         listbreadcrumb={REGISTRO_DOCINTERNOS_BREADCRUM}
       >
-        <form onSubmit={registrar} className="form-horizontal">
+        <form onSubmit={registrar} className={"form-horizontal"}>
           <div className="form-group">
             <div className="form-group col-lg-11">
               <fieldset className="mleft-20">
@@ -119,7 +119,7 @@ const DocInternoAdd = ({ history }) => {
                         <ComboOptions
                           data={resListaProyectos.result}
                           valorkey="id"
-                          valornombre="denominacion"
+                          valornombre="denominación"
                         />
                       )}
                     </select>
@@ -178,7 +178,7 @@ const DocInternoAdd = ({ history }) => {
                     )}
                   </div>
                   <label className="col-lg-2 control-label">
-                     Codigo STD
+                     Código STD
                   </label>
                   <div className="col-lg-4">
                     <input
@@ -230,10 +230,10 @@ const DocInternoAdd = ({ history }) => {
 
             <div className="form-group col-lg-11">
               <fieldset className="mleft-20">
-                <legend>Recepcion</legend>
+                <legend>Recepción</legend>
                 <div className="form-group">
                   <label className="col-lg-2 control-label">
-                    Fecha Recepcion
+                    Fecha Recepción
                   </label>
                   <div className="col-lg-4">
                     <input
@@ -299,7 +299,7 @@ const DocInternoAdd = ({ history }) => {
                 </div>
 
                 <div className="form-group">
-                  <label className="col-lg-2 control-label">Areas</label>
+                  <label className="col-lg-2 control-label">Áreas</label>
                   <div className="col-lg-4">
                     <select
                       className="form-control input-sm"

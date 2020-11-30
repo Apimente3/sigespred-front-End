@@ -114,7 +114,7 @@ const DocInternoRespuesta = ({ history }) => {
         }
         listbreadcrumb={ACTUALIZAR_DOCINTERNOS_BREADCRUM}
       >
-        <form onSubmit={actualizar} className="form-horizontal">
+        <form onSubmit={actualizar} className={"form-horizontal"}>
           <div className="form-group">
             <div className="form-group col-lg-11">
               <fieldset className="mleft-20">

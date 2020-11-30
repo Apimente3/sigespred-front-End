@@ -13,6 +13,7 @@ import { toastr } from "react-redux-toastr";
 import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
+import { Loading } from "../../components/forms";
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -21,7 +22,6 @@ const queryString = require("query-string");
 
 async function buscarDocumentosInternos(query) {
   const { data } = await Axios.get(`/docinterno/buscar?` + query);
-  console.log(data);
   return data;
 }
 
@@ -136,8 +136,7 @@ const DocInternos = () => {
         }
       });
       valorFiltros = $.param(filtros);
-      console.log("valorFiltros");
-      console.log(valorFiltros);
+      
     }
 
     ejecutarDocInternosFilter(valorFiltros);
@@ -191,7 +190,7 @@ const DocInternos = () => {
         });
     }
     //TODO: remover console
-    console.log(filtros);
+    
   }
 
   const limpiarDocumentacionInternaFilter = (e) => {
@@ -230,7 +229,7 @@ const DocInternos = () => {
 
   const callbackEliminarDocumentoInterno = (iddocinterno, coddocinterno) => {
     try {
-      console.log(iddocinterno);
+      
       const toastrConfirmOptions = {
         onOk: () => ejecutarEliminar(iddocinterno),
       };
@@ -265,212 +264,213 @@ const DocInternos = () => {
         titleForm={"Listado de Documentos internos"}
         listbreadcrumb={LISTADO_DOCINTERNOS_BREADCRUM}
       >
-        <legend className="mleft-20">
-          <i class="fa fa-filter"></i> Filtro de Busqueda de Documentos internos
-        </legend>
+        <form className={"form-horizontal"}>
+          <legend className="mleft-20">
+            <i class="fa fa-filter"></i> Filtro de Busqueda de Documentos
+            internos
+          </legend>
+          <div className="form-group">
+            <label className="col-lg-2 control-label">
+              <span className="obligatorio">* </span>Proyecto
+            </label>
+            <div className="col-lg-4">
+              <select
+                className="form-control"
+                id="gestionpredialid"
+                name="gestionpredialid"
+                required
+                onChange={(e) => {
+                  handleChangeProyecto(e);
+                  handleInputChange(e);
+                }}
+              >
+                <option value="">--SELECCIONE--</option>
+                {resListaProyectos.error ? (
+                  "Se produjo un error cargando los tipos de plano"
+                ) : resListaProyectos.loading ? (
+                  "Cargando..."
+                ) : (
+                  <ComboOptions
+                    data={resListaProyectos.result}
+                    valorkey="id"
+                    valornombre="denominacion"
+                  />
+                )}
+              </select>
+            </div>
+            <label className="col-lg-2 control-label">
+              <span className="obligatorio">* </span> Equipo
+            </label>
+            <div className="col-lg-4">
+              <select
+                className="form-control input-sm"
+                id="equipoid"
+                name="equipoid"
+                required
+                // title="El Tipo de Plano es requerido"
+                onChange={handleInputChange}
+              >
+                <option value="">--SELECCIONE--</option>
+                {dataEquipo && (
+                  <ComboOptions
+                    data={dataEquipo}
+                    valorkey="id"
+                    valornombre="equipo"
+                  />
+                )}
+              </select>
+            </div>
+          </div>
 
-          <form className="form-horizontal">
-        <div className="form-group">
-          <label className="col-lg-2 control-label">
-            <span className="obligatorio">* </span>Proyecto
-          </label>
-          <div className="col-lg-4">
-            <select
-              className="form-control"
-              id="gestionpredialid"
-              name="gestionpredialid"
-              required
-              onChange={(e) => {
-                handleChangeProyecto(e);
-                handleInputChange(e);
-              }}
-            >
-              <option value="">--SELECCIONE--</option>
-              {resListaProyectos.error ? (
-                "Se produjo un error cargando los tipos de plano"
-              ) : resListaProyectos.loading ? (
-                "Cargando..."
-              ) : (
-                <ComboOptions
-                  data={resListaProyectos.result}
-                  valorkey="id"
-                  valornombre="denominacion"
-                />
-              )}
-            </select>
+          <div className="form-group">
+            <label className="col-lg-2 control-label">Tipo de Documento</label>
+            <div className="col-lg-4">
+              <select
+                className="form-control input-sm"
+                id="tipodocumento"
+                name="tipodocumento"
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+              >
+                <option value="">--SELECCIONE--</option>
+                {resListaTipoDocInterno.error ? (
+                  "Se produjo un error cargando los tipos de documento"
+                ) : resListaTipoDocInterno.loading ? (
+                  "Cargando..."
+                ) : (
+                  <ComboOptions
+                    data={resListaTipoDocInterno.result}
+                    valorkey="valorcodigo"
+                    valornombre="valortexto"
+                  />
+                )}
+              </select>
+            </div>
+            <label className="col-lg-2 control-label">Código STD</label>
+            <div className="col-lg-4">
+              <input
+                type="text"
+                className="form-control input-sm"
+                id="codigostd"
+                name="codigostd"
+                placeholder="Código del plano"
+                onBlur={handleInputChange}
+              />
+            </div>
           </div>
-          <label className="col-lg-2 control-label">
-            <span className="obligatorio">* </span> Equipo
-          </label>
-          <div className="col-lg-4">
-            <select
-              className="form-control input-sm"
-              id="equipoid"
-              name="equipoid"
-              required
-              // title="El Tipo de Plano es requerido"
-              onChange={handleInputChange}
-            >
-              <option value="">--SELECCIONE--</option>
-              {dataEquipo && (
-                <ComboOptions
-                  data={dataEquipo}
-                  valorkey="id"
-                  valornombre="equipo"
-                />
-              )}
-            </select>
-          </div>
-        </div>
 
-        <div className="form-group">
-          <label className="col-lg-2 control-label">Tipo de Documento</label>
-          <div className="col-lg-4">
-            <select
-              className="form-control input-sm"
-              id="tipodocumento"
-              name="tipodocumento"
-              onChange={(e) => {
-                handleInputChange(e);
-              }}
-            >
-              <option value="">--SELECCIONE--</option>
-              {resListaTipoDocInterno.error ? (
-                "Se produjo un error cargando los tipos de documento"
-              ) : resListaTipoDocInterno.loading ? (
-                "Cargando..."
-              ) : (
-                <ComboOptions
-                  data={resListaTipoDocInterno.result}
-                  valorkey="valorcodigo"
-                  valornombre="valortexto"
-                />
-              )}
-            </select>
+          <div className="form-group">
+            <label className="col-lg-2 control-label">Fecha Desde</label>
+            <div className="col-lg-4">
+              <input
+                className="form-control input-sm"
+                type="date"
+                id="fechainicio"
+                name="fechainicio"
+                placeholder="Ingrese fecha de inicio Recepcion"
+                onChange={handleInputChange}
+              ></input>
+            </div>
+            <label className="col-lg-2 control-label">Fecha Hasta</label>
+            <div className="col-lg-4">
+              <input
+                className="form-control input-sm"
+                type="date"
+                id="fechafin"
+                name="fechafin"
+                placeholder="Ingrese fecha de finalizacion Recepcion"
+                onChange={handleInputChange}
+              ></input>
+            </div>
           </div>
-          <label className="col-lg-2 control-label">Código STD</label>
-          <div className="col-lg-4">
-            <input
-              type="text"
-              className="form-control input-sm"
-              id="codigostd"
-              name="codigostd"
-              placeholder="Código del plano"
-              onBlur={handleInputChange}
-            />
-          </div>
-        </div>
 
-        <div className="form-group">
-          <label className="col-lg-2 control-label">Fecha Desde</label>
-          <div className="col-lg-4">
-            <input
-              className="form-control input-sm"
-              type="date"
-              id="fechainicio"
-              name="fechainicio"
-              placeholder="Ingrese fecha de inicio Recepcion"
-              onChange={handleInputChange}
-            ></input>
+          <div className="form-group">
+            <label className="col-lg-2 control-label">Nro Documento</label>
+            <div className="col-lg-4">
+              <input
+                type="text"
+                className="form-control input-sm"
+                id="numdocrecepcion"
+                name="numdocrecepcion"
+                placeholder="Numero de documento"
+                onBlur={handleInputChange}
+              />
+            </div>
           </div>
-          <label className="col-lg-2 control-label">Fecha Hasta</label>
-          <div className="col-lg-4">
-            <input
-              className="form-control input-sm"
-              type="date"
-              id="fechafin"
-              name="fechafin"
-              placeholder="Ingrese fecha de finalizacion Recepcion"
-              onChange={handleInputChange}
-            ></input>
-          </div>
-        </div>
 
-        <div className="form-group">
-          <label className="col-lg-2 control-label">Nro Documento</label>
-          <div className="col-lg-4">
-            <input
-              type="text"
-              className="form-control input-sm"
-              id="numdocrecepcion"
-              name="numdocrecepcion"
-              placeholder="Numero de documento"
-              onBlur={handleInputChange}
-            />
-          </div>
-        </div>
-
-        <div className="form-group">
-          <div className="row mb-3">
-            <div className="col-lg-6 text-center">
-              {/* {contentMessage && (
+          <div className="form-group">
+            <div className="row mb-3">
+              <div className="col-lg-6 text-center">
+                {/* {contentMessage && (
                 <label className="alert alert-danger">{contentMessage}</label>
               )} */}
-            </div>
-            <div className="col-lg-6 text-right">
-              <button
-                type="button"
-                onClick={limpiarDocumentacionInternaFilter}
-                className="btn btn-default btn-sm fullborder  btn-control"
-              >
-                <i className="fa fa-eraser"></i> Limpiar Filtro(s)
-              </button>
-              <button
-                type="button"
-                onClick={buscarDocumentosInternosFilter}
-                className="btn btn-info  btn-sm  fullborder  btn-control"
-              >
-                <i className="fa fa-search"></i> Aplicar Filtro(s)
-              </button>
+              </div>
+              <div className="col-lg-6 text-right">
+                <button
+                  type="button"
+                  onClick={limpiarDocumentacionInternaFilter}
+                  className="btn btn-default btn-sm fullborder  btn-control"
+                >
+                  <i className="fa fa-eraser"></i> Limpiar Filtro(s)
+                </button>
+                <button
+                  type="button"
+                  onClick={buscarDocumentosInternosFilter}
+                  className="btn btn-info  btn-sm  fullborder  btn-control"
+                >
+                  <i className="fa fa-search"></i> Aplicar Filtro(s)
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-4 form-group">
-          <div className="row">
-            {/* <div className="col-md-6"> */}
+          <div className="mt-4 form-group">
+            <div className="row">
+              {/* <div className="col-md-6"> */}
               <div className="col-md-6">
                 <legend className="fullborder">
                   Resultados de Búsqueda de Partidas Registrales
                 </legend>
               </div>
-            {/* </div> */}
-            <div className="col-md-6 text-right">
-              <Link
-                to={`/docinternos-add`}
-                className="btn btn-danger btn-sm fullborder  btn-control"
-              >
-                <i className="fa fa-plus-circle"></i> Agregar
-              </Link>
+              {/* </div> */}
+              <div className="col-md-6 text-right">
+                <Link
+                  to={`/docinternos-add`}
+                  className="btn btn-danger btn-sm fullborder  btn-control"
+                >
+                  <i className="fa fa-plus-circle"></i> Agregar
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-          </form>
-        <div className="panel panel-default">
-          {busquedaLocal ? (
-            console.log("cargando datos de planos...")
-          ) : (
-            <>
-              <TableDocInterno cabecera={cabecerasTabla}>
-                {dataDocInteno.rows.map((docinterno, i) => (
-                  <DocInternoRow
-                    nro={i}
-                    docinterno={docinterno}
-                    callback={callbackEliminarDocumentoInterno}
-                  ></DocInternoRow>
-                ))}
-              </TableDocInterno>
-              <div className="panel-footer clearfix pull-right">
-                <Pagination
-                  activePage={activePage}
-                  itemsCountPerPage={limit}
-                  totalItemsCount={totalItemsCount}
-                  pageRangeDisplayed={3}
-                  onChange={handlePageChange}
-                ></Pagination>
-              </div>
-            </>
-          )}
-        </div>
+
+          <div className="panel panel-default">
+            {busquedaLocal ? (
+              <Loading></Loading>
+            ) : (
+              <>
+                <TableDocInterno cabecera={cabecerasTabla}>
+                  {dataDocInteno.rows.map((docinterno, i) => (
+                    <DocInternoRow
+                      nro={i}
+                      docinterno={docinterno}
+                      callback={callbackEliminarDocumentoInterno}
+                    ></DocInternoRow>
+                  ))}
+                </TableDocInterno>
+                <div className="panel-footer clearfix pull-right">
+                  <Pagination
+                    activePage={activePage}
+                    itemsCountPerPage={limit}
+                    totalItemsCount={totalItemsCount}
+                    pageRangeDisplayed={3}
+                    onChange={handlePageChange}
+                  ></Pagination>
+                </div>
+              </>
+            )}
+          </div>
+        </form>
       </WraperLarge>
     </>
   );
