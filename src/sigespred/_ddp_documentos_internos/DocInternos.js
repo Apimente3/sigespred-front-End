@@ -14,6 +14,7 @@ import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import { Loading } from "../../components/forms";
+import {getselectProyecto} from '../../utils';
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -27,7 +28,7 @@ async function buscarDocumentosInternos(query) {
 
 const DocInternos = () => {
   // const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({archivos:[]}, ['resoministerial','nrodocumento']);
-  const [filtros, set_filtros] = useState("");
+  const [filtros, set_filtros] = useState({gestionpredialid:getselectProyecto().idproyecto});
   const [contentMessage, set_contentMessage] = useState("");
   const [busquedaLocal, set_busquedaLocal] = useState(true);
   const [busqueda, setBusqueda] = useState("");
@@ -136,7 +137,7 @@ const DocInternos = () => {
         }
       });
       valorFiltros = $.param(filtros);
-      
+
     }
 
     ejecutarDocInternosFilter(valorFiltros);
@@ -190,7 +191,7 @@ const DocInternos = () => {
         });
     }
     //TODO: remover console
-    
+
   }
 
   const limpiarDocumentacionInternaFilter = (e) => {
@@ -229,7 +230,7 @@ const DocInternos = () => {
 
   const callbackEliminarDocumentoInterno = (iddocinterno, coddocinterno) => {
     try {
-      
+
       const toastrConfirmOptions = {
         onOk: () => ejecutarEliminar(iddocinterno),
       };
@@ -276,6 +277,7 @@ const DocInternos = () => {
             <div className="col-lg-4">
               <select
                 className="form-control"
+                value={filtros.gestionpredialid}
                 id="gestionpredialid"
                 name="gestionpredialid"
                 required
