@@ -13,6 +13,7 @@ import * as PARAMS from "../../config/parameters";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {LISTADO_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
+import {getselectProyecto} from '../../utils';
 import { Loading } from "../../components/forms";
 
 const Axios = initAxiosInterceptors();
@@ -26,6 +27,10 @@ async function buscarSolicitud(query) {
  }
 
 const SolicitudList = ({history}) => {
+
+
+    console.log(/*Proyecto Seleccionado*/)
+    console.log(getselectProyecto())
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const resListaEntidades = useAsync(helperGets.helperGetListEntidades, []);
     const resListaTipoSolic = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
@@ -82,7 +87,7 @@ const SolicitudList = ({history}) => {
         $('#tipoconsultaid').val('');
         $('#estado').val('');
         $('#contienearchivo').val('');
-        
+
         handleChangeProyecto('');
         set_filtros({});
         ejecutarSolicitudesFilter('');
@@ -101,7 +106,7 @@ const SolicitudList = ({history}) => {
         .catch(error => {
             toastr.error('Eliminar Solicitud', "Se encontró un error: " +  error);
         });
-    }    
+    }
 
     const callbackEliminarSolicitud = (idsolicitud, nrooficio) => {
         try {
@@ -127,10 +132,10 @@ const SolicitudList = ({history}) => {
         let filtrosEnviar = Object.assign({}, filtros);
 
         if (filtrosEnviar.fechainicio && filtrosEnviar.fechafin) {
-    
+
             var resultFechaInicio = funcGlob.helperValidarFecha(filtrosEnviar.fechainicio, true);
             var resultFechaFin = funcGlob.helperValidarFecha(filtrosEnviar.fechafin, true);
-            
+
             if (resultFechaFin < resultFechaInicio) {
                 set_contentMessage('La Fecha de Creación de inicio no puede ser mayor a la de fin');
                 return;
@@ -165,7 +170,7 @@ const SolicitudList = ({history}) => {
     }
 
     const handlePageChange = async (pageNumber) => {
-        
+
         let query =  await  queryString.stringify({page:pageNumber, limit});
         if(busqueda) {
             query += `&${busqueda}`;
@@ -174,12 +179,12 @@ const SolicitudList = ({history}) => {
         let listSolicitud = await buscarSolicitud(query);
         changePage(pageNumber,listSolicitud);
     }
- 
+
     // TODO: Revisar procedimiento de exportación
     const descargarXls=()=>{
 
         let listexportexcel = list.rows;
-        
+
         //var resultjson = alasql(`SELECT *
         var resultjson = alasql(`SELECT id,entidad,proyecto,tramo,tipoconsulta,tipodocumento, codigostd,nrooficio,fechaelaboficio,fecharecepcion,
                                 recibiorespuesta,fecharespuesta,nrodocrespuesta,plazo_atencion,estado,accion,observaciones
@@ -201,13 +206,13 @@ const SolicitudList = ({history}) => {
             <div className="form-group">
                 <label className="col-lg-2 control-label">Número de Oficio</label>
                 <div className="col-lg-4">
-                    <input type="text" className="form-control input-sm" id="nrooficio" name="nrooficio" 
+                    <input type="text" className="form-control input-sm" id="nrooficio" name="nrooficio"
                     placeholder="Número de Oficio" onBlur={handleInputChange}/>
                 </div>
 
                 <label className="col-lg-2 control-label">Proyecto</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid" 
+                    <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid"
                     onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
                         <option value="">--SELECCIONE--</option>
                         {resListaProyectos.result
@@ -241,7 +246,7 @@ const SolicitudList = ({history}) => {
             <div className="form-group">
                 <label className="col-lg-2 control-label">Entidad</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="entidadid" name="entidadid" 
+                    <select className="form-control input-sm" id="entidadid" name="entidadid"
                     onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
                         {resListaEntidades.result
@@ -252,7 +257,7 @@ const SolicitudList = ({history}) => {
 
                 <label className="col-lg-2 control-label">Tipo de Consulta</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="tipoconsultaid" name="tipoconsultaid" 
+                    <select className="form-control input-sm" id="tipoconsultaid" name="tipoconsultaid"
                     onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
                         {resListaTipoSolic.result
@@ -264,7 +269,7 @@ const SolicitudList = ({history}) => {
             <div className="form-group">
                 <label className="col-lg-2 control-label">Estado de Seguimiento</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="estado" name="estado" 
+                    <select className="form-control input-sm" id="estado" name="estado"
                         onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
                         <option value="Atendido">Atendido</option>
@@ -276,7 +281,7 @@ const SolicitudList = ({history}) => {
 
                 <label className="col-lg-2 control-label">¿Contiene Archivo de Respuesta?</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="contienearchivo" name="contienearchivo" 
+                    <select className="form-control input-sm" id="contienearchivo" name="contienearchivo"
                         onChange={handleInputChange}>
                         <option value="">--SELECCIONE--</option>
                         <option value="true">Sí</option>
@@ -290,7 +295,7 @@ const SolicitudList = ({history}) => {
                     <div className="col-lg-6 text-center">
                     {contentMessage && (
                         <label className="alert alert-danger">{contentMessage}</label>
-                    )}  
+                    )}
                     </div>
                     <div className="col-lg-6 text-right">
                     <button type="button" onClick={limpiarSolicitudesFilter} className="btn btn-default btn-sm fullborder">
@@ -302,7 +307,7 @@ const SolicitudList = ({history}) => {
                     </div>
                 </div>
             </div>
-            
+
             <div className="mt-4 form-group">
                 <div className="row">
                     <div className="col-md-6">
@@ -314,7 +319,7 @@ const SolicitudList = ({history}) => {
                         </button>
                         <Link to={`/solicitud-add`} className="btn btn-danger btn-sm fullborder">
                             <i className="fa fa-plus-circle"></i>  Agregar Solicitud
-                        </Link>    
+                        </Link>
                     </div>
                 </div>
             </div>
