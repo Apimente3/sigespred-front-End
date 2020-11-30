@@ -241,6 +241,18 @@ const GestionPredialAdd = ({match,history}) => {
                                    type={"text"}>
                             </Input>
                         </FormGroup>
+                        <FormGroup label={"Imagen de la Gestión Predial"} require={true}
+                                   ayuda={"Archivo que se muestra como imagen de la gestión predial."}>
+                            <SingleUpload
+                                key="archivoimagen"
+                                accept={'.jpg,*.jpeg,*.png'}
+                                folderSave={FilesGestionPredial.FilesSolicitud}
+                                form={gestionPredial}
+                                setForm={setGestionPredial}
+                                nameUpload={"archivoimagen"}
+                                       >
+                            </SingleUpload>
+                        </FormGroup>
                     </Row6>
                 </RowForm>
                 <RowForm>

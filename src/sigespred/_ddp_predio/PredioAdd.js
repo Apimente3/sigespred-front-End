@@ -262,10 +262,7 @@ const PredioAdd = ({history,  match}) => {
                                 </label>
                             </div>
                             <div className="mtop-5">
-
-
                                 <UploadGeo form={predio} setForm={setPredio} nameUpload={"geojson"} ></UploadGeo>
-
                             </div>
                             <div className="mtop-35 pull-right">
                                 <Link to={`/predio-list`}

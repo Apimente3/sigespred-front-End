@@ -5,10 +5,14 @@ import "./styles.css"
 import {serverFile} from "../../config/axios";
 
 const Proyecto = ({proyecto}) => {
-
     const {codigo, icono, tipo_infraestructura, descripcion,portada_imagen,fecha_creacion} = proyecto;
 
+    var imagenFondo = '/img/no-item.png';
 
+    if (proyecto.archivoimagen) 
+    {
+        imagenFondo = serverFile+proyecto.archivoimagen.path;
+    }
 
     return (
 
@@ -16,7 +20,7 @@ const Proyecto = ({proyecto}) => {
 
             <div className="card ">
                 <div className="image-wrapper">
-                <img  src={portada_imagen?serverFile+portada_imagen:'/img/no-item.png'} alt="Avatar"  style={{height:'300px',width:'100%'}}/>
+                <img  src={imagenFondo} alt="Avatar"  style={{height:'300px',width:'100%'}}/>
 
 
                     <div className="image-overlay">
