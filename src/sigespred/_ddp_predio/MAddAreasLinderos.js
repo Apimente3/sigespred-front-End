@@ -46,6 +46,8 @@ const MAddAreasLinderos = ({closeventana, usevalue, listaTipoLindero, datalinder
 
     return (
         <>
+        <form className={"form-horizontal"}>
+
              <div>
                 <div id="lightCustomModal_background" className="popup_background backblq"></div>
                 <div id="lightCustomModal_wrapper" className="popup_wrapper bloqueador">
@@ -145,6 +147,7 @@ const MAddAreasLinderos = ({closeventana, usevalue, listaTipoLindero, datalinder
                     <div className="popup_align bloqueador3"></div> 
                 </div>
             </div> 
+        </form>
         </>
     );
 };

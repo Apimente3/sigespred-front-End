@@ -13,6 +13,7 @@ import PartidarRow from "./PartidaRow";
 import Pagination from "react-js-pagination";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import { useFetch } from "../../hooks/useFetch";
+import { Loading } from "../../components/forms";
 
 const queryString = require("query-string");
 const Axios = initAxiosInterceptors();
@@ -400,7 +401,7 @@ export const Partida = (history) => {
 
         <div className="panel panel-default">
           {busquedaLocal ? (
-            <div className="alert alert-info text-center">Cargando...</div>
+            <Loading></Loading>
           ) : (
             <>
               <TablePartida cabecera={cabecerasTabla}>

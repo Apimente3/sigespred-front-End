@@ -53,6 +53,7 @@ const DocInternoEdit = ({ match, history }) => {
     reset,
   ] = useForm({ archivos: [] }, ["comentario"]);
   //const [documentosInternos, setDocumentosInternos] = useState({});
+  const [showRespuesta, setShowRespuesta] = useState(false)
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
   const [documentosInternosEditado, set_DocumentosInternosEditado] = useState(
     {}
@@ -72,22 +73,15 @@ const DocInternoEdit = ({ match, history }) => {
       let docInterno = await obtenerDocumentoInterno(id);
       cargarEquipo(docInterno.gestionpredialid);
       setDocumentosInternos(docInterno);
+      if (docInterno.respuesta == 'EN ATENCION'){
+        setShowRespuesta(true)
+      }else{
+        setShowRespuesta(false)
+      }
     };
     init();
   }, []);
-  //const { id } = useParams();
 
-  // useEffect(() => {
-  //   const getPartida = async (idpartida) => {
-  //     let partidaDB = await obtenerPartida(idpartida);
-  //     cargarTramo(partidaDB.infraestructuraid);
-  //     setPartidaRespuesta(partidaDB);
-  //     if (partidaDB.archivos) {
-  //       set_listaArchivos(partidaDB.archivos);
-  //     }
-  //   };
-  //   getPartida(id);
-  // }, []);
 
   const handleChangeProyecto = async (e) => {
     if (e.target.value) {
@@ -97,33 +91,15 @@ const DocInternoEdit = ({ match, history }) => {
       setDataEquipo(null);
     }
   };
-  // function handleInputChange(e) {
-  //   if (e.target.name) {
-  //     documentosInternos[e.target.name] = e.target.value;
-  //     set_DocumentosInternosEditado({
-  //       ...documentosInternosEditado,
-  //       [e.target.name]: e.target.value,
-  //     });
-  //   }
-  // }
 
-  // function handleInputChange(e) {
-  //   if (e.target.name) {
-  //     documentosInternos[e.target.name] = e.target.value;
-  //     set_DocumentosInternosEditado({
-  //       ...documentosInternosEditado,
-  //       [e.target.name]: e.target.value,
-  //     });
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   const getDocumentoInterno = async (idDocInterno) => {
-  //     let documentoInternoDB = await obtenerDocumentoInterno(idDocInterno);
-  //     setDocumentosInternos(documentoInternoDB);
-  //   };
-  //   getDocumentoInterno(id);
-  // }, []);
+  const handleRespuesta = async (e) => {
+    if (e.target.value == 'EN ATENCION'){
+      setShowRespuesta(true)
+    } else {
+      setShowRespuesta(false)
+    }
+  }
+  
 
   const cargarEquipo = async (idProyecto) => {
     if (idProyecto) {
@@ -164,9 +140,9 @@ const DocInternoEdit = ({ match, history }) => {
         titleForm={"Edicion del Documento interno " + documentosInternos.id}
         listbreadcrumb={ACTUALIZAR_DOCINTERNOS_BREADCRUM}
       >
-        <form onSubmit={actualizar} className="form-horizontal">
+        <form onSubmit={actualizar} className={"form-horizontal"}>
           <div className="form-group">
-            <div className="form-group col-lg-11">
+            <div className="form-group col-lg-12">
               <fieldset className="mleft-20">
                 <legend>Datos de Generales</legend>
                 <div className="form-group">
@@ -184,7 +160,7 @@ const DocInternoEdit = ({ match, history }) => {
                         handleInputChange(e);
                       }}
                       value={documentosInternos.gestionpredialid || ""}
-                      readonly
+                      readOnly
                     >
                       <option value="">--SELECCIONE--</option>
                       {resListaProyectos.error ? (
@@ -252,7 +228,7 @@ const DocInternoEdit = ({ match, history }) => {
                     )}
                   </div>
                   <label className="col-lg-2 control-label">
-                    Codigo STD
+                    Código STD
                   </label>
                   <div className="col-lg-4">
                     <input
@@ -286,6 +262,7 @@ const DocInternoEdit = ({ match, history }) => {
                       value={documentosInternos.respuesta}
                       onChange={(e) => {
                         handleInputChange(e);
+                        handleRespuesta(e);
                       }}
                     >
                       <option value="">--SELECCIONE--</option>
@@ -303,12 +280,12 @@ const DocInternoEdit = ({ match, history }) => {
               </fieldset>
             </div>
 
-            <div className="form-group col-lg-11">
+            <div className="form-group col-lg-12">
               <fieldset className="mleft-20">
-                <legend>Recepcion</legend>
+                <legend>Recepción</legend>
                 <div className="form-group">
                   <label className="col-lg-2 control-label">
-                    Fecha Recepcion
+                    Fecha Recepción
                   </label>
                   <div className="col-lg-4">
                     <input
@@ -372,7 +349,7 @@ const DocInternoEdit = ({ match, history }) => {
                 </div>
 
                 <div className="form-group">
-                <label className="col-lg-2 control-label">Areas</label>
+                <label className="col-lg-2 control-label">Áreas</label>
                   <div className="col-lg-4">
                     <select
                       className="form-control input-sm"
@@ -400,17 +377,6 @@ const DocInternoEdit = ({ match, history }) => {
                     </select>
                   </div>
                   <div className="col-lg-4">
-                    {/* <UploadMemo
-                      key="upload_portada_imagen"
-                      file={{ urlDocumento: "" }}
-                      accept={".*"}
-                      //   setFile={setFilesArchivodigital}
-                      //   folderSave={FilesGestionPredial.FilesSolicitud}
-                      //   eliminar={deleteFilesArchivodigital}
-                    >
-                      {" "}
-                    </UploadMemo> */}
-
                     <MultipleUpload
                       key="multiple"
                       accept={".*"}
@@ -423,6 +389,76 @@ const DocInternoEdit = ({ match, history }) => {
                 </div>
               </fieldset>
             </div>
+            {showRespuesta && 
+              <div className="form-group col-lg-12">
+                <fieldset className="mleft-20">
+                <legend>Respuesta</legend>
+                <div className="form-group">
+                  <label className="col-lg-2 control-label">
+                    Fecha Respuesta
+                  </label>
+                  <div className="col-lg-4">
+                    <input
+                      style={{ lineHeight: "1.43" }}
+                      type="date"
+                      id="fecharespuesta"
+                      name="fecharespuesta"
+                      className="form-control input-sm"
+                      value={documentosInternos.fecharespuesta}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <label className="col-lg-2 control-label">
+                    Nro Documento
+                  </label>
+                  <div className="col-lg-4">
+                    <input
+                      type="text"
+                      className="form-control input-sm uppercaseinput"
+                      id="numdocrespuesta"
+                      name="numdocrespuesta"
+                      placeholder="Nro Documento"
+                      //title="El codigo STD  es requerido"
+                      autoComplete="off"
+                      onChange={handleInputChange}
+                      value={documentosInternos.numdocrespuesta}
+                    />
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label className="col-lg-2 control-label">
+                    Adjuntar Documento
+                  </label>
+                  <div className="col-lg-4">
+                    <MultipleUpload
+                      key="multiple"
+                      accept={".*"}
+                      folderSave={directorioDocInterno}
+                      form={documentosInternos}
+                      setForm={setDocumentosInternos}
+                      nameUpload={"archivorespuesta"}
+                    ></MultipleUpload>
+                  </div>
+
+                  <label className="col-lg-2 control-label">Asunto</label>
+                  <div className="col-lg-4">
+                    <input
+                      type="text"
+                      className="form-control input-sm uppercaseinput"
+                      id="asuntorespuesta"
+                      name="asuntorespuesta"
+                      placeholder="Asunto"
+                      //title="El codigo STD  es requerido"
+                      autoComplete="off"
+                      onChange={handleInputChange}
+                      value={documentosInternos.asuntorespuesta}
+                    />
+                  </div>
+                </div>
+                </fieldset>
+              </div>
+            }
           </div>
           <FormFooter>
             <Link

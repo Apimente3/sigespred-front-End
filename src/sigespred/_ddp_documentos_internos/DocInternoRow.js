@@ -33,8 +33,8 @@ const DocInternoRow = ({docinterno,nro, callback}) => {
                 { partida.estadoatencion == 'ATENDIDO' ? <td className="colorCeldaAtendido" > <span className="badge badge-info">{partida.estadoatencion}</span></td> : <td className="colorCeldaPendiente"><span className="badge badge-danger">{partida.estadoatencion}</span></td>   } */}
                 <td>
                     <div className="btn-group pull-right">
-                        <Link  to={`/docinternos-respuesta/${docinterno.id}`}  className="btn btn-xs btn-default" type="button"  data-toggle="tooltip"  data-original-title={ "Respuesta" }><i
-                            className="fa fa-envelope fa-lg "></i></Link>
+                        {/* <Link  to={`/docinternos-respuesta/${docinterno.id}`}  className="btn btn-xs btn-default" type="button"  data-toggle="tooltip"  data-original-title={ "Respuesta" }><i
+                            className="fa fa-envelope fa-lg "></i></Link> */}
                         <Link  to={`/docinternos-edit/${docinterno.id}`}  className="btn btn-xs btn-default" type="button"   data-toggle="tooltip"  data-original-title={ "Edicion" }><i
                             className="fa fa-edit fa-lg"></i></Link>
                         {/* <Link  to={`/docinternos-del/${docinterno.id}`}   className="btn btn-xs btn-default" type="button"   data-toggle="tooltip"  data-original-title={ "Eliminar" }><i
