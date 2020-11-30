@@ -28,7 +28,7 @@ const { $ } = window;
 const Axios = initAxiosInterceptors();
 
 export const PartidaUpload = () => {
-  
+
   const [partida, setPartida, handleInputChange, reset] = useForm({}, []);
   const [totalcargado, setTotalcargado] = useState(0);
   const [totalnocargado, setTotalnocargado] = useState(0);
@@ -173,8 +173,10 @@ export const PartidaUpload = () => {
                     placeholder={"Ingrese el subtramo"}
                     type={"text"}
                   ></Input>
+
                 </FormGroup>
-                <FormGroup label={"Plantilla de Carga"} require={true} ayuda={"Seleccione el Excel a importar"}>
+                <FormGroup label={"Plantilla de Carga"} require={true} ayuda={"Seleccione el Excel a importar "}>
+
                   <Input
                     type="file"
                     onChange={(e) => {
@@ -183,7 +185,18 @@ export const PartidaUpload = () => {
                     }}
                     required
                   />
+
+
+
                 </FormGroup>
+                  <FormGroup>
+                      <a href="/templates/cargaPartidasPlantilla.xlsx" type="button" className="btn btn-success" data-container="body" data-toggle="popover"
+                              data-placement="top"
+                              data-content="Formato que tendra que se llenar para la carga masiva de las partidas registrales."
+                              data-original-title="" title="">
+                          <i className="fas fa-file-excel"></i> Plantilla
+                      </a>
+                  </FormGroup>
                 <FormGroup>
                   <Link
                     to={`/partidas`}
