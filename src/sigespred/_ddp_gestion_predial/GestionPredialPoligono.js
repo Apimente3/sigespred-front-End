@@ -1,4 +1,5 @@
-import React, {useEffect, useState,createContext} from 'react';
+import React, {useEffect, useState,createContext, useMemo} from 'react';
+import L from 'leaflet';
 import {Link} from "react-router-dom";
 import { useAsync } from "react-async-hook";
 import Wraper from "../m000_common/formContent/WraperLarge";
@@ -24,10 +25,40 @@ import SingleUpload from "../../components/uploader/SingleUpload";
 import MapValidaPoligono from "../../components/helpers/maps/MapValidaPoligono";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
+import UploadGeo from '../../components/uploadgeo/UploadGeo';
+import { MapContainer, TileLayer,GeoJSON, Marker, Popup, useMap} from 'react-leaflet';
 
 const Axios = initAxiosInterceptors();
 const {$} = window;
 const directorioPoligono = "poligonogpredialadmin";
+
+const center = [51.505, -0.09]
+const zoom = 13
+
+function DisplayPosition({ map,geojson,setGeom }) {
+    if(geojson.features.length>1){
+        toastr.error('¡ Error !', 'El poligono seleccionado posee más de 01 geometrias.', {position: 'top-right'})
+        return null
+    }else{
+        let geojsonLayer= L.geoJson(geojson,{
+            onEachFeature: function (feature, layer) {
+                if (feature.properties) {
+                    layer.bindPopup(Object.keys(feature.properties).map(function (k) {
+                        return k + ": " + feature.properties[k];
+                    }).join("<br />"), {
+                        maxHeight: 200
+                    });
+                }
+            }
+        }).addTo(map);
+
+        map.fitBounds(geojsonLayer.getBounds());
+        let geometria=geojson.features[0].geometry;
+        setGeom(geometria);
+        toastr.info('Carga correcta', 'El poligono seleccionado es correcto.', {position: 'top-right'})
+        return null
+    }
+}
 
 async function addPoligono(valPoligono) {
     const {data} = await Axios.post(`/validagestionpredial`,valPoligono);
@@ -54,6 +85,10 @@ const GestionPredialPoligono = ({history, match}) => {
     const listaTipoRaster = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPORASTER]);
     const listaMetGeneraInfo = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOGENERAINFO]);
     const [nuevoPoligono, setNuevoPoligono] = useState(true);
+    const [archivoIndirecto, setArchivoIndirecto] = useState(null);
+
+    const [geometria, setGeometria] = useState(null);
+    const [map, setMap] = useState(null);
 
     useEffect(() => {
         const init = async () => {
@@ -100,6 +135,33 @@ const GestionPredialPoligono = ({history, match}) => {
         console.log(fileContent);
     }
 
+    const displayMap = useMemo(
+        () => (
+            <MapContainer
+                style={{width: "100%", heigth:"150"}}
+                center={center}
+                zoom={zoom}
+                scrollWheelZoom={false}
+                whenCreated={setMap}>
+                <TileLayer
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+            </MapContainer>
+        ),
+        [],
+    )
+
+    const setearValorArchivo = (e) => {
+        console.log('setearValorArchivo');
+        console.log(e);
+        setArchivoIndirecto(e);
+    }
+
+    const reinicarValorArchivo = () => {
+        setArchivoIndirecto(null);
+    }
+
 return (
     <>
     <Wraper titleForm={"Gestión Predial - Validación de Polígono"} listbreadcrumb={VALIDA_GESTIONPREDIALPOLIGONO_BREADCRUM}>
@@ -121,16 +183,7 @@ return (
                         </label>
                     </div>
                     <div className="form-group col-lg-5">
-                        <SingleUpload
-                            key="urlpoligono"
-                            accept={'.*'}
-                            folderSave={directorioPoligono}
-                            form={valPoligono}
-                            setForm={setValPoligono}
-                            handleInputChange={procesarShape}
-                            nameUpload={"urlpoligono"}
-                                >
-                        </SingleUpload>
+                        <UploadGeo form={valPoligono} setForm={setValPoligono} nameUpload={"geojson"} funcioncallback={setearValorArchivo}></UploadGeo>
                     </div>
                     <div className="form-group col-lg-5">
                         <Input value={valPoligono.urlortofoto || ""} onChange={handleInputChange}
@@ -147,7 +200,8 @@ return (
                 </div>
                 <div className="row mleft-5">
                     <div className="col-lg-8 mright-5">
-                        <MapValidaPoligono></MapValidaPoligono>
+                        {valPoligono.geojson ? <DisplayPosition setGeom={setGeometria} geojson={valPoligono.geojson} map={map} /> : null}
+                        {displayMap}
                     </div>
                     <div className="form-group col-lg-4">
                         <legend className="mbot-10">Vectorial</legend>
@@ -269,12 +323,12 @@ return (
                                 type={"date"}>
                             </Input>
                         </div>
-                        <div className="mtop-10 col-lg-4">
+                        <div className="mtop-15 col-lg-4">
                             <label className="control-label">
                                 Informe Técnico:
                             </label>
                         </div>
-                        <div className="mtop-10 col-lg-8">
+                        <div className="mtop-15 col-lg-8">
                             <SingleUpload
                                 key="urlinforme"
                                 accept={'.*'}
@@ -283,6 +337,25 @@ return (
                                 setForm={setValPoligono}
                                 handleInputChange={procesarShape}
                                 nameUpload={"urlinforme"}
+                                    >
+                            </SingleUpload>
+                        </div>
+                        <div className="mtop-15 col-lg-4">
+                            <label className="control-label">
+                                Archivo Geometría:
+                            </label>
+                        </div>
+                        <div className="mtop-15 col-lg-8">
+                            <SingleUpload
+                                key="urlpoligono"
+                                accept={'.*'}
+                                folderSave={directorioPoligono}
+                                form={valPoligono}
+                                setForm={setValPoligono}
+                                handleInputChange={procesarShape}
+                                nameUpload={"urlpoligono"}
+                                cargaindirecta = {archivoIndirecto}
+                                cargaindcallback={reinicarValorArchivo}
                                     >
                             </SingleUpload>
                         </div>

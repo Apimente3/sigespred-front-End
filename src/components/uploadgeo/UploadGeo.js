@@ -6,15 +6,19 @@ import {getextfromfilekml} from "./kml";
 import {getextfromfilegpx} from "./gpx";
 
 
-const UploadGeo = ({form, setForm, nameUpload}) => {
+const UploadGeo = ({form, setForm, nameUpload, funcioncallback = null}) => {
 
     async  function EventUpload(e){
-
+ 
         try {
             var files = e.target.files;
             if (files.length == 0) {
                 alert('No se ha seleccionado ningún archivo.');
                 return; //do nothing if no file given yet
+            }
+
+            if (funcioncallback) {
+                funcioncallback(e);
             }
 
             var file = files[0];

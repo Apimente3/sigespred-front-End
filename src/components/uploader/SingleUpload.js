@@ -15,18 +15,18 @@ const LabelUpload = styled.label`
 `;
 
 
-const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSave, accept}) => {
+const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSave, accept, cargaindirecta = null, cargaindcallback = null}) => {
     const [subiendoImagen, setSubiendoImagen] = useState('ninguno');
     const [porcentajeSubida, setPorcentajeSubida] = useState(0);
-   // const [originalName, setoriginalName] = useState(form[nameUpload]||'');
 
     useEffect(() => {
         const init = async () => {
-            // console.log('----------------------')
-            // console.log(form[nameUpload])
             setSubiendoImagen( form[nameUpload] ? 'subido' : 'ninguno' );
             $('[data-toggle="tooltip"]').tooltip();
-            //setoriginalName(form[nameUpload].filename);
+
+            if(cargaindirecta && cargaindcallback) {
+                handleImagenSeleccionada(cargaindirecta);
+            }
         };
         init();
     }, [setSubiendoImagen,form]);
@@ -60,6 +60,10 @@ const SingleUpload = memo(({form, setForm, handleInputChange,nameUpload,folderSa
             
             if (handleInputChange) {
                 handleInputChange(file.name,file);
+            }
+
+            if(cargaindirecta && cargaindcallback) {
+                cargaindcallback();
             }
         } catch (error) {
             setSubiendoImagen(false);
