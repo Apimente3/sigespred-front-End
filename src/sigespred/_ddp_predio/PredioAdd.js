@@ -27,6 +27,8 @@ import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
+
+import {getselectProyecto} from '../../utils';
 import MapRegistroPredio from "../../components/helpers/maps/MapRegistroPredio";
 import SingleUpload from "../../components/uploader/SingleUpload";
 import {FilesGestionPredial} from "../../config/parameters";
@@ -73,7 +75,7 @@ function DisplayPosition({ map,geojson,setGeom }) {
 
 
 const PredioAdd = ({history,  match}) => {
-    const [predio, setPredio, handleInputChange, reset ] = useForm({},["tramo"]);
+    const [predio, setPredio, handleInputChange, reset ] = useForm({gestionpredialid:getselectProyecto().idproyecto},["tramo"]);
     const listaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const listaTipoPredio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOPRED]);
     const listaDepartmento = useAsync(helperGets.helperGetListDepartamento, []);
