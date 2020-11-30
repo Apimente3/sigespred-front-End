@@ -37,7 +37,7 @@ const Login = ({}) => {
             try {
                 const trabajador = await axios.post('/quiensoy', {token: token});
                 if (trabajador) {
-                    history.push('/planos');
+                    history.push('/gestionpredial-list');
                 }
             } catch (error) {
                 console.log(error);
@@ -55,7 +55,7 @@ const Login = ({}) => {
                contrasenia: password
             });
             if (LoginSession(data)) {
-                history.push('/planos');
+                history.push('/gestionpredial-list');
                 setAuhtError(false)
             }else{
             }

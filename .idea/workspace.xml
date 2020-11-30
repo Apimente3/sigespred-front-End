@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2f33408e-9338-484c-96b0-504a92e0d08d" name="Default Changelist" comment="Terminado la Subida">
+    <list default="true" id="2f33408e-9338-484c-96b0-504a92e0d08d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_cofiguracion_usuario/ConfiguracionUsuario.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_cofiguracion_usuario/ConfiguracionUsuario.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoAdd.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoAdd.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoEdit.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoEdit.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoRespuesta.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoRespuesta.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternos.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sigespred/m000_common/formContent/WraperLarge.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m000_common/formContent/WraperLarge.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/RouteGestionPredial.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/RouteGestionPredial.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/m001_login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m001_login/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyecto.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyecto.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyectos.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyectos.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -77,7 +75,7 @@
           <entry key="css" value="16" />
           <entry key="gitignore" value="2" />
           <entry key="html" value="1" />
-          <entry key="js" value="396" />
+          <entry key="js" value="406" />
           <entry key="json" value="2" />
           <entry key="ts" value="4" />
         </counts>
@@ -87,7 +85,7 @@
           <entry key="CSS" value="16" />
           <entry key="HTML" value="1" />
           <entry key="JSON" value="2" />
-          <entry key="JavaScript" value="396" />
+          <entry key="JavaScript" value="406" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="TypeScript" value="4" />
         </counts>
@@ -95,16 +93,16 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="57" />
-          <entry key="js" value="12786" />
-          <entry key="txt" value="185" />
+          <entry key="js" value="12875" />
+          <entry key="txt" value="228" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="57" />
-          <entry key="JavaScript" value="12785" />
+          <entry key="JavaScript" value="12874" />
           <entry key="Less" value="1" />
-          <entry key="PLAIN_TEXT" value="185" />
+          <entry key="PLAIN_TEXT" value="228" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
@@ -119,16 +117,16 @@
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.4" value="2" />
-          <entry key="project.open.time.5" value="3" />
-          <entry key="project.open.time.7" value="3" />
+          <entry key="project.open.time.5" value="4" />
+          <entry key="project.open.time.7" value="4" />
           <entry key="project.open.time.8" value="2" />
           <entry key="project.open.time.9" value="3" />
-          <entry key="project.opened" value="27" />
+          <entry key="project.opened" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
         <counts>
-          <entry key="ESLintLanguageService" value="27" />
+          <entry key="ESLintLanguageService" value="29" />
           <entry key="TypeScriptServerServiceImpl" value="3" />
         </counts>
       </usages-collector>
@@ -136,26 +134,58 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_cofiguracion_usuario/ConfiguracionUsuario.js">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorEdit.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="31" column="23" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
+            <state>
               <folding>
-                <element signature="e#0#39#0" expanded="true" />
+                <element signature="e#0#57#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sigespred/m000_common/formContent/WraperLarge.js">
+        <entry file="file://$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyectos.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="320" column="57" selection-start-line="320" selection-start-column="57" selection-end-line="320" selection-end-column="57" />
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="2516">
+              <caret line="155" column="21" selection-start-line="155" selection-start-column="21" selection-end-line="155" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sigespred/m000_common/footers/FooterProcess.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/config/axios.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="3" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyecto.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="646">
+              <caret line="42" column="42" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sigespred/m001_login/Login.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="867">
+              <caret line="57" column="53" selection-start-line="57" selection-start-column="53" selection-end-line="57" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -163,47 +193,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/routes/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
+            <state relative-caret-position="187">
+              <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/routes/RouteGestionPredial.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="23" column="53" selection-start-line="23" selection-start-column="53" selection-end-line="23" selection-end-column="53" />
               <folding>
-                <element signature="e#0#48#0" expanded="true" />
+                <element signature="e#0#73#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_perfil/Perfil.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/routes/_ddp_RouteModDocumentosInternos.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="13" column="55" selection-start-line="13" selection-start-column="55" selection-end-line="13" selection-end-column="55" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoDel.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoRespuesta.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="116" column="63" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
             </state>
           </provider>
         </entry>
@@ -211,7 +214,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoEdit.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="83">
+            <state relative-caret-position="2363">
               <caret line="166" column="63" selection-start-line="166" selection-start-column="63" selection-end-line="166" selection-end-column="63" />
             </state>
           </provider>
@@ -220,25 +223,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoAdd.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
+            <state relative-caret-position="1105">
               <caret line="92" column="62" selection-start-line="92" selection-start-column="35" selection-end-line="92" selection-end-column="62" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternos.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="271" column="9" selection-start-line="271" selection-start-column="9" selection-end-line="271" selection-end-column="44" />
-              <folding>
-                <element signature="e#7890#9622#0" />
-                <element signature="e#9632#10927#0" />
-                <element signature="e#10937#11800#0" />
-                <element signature="e#11810#12250#0" />
-                <element signature="e#12260#13219#0" />
-                <element signature="e#13228#13903#0" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -254,8 +240,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>L.map('map')</find>
-      <find>obtener</find>
       <find>ModalSearchCad</find>
       <find>Area y Cargo</find>
       <find>rea y Cargo</find>
@@ -284,11 +268,14 @@
       <find>#wrapper.sidebar-mini side</find>
       <find>textmenu-principal</find>
       <find>color-red</find>
+      <find>planos</find>
+      <find>getlistgestionoredual</find>
     </findStrings>
     <replaceStrings>
       <replace>list</replace>
       <replace>IndicadorAdd</replace>
       <replace>indicador</replace>
+      <replace>gestionpredial-list</replace>
     </replaceStrings>
     <dirStrings>
       <dir>D:\MTC\Front-End-2020\sigespred-front-end\src\routes</dir>
@@ -304,10 +291,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/forms/Table.js" />
-        <option value="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMemo.js" />
-        <option value="$PROJECT_DIR$/src/components/helpers/uploaders/UploadMultiple.js" />
-        <option value="$PROJECT_DIR$/src/components/uploader/MultipleUpload.js" />
         <option value="$PROJECT_DIR$/src/components/tabs/HeaderTab.js" />
         <option value="$PROJECT_DIR$/src/components/tabs/ContentTab.js" />
         <option value="$PROJECT_DIR$/src/components/tabs/Tab.js" />
@@ -346,7 +329,6 @@
         <option value="$PROJECT_DIR$/src/sigespred/_ddp_perfil/Perfil.js" />
         <option value="$PROJECT_DIR$/src/components/uploadgeo/UploadGeo.js" />
         <option value="$PROJECT_DIR$/src/sigespred/_ddp_predio/PredioAdd.js" />
-        <option value="$PROJECT_DIR$/src/config/axios.js" />
         <option value="$PROJECT_DIR$/src/styles/css/endless.css" />
         <option value="$PROJECT_DIR$/src/App.css" />
         <option value="$PROJECT_DIR$/src/sigespred/m000_common/formContent/WraperLarge.js" />
@@ -355,6 +337,11 @@
         <option value="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoEdit.js" />
         <option value="$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoRespuesta.js" />
         <option value="$PROJECT_DIR$/src/sigespred/_ddp_cofiguracion_usuario/ConfiguracionUsuario.js" />
+        <option value="$PROJECT_DIR$/src/routes/RouteGestionPredial.js" />
+        <option value="$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyecto.js" />
+        <option value="$PROJECT_DIR$/src/sigespred/m001_login/Login.js" />
+        <option value="$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyectos.js" />
+        <option value="$PROJECT_DIR$/src/config/axios.js" />
       </list>
     </option>
   </component>
@@ -389,6 +376,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -399,13 +387,7 @@
             <path>
               <item name="demo" type="b2602c69:ProjectViewProjectNode" />
               <item name="demo" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="demo" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="demo" type="b2602c69:ProjectViewProjectNode" />
@@ -418,52 +400,10 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="config" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="demo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="demo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sigespred" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="demo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sigespred" type="462c0819:PsiDirectoryNode" />
-              <item name="_ddp_cofiguracion_usuario" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="demo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sigespred" type="462c0819:PsiDirectoryNode" />
-              <item name="_ddp_perfil" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="demo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sigespred" type="462c0819:PsiDirectoryNode" />
-              <item name="m002_gestion_trabajadores" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="demo" type="b2602c69:ProjectViewProjectNode" />
-              <item name="demo" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="sigespred" type="462c0819:PsiDirectoryNode" />
-              <item name="m002_gestion_trabajadores" type="462c0819:PsiDirectoryNode" />
-              <item name="m002_01_trabajadores" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -563,7 +503,9 @@
       <workItem from="1605015197996" duration="2619000" />
       <workItem from="1605032350629" duration="8448000" />
       <workItem from="1606223568463" duration="1496000" />
-      <workItem from="1606652048533" duration="3850000" />
+      <workItem from="1606652048533" duration="4694000" />
+      <workItem from="1606750431259" duration="4209000" />
+      <workItem from="1606758307647" duration="602000" />
     </task>
     <task id="LOCAL-00001" summary="Trabajador">
       <created>1603396622842</created>
@@ -642,11 +584,18 @@
       <option name="project" value="LOCAL" />
       <updated>1606660380007</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="corregiendo la visualizacion del formulario">
+      <created>1606661955307</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1606661955307</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="240028000" />
+    <option name="totallyTimeSpent" value="245683000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -659,9 +608,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18123667" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18496802" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -674,8 +622,8 @@
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49947312" weight="0.329718" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4978678" weight="0.329718" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.51865673" side_tool="true" visible="true" weight="0.20498915" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.48134327" visible="true" weight="0.20498915" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5197228" side_tool="true" visible="true" weight="0.20498915" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.48027718" visible="true" weight="0.20498915" />
       <window_info active="true" anchor="bottom" id="Messages" order="11" sideWeight="0.4989339" visible="true" weight="0.329718" />
       <window_info anchor="bottom" id="TypeScript" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -701,61 +649,10 @@
     <MESSAGE value="Trabajador" />
     <MESSAGE value="Terminado la Subida" />
     <MESSAGE value="corrreccion menu" />
-    <option name="LAST_COMMIT_MESSAGE" value="corrreccion menu" />
+    <MESSAGE value="corregiendo la visualizacion del formulario" />
+    <option name="LAST_COMMIT_MESSAGE" value="corregiendo la visualizacion del formulario" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/public/js/togeojson/togeojson.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="13" selection-start-column="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/uploadgeo/geojson/index.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/uploadgeo/kml/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="30" selection-start-column="30" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/uploadgeo/gpx/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="30" selection-start-column="30" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/@types/react/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="2101" column="8" selection-start-line="2101" selection-start-column="8" selection-end-line="2101" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/uploader/SingleUpload.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="35" column="19" selection-start-line="35" selection-start-column="19" selection-end-line="35" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialAdd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="195" column="58" selection-start-line="195" selection-start-column="41" selection-end-line="195" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_gestion_predial/GestionPredialEdit.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="89" column="3" selection-start-line="89" selection-start-column="3" selection-end-line="89" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sigespred/m004_peticion_gestion_predial/Map.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-141" />
@@ -850,9 +747,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1496">
           <caret line="119" column="72" selection-start-line="119" selection-start-column="72" selection-end-line="119" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#77#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -860,9 +754,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="28" column="29" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -887,13 +778,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config/axios.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="2" selection-start-line="4" selection-start-column="2" selection-end-line="4" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-31" />
@@ -914,21 +798,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TableTrabajador.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="317">
           <caret line="128" column="13" lean-forward="true" selection-start-line="128" selection-start-column="13" selection-end-line="128" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#57#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -950,19 +825,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="287">
           <caret line="320" column="57" selection-start-line="320" selection-start-column="57" selection-end-line="320" selection-end-column="57" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/routes/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="34" column="22" selection-start-line="34" selection-start-column="22" selection-end-line="34" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#48#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -970,35 +832,26 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="239">
           <caret line="271" column="9" selection-start-line="271" selection-start-column="9" selection-end-line="271" selection-end-column="44" />
-          <folding>
-            <element signature="e#7890#9622#0" />
-            <element signature="e#9632#10927#0" />
-            <element signature="e#10937#11800#0" />
-            <element signature="e#11810#12250#0" />
-            <element signature="e#12260#13219#0" />
-            <element signature="e#13228#13903#0" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoAdd.js">
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_cofiguracion_usuario/ConfiguracionUsuario.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="92" column="62" selection-start-line="92" selection-start-column="35" selection-end-line="92" selection-end-column="62" />
+        <state relative-caret-position="306">
+          <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoEdit.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="83">
-          <caret line="166" column="63" selection-start-line="166" selection-start-column="63" selection-end-line="166" selection-end-column="63" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/src/routes/_ddp_RouteModPlanos.js">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoRespuesta.js">
+    <entry file="file://$PROJECT_DIR$/src/routes/_ddp_RouteModTramo.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_perfil/Perfil.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="116" column="63" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
+        <state relative-caret-position="1173">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
         </state>
       </provider>
     </entry>
@@ -1016,20 +869,85 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_perfil/Perfil.js">
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoRespuesta.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="75" lean-forward="true" selection-start-line="75" selection-end-line="75" />
+        <state relative-caret-position="1734">
+          <caret line="116" column="63" selection-start-line="116" selection-start-column="63" selection-end-line="116" selection-end-column="63" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_cofiguracion_usuario/ConfiguracionUsuario.js">
+    <entry file="file://$PROJECT_DIR$/src/sigespred/m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorEdit.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="31" column="23" selection-start-line="31" selection-start-column="23" selection-end-line="31" selection-end-column="23" />
+        <state>
           <folding>
-            <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#0#57#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyectos.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2516">
+          <caret line="155" column="21" selection-start-line="155" selection-start-column="21" selection-end-line="155" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/m000_common/footers/FooterProcess.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/m003_gestion_proyectos/Proyecto.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="42" column="42" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/m001_login/Login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="867">
+          <caret line="57" column="53" selection-start-line="57" selection-start-column="53" selection-end-line="57" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="42" selection-start-line="11" selection-start-column="42" selection-end-line="11" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/routes/RouteGestionPredial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="23" column="53" selection-start-line="23" selection-start-column="53" selection-end-line="23" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoEdit.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2363">
+          <caret line="166" column="63" selection-start-line="166" selection-start-column="63" selection-end-line="166" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sigespred/_ddp_documentos_internos/DocInternoAdd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="92" column="62" selection-start-line="92" selection-start-column="35" selection-end-line="92" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config/axios.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="3" selection-start-line="5" selection-start-column="3" selection-end-line="5" selection-end-column="3" />
         </state>
       </provider>
     </entry>

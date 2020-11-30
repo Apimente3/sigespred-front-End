@@ -26,9 +26,9 @@ const Proyectos = ({history}) => {
     useEffect(() => {
         async function init() {
             try {
-               // let {proyectos, resumen} = await getlistgestionoredual();
-                set_proyectos([]);
-                set_resumen([]);
+               let {proyectos, resumen} = await getListProyectos();
+                set_proyectos(proyectos);
+                set_resumen(resumen);
             }
             catch (error) {
             }
@@ -37,6 +37,7 @@ const Proyectos = ({history}) => {
     }, []);
 
     const buscarProyecto =async (e)=>{
+
         e.preventDefault()
         let {proyectos, resumen} = await getListProyectos(busqueda);
         set_proyectos(proyectos);
@@ -70,7 +71,7 @@ const Proyectos = ({history}) => {
     return (
         <div>
             <Header></Header>
-            <SidebarAdm/>
+
 
             <div>
                 <div id="breadcrumb">
@@ -84,8 +85,8 @@ const Proyectos = ({history}) => {
                         <fieldset className={'fielsettext'}>
                             <legend align="mtop-25 center fielsettext ">
 
-                                <label className={'titleform'}>LISTADO DE PROYECTOS</label>
-                                <Link to={`/proyecto-add`}
+                                <label className={'titleform'}>LISTADO DE PROYECTOS DE LA DIRECCIÓN DE DISPONIBILIDAD DE PREDIOS - MTC</label>
+                                <Link to={`/gestionpredial-add`}
                                       className="btn btn-default pull-right btn-sm fullborder btn-control">
                                     + Registrar </Link>
                                 <button type="button" onClick={descarxls} className="btn btn-default pull-right btn-sm fullborder">

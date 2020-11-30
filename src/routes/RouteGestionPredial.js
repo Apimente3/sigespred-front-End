@@ -8,6 +8,7 @@ import BaseGrafica from "../sigespred/base_grafica/BaseGrafica";
 import BaseGrafica2 from "../sigespred/base_grafica/BaseGrafica2";
 import Configuraciones from "../sigespred/base_grafica/Configuraciones";
 import Brigadas from "../sigespred/base_grafica/Brigadas";
+import Proyectos from "../sigespred/m003_gestion_proyectos/Proyectos";
 
 const RouteGestionPredial = [
     {path: "/gestionpredial", component: GestionPredials},
@@ -20,6 +21,7 @@ const RouteGestionPredial = [
     {path: "/brigadas-proyecto/:codproyecto", component: Brigadas},
     {path: "/gestionpredial-valida/:id/:ti/:idpoligono?", component: GestionPredialPoligono},
     {path: "/gestionpredial-validalist/:id", component: GestionPredialPoligonoList},
+    {path: "/gestionpredial-list", component: Proyectos},
 
 ]
 
