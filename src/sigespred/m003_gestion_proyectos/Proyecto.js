@@ -21,8 +21,8 @@ const Proyecto = ({proyecto}) => {
 
                     <div className="image-overlay">
                     <div className="image-info">
-                        <Link className="pull-right leter-white" to={`/proyecto-edit/${codigo}`} ><i className="fa fa-edit fa-2x"></i></Link>
-                        <Link to={"/proyecto-datos-generales/"+codigo}>
+
+                        <Link to={"/planos"}>
                         <div className="h3 leter-white">{descripcion}</div> </Link>
 
                         <span></span>
