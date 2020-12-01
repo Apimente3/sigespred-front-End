@@ -175,8 +175,7 @@ export const PartidaUpload = () => {
                   ></Input>
 
                 </FormGroup>
-                <FormGroup label={"Plantilla de Carga"} require={true} ayuda={"Seleccione el Excel a importar "}>
-
+                <FormGroup label={"Plantilla de Carga"} require={true} ayuda={"Seleccione el Excel a importar"}>
                   <Input
                     type="file"
                     onChange={(e) => {
@@ -216,7 +215,7 @@ export const PartidaUpload = () => {
             </Row12>
             {mostrarData && (
               <Row12 title={"Información de Carga "}>
-                <Row6>
+                <Row6> 
                   <FormGroup
                     label={"Total de Partidas Cargadas"}
                     withLabel={6}

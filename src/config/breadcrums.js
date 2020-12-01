@@ -31,24 +31,24 @@ export const LISTADO_TRABAJADOR_BREADCRUM = [
 
 export const REGISTRO_PARTIDA_BREADCRUM = [
     {link: "partida-add", name: "Registrar Partida"},
-    {link: "partidas", name: "Busqueda por filtros"},
+    {link: "partidas", name: "Listado de Partidas"},
     // {link: "partida-edit", name: "Editar Partida"}
 ]
 
 export const LISTADO_PARTIDA_BREADCRUM = [
     {link: "partida-add", name: "Registrar Partida"},
-    {link: "partidas", name: "Busqueda por filtros"}
+    {link: "partidas", name: "Listado de Partidas"}
 ]
 
 export const ACTUALIZAR_PARTIDA_BREADCRUM = [
     {link: "../../partida-add", name: "Registrar Partida"},
-    {link: "../../partidas", name: "Busqueda por filtros"},
+    {link: "../../partidas", name: "Listado de Partidas"},
     // {link: "partida-add", name: "Actualizar Partida"}
 ]
 
 export const ELIMINAR_PARTIDA_BREADCRUM = [
     {link: "/partidas", name: "Registrar Partida"},
-    {link: "../../partidas", name: "Busqueda por filtros"},
+    {link: "../../partidas", name: "Listado de Partidas"},
     // {link: "#", name: "Eliminar Partidas Registrales"}
 ]
 

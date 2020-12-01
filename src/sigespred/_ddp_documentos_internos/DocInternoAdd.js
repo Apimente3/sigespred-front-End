@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import { initAxiosInterceptors } from "../../config/axios";
 import { REGISTRO_DOCINTERNOS_BREADCRUM } from "../../config/breadcrums";
@@ -6,6 +6,7 @@ import ComboOptions from "../../components/helpers/ComboOptions";
 import { toastr } from "react-redux-toastr";
 import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
+import {getselectProyecto} from '../../utils';
 import {
   Form,
   FormGroup,
@@ -50,6 +51,26 @@ const DocInternoAdd = ({ history }) => {
     PARAMS.LISTASIDS.TIPODOCINTER,
   ]);
   const resListaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
+
+  useEffect(()=> {
+    async function initialLoad() {
+        try {
+          var datosProyecto =  getselectProyecto();
+          if (datosProyecto) {
+
+              setDocumentosInternos({
+                ...documentosInternos,
+                gestionpredialid: datosProyecto.idproyecto
+              });
+              setValoresEquipo(datosProyecto.idproyecto);
+          }
+        } catch (error) {
+          console.log(error);
+      }
+      }
+      initialLoad();
+    }, []);
+
   //   /*Valiables Globales*/
   //   useEffect(() => {
   //     const init = async () => {
@@ -77,13 +98,18 @@ const DocInternoAdd = ({ history }) => {
 
   const handleChangeProyecto = async (e) => {
     if (e.target.value) {
-      let dataEq = await helperGets.helperGetListEquipos(e.target.value);
-      setDataEquipo(dataEq);
+      //let dataEq = await helperGets.helperGetListEquipos(e.target.value);
+      //setDataEquipo(dataEq);
+      setValoresEquipo(e.target.value);
     } else {
       setDataEquipo(null);
     }
   };
 
+  const setValoresEquipo = async(idgestionpredial) => {
+    let dataEq = await helperGets.helperGetListEquipos(idgestionpredial)
+    setDataEquipo(dataEq);
+}
   return (
     <>
       <WraperLarge
@@ -104,6 +130,7 @@ const DocInternoAdd = ({ history }) => {
                       className="form-control"
                       id="gestionpredialid"
                       name="gestionpredialid"
+                      value={documentosInternos.gestionpredialid || ""}
                       required
                       onChange={(e) => {
                         handleChangeProyecto(e);

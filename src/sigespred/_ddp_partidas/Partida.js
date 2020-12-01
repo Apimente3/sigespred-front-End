@@ -14,6 +14,7 @@ import Pagination from "react-js-pagination";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import { useFetch } from "../../hooks/useFetch";
 import { Loading } from "../../components/forms";
+import {getselectProyecto} from '../../utils';
 
 const queryString = require("query-string");
 const Axios = initAxiosInterceptors();
@@ -25,11 +26,13 @@ export const Partida = (history) => {
   const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
     PARAMS.LISTASIDS.TIPOPRED,
   ]);
-
-  const [filtros, set_filtros] = useState("");
+  
+  //const [filtros, set_filtros] = useState({gestionpredialid:getselectProyecto().idproyecto});
+  const [filtros, set_filtros] = useState({});
   const [busquedaLocal, set_busquedaLocal] = useState(true);
 
   const [contentMessage, set_contentMessage] = useState("");
+  
   const [busqueda, setBusqueda] = useState("");
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -46,9 +49,20 @@ export const Partida = (history) => {
   useEffect(() => {
     async function initialLoad() {
       try {
+        
         set_busquedaLocal(false);
 
         let query = await queryString.stringify({ busqueda, page, limit });
+        var datosProyecto = getselectProyecto();
+        if (datosProyecto) {
+            set_filtros({
+                ...filtros,
+                gestionpredialid: datosProyecto.idproyecto
+            });
+            setValoresTramo(datosProyecto.idproyecto);
+            query =  await  queryString.stringify({busqueda, page: activePage, limit, gestionpredialid:datosProyecto.idproyecto});
+        }
+
         let listaPartidas = await buscarPartida(query);
         setDataPartidas(listaPartidas);
         settotalItemsCount(listaPartidas.count);
@@ -60,13 +74,19 @@ export const Partida = (history) => {
   }, []);
 
   const handleChangeProyecto = async (e) => {
-    if (e.target.value) {
-      let data = await helperGets.helperGetListTramos(e.target.value);
-      setDataTramo(data);
+    if (e && e.target.value) {
+      setValoresTramo(e.target.value);
+      // let data = await helperGets.helperGetListTramos(e.target.value);
+      // setDataTramo(data);
     } else {
       setDataTramo(null);
     }
   };
+
+  const setValoresTramo = async(idgestionpredial) => {
+    let data = await helperGets.helperGetListTramos(idgestionpredial);
+    setDataTramo(data);
+}
 
   function handleInputChange(e) {
     switch (e.target.name) {
@@ -230,6 +250,7 @@ export const Partida = (history) => {
             <select
               className="form-control"
               id="gestionpredialid"
+              value={filtros.gestionpredialid || ""}
               name="gestionpredialid"
               onChange={(e) => {
                 handleChangeProyecto(e);

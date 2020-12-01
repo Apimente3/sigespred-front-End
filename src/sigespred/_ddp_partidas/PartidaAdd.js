@@ -12,6 +12,7 @@ import WraperLarge from "../m000_common/formContent/WraperLarge";
 import { REGISTRO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
 import { useForm } from "../../hooks/useForm";
 import MultipleUpload from "../../components/uploader/MultipleUpload";
+import {getselectProyecto} from '../../utils';
 
 const { $ } = window;
 const Axios = initAxiosInterceptors();
@@ -19,25 +20,45 @@ const directorioPartidas = "FilesDDP/Partidas";
 
 const PartidaAdd = ({ history }) => {
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
-  const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
-    PARAMS.LISTASIDS.TIPOPRED,
-  ]);
-
-  //const [partida, set_partida] = useState({ observacion: "Nuevo Registro" });
+  const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOPRED,]);
   const [partida, set_partida, handleInputChange, reset] = useForm({}, [""]);
-
   const [dataTramo, setDataTramo] = useState(null);
   const dispatch = useDispatch();
+
   const agregarPartidaComp = (partida) => dispatch(agregar(partida));
+
+  useEffect(() => {
+      async function initialLoad() {
+        try {
+          var datosProyecto =  getselectProyecto();
+          if (datosProyecto) {
+            set_partida({
+                ...partida,
+                gestionpredialid: datosProyecto.idproyecto
+            });
+            setValoresTramo(datosProyecto.idproyecto);
+          }
+        } catch (error) {
+                console.log(error);
+        }
+      }
+      initialLoad();
+  }, []);
 
   const handleChangeProyecto = async (e) => {
     if (e.target.value) {
-      let data = await helperGets.helperGetListTramos(e.target.value);
-      setDataTramo(data);
+      setValoresTramo(e.target.value);
+      // let data = await helperGets.helperGetListTramos(e.target.value);
+      // setDataTramo(data);
     } else {
       setDataTramo(null);
     }
   };
+
+  const setValoresTramo = async(idgestionpredial) => {
+    let data = await helperGets.helperGetListTramos(idgestionpredial);
+    setDataTramo(data);
+  }
 
   const limpiarForm = () => {
     set_partida({ observacion: "Nuevo Registro" });
@@ -83,10 +104,10 @@ const PartidaAdd = ({ history }) => {
               </label>
               <div className="col-lg-4">
                 <select
-                  id="infraestructuraid"
+                  id="gestionpredialid"
                   className="form-control input-sm"
-                  name="infraestructuraid"
-                  // value={partida.infraestructuraid}
+                  name="gestionpredialid"
+                  value={partida.gestionpredialid || ""}
                   onChange={(e) => {
                     handleChangeProyecto(e);
                     handleInputChange(e);
