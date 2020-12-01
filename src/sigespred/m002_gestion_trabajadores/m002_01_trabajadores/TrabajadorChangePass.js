@@ -81,8 +81,8 @@ const TrabajadorChangePass = ({history, match}) => {
 
     // const {foto} = this.state;
     return (
-        <Wraper titleForm={"Eliminacion del Trabajador"} listbreadcrumb={CHANGEPASS_TRABAJADOR_BREADCRUM}>
-            <form onSubmit={eliminar}>
+        <Wraper titleForm={"Cambiar contraseña del Trabajador"} listbreadcrumb={CHANGEPASS_TRABAJADOR_BREADCRUM}>
+            <form onSubmit={eliminar} className="form-horizontal">
                 <div className="form-group">
                 <div className="col-xs-6 col-sm-12 col-md-6">
                     <strong className="font-16">¿Desea cambias el Password al trabajador {trabajador.nombres}  {trabajador.apellidos}?</strong>

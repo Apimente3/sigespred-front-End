@@ -100,7 +100,7 @@ const Proyectos = ({history}) => {
 
                     <div className="row">
                         <div className="col-md-12">
-                            <form>
+
                                 <div className="form-group">
                                     <div className="row">
                                         <div>
@@ -135,7 +135,7 @@ const Proyectos = ({history}) => {
                                 </div>
 
 
-                            </form>
+
 
                             <div className="row" style={{marginTop: '15px'}}>
                                 {

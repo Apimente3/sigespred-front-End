@@ -52,7 +52,7 @@ const Proyecto = ({proyecto}) => {
                 <div className="" style={{wordWrap: 'break-word', padding: '20px'}}>
                     <h4 title={codigo}><a dangerouslySetInnerHTML={{__html: icono}}></a><b> {codigo}</b></h4>
                     <h4>{tipo_infraestructura}</h4>
-                    <div className="h6" title={descripcion}>{descripcion.substring(0, 35) + '...'}</div>
+                    <div className="h6 textmenu-principal" title={descripcion}>{descripcion}</div>
                     <a href="#" className="btn btn-danger block" onClick={setProyectoSession}><i
                         className="fa fa-sign-in" aria-hidden="true"></i> INGRESAR A PROYECTO</a>
                 </div>

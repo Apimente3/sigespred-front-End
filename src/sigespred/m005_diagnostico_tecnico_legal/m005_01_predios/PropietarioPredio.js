@@ -1,21 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
 import Header from "../../m000_common/headers/Header";
 import SidebarPredios from "../../m000_common/siderbars/SidebarPredios";
 import Propietario from "./Propietario";
 import UploadMultiple from "../../../components/helpers/uploaders/UploadMultiple";
-import TablePropietario from "../../m000_common/grids/TablePropietario";
 
 import {toastr} from "react-redux-toastr";
 import {initAxiosInterceptors} from "../../../config/axios";
 import ModalAddPropietario from "./ModalAddPropietario";
 import ModalAddPoseedor from "./ModalAddPoseedor";
 import ModalAddExpediente from "../expedientes/ModalAddExpediente";
-import {listar} from "../../../actions/sujeto_pasivo/Actions";
 import Poseedor from "./Poseedor";
 import ModalAddOcupante from "./ModalAddOcupante";
 import Ocupante from "./Ocupante";
-import UploadFile from "../../../components/helpers/uploaders/Upload";
+
 
 
 const Axios = initAxiosInterceptors();
@@ -415,8 +412,8 @@ const PropietarioPredio = ({match}) => {
                                                 </legend>
 
                                             </fieldset>
-                                            
-                                            
+
+
                                             {propietario.files_acreditan.length == 0 && !filesstate ? null :
                                                 <UploadMultiple listFiles={propietario.files_acreditan} setListFiles={setFiles}
                                                                 removeFiles={removeFiles}/>
@@ -550,14 +547,14 @@ const PropietarioPredio = ({match}) => {
                             </div>
 
                         </div>
-                      
+
                     </div>
 
-              
+
                     {/**/}
-                   
-                    
-                 
+
+
+
                 </div>
 
             </form>

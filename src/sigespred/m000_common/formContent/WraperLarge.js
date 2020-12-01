@@ -1,18 +1,13 @@
 import React, {useEffect} from 'react';
-import { useLocation } from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 import Header from "../headers/Header";
-import SidebarAdm from "../siderbars/SidebarAdm";
-import {serverFile} from "../../../config/axios";
-import UploadMemo from "../../../components/helpers/uploaders/UploadMemo";
-import {FilesUsuario} from "../../../config/parameters";
-import {Link} from "react-router-dom";
 import Item from "../../../components/menu/Item";
 import FooterProcess from "../footers/FooterProcess";
 import Breadcrumb from "../breadcrumb/Breadcrumb";
-const {$,Modernizr}=window;
+const {$, Modernizr} = window;
+
 
 const Wraper = ({children, titleForm, listbreadcrumb}) => {
-
 
     const location = useLocation();
 
@@ -20,8 +15,8 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
         const init = async () => {
 
             //scroll to top of the page
-            $("#scroll-to-top").click(function()	{
-                $("html, body").animate({ scrollTop: 0 }, 600);
+            $("#scroll-to-top").click(function () {
+                $("html, body").animate({scrollTop: 0}, 600);
                 return false;
             });
 
@@ -33,18 +28,22 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
 
             //Sidebar menu dropdown
             $('aside li').hover(
-                function(){ $(this).addClass('open') },
-                function(){ $(this).removeClass('open') }
+                function () {
+                    $(this).addClass('open')
+                },
+                function () {
+                    $(this).removeClass('open')
+                }
             )
 
             //Collapsible Sidebar Menu
-            $('.openable > a').click(function()	{
-                if(!$('#wrapper').hasClass('sidebar-mini'))	{
-                    if( $(this).parent().children('.submenu').is(':hidden') ) {
+            $('.openable > a').click(function () {
+                if (!$('#wrapper').hasClass('sidebar-mini')) {
+                    if ($(this).parent().children('.submenu').is(':hidden')) {
                         $(this).parent().siblings().removeClass('open').children('.submenu').slideUp();
                         $(this).parent().addClass('open').children('.submenu').slideDown();
                     }
-                    else	{
+                    else {
                         $(this).parent().removeClass('open').children('.submenu').slideUp();
                     }
                 }
@@ -53,8 +52,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
             });
 
             //Toggle Menu
-            $('#sidebarToggle').click(function()	{
-
+            $('#sidebarToggle').click(function () {
 
 
                 $('#wrapper').toggleClass('sidebar-display');
@@ -64,7 +62,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
                 $('.main-menu').find('.submenu').removeAttr('style');
             });
 
-            $('#sizeToggle').click(function()	{
+            $('#sizeToggle').click(function () {
 
                 $('#wrapper').off("resize");
                 $('.hrefMenu').toggleClass('textmenu-principal');
@@ -73,37 +71,37 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
                 $('.main-menu').find('.submenu').removeAttr('style');
             });
 
-            if(!$('#wrapper').hasClass('sidebar-mini'))	{
+            if (!$('#wrapper').hasClass('sidebar-mini')) {
                 if (Modernizr.mq('(min-width: 768px)') && Modernizr.mq('(max-width: 868px)')) {
                     $('#wrapper').addClass('sidebar-mini');
                 }
-                else if (Modernizr.mq('(min-width: 869px)'))	{
-                    if(!$('#wrapper').hasClass('sidebar-mini'))	{
+                else if (Modernizr.mq('(min-width: 869px)')) {
+                    if (!$('#wrapper').hasClass('sidebar-mini')) {
                     }
                 }
             }
 
             //show/hide menu
-            $('#menuToggle').click(function()	{
+            $('#menuToggle').click(function () {
                 $('#wrapper').toggleClass('sidebar-hide');
                 $('.main-menu').find('.openable').removeClass('open');
                 $('.main-menu').find('.submenu').removeAttr('style');
             });
 
-            $(window).resize(function() {
+            $(window).resize(function () {
                 if (Modernizr.mq('(min-width: 768px)') && Modernizr.mq('(max-width: 868px)')) {
                     $('#wrapper').addClass('sidebar-mini').addClass('window-resize');
                     $('.main-menu').find('.openable').removeClass('open');
                     $('.main-menu').find('.submenu').removeAttr('style');
                 }
-                else if (Modernizr.mq('(min-width: 869px)'))	{
-                    if($('#wrapper').hasClass('window-resize'))	{
+                else if (Modernizr.mq('(min-width: 869px)')) {
+                    if ($('#wrapper').hasClass('window-resize')) {
                         $('#wrapper').removeClass('sidebar-mini window-resize');
                         $('.main-menu').find('.openable').removeClass('open');
                         $('.main-menu').find('.submenu').removeAttr('style');
                     }
                 }
-                else	{
+                else {
                     $('#wrapper').removeClass('sidebar-mini window-resize');
                     $('.main-menu').find('.openable').removeClass('open');
                     $('.main-menu').find('.submenu').removeAttr('style');
@@ -111,22 +109,22 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
             });
 
             //fixed Sidebar
-            $('#fixedSidebar').click(function()	{
-                if($(this).prop('checked'))	{
+            $('#fixedSidebar').click(function () {
+                if ($(this).prop('checked')) {
                     $('aside').addClass('fixed');
                 }
-                else	{
+                else {
                     $('aside').removeClass('fixed');
                 }
             });
 
             //Inbox sidebar (inbox.html)
-            $('#inboxMenuToggle').click(function()	{
+            $('#inboxMenuToggle').click(function () {
                 $('#inboxMenu').toggleClass('menu-display');
             });
 
             //Collapse panel
-            $('.collapse-toggle').click(function()	{
+            $('.collapse-toggle').click(function () {
 
                 $(this).parent().toggleClass('active');
 
@@ -143,7 +141,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
             $({numberValue: 0}).animate({numberValue: currentVisitor}, {
                 duration: 2500,
                 easing: 'linear',
-                step: function() {
+                step: function () {
                     $('#currentVisitor').text(Math.ceil(this.numberValue));
                 }
             });
@@ -153,17 +151,17 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
             $({numberValue: 0}).animate({numberValue: currentBalance}, {
                 duration: 2500,
                 easing: 'linear',
-                step: function() {
+                step: function () {
                     $('#currentBalance').text(Math.ceil(this.numberValue));
                 }
             });
 
             //Refresh Widget
-            $('.refresh-widget').click(function() {
+            $('.refresh-widget').click(function () {
                 var _overlayDiv = $(this).parent().parent().parent().parent().find('.loading-overlay');
                 _overlayDiv.addClass('active');
 
-                setTimeout(function() {
+                setTimeout(function () {
                     _overlayDiv.removeClass('active');
                 }, 2000);
 
@@ -171,74 +169,78 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
             });
 
             //Check all	checkboxes
-            $('#chk-all').click(function()	{
-                if($(this).is(':checked'))	{
-                    $('.inbox-panel').find('.chk-item').each(function()	{
+            $('#chk-all').click(function () {
+                if ($(this).is(':checked')) {
+                    $('.inbox-panel').find('.chk-item').each(function () {
                         $(this).prop('checked', true);
                         $(this).parent().parent().addClass('selected');
                     });
                 }
-                else	{
-                    $('.inbox-panel').find('.chk-item').each(function()	{
-                        $(this).prop('checked' , false);
+                else {
+                    $('.inbox-panel').find('.chk-item').each(function () {
+                        $(this).prop('checked', false);
                         $(this).parent().parent().removeClass('selected');
                     });
                 }
             });
 
-            $('.chk-item').click(function()	{
-                if($(this).is(':checked'))	{
+            $('.chk-item').click(function () {
+                if ($(this).is(':checked')) {
                     $(this).parent().parent().addClass('selected');
                 }
-                else	{
+                else {
                     $(this).parent().parent().removeClass('selected');
                 }
             });
 
-            $('.chk-row').click(function()	{
-                if($(this).is(':checked'))	{
+            $('.chk-row').click(function () {
+                if ($(this).is(':checked')) {
                     $(this).parent().parent().parent().addClass('selected');
                 }
-                else	{
+                else {
                     $(this).parent().parent().parent().removeClass('selected');
                 }
             });
 
             //Hover effect on touch device
-            $('.image-wrapper').bind('touchstart', function(e) {
+            $('.image-wrapper').bind('touchstart', function (e) {
                 $('.image-wrapper').removeClass('active');
                 $(this).addClass('active');
             });
 
             //Dropdown menu with hover
             $('.hover-dropdown').hover(
-                function(){ $(this).addClass('open') },
-                function(){ $(this).removeClass('open') }
+                function () {
+                    $(this).addClass('open')
+                },
+                function () {
+                    $(this).removeClass('open')
+                }
             )
 
             //upload file
-            $('.upload-demo').change(function()	{
+            $('.upload-demo').change(function () {
                 var filename = $(this).val().split('\\').pop();
-                $(this).parent().find('span').attr('data-title',filename);
-                $(this).parent().find('label').attr('data-title','Change file');
+                $(this).parent().find('span').attr('data-title', filename);
+                $(this).parent().find('label').attr('data-title', 'Change file');
                 $(this).parent().find('label').addClass('selected');
             });
 
-            $('.remove-file').click(function()	{
-                $(this).parent().find('span').attr('data-title','No file...');
-                $(this).parent().find('label').attr('data-title','Select file');
+            $('.remove-file').click(function () {
+                $(this).parent().find('span').attr('data-title', 'No file...');
+                $(this).parent().find('label').attr('data-title', 'Select file');
                 $(this).parent().find('label').removeClass('selected');
 
                 return false;
             });
 
             //theme setting
-            $("#theme-setting-icon").click(function()	{
-                if($('#theme-setting').hasClass('open'))	{
+            $("#theme-setting-icon").click(function () {
+                if ($('#theme-setting').hasClass('open')) {
                     $('#theme-setting').removeClass('open');
                     $('#theme-setting-icon').removeClass('open');
                 }
-                else	{
+                else {
                     $('#theme-setting').addClass('open');
                     $('#theme-setting-icon').addClass('open');
                 }
@@ -247,22 +249,22 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
             });
 
             //to do list
-            $('.task-finish').click(function()	{
-                if($(this).is(':checked'))	{
+            $('.task-finish').click(function () {
+                if ($(this).is(':checked')) {
                     $(this).parent().parent().addClass('selected');
                 }
-                else	{
+                else {
                     $(this).parent().parent().removeClass('selected');
                 }
             });
 
             //Delete to do list
-            $('.task-del').click(function()	{
+            $('.task-del').click(function () {
                 var activeList = $(this).parent().parent();
 
                 activeList.addClass('removed');
 
-                setTimeout(function() {
+                setTimeout(function () {
                     activeList.remove();
                 }, 1000);
 
@@ -275,7 +277,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
             // Tooltip
             $("[data-toggle=tooltip]").tooltip();
 
-          //  $(`#${location.pathname}`).parent.parent
+            //  $(`#${location.pathname}`).parent.parent
 
         };
         init();
@@ -305,34 +307,37 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
                             <ul>
                                 <Item title={"Diagnóstico Técnico Legal"} img={"/img/planos.svg"} subLinks={
                                     [
-                                        {to:"/planos",denominacion:"Gestión de Planos"},
-                                        {to:"/partidas",denominacion:"Partidas Registrales"},
-                                        {to:"/solicitud-list",denominacion:"Solicitudes a Entidades"},
-                                        {to:"/predio-list",denominacion:"Registro de Predios Individuales"},
-                                        {to:"/gestionpredial",denominacion:"Registro de Proyecto Multimodal (Gestión Predial)"},
+                                        {to: "/planos", denominacion: "Gestión de Planos"},
+                                        {to: "/partidas", denominacion: "Partidas Registrales"},
+                                        {to: "/solicitud-list", denominacion: "Solicitudes a Entidades"},
+                                        {to: "/predio-list", denominacion: "Registro de Predios Individuales"},
+                                        {
+                                            to: "/gestionpredial",
+                                            denominacion: "Registro de Proyecto Multimodal (Gestión Predial)"
+                                        },
                                     ]}>
 
                                 </Item>
 
-                                <Item title={"Gestión Administrativa de Documentos"} img={"/img/expediente.svg"} subLinks={
-                                    [
+                                <Item title={"Gestión Administrativa de Documentos"} img={"/img/expediente.svg"}
+                                      subLinks={
+                                          [
 
-                                        {to:"/solicitud-list",denominacion:"Solicitudes a Entidades"},
-                                        {to:"/docinternos",denominacion:"Documentos Internos"},
-                                    ]
-                                }>
+                                              {to: "/solicitud-list", denominacion: "Solicitudes a Entidades"},
+                                              {to: "/docinternos", denominacion: "Documentos Internos"},
+                                          ]
+                                      }>
 
                                 </Item>
-
 
 
                                 <Item title={"Gestión de Personal / Administrativa"} img={"/img/equipo.svg"} subLinks={
                                     [
 
-                                        {to:"/list-trabajadores",denominacion:"Trabajadores"},
-                                        {to:"/list-equipos2",denominacion:"Equipos"},
-                                        {to:"/area-list",denominacion:"Áreas"},
-                                        {to:"/acta-list",denominacion:"Actas de trabajo diario"},
+                                        {to: "/list-trabajadores", denominacion: "Trabajadores"},
+                                        {to: "/list-equipos2", denominacion: "Equipos"},
+                                        {to: "/area-list", denominacion: "Áreas"},
+                                        {to: "/acta-list", denominacion: "Actas de trabajo diario"},
 
 
                                     ]}>
@@ -342,7 +347,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
                                 <Item title={"Indicadores y Base Gráfica"} img={"/img/grafico-de-lineas.svg"} subLinks={
                                     [
 
-                                        {to:"/indicadores",denominacion:" Indicadores y Base Gráfica"}
+                                        {to: "/indicadores", denominacion: " Indicadores y Base Gráfica"}
 
 
                                     ]}>
@@ -351,13 +356,11 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
 
                                 <Item title={"Blog de la DDP"} img={"/img/blogging2.svg"} subLinks={
                                     [
-                                        {to:"#",denominacion:"Blog"},
-                                        {to:"#",denominacion:"Formatos más usados"},
+                                        {to: "#", denominacion: "Blog"},
+                                        {to: "#", denominacion: "Formatos más usados"},
                                     ]}>
 
                                 </Item>
-
-
 
 
                             </ul>
@@ -366,13 +369,13 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
                     </div>
                 </aside>
 
-                <div id="main-container" style={{margintop:'50px'}}>
+                <div id="main-container" style={{margintop: '50px'}}>
                     <Breadcrumb listbreadcrumb={listbreadcrumb}></Breadcrumb>
                     <div className="padding-md scrollable">
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="panel panel-default">
-                                    <div className="panel-heading" >{titleForm}</div>
+                                    <div className="panel-heading">{titleForm}</div>
                                     <div className="panel-body">
                                         {children}
                                     </div>

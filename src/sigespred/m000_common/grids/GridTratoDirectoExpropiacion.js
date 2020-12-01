@@ -8,7 +8,7 @@ const {$, jQuery, alasql} = window;
 require("../grids/css.css")
 
 
-let $grid = $("#gridpropietario")
+//let $grid = $("#gridpropietario")
 const initDateEdit = function (elem, options) {
     // we need get the value before changing the type
     var orgValue = $(elem).val(),
@@ -74,7 +74,7 @@ const gridcolumnModel = [
         "width": 200,
         "editable": false,
         "search": false,
-        "hidden": true, 
+        "hidden": true,
         "frozen": true
     },
 
@@ -634,8 +634,8 @@ const gridcolumnModel = [
         "width": 200,
         "editable": false,
         formatter: function (cellvalue, options, rowObject) {
-         
-            //console.loo() 
+
+            //console.loo()
             let resultado='';
             if(!cellvalue){
                 resultado=`<a href="#" onclick="window.showModalUplaodGrid(true,'${options.colModel.name}' ,'${rowObject.id}')" ><i row_id="${rowObject.id}"  class="fa fa-upload" aria-hidden="true"></i> Subir Archivo</a>`
@@ -1482,8 +1482,8 @@ const creteGrid = (gdata) => {
         'cellsubmit': 'clientArray',
         beforeSaveCell: function (rowid, cellname, value, iRow, iCol) {
             try {
-                
-             
+
+
                 var rowData = {...jQuery('#gridpropietario').jqGrid('getRowData', rowid), [cellname]: value};
 
                 let listdata = []
@@ -1586,11 +1586,11 @@ const creteGrid = (gdata) => {
                 }
 
                 console.log({...rowData, ...datosCalculados[0]})
-                
+
                 $('#gridpropietario').jqGrid('setRowData', iRow, {...rowData, ...datosCalculados[0]});
 
                  savechanges({[cellname]: value, ...datosCalculados[0], id: rowData.id});
-                
+
 
                // savechanges({[cellname]: value, id: rowData.id});
                 toastr.info('Se actualizó correctamente la tabla ', {"position": "bottom-center",});
@@ -1876,7 +1876,7 @@ const creteGrid = (gdata) => {
 
 
     /*Cargado la data*/
-  
+
 
 
 }
@@ -1954,11 +1954,11 @@ const TablePropietario = ({data,buscarExpedientes}) => {
                 <table id="gridpropietario"></table>
                 <div id="paperpropietario"></div>
             </div>
-            
+
             {
-                !showModalUpload ? '': <ModalUploadFile name_propertie={name_propertie} row_id={row_id} closeModalUploadImage={closeModalUploadImage} actualizargrid={actualizargrid}></ModalUploadFile>      
+                !showModalUpload ? '': <ModalUploadFile name_propertie={name_propertie} row_id={row_id} closeModalUploadImage={closeModalUploadImage} actualizargrid={actualizargrid}></ModalUploadFile>
             }
-            
+
         </>
     );
 };

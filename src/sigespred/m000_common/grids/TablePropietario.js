@@ -7,7 +7,7 @@ const {$, jQuery, alasql} = window;
 require("../grids/css.css")
 
 
-let $grid = $("#gridpropietario")
+//let $grid = $("#gridpropietario")
 const initDateEdit = function (elem, options) {
     // we need get the value before changing the type
     var orgValue = $(elem).val(),
@@ -458,8 +458,8 @@ const gridcolumnModel = [
         edittype: "select", editoptions: {value: "SI:SI;NO:NO", defaultValue: "SI:SI"}
         , classes: 'etapa_1_r'
     },
-    
-    
+
+
 
     {
         "name": "ofic_comuni_num_oficio",
@@ -1478,7 +1478,7 @@ const creteGrid = () => {
                 listdata.push(rowData)
                 let datosCalculados = [{}]
 
-              
+
                 if (
                     cellname == 'val_comer_predio_valor_terreno'
                     || cellname == 'val_comer_predio_valor_edificacion'
@@ -1487,13 +1487,13 @@ const creteGrid = () => {
                     || cellname == 'perjuicio_economico_danio_emergente'
                 ) {
 
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
              CAST(val_comer_predio_valor_terreno AS NUMBER) + CAST(val_comer_predio_valor_edificacion as NUMBER) + CAST(val_comer_predio_valor_plantaciones as NUMBER)  as val_comer_predio_valor_comercial_vc
              ,CAST(perjuicio_economico_lucro_cesante AS NUMBER) + CAST(perjuicio_economico_danio_emergente as NUMBER)   as perjuicio_economico_valor_pe
              ,CAST(val_comer_predio_valor_terreno AS NUMBER) + CAST(val_comer_predio_valor_edificacion as NUMBER) + CAST(val_comer_predio_valor_plantaciones as NUMBER) + CAST(perjuicio_economico_lucro_cesante AS NUMBER) + CAST(perjuicio_economico_danio_emergente as NUMBER)  as valor_segun_tasacion_vc_pe
              ,(CAST(val_comer_predio_valor_terreno AS NUMBER) + CAST(val_comer_predio_valor_edificacion as NUMBER) + CAST(val_comer_predio_valor_plantaciones as NUMBER))*0.2  as beneficio_veinte_ciento
-            
-            
+
+
             , CAST(val_comer_predio_valor_terreno AS NUMBER) + CAST(val_comer_predio_valor_edificacion as NUMBER) + CAST(val_comer_predio_valor_plantaciones as NUMBER)+
              CAST(perjuicio_economico_lucro_cesante AS NUMBER) + CAST(perjuicio_economico_danio_emergente as NUMBER) +
             (CAST(val_comer_predio_valor_terreno AS NUMBER) + CAST(val_comer_predio_valor_edificacion as NUMBER) + CAST(val_comer_predio_valor_plantaciones as NUMBER))*0.2+
@@ -1504,83 +1504,83 @@ const creteGrid = () => {
                 }
 
                 if (cellname == 'inform_pred_area_inscrita_matriz_m') {
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_inscrita_matriz_m AS NUMBER)/10000  as inform_pred_area_inscrita_matriz_ha
                  FROM ? `, [listdata]);
                 }
 
                 if (cellname == 'inform_pred_area_inscrita_matriz_ha') {
 
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_inscrita_matriz_ha AS NUMBER)*10000  as inform_pred_area_inscrita_matriz_m
                  FROM ? `, [listdata]);
                 }
-           
+
 
                 if (cellname == 'inform_pred_area_directamente_afectada_m') {
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_directamente_afectada_m AS NUMBER)/10000  as inform_pred_area_directamente_afectada_ha
                  FROM ? `, [listdata]);
                 }
 
                 if (cellname == 'inform_pred_area_directamente_afectada_ha') {
 
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_directamente_afectada_ha AS NUMBER)*10000  as inform_pred_area_directamente_afectada_m
                  FROM ? `, [listdata]);
                 }
 
-        
+
 
                 if (cellname == 'inform_pred_area_indirectamente_afectada_m') {
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_indirectamente_afectada_m AS NUMBER)/10000  as inform_pred_area_indirectamente_afectada_ha
                  FROM ? `, [listdata]);
                 }
 
                 if (cellname == 'inform_pred_area_indirectamente_afectada_ha') {
 
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_indirectamente_afectada_ha AS NUMBER)*10000  as inform_pred_area_indirectamente_afectada_m
                  FROM ? `, [listdata]);
                 }
 
 
-               
+
 
                 if (cellname == 'inform_pred_area_remanente_m') {
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_remanente_m AS NUMBER)/10000  as inform_pred_area_remanente_ha
                  FROM ? `, [listdata]);
                 }
 
                 if (cellname == 'inform_pred_area_remanente_ha') {
 
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_remanente_ha AS NUMBER)*10000  as inform_pred_area_remanente_m
                  FROM ? `, [listdata]);
                 }
 
 
-           
+
 
                 if (cellname == 'inform_pred_area_adquirida_m') {
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_adquirida_m AS NUMBER)/10000  as inform_pred_area_adquirida_ha
                  FROM ? `, [listdata]);
                 }
 
                 if (cellname == 'inform_pred_area_adquirida_ha') {
 
-                    datosCalculados = alasql(`SELECT 
+                    datosCalculados = alasql(`SELECT
                CAST(inform_pred_area_adquirida_ha AS NUMBER)*10000  as inform_pred_area_adquirida_m
                  FROM ? `, [listdata]);
-                    
+
                 }
- 
+
                 console.log( {...rowData, ...datosCalculados[0]})
                 $('#gridpropietario').jqGrid('setRowData', iRow, {...rowData, ...datosCalculados[0]});*/
-                
+
                // savechanges({[cellname]: value, ...datosCalculados[0], id: rowData.id});
 
                 savechanges({[cellname]: value, id: rowData.id});
@@ -1604,7 +1604,7 @@ const creteGrid = () => {
 
     });
 
-   
+
 
     //$('.jqgfirstrow td').css({"height": '5px !important'})
 
@@ -1867,7 +1867,7 @@ const creteGrid = () => {
     $("#gridpropietario").jqGrid("setFrozenColumns");
 
 
-  
+
 
 
 }
