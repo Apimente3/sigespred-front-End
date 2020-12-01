@@ -111,17 +111,9 @@ const DocInternoAdd = ({ history }) => {
                       }}
                     >
                       <option value="">--SELECCIONE--</option>
-                      {resListaProyectos.error ? (
-                        "Se produjo un error cargando los tipos de plano"
-                      ) : resListaProyectos.loading ? (
-                        "Cargando..."
-                      ) : (
-                        <ComboOptions
-                          data={resListaProyectos.result}
-                          valorkey="id"
-                          valornombre="denominación"
-                        />
-                      )}
+                      {resListaProyectos.result?
+                        <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>
+                       : "Cargando..."}
                     </select>
                   </div>
                   <label className="col-lg-2 control-label">
