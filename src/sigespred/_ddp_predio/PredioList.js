@@ -26,7 +26,7 @@ async function buscarPredios(query) {
 
 const PredioList = ({history,  match}) => {
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
-  const [filtros, setFiltros] = useState({});
+  const [filtros, setFiltros] = useState({gestionpredialid:getselectProyecto().idproyecto});
   const [contentMessage, set_contentMessage] = useState("");
   const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
   const [busqueda, setBusqueda] = useState("");

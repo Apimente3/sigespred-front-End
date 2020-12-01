@@ -57,7 +57,7 @@ const PartidaEdit = ({ history, match }) => {
       let partidaDB = await obtenerPartida(idpartida);
       setPartidaEdicion(partidaDB);
       let data = await helperGets.helperGetListTramos(
-        partidaDB.infraestructuraid
+        partidaDB.gestionpredialid
       );
       setDataTramo(data);
     };
@@ -103,10 +103,10 @@ const PartidaEdit = ({ history, match }) => {
             </label>
             <div className="col-lg-4">
               <select
-                id="infraestructuraid"
+                id="gestionpredialid"
                 className="form-control input-sm"
-                name="infraestructuraid"
-                value={partidaEdicion.infraestructuraid}
+                name="gestionpredialid"
+                value={partidaEdicion.gestionpredialid}
                 onChange={(e) => {
                   handleChangeProyecto(e);
                   handleInputChange(e);

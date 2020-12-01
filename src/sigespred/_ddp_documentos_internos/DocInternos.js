@@ -28,7 +28,8 @@ async function buscarDocumentosInternos(query) {
 
 const DocInternos = () => {
   // const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({archivos:[]}, ['resoministerial','nrodocumento']);
-  const [filtros, set_filtros] = useState({gestionpredialid:getselectProyecto().idproyecto});
+  //const [filtros, set_filtros] = useState({gestionpredialid:getselectProyecto().idproyecto});
+  const [filtros, set_filtros] = useState({});
   const [contentMessage, set_contentMessage] = useState("");
   const [busquedaLocal, set_busquedaLocal] = useState(true);
   const [busqueda, setBusqueda] = useState("");
@@ -51,8 +52,18 @@ const DocInternos = () => {
     async function initialLoad() {
       try {
         set_busquedaLocal(false);
-
+        
         let query = await queryString.stringify({ busqueda, page, limit });
+          var datosProyecto = getselectProyecto();
+        if (datosProyecto) {
+          set_filtros({
+            ...filtros,
+            gestionpredialid: datosProyecto.idproyecto
+          });
+          setValoresEquipo(datosProyecto.idproyecto);
+          query =  await  queryString.stringify({busqueda, page: activePage, limit, gestionpredialid:datosProyecto.idproyecto});
+        }
+
         let listDocumentosInternos = await buscarDocumentosInternos(query);
         setDataDocInteno(listDocumentosInternos);
         settotalItemsCount(listDocumentosInternos.count);
@@ -64,13 +75,20 @@ const DocInternos = () => {
   }, []);
 
   const handleChangeProyecto = async (e) => {
-    if (e.target.value) {
-      let dataEq = await helperGets.helperGetListEquipos(e.target.value);
-      setDataEquipo(dataEq);
+    if (e && e.target.value) {
+      //let dataEq = await helperGets.helperGetListEquipos(e.target.value);
+      setValoresEquipo(e.target.value);
+      // setDataEquipo(dataEq);
     } else {
       setDataEquipo(null);
     }
   };
+
+  const setValoresEquipo = async(idgestionpredial) => {
+    let data = await helperGets.helperGetListEquipos(idgestionpredial);
+    setDataEquipo(data);
+}
+
 
   const handlePageChange = async (pageNumber) => {
     await setPage(pageNumber);
@@ -277,7 +295,7 @@ const DocInternos = () => {
             <div className="col-lg-4">
               <select
                 className="form-control"
-                value={filtros.gestionpredialid}
+                value={filtros.gestionpredialid || ""}
                 id="gestionpredialid"
                 name="gestionpredialid"
                 required
