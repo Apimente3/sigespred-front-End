@@ -134,12 +134,12 @@ export const PartidaUpload = () => {
                 >
                   <Select
                     required={true}
-                    value={partida.infraestructuraid || ""}
+                    value={partida.gestionpredialid || ""}
                     onChange={(e) => {
                       handleFiltrarChildrenProyecto(e);
                       handleInputChange(e);
                     }}
-                    name={"infraestructuraid"}
+                    name={"gestionpredialid"}
                   >
                     {listaProyectos.result ? (
                       <ComboOptions
