@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {initAxiosInterceptors} from '../../config/axios';
 import moment from 'moment';
 import {REGISTRO_PLANO_BREADCRUM} from "../../config/breadcrums";
@@ -13,6 +13,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import {useDispatch} from 'react-redux';
 import UploadMemo from "../../components/helpers/uploaders/UploadMemo";
+import {getselectProyecto} from '../../utils';
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
@@ -39,8 +40,25 @@ const PlanoAdd = ({history,  match}) => {
     const [reiniciarValDigital, setReiniciarValDigital] = useState(false);
     const [reiniciarValMemoria, setReiniciarValMemoria] = useState(false);
 
-
     const {ante} = match.params;
+
+    useEffect(() => {
+        async function initialLoad() {
+            try {
+                var datosProyecto =  getselectProyecto();
+                if (datosProyecto) {
+                    set_plano({
+                        ...plano,
+                        gestionpredialid: datosProyecto.idproyecto
+                    });
+                    setValoresTramo(datosProyecto.idproyecto);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        initialLoad();
+    }, []);
 
     if(ante && !valAncedente){
         setValAntecedente(ante);
@@ -52,11 +70,15 @@ const PlanoAdd = ({history,  match}) => {
 
     const handleChangeProyecto = async(e) => {
         if (e.target.value) {
-            let data = await helperGets.helperGetListTramos(e.target.value);
-            setDataTramo(data);
+            setValoresTramo(e.target.value);
         } else {
             setDataTramo(null);
         }
+    }
+
+    const setValoresTramo = async(idgestionpredial) => {
+        let data = await helperGets.helperGetListTramos(idgestionpredial);
+        setDataTramo(data);
     }
 
     function handleChangeDepartmento(e) {
@@ -191,6 +213,10 @@ const PlanoAdd = ({history,  match}) => {
         });
     }
 
+    const setValorProyecto = () => {
+        console.log('valor');
+    }
+
     async function addPlano(plano) {
         const {data} = await Axios.post(`/plano`,plano);
         return data;
@@ -264,6 +290,7 @@ const PlanoAdd = ({history,  match}) => {
                                         <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid"
                                         required
                                         title="El Proyecto es requerido"
+                                        value={plano.gestionpredialid || ""}
                                         onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
                                             <option value="">--SELECCIONE--</option>
                                             {resListaProyectos.error
@@ -271,6 +298,9 @@ const PlanoAdd = ({history,  match}) => {
                                             : resListaProyectos.loading
                                             ? "Cargando..."
                                             : <ComboOptions data={resListaProyectos.result} valorkey="id" valornombre="denominacion"/>}
+                                            {resListaProyectos.result &&
+                                                setValorProyecto()
+                                            }
                                         </select>
                                     </div>
                                 </div>

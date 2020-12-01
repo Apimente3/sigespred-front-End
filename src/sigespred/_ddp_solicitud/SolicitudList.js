@@ -27,10 +27,6 @@ async function buscarSolicitud(query) {
  }
 
 const SolicitudList = ({history}) => {
-
-
-    console.log(/*Proyecto Seleccionado*/)
-    console.log(getselectProyecto())
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
     const resListaEntidades = useAsync(helperGets.helperGetListEntidades, []);
     const resListaTipoSolic = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
@@ -49,6 +45,14 @@ const SolicitudList = ({history}) => {
         async function initialLoad() {
             try {
                 let query =  await  queryString.stringify({busqueda, page: activePage, limit});
+                var datosProyecto =  getselectProyecto();
+                if (datosProyecto) {
+                    set_filtros({
+                        ...filtros,
+                        gestionpredialid: datosProyecto.idproyecto
+                    });
+                    query =  await  queryString.stringify({busqueda, page: activePage, limit, gestionpredialid:datosProyecto.idproyecto});
+                }
                 let listSolicitud = await buscarSolicitud(query);
                 changePage(activePage,listSolicitud);
                 set_cargandoGrid(false);
@@ -213,6 +217,7 @@ const SolicitudList = ({history}) => {
                 <label className="col-lg-2 control-label">Proyecto</label>
                 <div className="col-lg-4">
                     <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid"
+                    value={filtros.gestionpredialid || ""}
                     onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
                         <option value="">--SELECCIONE--</option>
                         {resListaProyectos.result

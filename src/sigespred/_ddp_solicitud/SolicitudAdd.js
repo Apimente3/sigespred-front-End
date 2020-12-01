@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {initAxiosInterceptors} from '../../config/axios';
 import {REGISTRO_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
@@ -24,6 +24,7 @@ import {useForm} from "../../hooks/useForm"
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import SingleUpload from "../../components/uploader/SingleUpload";
+import {getselectProyecto} from '../../utils';
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
@@ -45,6 +46,24 @@ const SolicitudAdd = ({history,  match}) => {
     const [valAncedente, setValAntecedente] = useState('');
 
     const {ante} = match.params;
+
+    useEffect(() => {
+        async function initialLoad() {
+            try {
+                var datosProyecto =  getselectProyecto();
+                if (datosProyecto) {
+                    setSolicitud({
+                        ...solicitud,
+                        gestionpredialid: datosProyecto.idproyecto
+                    });
+                    cargarChildrenProyecto(datosProyecto.idproyecto);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        initialLoad();
+    }, []);
 
     if(ante && !valAncedente){
         setValAntecedente(ante);

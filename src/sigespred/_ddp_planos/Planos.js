@@ -13,6 +13,7 @@ import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import MArcDigital from './MArcDigital';
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {LISTADO_PLANO_BREADCRUM} from "../../config/breadcrums";
+import {getselectProyecto} from '../../utils';
 
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
@@ -54,6 +55,17 @@ const Planos = ({history}) => {
         async function initialLoad() {
             try {
                 let query =  await  queryString.stringify({busqueda, page, limit});
+
+                var datosProyecto =  getselectProyecto();
+                if (datosProyecto) {
+                    setFiltros({
+                        ...filtros,
+                        gestionpredialid: datosProyecto.idproyecto
+                    });
+                    setValoresTramo(datosProyecto.idproyecto);
+                    query =  await  queryString.stringify({busqueda, page: activePage, limit, gestionpredialid:datosProyecto.idproyecto});
+                }
+
                 let listPlanos = await buscarPlano(query);
                 setDataPlanos(listPlanos)
                 settotalItemsCount(listPlanos.count)
@@ -65,13 +77,17 @@ const Planos = ({history}) => {
         initialLoad();
     }, []);
 
-    const handleChangeProyecto = async(e) => {
+    const handleChangeProyecto = (e) => {
         if (e && e.target.value) {
-            let data = await helperGets.helperGetListTramos(e.target.value);
-            setDataTramo(data);
+            setValoresTramo(e.target.value);
         } else {
             setDataTramo(null);
         }
+    }
+
+    const setValoresTramo = async(idgestionpredial) => {
+        let data = await helperGets.helperGetListTramos(idgestionpredial);
+        setDataTramo(data);
     }
 
     function handleChangeDepartmento(e) {
@@ -343,6 +359,7 @@ const Planos = ({history}) => {
                 <label className="col-lg-2 control-label">Proyecto</label>
                 <div className="col-lg-4">
                     <select className="form-control input-sm" id="gestionpredialid" name="gestionpredialid"
+                    value={filtros.gestionpredialid || ""}
                     onChange={(e) => {handleChangeProyecto(e); handleInputChange(e);}}>
                         <option value="">--SELECCIONE--</option>
                         {resListaProyectos.error
