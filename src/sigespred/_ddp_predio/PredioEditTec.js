@@ -408,40 +408,56 @@ const PredioEditTec = ({history,  match}) => {
                         
                         <Row12>
                             <Row6>
-                                <FormGroup label={"Metros cuadrados"} >
+                                {/* <FormGroup label={"Metros cuadrados"} >
                                     <Input 
                                         value={datoTecnico.metroscuadrados || ""} 
                                         onChange={handleInputChange}
                                         name={"metroscuadrados"} placeholder={"Metros cuadrados"}
                                         type={"checkbox"}>
                                     </Input>
-                                </FormGroup>
-                                <FormGroup label={"Area del terreno (m2)"} >
+                                </FormGroup> */}
+                                {/* </Row6><FormGroup label={"Area del terreno (m" + <sup>2</sup> + ")"} > */}
+                                <div class="form-group ">
+                                <label className="col-lg-4 control-label">Área del terreno - m<sup>2</sup></label>
+                                <div className="col-lg-8">
                                     <Input 
                                         value={datoTecnico.areaterreno || ""} 
                                         onChange={handleInputChange}
                                         name={"areaterreno"} placeholder={"Codigo del predio"}
+                                        pattern="^\d{1,10}(\.\d{1,6})?$"
                                         type={"text"}>
                                     </Input>
-                                </FormGroup>
+                                    </div>
+                                </div>
                             </Row6>
                             <Row6>
-                                <FormGroup label={"Perimetro (m)"}>
-                                    <Input
-                                        value={datoTecnico.perimetro || ""} 
-                                        onChange={handleInputChange}
-                                        name={"perimetro"} placeholder={"Perimetro (m)"}
-                                        type={"text"}>
-                                    </Input>
-                                </FormGroup>
-                                <FormGroup label={"Area Remanente (m2 o ha)"}>
+                                {/* <FormGroup label={"Perimetro (m)"}> */}
+                                <div class="form-group ">
+                                    <label className="col-lg-4 control-label">Perimetro - m<sup>2</sup></label>
+                                    <div className="col-lg-8">
+                                        <Input
+                                            value={datoTecnico.perimetro || ""} 
+                                            onChange={handleInputChange}
+                                            name={"perimetro"} placeholder={"Perimetro (m)"}
+                                            pattern="^\d{1,10}(\.\d{1,6})?$"
+                                            type={"text"}>
+                                        </Input>
+                                    </div>
+                                </div>
+                                {/* </FormGroup> */}
+                                {/* <FormGroup label={"Area Remanente (m2 o ha)"}> */}
+                                <div class="form-group ">
+                                    <label className="col-lg-4 control-label">Area Remanente - m<sup>2</sup> ó ha</label>
+                                    <div className="col-lg-8">
                                     <Input
                                         value={datoTecnico.arearemanente || ""} 
                                         onChange={handleInputChange}
                                         name={"arearemanente"} placeholder={"Area Remanente"}
+                                        pattern="^\d{1,10}(\.\d{1,6})?$"
                                         type={"text"}>
                                     </Input>
-                                </FormGroup>
+                                    </div>
+                                </div>
                             </Row6>
                         </Row12>
                     </RowForm>
