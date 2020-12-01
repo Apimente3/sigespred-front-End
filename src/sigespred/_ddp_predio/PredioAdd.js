@@ -90,6 +90,20 @@ const PredioAdd = ({history,  match}) => {
     /*Map Eseo*/
 
     const [map, setMap] = useState(null)
+    
+    useEffect(() => {
+        async function initialLoad() {
+            try {
+                var datosProyecto =  getselectProyecto();
+                if (datosProyecto) {
+                    cargarChildrenProyecto(datosProyecto.idproyecto);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        initialLoad();
+    }, []);
 
     async function addPredio(predio) {
         const {data} = await Axios.post(`/predio`,predio);
