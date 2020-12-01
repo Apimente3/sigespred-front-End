@@ -12,6 +12,7 @@ import { toastr } from "react-redux-toastr";
 import { PredioRow } from "./PredioRow";
 import Pagination from "react-js-pagination";
 import { Loading } from "../../components/forms";
+import {getselectProyecto} from '../../utils';
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -34,11 +35,17 @@ const PredioList = ({history,  match}) => {
   useEffect(() => {
     async function initialLoad() {
       try {
-        let query = queryString.stringify({
-          busqueda,
-          page: activePage,
-          limit,
-        });
+
+        let query =  await  queryString.stringify({busqueda, page: activePage, limit});
+        var datosProyecto =  getselectProyecto();
+        if (datosProyecto) {
+            setFiltros({
+                ...filtros,
+                gestionpredialid: datosProyecto.idproyecto
+            });
+            query =  await  queryString.stringify({busqueda, page: activePage, limit, gestionpredialid:datosProyecto.idproyecto});
+        }
+        
         let listPredios = await buscarPredios(query);
         changePage(activePage, listPredios);
         setCargandoGrid(false);
@@ -138,6 +145,7 @@ const descargarXls=()=>{
                     <select className="form-control input-sm"
                     id="gestionpredialid"
                     name="gestionpredialid"
+                    value={filtros.gestionpredialid || ""}
                     onChange={handleInputChange}
                     >
                     <option value="">--SELECCIONE--</option>
