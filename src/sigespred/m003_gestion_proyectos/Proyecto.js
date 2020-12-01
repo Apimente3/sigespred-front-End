@@ -10,7 +10,7 @@ const Proyecto = ({proyecto}) => {
 
     console.log('/*Mostrar proyecto*/')
     console.log(proyecto)
-   let  proyecto_seleccionado = proyecto;
+    let  proyecto_seleccionado = proyecto;
     const {codigo, icono, tipo_infraestructura, descripcion, portada_imagen, fecha_creacion} = proyecto;
     let history = useHistory();
     var imagenFondo = '/img/no-item.png';
@@ -37,9 +37,9 @@ const Proyecto = ({proyecto}) => {
                     <div className="image-overlay">
                         <div className="image-info">
 
-                            <Link to={"/planos"}>
+                            <a onClick={setProyectoSession} href="#">
                                 <div className="h3 leter-white">{descripcion}</div>
-                            </Link>
+                            </a>
 
                             <span></span>
                             <div className="image-time">{fecha_creacion}</div>

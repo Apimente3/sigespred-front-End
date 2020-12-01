@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { FullScreen, useFullScreenHandle } from "react-full-screen";
 import {REGISTRO_INDICADERES_BREADCRUM as breadcrum} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 
@@ -30,6 +31,7 @@ const IndicadorVisor = ({match,history}) => {
 
     /*Es necesario inicializar los valores por defecto */
     const [indicador, setIndicador,handleInputChange, reset ] = useForm({}, ['denominacion','descripcion']);
+    const handle = useFullScreenHandle();
 
     /*Valiables Globales*/
     useEffect(() => {
@@ -44,11 +46,19 @@ const IndicadorVisor = ({match,history}) => {
 
     return (
         <Wraper titleForm={`Visualizador de Indicador: ${indicador.denominacion}`} listbreadcrumb={breadcrum}>
-            <div className="embed-responsive embed-responsive-16by9">
-                <iframe className="embed-responsive-item" src={indicador.urlpbi}
-                        allowFullScreen></iframe>
+            <button onClick={handle.enter} title="Mostrar pantalla completa.">
+                <i className="fas fa-expand"></i>
+            </button>
+            <FullScreen handle={handle}>
 
-            </div>
+                <div className="embed-responsive embed-responsive-16by9">
+
+                    <iframe className="embed-responsive-item" src={indicador.urlpbi}
+                            allowFullScreen></iframe>
+
+                </div>
+            </FullScreen>
+
         </Wraper>
     );
 
