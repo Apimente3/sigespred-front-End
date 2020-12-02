@@ -15,9 +15,6 @@ import {
     RowForm,
     Select,
     Input,
-    Options,
-    FormControl,
-    InputInline,
     FormFooter
 } from "../../components/forms";
 import {useForm} from "../../hooks/useForm"
@@ -38,12 +35,12 @@ const SolicitudAdd = ({history,  match}) => {
     const listaResponsables = useAsync(helperGets.helperGetListaLocadores, []);
     const listaCanalEnvio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.SOLICCANALENVIO]);
     const listaTiposDocumento = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOCCONSULTA]);
-    const listaTipoEntidades = useAsync(helperGets.helperGetListTipoEntidades, []);
+    const listaEntidades = useAsync(helperGets.helperGetListaAutoEntidad, []);
 
     const [listaTramos, setListaTramos] = useState(null);
     const [listaEquipos, setListaEquipos] = useState(null);
-    const [listaEntidades, setListaEntidades] = useState(null);
     const [valAncedente, setValAntecedente] = useState('');
+    const [entidadSeleccionada, setEntidadSeleccionada] = useState(null);
 
     const {ante} = match.params;
 
@@ -85,25 +82,21 @@ const SolicitudAdd = ({history,  match}) => {
         }
     }
 
-    const cargarEntidades = async(idTipoEntidad) => {
-        if (idTipoEntidad) {
-            let data = await helperGets.helperGetListEntidades(idTipoEntidad);
-            setListaEntidades(data);
-        } else {
-            setListaEntidades(null);
-        }
-    }
-
     const handleFiltrarChildrenProyecto = async(e) => {
         cargarChildrenProyecto(e.target.value);
     }
 
-    const handleFiltrarChildrenTipoEntidad = async(e) => {
-        cargarEntidades(e.target.value);
-    }
-
     function setResponsable(idLocador) {
         setLocadorResp(idLocador);
+    }
+
+    function setValorEntidad(identidad) {
+        if (identidad) {
+            setEntidadSeleccionada(identidad);
+            
+        } else {
+            setEntidadSeleccionada(null);
+        }
     }
 
     async function addSolicitud(solicitud) {
@@ -113,18 +106,23 @@ const SolicitudAdd = ({history,  match}) => {
 
     const registrar = async e => {
         e.preventDefault();
+        if(!entidadSeleccionada) {
+            toastr.error('Actualización de Solicitud', 'Debe seleccionar una entidad para la solicitud', {position: 'top-center'})
+            return;
+        }
+
         solicitud.responsableid = locadorResp;
+        solicitud.entidadid = entidadSeleccionada;
         $('#btnguardar').button('loading');
         try {
-            let resultPlano = await addSolicitud(solicitud);
-            $('#btnguardar').button('reset');
-            toastr.success('Registro de Solicitud a Entidades', `La solicitud fue ingresada correctamente.`);
+            await addSolicitud(solicitud);
+            toastr.success('Registro de Solicitud a Entidades', `La solicitud fue ingresada correctamente.`, {position: 'top-center'});
             history.push('/solicitud-list');
         }
         catch (e) {
-            toastr.error('Registro de Solicitud a Entidades', "Se encontró un error: " +  e.message);
-            $('#btnguardar').button('reset');
+            toastr.error('Registro de Solicitud a Entidades', "Se encontró un error: " +  e.message, {position: 'top-center'});            
         }
+        $('#btnguardar').button('reset');
     }
 
         return (
@@ -233,21 +231,10 @@ const SolicitudAdd = ({history,  match}) => {
                         </Row12>
                         <Row12>
                             <Row6>
-                                <FormGroup label={"Tipo de Entidad"} require={true}>
-                                    <Select required={true} value={solicitud.tipoentidadid || ""}
-                                            onChange={(e) => {handleFiltrarChildrenTipoEntidad(e); handleInputChange(e);}}
-                                            name={"tipoentidadid"}>
-                                        {listaTipoEntidades.result?
-                                        <ComboOptions data={listaTipoEntidades.result} valorkey="id" valornombre="nombre"/>
-                                        : "Cargando..."}
-                                    </Select>
-                                </FormGroup>
                                 <FormGroup label={"Entidad"} require={true}>
-                                    <Select required={true} value={solicitud.entidadid || ""}
-                                            onChange={handleInputChange}
-                                            name={"entidadid"}>
-                                        <ComboOptions data={listaEntidades} valorkey="id" valornombre="nombre" />
-                                    </Select>
+                                    {listaEntidades.result
+                                    ? <Autocomplete listaDatos={listaEntidades.result} callabck={setValorEntidad} />
+                                    : "Cargando..."}
                                 </FormGroup>
                                 <FormGroup label={"Área u oficina"} >
                                     <Input value={solicitud.oficinaentidad || ""} onChange={handleInputChange}
@@ -261,14 +248,14 @@ const SolicitudAdd = ({history,  match}) => {
                                         type={"text"}>
                                     </Input>
                                 </FormGroup>
-                            </Row6>
-                            <Row6>
                                 <FormGroup label={"Código de Trámite de Expediente"}>
                                     <Input value={solicitud.codigotramexp || ""} onChange={handleInputChange}
                                         name={"codigotramexp"} placeholder={"Ingrese el código de trámite"}
                                         type={"text"}>
                                     </Input>
                                 </FormGroup>
+                            </Row6>
+                            <Row6>
                                 <FormGroup label={"Fecha de Recepción en Entidad"} >
                                     <Input value={solicitud.fecharecepcion || ""} onChange={handleInputChange}
                                         name={"fecharecepcion"}

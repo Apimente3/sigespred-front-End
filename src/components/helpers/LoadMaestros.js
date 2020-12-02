@@ -77,6 +77,11 @@ export const helperGetListEntidades = async(params) => {
     return {entidades};
 }
 
+export const helperGetListaAutoEntidad = async(params) => {
+    const {data} = await Axios.get(`/autoentidad`);
+    return data;
+}
+
 export const helperGetListEntidadesRegistrales = async() => {
     const {data:entidadesregs} = await Axios.get(`/entidadzonareg`);
     return {entidadesregs};

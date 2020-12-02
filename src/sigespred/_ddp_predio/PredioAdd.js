@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState,useCallback,useMemo} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import L from 'leaflet';
-import { MapContainer, TileLayer,GeoJSON, Marker, Popup, useMap} from 'react-leaflet';
+import { MapContainer, TileLayer} from 'react-leaflet';
 
 import UploadGeo from '../../components/uploadgeo/UploadGeo';
 
@@ -11,16 +11,8 @@ import {toastr} from 'react-redux-toastr'
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {
     Form,
-    FormGroup,
-    Row6,
-    Row12,
-    RowForm,
     Select,
-    Input,
-    Options,
-    FormControl,
-    InputInline,
-    FormFooter
+    Input
 } from "../../components/forms";
 import {useForm} from "../../hooks/useForm"
 import { useAsync } from "react-async-hook";
@@ -29,27 +21,18 @@ import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
 
 import {getselectProyecto} from '../../utils';
-import MapRegistroPredio from "../../components/helpers/maps/MapRegistroPredio";
-import SingleUpload from "../../components/uploader/SingleUpload";
-import {FilesGestionPredial} from "../../config/parameters";
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
 
-
 const center = [51.505, -0.09]
 const zoom = 13
 
-
 function DisplayPosition({ map,geojson,setGeom }) {
-
-    console.log(geojson)
     if(geojson.features.length>1){
         toastr.error('¡ Error !', 'El poligono seleccionado posee más de 01 geometrias.', {position: 'top-right'})
         return null
     }else{
-
-       // setGeom(geojson.features[0].geometry);
         let geojsonLayer= L.geoJson(geojson,{
             onEachFeature: function (feature, layer) {
                 if (feature.properties) {
@@ -65,14 +48,16 @@ function DisplayPosition({ map,geojson,setGeom }) {
         map.fitBounds(geojsonLayer.getBounds());
         let geometria=geojson.features[0].geometry;
         setGeom(geometria);
-        console.log(geometria);
         toastr.info('Carga correcta', 'El poligono seleccionado es correcto.', {position: 'top-right'})
         return null
     }
-
 }
 
-
+async function getDistritoGeometria(geometria) {
+    const {data} = await Axios.get('/prediodist',{
+        params: geometria});
+    return data;
+}
 
 const PredioAdd = ({history,  match}) => {
     const [predio, setPredio, handleInputChange, reset ] = useForm({gestionpredialid:getselectProyecto().idproyecto},["tramo"]);
@@ -84,11 +69,7 @@ const PredioAdd = ({history,  match}) => {
     const [listaTramos, setListaTramos] = useState(null);
     const [dataProvincia, setDataProvincia] = useState(null);
     const [dataDisttrito, setDataDisttrito] = useState(null);
-    /*add ESEO*/
     const [geometria, setGeometria] = useState(null);
-
-    /*Map Eseo*/
-
     const [map, setMap] = useState(null)
     
     useEffect(() => {
@@ -110,21 +91,49 @@ const PredioAdd = ({history,  match}) => {
         return data;
     }
 
-
     function handleChangeDepartmento(e) {
+        setValuesProvincia(e.target.value);
+    }
+
+    function setValuesProvincia(value){
         if(!listaProvincia.loading){
             let data = listaProvincia.result;
-            let provList = data[Object.keys(data)[0]].filter( o => o.id_dpto === e.target.value);
+            let provList = data[Object.keys(data)[0]].filter( o => o.id_dpto === value);
             setDataProvincia({data: provList});
             setDataDisttrito(null);
         }
     }
 
     function handleChangeProvincia(e) {
+        setValuesDistrito(e.target.value);
+    }
+
+    function setValuesDistrito(value){
         if(!listaDistrito.loading){
             let data = listaDistrito.result;
-            let distList = data[Object.keys(data)[0]].filter( o => o.id_prov === e.target.value);
+            let distList = data[Object.keys(data)[0]].filter( o => o.id_prov === value);
             setDataDisttrito({data: distList});
+        }
+    }
+
+    const obtenerDistritoGeom = async(resultado) => {
+        if (resultado) {
+            let geometria = resultado.features[0].geometry
+            let distResult = await getDistritoGeometria(geometria);
+
+            if(distResult){
+                let valDpto = distResult.distrito[0].iddpto;
+                let valProv = distResult.distrito[0].idprov;
+                let valDist = distResult.distrito[0].iddist;
+                setValuesProvincia(valDpto);
+                setValuesDistrito(valProv);
+                setPredio({
+                    ...predio,
+                    departamentoid: valDpto,
+                    provinciaid: valProv,
+                    distritoid: valDist});
+            }
+            console.log(predio);
         }
     }
 
@@ -156,8 +165,6 @@ const PredioAdd = ({history,  match}) => {
         }
     }
 
-
-    /*Add eseo*/
     const displayMap = useMemo(
         () => (
             <MapContainer
@@ -175,15 +182,21 @@ const PredioAdd = ({history,  match}) => {
         [],
     )
 
-
     return (
     <>
         <WraperLarge titleForm={"Registro de Predio Individualizado (Generación de Código)"} listbreadcrumb={REGISTRO_PREDIOS_BREADCRUM} >
         <Form onSubmit={registrar}>
                 <div className="row mleft-5">
                     <div className="form-group col-lg-4 mleft-5">
-
                             <div>
+                                <label className="control-label">
+                                Archivo con Geometria del Predio:
+                                </label>
+                            </div>
+                            <div className="mtop-5">
+                                <UploadGeo form={predio} setForm={setPredio} nameUpload={"geojson"} funcionObtenerInfo = {obtenerDistritoGeom}></UploadGeo>
+                            </div>
+                            <div className="mtop-5">
                                 <label className="control-label">
                                     <span className="obligatorio">* </span> Proyecto:
                                 </label>
@@ -272,14 +285,6 @@ const PredioAdd = ({history,  match}) => {
                                     <ComboOptions data={dataDisttrito} valorkey="id_dist" valornombre="nombre" />
                                 </Select>
                             </div>
-                            <div className="mtop-5">
-                                <label className="control-label">
-                                Archivo con Geometria del Predio:
-                                </label>
-                            </div>
-                            <div className="mtop-5">
-                                <UploadGeo form={predio} setForm={setPredio} nameUpload={"geojson"} ></UploadGeo>
-                            </div>
                             <div className="mtop-35 pull-right">
                                 <Link to={`/predio-list`}
                                 className="btn btn-default btn-sm btn-control">Cancelar</Link>
@@ -287,7 +292,6 @@ const PredioAdd = ({history,  match}) => {
                                         className="btn btn-danger btn-sm btn-control">Guardar
                                 </button>
                             </div>
-
                     </div>
                     <div className="col-lg-8 mright-5">
                         {predio.geojson ? <DisplayPosition setGeom={setGeometria} geojson={predio.geojson} map={map} /> : null}

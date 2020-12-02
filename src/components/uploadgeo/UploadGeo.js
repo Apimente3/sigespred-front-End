@@ -6,10 +6,8 @@ import {getextfromfilekml} from "./kml";
 import {getextfromfilegpx} from "./gpx";
 
 
-const UploadGeo = ({form, setForm, nameUpload, funcioncallback = null}) => {
-
+const UploadGeo = ({form, setForm, nameUpload, funcioncallback = null, funcionObtenerInfo = null}) => {
     async  function EventUpload(e){
- 
         try {
             var files = e.target.files;
             if (files.length == 0) {
@@ -28,6 +26,9 @@ const UploadGeo = ({form, setForm, nameUpload, funcioncallback = null}) => {
                     let result= await handleZipFile(file);
                     setForm({...form,[nameUpload]: result});
                     toastr.info('¡ Correcto !', 'Se cargo correctamente el Shape Zipeado .zip', {position: 'top-right'})
+                    if (funcionObtenerInfo) {
+                        funcionObtenerInfo(result);
+                    }
                     break;
                 case "kml":
                     /*setForm({...form,[nameUpload]: await  getextfromfilekml(file)});
@@ -48,21 +49,15 @@ const UploadGeo = ({form, setForm, nameUpload, funcioncallback = null}) => {
         }catch (e) {
             toastr.error('¡ Error !', 'Ocurrio un error en la carga del archivo.', {position: 'top-right'})
         }
-
     }
-
 
     function reset() {
         setForm({...form,[nameUpload]: undefined});
     }
 
-
-
-
     return (
         <>
             <div className="upload-file">
-
                 <label title="Seleccione un archivo Vectorial" data-title="Shape (ZIP), kml, GPX, GeoJson" htmlFor="upload-demo">
                     <span data-title="Ningún archivo seleccionado..."></span>
                 </label>

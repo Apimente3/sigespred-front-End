@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, createContext, useContext,useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ACTUALIZAR_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import ComboOptions from "../../components/helpers/ComboOptions";
@@ -12,9 +12,6 @@ import {
     RowForm,
     Select,
     Input,
-    Options,
-    FormControl,
-    InputInline,
     FormFooter
 } from "../../components/forms";
 
@@ -22,11 +19,12 @@ import {useForm} from "../../hooks/useForm"
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 
-import {initAxiosInterceptors, serverFile} from '../../config/axios';
+import {initAxiosInterceptors} from '../../config/axios';
 import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 
+const {$} = window;
 const Axios = initAxiosInterceptors();
 const directorioSolicitudes = "FilesDDP/solicitudextadmin";
 
@@ -50,22 +48,31 @@ const SolicitudEdit = ({history, match}) => {
     const listaResponsables = useAsync(helperGets.helperGetListaLocadores, []);
     const listaCanalEnvio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.SOLICCANALENVIO]);
     const listaTiposDocumento = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOCCONSULTA]);
-    const listaTipoEntidades = useAsync(helperGets.helperGetListTipoEntidades, []);
+    const listaEntidades = useAsync(helperGets.helperGetListaAutoEntidad, []);
 
     const [listaTramos, setListaTramos] = useState(null);
     const [listaEquipos, setListaEquipos] = useState(null);
-    const [listaEntidades, setListaEntidades] = useState(null);
+    const [entidadSeleccionada, setEntidadSeleccionada] = useState(null);
 
     useEffect(() => {
         const init = async () => {
             let solicitudExterna= await getSolicitud(id);
            setSolicitud(solicitudExterna)
            cargarChildrenProyecto(solicitudExterna.gestionpredialid);
-           cargarEntidades(solicitudExterna.tipoentidadid);
+           setEntidadSeleccionada(solicitudExterna.entidadid);
            setLocadorResp(solicitudExterna.responsableid);
         };
         init();
     }, []);
+
+    function setValorEntidad(identidad) {
+        if (identidad) {
+            setEntidadSeleccionada(identidad);
+            
+        } else {
+            setEntidadSeleccionada(null);
+        }
+    }
 
     const cargarChildrenProyecto = async(idProyecto) => {
         if (idProyecto) {
@@ -79,15 +86,6 @@ const SolicitudEdit = ({history, match}) => {
         }
     }
 
-    const cargarEntidades = async(idTipoEntidad) => {
-        if (idTipoEntidad) {
-            let data = await helperGets.helperGetListEntidades(idTipoEntidad);
-            setListaEntidades(data);
-        } else {
-            setListaEntidades(null);
-        }
-    }
-
     function setResponsable(idLocador) {
         setLocadorResp(idLocador);
     }
@@ -96,22 +94,27 @@ const SolicitudEdit = ({history, match}) => {
         cargarChildrenProyecto(e.target.value);
     }
 
-    const handleFiltrarChildrenTipoEntidad = async(e) => {
-        cargarEntidades(e.target.value);
-    }
-
     const actualizar = async e => {
         e.preventDefault();
-        solicitud.responsableid = locadorResp;
         
+        if(!entidadSeleccionada) {
+            toastr.error('Actualización de Solicitud', 'Debe seleccionar una entidad para la solicitud', {position: 'top-center'})
+            return;
+        }
+
+        solicitud.responsableid = locadorResp;
+        solicitud.entidadid = entidadSeleccionada;
+        $('#btnguardar').button('loading');
+
         try {
             await saveSolicitud(id, solicitud)
-            toastr.success(`Actualización de la solicitud: ${id}`, 'Se actualizó correctamente.', {position: 'top-right'})
+            toastr.success(`Actualización de la solicitud: ${id}`, 'Se actualizó correctamente.', {position: 'top-center'});
             history.push('/solicitud-list');
         }
         catch (e) {
-            toastr.error('Se encontrarón errores al intentar actualizar', JSON.stringify(e), {position: 'top-right'})
+            toastr.error('Se encontrarón errores al intentar actualizar', JSON.stringify(e), {position: 'top-center'});
         }
+        $('#btnguardar').button('reset');
     }
 
     return (
@@ -219,21 +222,10 @@ const SolicitudEdit = ({history, match}) => {
                     </Row12>
                     <Row12>
                         <Row6>
-                            <FormGroup label={"Tipo de Entidad"} require={true}>
-                                <Select required={true} value={solicitud.tipoentidadid || ""}
-                                        onChange={(e) => {handleFiltrarChildrenTipoEntidad(e); handleInputChange(e);}}
-                                        name={"tipoentidadid"}>
-                                    {listaTipoEntidades.result?
-                                    <ComboOptions data={listaTipoEntidades.result} valorkey="id" valornombre="nombre"/>
-                                    : "Cargando..."}
-                                </Select>
-                            </FormGroup>
                             <FormGroup label={"Entidad"} require={true}>
-                                <Select required={true} value={solicitud.entidadid || ""}
-                                        onChange={handleInputChange}
-                                        name={"entidadid"}>
-                                    <ComboOptions data={listaEntidades} valorkey="id" valornombre="nombre" />
-                                </Select>
+                                {listaEntidades.result
+                                ? <Autocomplete listaDatos={listaEntidades.result} callabck={setValorEntidad} valorinit={solicitud.entidadid} />
+                                : "Cargando..."}
                             </FormGroup>
                             <FormGroup label={"Área u oficina"} >
                                 <Input value={solicitud.oficinaentidad || ""} onChange={handleInputChange}
@@ -247,14 +239,14 @@ const SolicitudEdit = ({history, match}) => {
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
-                        </Row6>
-                        <Row6>
                             <FormGroup label={"Código de Trámite de Expediente"}>
                                 <Input value={solicitud.codigotramexp || ""} onChange={handleInputChange}
                                     name={"codigotramexp"} placeholder={"Ingrese el código de trámite"}
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
+                        </Row6>
+                        <Row6>
                             <FormGroup label={"Fecha de Recepción en Entidad"} >
                                 <Input value={solicitud.fecharecepcion || ""} onChange={handleInputChange}
                                     name={"fecharecepcion"}

@@ -15,6 +15,7 @@ import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {LISTADO_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
 import {getselectProyecto} from '../../utils';
 import { Loading } from "../../components/forms";
+import Autocomplete from '../../components/helpers/Autocomplete';
 
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
@@ -28,14 +29,16 @@ async function buscarSolicitud(query) {
 
 const SolicitudList = ({history}) => {
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
-    const resListaEntidades = useAsync(helperGets.helperGetListEntidades, []);
+    //const resListaEntidades = useAsync(helperGets.helperGetListEntidades, []);
     const resListaTipoSolic = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
+    const listaEntidades = useAsync(helperGets.helperGetListaAutoEntidad, []);
 
     const [filtros, set_filtros] = useState({});
     const [cargandoGrid, set_cargandoGrid] = useState(true);
     const [contentMessage, set_contentMessage] = useState('');
     const [mostrarPopup, setMostrarPopup] = useState(false);
     const [archivosPopup, setArchivosPopup] = useState([]);
+    const [reiniciarEntidad, setReiniciarEntidad] = useState(false);
 
     const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
 
@@ -64,12 +67,7 @@ const SolicitudList = ({history}) => {
     }, []);
 
     const handleChangeProyecto = async(e) => {
-        // if (e && e.target.value) {
-        //     let data = await helperGets.helperGetListTramos(e.target.value);
-        //     setDataTramo(data);
-        // } else {
-        //     setDataTramo(null);
-        // }
+        
     }
 
     function handleInputChange(e) {
@@ -82,12 +80,20 @@ const SolicitudList = ({history}) => {
         }
     }
 
+    function setValorEntidad(identidad) {
+        setReiniciarEntidad(false);
+        set_filtros({
+            ...filtros,
+            entidadid: identidad
+        });
+    }
+
     const limpiarSolicitudesFilter =(e)=>{
         $('#nrooficio').val('');
         $('#gestionpredialid').val('');
         $('#fechainicio').val('');
         $('#fechafin').val('');
-        $('#entidadid').val('');
+        setReiniciarEntidad(true);
         $('#tipoconsultaid').val('');
         $('#estado').val('');
         $('#contienearchivo').val('');
@@ -188,8 +194,7 @@ const SolicitudList = ({history}) => {
     const descargarXls=()=>{
 
         let listexportexcel = list.rows;
-
-        //var resultjson = alasql(`SELECT *
+        
         var resultjson = alasql(`SELECT id,entidad,proyecto,tramo,tipoconsulta,tipodocumento, codigostd,nrooficio,fechaelaboficio,fecharecepcion,
                                 recibiorespuesta,fecharespuesta,nrodocrespuesta,plazo_atencion,estado,accion,observaciones
                                 FROM ? `, [listexportexcel])
@@ -251,13 +256,9 @@ const SolicitudList = ({history}) => {
             <div className="form-group">
                 <label className="col-lg-2 control-label">Entidad</label>
                 <div className="col-lg-4">
-                    <select className="form-control input-sm" id="entidadid" name="entidadid"
-                    onChange={handleInputChange}>
-                        <option value="">--SELECCIONE--</option>
-                        {resListaEntidades.result
-                        ? <ComboOptions data={resListaEntidades.result} valorkey="id" valornombre="nombre" />
-                        : "Cargando..."}
-                    </select>
+                    {listaEntidades.result
+                    ? <Autocomplete listaDatos={listaEntidades.result} callabck={setValorEntidad} resetContenido={reiniciarEntidad} />
+                    : "Cargando..."}
                 </div>
 
                 <label className="col-lg-2 control-label">Tipo de Consulta</label>
