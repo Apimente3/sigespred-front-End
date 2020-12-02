@@ -247,3 +247,8 @@ export const EDICION_PREDIOS_BREADCRUM = [
     {link: "/predio-list", name: "Listado de Predios"},
     {link: "#", name: "Edición de Datos de Predio"}
 ]
+
+export const LISTADO_BLOG_BREADCRUM = [
+    {link: "/blog", name: "Blog de la DDP"},
+    
+]
