@@ -1,7 +1,7 @@
 import { fireEvent } from '@testing-library/react';
 import React, {useEffect, useState} from 'react';
 
-const Autocomplete = ({listaDatos, callabck, valorinit, resetContenido=false}) => {
+const Autocomplete = ({listaDatos, callabck, valorinit, resetContenido=false, readOnly = false}) => {
 
     const [seleccionado, setSeleccionado] = useState(false);
     const [listinit, setListinit] = useState(listaDatos);
@@ -90,8 +90,8 @@ const Autocomplete = ({listaDatos, callabck, valorinit, resetContenido=false}) =
                 </div>)
                 :
                 <>
-                    {rowSelect.value} <a href="#" onClick={limpiar}  className="btn btn-xs btn-default"><i className="fa fa-close"></i>
-                </a>
+                    {rowSelect.value} {!readOnly && <a href="#" onClick={limpiar}  className="btn btn-xs btn-default"><i className="fa fa-close"></i>
+                                                    </a>}
                 </>
             }
         </>

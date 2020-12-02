@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, createContext, useContext,useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {ACTUALIZAR_SOLICITUD_BREADCRUM} from "../../config/breadcrums";
 import Wraper from "../m000_common/formContent/WraperLarge";
 import ComboOptions from "../../components/helpers/ComboOptions";
@@ -11,9 +11,6 @@ import {
     RowForm,
     Select,
     Input,
-    Options,
-    FormControl,
-    InputInline,
     FormFooter
 } from "../../components/forms";
 
@@ -21,11 +18,13 @@ import {useForm} from "../../hooks/useForm"
 import {Link} from "react-router-dom";
 import {toastr} from 'react-redux-toastr'
 
-import {initAxiosInterceptors, serverFile} from '../../config/axios';
+import {initAxiosInterceptors} from '../../config/axios';
 import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
+import Autocomplete from '../../components/helpers/Autocomplete';
 
+const {$} = window;
 const Axios = initAxiosInterceptors();
 const directorioSolicitudes = "FilesDDP/solicitudextadmin";
 
@@ -58,9 +57,8 @@ const SolicitudRespuesta = ({history, match}) => {
     const listaTipoConsulta = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
     const listaCanalEnvio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.SOLICCANALENVIO]);
     const listaTiposDocumento = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOCCONSULTA]);
-    const listaTipoEntidades = useAsync(helperGets.helperGetListTipoEntidades, []);
+    const listaEntidades = useAsync(helperGets.helperGetListaAutoEntidad, []);
 
-    const [listaEntidades, setListaEntidades] = useState(null);
     const [nuevaRecepcion, setNuevaRecepcion] = useState(true);
 
     useEffect(() => {
@@ -72,36 +70,31 @@ const SolicitudRespuesta = ({history, match}) => {
                 setNuevaRecepcion(false);
             }
             setRespuesta(solicitudRecepcion);
-            cargarEntidades(solicitudExterna.tipoentidadid);
         };
         init();
     }, []);
 
-    const cargarEntidades = async(idTipoEntidad) => {
-        if (idTipoEntidad) {
-            let data = await helperGets.helperGetListEntidades(idTipoEntidad);
-            setListaEntidades(data);
-        } else {
-            setListaEntidades(null);
-        }
+    function setValorEntidad(identidad) {
+     
     }
-
     const registrarrespuesta = async e => {
         e.preventDefault();
+        $('#btnguardar').button('loading');
         try {
             if (nuevaRecepcion) {
                 respuesta.solicitudid = id;
                 await addRespuesta(respuesta);
-                toastr.success(`La Respuesta de la solicitud: ${id}`, 'Se generó correctamente.', {position: 'top-right'})
+                toastr.success(`La Respuesta de la solicitud: ${id}`, 'Se generó correctamente.', {position: 'top-center'});
             } else {
                 await saveRespuesta(respuesta.id, respuesta);
-                toastr.success(`La Respuesta de la solicitud: ${id}`, 'Se actualizó correctamente.', {position: 'top-right'})
+                toastr.success(`La Respuesta de la solicitud: ${id}`, 'Se actualizó correctamente.', {position: 'top-center'});
             }
             history.push('/solicitud-list');
         }
         catch (e) {
-            toastr.error('Se encontrarón errores al intentar realizar el registro de datos', JSON.stringify(e), {position: 'top-right'})
+            toastr.error('Se encontrarón errores al intentar realizar el registro de datos', JSON.stringify(e), {position: 'top-center'});
         }
+        $('#btnguardar').button('reset');
     }
 
     return (
@@ -135,21 +128,10 @@ const SolicitudRespuesta = ({history, match}) => {
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
-                            <FormGroup label={"Tipo de Entidad"}>
-                                <Select value={solicitud.tipoentidadid || ""}
-                                    readonly={true}
-                                    name={"tipoentidadid"}>
-                                    {listaTipoEntidades.result?
-                                    <ComboOptions data={listaTipoEntidades.result} valorkey="id" valornombre="nombre"/>
-                                    : "Cargando..."}
-                                </Select>
-                            </FormGroup>
                             <FormGroup label={"Entidad"}>
-                                <Select value={solicitud.entidadid || ""}
-                                    readonly={true}
-                                    name={"entidadid"}>
-                                    <ComboOptions data={listaEntidades} valorkey="id" valornombre="nombre" />
-                                </Select>
+                                {listaEntidades.result
+                                ? <Autocomplete listaDatos={listaEntidades.result} callabck={setValorEntidad} valorinit={solicitud.entidadid} readOnly={true}/>
+                                : "Cargando..."}
                             </FormGroup>
                             <FormGroup label={"Área u oficina"}>
                                 <Input value={solicitud.oficinaentidad || ""}

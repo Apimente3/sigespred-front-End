@@ -143,7 +143,7 @@ const GestionPredialAdd = ({history}) => {
                         </FormGroup>
                         <FormGroup label={"Proyecto"} require={true}>
                             <Select required={true} value={gestionPredial.infraestructuraid}
-                                    onChange={(e)=>{ handleInputChange(e); setDenominacion(e); }}
+                                    onChange={handleInputChange}
                                     name={"infraestructuraid"}>
                                 <Options options={listInfraestructura} index={"id"} valor={"descripcion"}></Options>
                             </Select>
