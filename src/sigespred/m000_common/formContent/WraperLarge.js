@@ -357,7 +357,7 @@ const Wraper = ({children, titleForm, listbreadcrumb}) => {
 
                                 <Item title={"Blog de la DDP"} img={"/img/blogging2.svg"} subLinks={
                                     [
-                                        {to: "#", denominacion: "Blog"},
+                                        {to: "Blog", denominacion: "Blog"},
                                         {to: "#", denominacion: "Formatos más usados"},
                                     ]}>
 
