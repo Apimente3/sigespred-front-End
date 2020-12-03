@@ -5,6 +5,7 @@ const TableParticipante = ({data=[], checkAsistencia}) => {
         let table = []
         let children = []
         let nro=0;
+
         data.forEach((item, key) => {
             nro++;
             children.push(<td key={`td_${item.id}`}><div className="list-group-item-text">

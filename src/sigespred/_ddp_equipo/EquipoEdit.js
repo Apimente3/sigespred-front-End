@@ -86,17 +86,27 @@ const EquipoEdit = ({history, match}) => {
     const actualizar = async e => {
         e.preventDefault();
         $('#btnguardar').button('loading');
+        
         let objEquipo = {
             equipo:equipo,
             profesionales: profesionales.users    
         };
+        if(profesionales.users.length == 0){
+            toastr.warning(`Información !!! Ingrese al menos un profesional.`);
+            $('#btnguardar').button('reset');
+            return;
+        }
         try {
             await updateEquipo(objEquipo);
-            const toastrConfirmOptions = {
-                onOk: () => history.push('/list-equipos2'),
-                onCancel: () => history.push(`/list-equipos2`)
-            };
-            toastr.confirm('¿ Desea seguir actualizando ?', toastrConfirmOptions);
+            toastr.success("Registro Correcto", "Se actualizó correctamente.", {
+              position: "top-center",
+            });
+            history.push("/list-equipos2");
+            // const toastrConfirmOptions = {
+            //     onOk: () => history.push('/list-equipos2'),
+            //     onCancel: () => history.push(`/list-equipos2`)
+            // };
+            // toastr.confirm('¿ Desea seguir actualizando ?', toastrConfirmOptions);
         }
         catch (e) {
             alert(e.message)
@@ -165,7 +175,7 @@ const EquipoEdit = ({history, match}) => {
             }
             return false;
           })
-          if(filterList.length>0){
+          if(filterList.length==0){
             toastr.info(`Información !!! Ya existe un profesional asignado como monitor.`);
             return;
           } 
