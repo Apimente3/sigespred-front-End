@@ -47,14 +47,25 @@ const EquipoAdd = ({ history }) => {
           equipo:equipo,
           profesionales: profesionales.users
       };
-
+      
+      if(profesionales.users.length == 0){
+        toastr.warning(`Información !!! Ingrese al menos un profesional.`);
+        $('#btnguardar').button('reset');
+        return;
+    }
       try {
           await addEquipo(objEquipo);
-          const toastrConfirmOptions = {
-              onOk: () => limpiarForm(),
-              onCancel: () => history.push('/list-equipos2')
-          };
-          toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
+          toastr.success("Registro Correcto", "Se registro correctamente.", {
+            position: "top-center",
+          });
+          history.push("/list-equipos2");
+
+          // const toastrConfirmOptions = {
+          //     onOk: () => limpiarForm(),
+          //     onCancel: () => history.push('/list-equipos2')
+          // };
+          //toastr.confirm('¿ Desea seguir registrando ?', toastrConfirmOptions);
+          
 
 
       }
