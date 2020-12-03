@@ -12,9 +12,11 @@ import TablePartida from "./TablePartida";
 import PartidarRow from "./PartidaRow";
 import Pagination from "react-js-pagination";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
-import { useFetch } from "../../hooks/useFetch";
+
 import { Loading } from "../../components/forms";
 import {getselectProyecto} from '../../utils';
+import { useTable } from "../../hooks/useTable";
+import { toastr } from "react-redux-toastr";
 
 const queryString = require("query-string");
 const Axios = initAxiosInterceptors();
@@ -23,24 +25,14 @@ const { $ } = window;
 
 export const Partida = (history) => {
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
-  const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [
-    PARAMS.LISTASIDS.TIPOPRED,
-  ]);
-  
-  //const [filtros, set_filtros] = useState({gestionpredialid:getselectProyecto().idproyecto});
+  const resListaTipoPredio = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOPRED,]);
   const [filtros, set_filtros] = useState({});
-  const [busquedaLocal, set_busquedaLocal] = useState(true);
-
   const [contentMessage, set_contentMessage] = useState("");
-  
+  const [cargandoGrid, set_cargandoGrid] = useState(true);
   const [busqueda, setBusqueda] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [totalItemsCount, settotalItemsCount] = useState(3);
-  const [activePage, setactivePage] = useState(1);
   const [dataTramo, setDataTramo] = useState(null);
-  const [dataPartidas, setDataPartidas] = useState({ count: 5, rows: [] });
-
+  const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
+  
   async function buscarPartida(query) {
     const { data } = await Axios.get(`/partidaregistral/buscar?` + query);
     return data;
@@ -50,9 +42,8 @@ export const Partida = (history) => {
     async function initialLoad() {
       try {
         
-        set_busquedaLocal(false);
-
-        let query = await queryString.stringify({ busqueda, page, limit });
+        //set_busquedaLocal(false);
+       let query = await queryString.stringify({ busqueda, page: activePage, limit });
         var datosProyecto = getselectProyecto();
         if (datosProyecto) {
             set_filtros({
@@ -64,8 +55,8 @@ export const Partida = (history) => {
         }
 
         let listaPartidas = await buscarPartida(query);
-        setDataPartidas(listaPartidas);
-        settotalItemsCount(listaPartidas.count);
+        changePage(activePage, listaPartidas);
+        set_cargandoGrid(false);
       } catch (error) {
         console.log(error);
       }
@@ -158,19 +149,18 @@ export const Partida = (history) => {
   };
 
   const ejecutarPartidasFilter = async (datosfiltro) => {
-    set_busquedaLocal(true);
+    set_cargandoGrid(true);
     setBusqueda(datosfiltro);
-    await setPage(1);
-    setactivePage(1);
+    //await setPage(1);
+    //setactivePage(1);
     let query = await queryString.stringify({ page: 1, limit });
     if (datosfiltro) {
       query += `&${datosfiltro}`;
     }
-
     let listaPartidas = await buscarPartida(query);
-    setDataPartidas(listaPartidas);
-    settotalItemsCount(listaPartidas.count);
-    set_busquedaLocal(false);
+    changePage(1,listaPartidas);
+    //settotalItemsCount(listaPartidas.count);
+    set_cargandoGrid(false);
   };
 
   const limpiarPartidaFilter = (e) => {
@@ -191,9 +181,9 @@ export const Partida = (history) => {
   };
 
   const handlePageChange = async (pageNumber) => {
-    await setPage(pageNumber);
-    setactivePage(pageNumber);
-    setPage(pageNumber);
+    //await setPage(pageNumber);
+    //setactivePage(pageNumber);
+    //setPage(pageNumber);
     let query = await queryString.stringify({
       page: pageNumber,
       limit,
@@ -204,9 +194,40 @@ export const Partida = (history) => {
     }
 
     let listPartidas = await buscarPartida(query);
-    setDataPartidas(listPartidas);
-    settotalItemsCount(listPartidas.count);
+    changePage(pageNumber,listPartidas);
+    //settotalItemsCount(listPartidas.count);
   };
+
+  const descargarXls = async() => {
+    let numfilas = list.count;
+    if (!numfilas || numfilas === "0") {
+      toastr.warning ("Busqueda de Partidas Registrales","No se encontraron registros", { position: 'top-center'});
+    }
+
+    let query = await queryString.stringify({page: 1 , numfilas});
+
+    if (busqueda) {
+      query += `&${busqueda}`;
+    }
+
+    let listaPartidasRegistrales = await buscarPartida(query);
+
+
+    debugger;
+    // let numfilas = list.count;
+    // let query = await queryString.stringify({page:1, numfilas});
+    // debugger;
+
+    let listexportexcel = listaPartidasRegistrales.rows;
+    
+    var resultjson = alasql(`SELECT *  FROM ? ORDER BY id DESC`, [listexportexcel])
+    var opts = [{
+      sheetid: 'Reporte',
+      headers: true
+  }];
+  var res = alasql('SELECT INTO XLSX("ListadoPartidas.xlsx",?) FROM ?', [opts, [resultjson]]);
+  return false;
+  }
 
   const cabecerasTabla = [
     "#",
@@ -415,18 +436,21 @@ export const Partida = (history) => {
               >
                 <i className="fa fa-clone"></i> Carga Masiva
               </Link>
+              <button type="button" onClick={descargarXls} className="btn btn-default btn-sm fullborder">
+                <i className="fa fa-file-excel-o"></i> Descargar Excel
+              </button>
             </div>
           </div>
         </div>
         {/* </form> */}
 
         <div className="panel panel-default">
-          {busquedaLocal ? (
+          {cargandoGrid ? (
             <Loading></Loading>
           ) : (
             <>
               <TablePartida cabecera={cabecerasTabla}>
-                {dataPartidas.rows.map((partida, i) => (
+                {list.rows.map((partida, i) => (
                   <PartidarRow nro={i} partida={partida}></PartidarRow>
                 ))}
               </TablePartida>
@@ -435,7 +459,7 @@ export const Partida = (history) => {
                   activePage={activePage}
                   itemsCountPerPage={limit}
                   totalItemsCount={totalItemsCount}
-                  pageRangeDisplayed={3}
+                  pageRangeDisplayed={pageRangeDisplayed}
                   onChange={handlePageChange}
                 ></Pagination>
               </div>
