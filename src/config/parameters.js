@@ -67,7 +67,8 @@ export const LISTASIDS = {
 
 export const FilesUsuario={
     "fotosUsuario":"FilesDDP/Usuario/Fotos",
-    "fotos":"FilesDDP/Usuario/Fotos"
+    "fotos":"FilesDDP/Usuario/Fotos",
+    "CV":"FilesDDP/Usuario/CV",
 }
 
 
