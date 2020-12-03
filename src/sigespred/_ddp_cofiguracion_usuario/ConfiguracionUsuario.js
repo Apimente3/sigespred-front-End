@@ -13,7 +13,7 @@ class ConfiguracionUsuario extends Component {
     render() {
         return (
             <>
-                <Wraper titleForm={"Actualizacion de Gestión Predial"} listbreadcrumb={[]} header={false}>
+                <Wraper titleForm={"Configuración del Usuario"} listbreadcrumb={[]} header={false}>
                     <Tabs defaultIndex={0}>
                         <TabList>
                             <Tab>

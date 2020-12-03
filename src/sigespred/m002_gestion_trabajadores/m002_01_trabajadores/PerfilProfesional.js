@@ -93,7 +93,7 @@ const PerfilProcesional = () => {
                     </Row6>
                     <Row12 title={""}>
                         <FormGroup label={"Perfil Profesional"} require={true} withControl={6} withLabel={3}
-                                   ayuda={"La contraseña nueva que utilizara"}>
+                                   ayuda={"Ingrese tu actual perfil profesional "}>
 
 
                             <textarea required className="form-control input-sm"
