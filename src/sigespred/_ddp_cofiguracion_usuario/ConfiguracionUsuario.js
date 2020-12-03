@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import {Switch, Route, Link, useRouteMatch} from "react-router-dom";
 import Wraper from "../m000_common/formContent/WraperLarge";
-import CambiarContrasenia from "../m002_gestion_trabajadores/m002_01_trabajadores/CambiarContrasenia"
-import TrabajadorAdd from "../m002_gestion_trabajadores/m002_01_trabajadores/TrabajadorAdd"
+import CambiarContrasenia from "../m002_gestion_trabajadores/m002_01_trabajadores/CambiarContrasenia";
+import PerfilProfesional from "../m002_gestion_trabajadores/m002_01_trabajadores/PerfilProfesional";
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import {toastr} from "react-redux-toastr";
@@ -25,6 +24,10 @@ class ConfiguracionUsuario extends Component {
                             <Tab>
                                 Mis Actividades Diarias
                             </Tab>
+
+                            <Tab>
+                                Perfil Profesional
+                            </Tab>
                         </TabList>
                         <TabPanel>
                             <CambiarContrasenia></CambiarContrasenia>
@@ -32,6 +35,9 @@ class ConfiguracionUsuario extends Component {
 
                         <TabPanel>
                             <MisActividades></MisActividades>
+                        </TabPanel>
+                        <TabPanel>
+                            <PerfilProfesional></PerfilProfesional>
 
                         </TabPanel>
 
