@@ -53,7 +53,7 @@ const Login = ({history}) => {
 
     async function login(dni, password) {
         try {
-            debugger;
+            
             const {data} = await axios.post('/login', {
                 dni,
                 password

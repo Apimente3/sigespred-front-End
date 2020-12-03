@@ -5,7 +5,6 @@ import TableDocInterno from "./TablaDocInterno";
 import Pagination from "react-js-pagination";
 import { initAxiosInterceptors } from "../../config/axios";
 import ComboOptions from "../../components/helpers/ComboOptions";
-import { useForm } from "../../hooks/useForm";
 import { Link } from "react-router-dom";
 import DocInternoRow from "./DocInternoRow";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
@@ -15,6 +14,7 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import { Loading } from "../../components/forms";
 import {getselectProyecto} from '../../utils';
+import { useTable } from "../../hooks/useTable";
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -27,33 +27,21 @@ async function buscarDocumentosInternos(query) {
 }
 
 const DocInternos = () => {
-  // const [gestionPredial, setGestionPredial,handleInputChange, reset ] = useForm({archivos:[]}, ['resoministerial','nrodocumento']);
-  //const [filtros, set_filtros] = useState({gestionpredialid:getselectProyecto().idproyecto});
+  
   const [filtros, set_filtros] = useState({});
   const [contentMessage, set_contentMessage] = useState("");
-  const [busquedaLocal, set_busquedaLocal] = useState(true);
   const [busqueda, setBusqueda] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [totalItemsCount, settotalItemsCount] = useState(3);
-  const [activePage, setactivePage] = useState(1);
-  const [dataDocInteno, setDataDocInteno] = useState({
-    count: 5,
-    rows: [],
-  });
+  const [cargandoGrid, set_cargandoGrid] = useState(true);
+  const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
   const [mostrarPopup, setMostrarPopup] = useState(false);
-  const resListaTipoDocInterno = useAsync(helperGets.helperGetListDetalle, [
-    PARAMS.LISTASIDS.TIPODOCINTER,
-  ]);
+  const resListaTipoDocInterno = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPODOCINTER,]);
   const [dataEquipo, setDataEquipo] = useState(null);
   const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
 
   useEffect(() => {
     async function initialLoad() {
       try {
-        set_busquedaLocal(false);
-        
-        let query = await queryString.stringify({ busqueda, page, limit });
+        let query = await queryString.stringify({ busqueda, page: activePage, limit });
           var datosProyecto = getselectProyecto();
         if (datosProyecto) {
           set_filtros({
@@ -65,8 +53,8 @@ const DocInternos = () => {
         }
 
         let listDocumentosInternos = await buscarDocumentosInternos(query);
-        setDataDocInteno(listDocumentosInternos);
-        settotalItemsCount(listDocumentosInternos.count);
+        changePage(activePage, listDocumentosInternos);
+        set_cargandoGrid(false);
       } catch (error) {
         console.log(error);
       }
@@ -76,9 +64,7 @@ const DocInternos = () => {
 
   const handleChangeProyecto = async (e) => {
     if (e && e.target.value) {
-      //let dataEq = await helperGets.helperGetListEquipos(e.target.value);
       setValoresEquipo(e.target.value);
-      // setDataEquipo(dataEq);
     } else {
       setDataEquipo(null);
     }
@@ -91,9 +77,6 @@ const DocInternos = () => {
 
 
   const handlePageChange = async (pageNumber) => {
-    await setPage(pageNumber);
-    setactivePage(pageNumber);
-    setPage(pageNumber);
 
     let query = await queryString.stringify({ page: pageNumber, limit });
     if (busqueda) {
@@ -101,8 +84,7 @@ const DocInternos = () => {
     }
 
     let listDocumentosInternos = await buscarDocumentosInternos(query);
-    setDataDocInteno(listDocumentosInternos);
-    settotalItemsCount(listDocumentosInternos.count);
+    changePage(pageNumber, listDocumentosInternos)
   };
 
   const buscarDocumentosInternosFilter = async (e) => {
@@ -162,18 +144,15 @@ const DocInternos = () => {
   };
 
   const ejecutarDocInternosFilter = async (datosfiltro) => {
-    set_busquedaLocal(true);
+    set_cargandoGrid(true);
     setBusqueda(datosfiltro);
-    await setPage(1);
-    setactivePage(1);
     let query = await queryString.stringify({ page: 1, limit });
     if (datosfiltro) {
       query += `&${datosfiltro}`;
     }
     let listDocinternos = await buscarDocumentosInternos(query);
-    setDataDocInteno(listDocinternos);
-    settotalItemsCount(listDocinternos.count);
-    set_busquedaLocal(false);
+    changePage(1, listDocinternos);
+    set_cargandoGrid(false);
   };
 
   function handleInputChange(e) {
@@ -225,9 +204,6 @@ const DocInternos = () => {
     $("#reqareaid").val("");
     $("#recibirespuesta").val("");
 
-    // handleChangeProyecto('');
-    // handleChangeDepartmento('');
-
     set_filtros({});
     ejecutarDocInternosFilter("");
   };
@@ -263,6 +239,31 @@ const DocInternos = () => {
       );
     }
   };
+
+  const descargarXls = async() => {
+    let numfilas = list.count;
+    if (!numfilas || numfilas === "0") {
+      toastr.warning ("Busqueda de Partidas Registrales","No se encontraron registros", { position: 'top-center'});
+    }
+
+    let query = await queryString.stringify({page: 1 , numfilas});
+
+    if (busqueda) {
+      query += `&${busqueda}`;
+    }
+
+    let listaPartidasDocumentosInternos = await buscarDocumentosInternos(query);
+
+    let listexportexcel = listaPartidasDocumentosInternos.rows;
+    
+    var resultjson = alasql(`SELECT *  FROM ? ORDER BY id DESC`, [listexportexcel])
+    var opts = [{
+      sheetid: 'Reporte',
+      headers: true
+  }];
+  var res = alasql('SELECT INTO XLSX("ListadoDocumentosInternos.xlsx",?) FROM ?', [opts, [resultjson]]);
+  return false;
+  }
 
   const cabecerasTabla = [
     "",
@@ -454,6 +455,9 @@ const DocInternos = () => {
               </div>
               {/* </div> */}
               <div className="col-md-6 text-right">
+                <button type="button" onClick={descargarXls} className="btn btn-default btn-sm fullborder">
+                  <i className="fa fa-file-excel-o"></i> Descargar Excel
+              </button>
                 <Link
                   to={`/docinternos-add`}
                   className="btn btn-danger btn-sm fullborder  btn-control"
@@ -465,12 +469,12 @@ const DocInternos = () => {
           </div>
 
           <div className="panel panel-default">
-            {busquedaLocal ? (
+            {cargandoGrid ? (
               <Loading></Loading>
             ) : (
               <>
                 <TableDocInterno cabecera={cabecerasTabla}>
-                  {dataDocInteno.rows.map((docinterno, i) => (
+                  {list.rows.map((docinterno, i) => (
                     <DocInternoRow
                       nro={i}
                       docinterno={docinterno}
@@ -483,7 +487,7 @@ const DocInternos = () => {
                     activePage={activePage}
                     itemsCountPerPage={limit}
                     totalItemsCount={totalItemsCount}
-                    pageRangeDisplayed={3}
+                    pageRangeDisplayed={pageRangeDisplayed}
                     onChange={handlePageChange}
                   ></Pagination>
                 </div>

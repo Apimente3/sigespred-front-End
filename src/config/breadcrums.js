@@ -30,14 +30,16 @@ export const LISTADO_TRABAJADOR_BREADCRUM = [
 ]
 
 export const REGISTRO_PARTIDA_BREADCRUM = [
-    {link: "partida-add", name: "Registrar Partida"},
     {link: "partidas", name: "Listado de Partidas"},
+    {link: "partida-add", name: "Registrar Partida"}
+    
     // {link: "partida-edit", name: "Editar Partida"}
 ]
 
 export const LISTADO_PARTIDA_BREADCRUM = [
-    {link: "partida-add", name: "Registrar Partida"},
-    {link: "partidas", name: "Listado de Partidas"}
+    {link: "partidas", name: "Listado de Partidas"},
+    {link: "partida-add", name: "Registrar Partida"}
+    
 ]
 
 export const ACTUALIZAR_PARTIDA_BREADCRUM = [
