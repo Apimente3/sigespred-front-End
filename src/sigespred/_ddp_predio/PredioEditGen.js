@@ -8,13 +8,9 @@ import {
     Form,
     FormGroup,
     Row6,
-    Row12,
     RowForm,
     Select,
     Input,
-    Options,
-    FormControl,
-    InputInline,
     FormFooter
 } from "../../components/forms";
 import {useForm} from "../../hooks/useForm"
@@ -22,7 +18,6 @@ import { useAsync } from "react-async-hook";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
-import MapRegistroPredio from "../../components/helpers/maps/MapRegistroPredio";
 import SingleUpload from "../../components/uploader/SingleUpload";
 import {FilesGestionPredial} from "../../config/parameters";
 import PredioLinks from "./PredioLinks";

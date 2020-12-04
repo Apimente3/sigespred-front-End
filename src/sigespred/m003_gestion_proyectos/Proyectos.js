@@ -1,16 +1,14 @@
-//region Importaciones
 import React, {useEffect, useState} from 'react';
 import FooterProcess from "../../sigespred/m000_common/footers/FooterProcess";
 import Header from "../../sigespred/m000_common/headers/Header";
-import SidebarAdm from "../../sigespred/m000_common/siderbars/SidebarAdm";
 import Proyecto from "./Proyecto";
 import {Link} from "react-router-dom";
 import {initAxiosInterceptors} from "../../config/axios";
 import BoxNoEncontrado from "../../components/helpers/BoxNoEncontrado";
-//endregion
+
 const Axios = initAxiosInterceptors();
 const {alasql}=window;
-/*Lista los proyectos de acuerdo a una busqueda*/
+
 async function getListProyectos(busqueda = '') {
     const {data: proyectos} = await Axios.get(`/list-proyectos?busqueda=` + busqueda);
     const {data: resumen} = await Axios.get(`/resumen-proyectos`);
@@ -71,8 +69,6 @@ const Proyectos = ({history}) => {
     return (
         <div>
             <Header></Header>
-
-
             <div>
                 <div id="breadcrumb">
                     <ul className="breadcrumb">
@@ -112,7 +108,6 @@ const Proyectos = ({history}) => {
                                                            placeholder="Ingrese el nombre del Proyecto."
                                                            value={busqueda}
                                                            onChange={setBusqueda}
-
                                                     >
                                                     </input>
                                                     <span className="input-group-btn">
@@ -133,10 +128,6 @@ const Proyectos = ({history}) => {
                                         <ItemResumen filtroCategoria={filtroCategoria} item={res}></ItemResumen>
                                     )}
                                 </div>
-
-
-
-
                             <div className="row" style={{marginTop: '15px'}}>
                                 {
                                     proyectos.length==0? <BoxNoEncontrado/>:
@@ -161,7 +152,6 @@ const Proyectos = ({history}) => {
 
 
 const ItemResumen = ({filtroCategoria,item}) => {
-
     const {denominacion, count, icono} = item;
     let categoria=denominacion;
     return (<>

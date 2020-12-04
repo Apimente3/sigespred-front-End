@@ -1,15 +1,10 @@
-import React, {Component} from 'react';
-import {Link, useHistory} from "react-router-dom";
+import React from 'react';
+import {useHistory} from "react-router-dom";
 import {selectProyecto} from '../../utils';
 import "./styles.css"
-
 import {serverFile} from "../../config/axios";
 
-
 const Proyecto = ({proyecto}) => {
-
-    console.log('/*Mostrar proyecto*/')
-    console.log(proyecto)
     let  proyecto_seleccionado = proyecto;
     const {codigo, icono, tipo_infraestructura, descripcion, portada_imagen, fecha_creacion} = proyecto;
     let history = useHistory();
@@ -22,7 +17,6 @@ const Proyecto = ({proyecto}) => {
     const setProyectoSession = async (e) => {
         await selectProyecto(proyecto_seleccionado);
         history.push("/planos");
-
     }
 
     return (
@@ -32,7 +26,6 @@ const Proyecto = ({proyecto}) => {
             <div className="card ">
                 <div className="image-wrapper">
                     <img src={imagenFondo} alt="Avatar" style={{height: '300px', width: '100%'}}/>
-
 
                     <div className="image-overlay">
                         <div className="image-info">
@@ -57,13 +50,8 @@ const Proyecto = ({proyecto}) => {
                         className="fa fa-sign-in" aria-hidden="true"></i> INGRESAR A PROYECTO</a>
                 </div>
             </div>
-
-
         </div>
-
-
     );
-
 }
 
 export default Proyecto;

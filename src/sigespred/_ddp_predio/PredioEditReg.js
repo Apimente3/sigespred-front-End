@@ -8,13 +8,9 @@ import {
     Form,
     FormGroup,
     Row6,
-    Row12,
     RowForm,
     Select,
     Input,
-    Options,
-    FormControl,
-    InputInline,
     FormFooter
 } from "../../components/forms";
 import {useForm} from "../../hooks/useForm"
@@ -23,8 +19,6 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import ComboOptions from "../../components/helpers/ComboOptions";
 import PredioLinks from "./PredioLinks";
-import {useDispatch} from 'react-redux';
-import { actualizar } from '../../actions/_ddp_variable/Actions';
 import MAddTitularPredio from "./MAddTitularPredio";
 import TableTitularPredio from "./TableTitularPredio";
 
@@ -86,12 +80,10 @@ const PredioEditReg = ({history,  match}) => {
     }
 
     const setValorMandatorio= (valor) => {
-        
         if ((typeof(valor) === 'string' && valor == 'true') || (typeof(valor) === 'boolean' && valor === true)){
             setMandatorioInscripcion(true);
             return;
         }
-        
         setMandatorioInscripcion(false);
     }
 

@@ -8,18 +8,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
 import {getselectProyecto} from '../../utils';
 import {
-  Form,
-  FormGroup,
-  Row6,
-  Row12,
-  RowForm,
-  Select,
-  Input,
-  Options,
-  FormControl,
-  InputInline,
-  FormFooter,
-  FormGroupInline,
+  FormFooter
 } from "../../components/forms";
 import MultipleUpload from "../../components/uploader/MultipleUpload";
 
@@ -28,12 +17,10 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import * as PARAMS from "../../config/parameters";
 import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
 
-const { $ } = window;
 const Axios = initAxiosInterceptors();
 const directorioDocInterno = "FilesDDP/DocumentoInterno";
-/*Guardar tipo de infraestrucra*/
+
 async function saveDocumentosInternos(body) {
-  console.log(body);
   const { data } = await Axios.post(`/docinterno`, body);
   return data;
 }
@@ -71,16 +58,6 @@ const DocInternoAdd = ({ history }) => {
       initialLoad();
     }, []);
 
-  //   /*Valiables Globales*/
-  //   useEffect(() => {
-  //     const init = async () => {
-  //         setlistTipoInfraestructura(await getListTipoInfraestructura());
-  //         listInfraestructuraGlobal = await getListInfraestructura()
-  //         setlistInfraestructura(listInfraestructuraGlobal);
-  //     };
-  //     init();
-  // }, []);
-
   const registrar = async (e) => {
     e.preventDefault();
     try {
@@ -98,8 +75,6 @@ const DocInternoAdd = ({ history }) => {
 
   const handleChangeProyecto = async (e) => {
     if (e.target.value) {
-      //let dataEq = await helperGets.helperGetListEquipos(e.target.value);
-      //setDataEquipo(dataEq);
       setValoresEquipo(e.target.value);
     } else {
       setDataEquipo(null);
@@ -113,7 +88,7 @@ const DocInternoAdd = ({ history }) => {
   return (
     <>
       <WraperLarge
-        titleForm={"Registro de Documentación Interna "} // + partidaRespuesta.id}
+        titleForm={"Registro de Documentación Interna "}
         listbreadcrumb={REGISTRO_DOCINTERNOS_BREADCRUM}
       >
         <form onSubmit={registrar} className={"form-horizontal"}>
@@ -152,7 +127,6 @@ const DocInternoAdd = ({ history }) => {
                       id="equipoid"
                       name="equipoid"
                       required
-                      // title="El Tipo de Plano es requerido"
                       onChange={handleInputChange}
                     >
                       <option value="">--SELECCIONE--</option>
@@ -218,11 +192,6 @@ const DocInternoAdd = ({ history }) => {
                     Respuesta
                   </label>
                   <div className="col-lg-4">
-                    {/* {resListaTipoDocInterno.error ? (
-                      "Se produjo un error cargando el tipo de documento"
-                    ) : resListaTipoDocInterno.loading ? (
-                      "Cargando..."
-                    ) : ( */}
                     <select
                       className="form-control input-sm"
                       id="respuesta"
@@ -235,13 +204,7 @@ const DocInternoAdd = ({ history }) => {
                       <option value="">--SELECCIONE--</option>
                       <option value="EN ATENCION">EN ATENCION</option>
                       <option value="EN CONOCIMIENTO">EN CONOCIMIENTO</option>
-                      {/* <ComboOptions
-                          data={resListaTipoDocInterno.result}
-                          valorkey="valorcodigo"
-                          valornombre="valortexto"
-                        /> */}
                     </select>
-                    {/* )} */}
                   </div>
                 </div>
               </fieldset>
@@ -274,7 +237,6 @@ const DocInternoAdd = ({ history }) => {
                       id="numdocrecepcion"
                       name="numdocrecepcion"
                       placeholder="Nro Documento"
-                      //title="El codigo STD  es requerido"
                       autoComplete="off"
                       onChange={handleInputChange}
                     />
@@ -295,11 +257,6 @@ const DocInternoAdd = ({ history }) => {
                       onChange={handleInputChange}
                     />
                   </div>
-                  {/* <label className="col-lg-2 control-label">
-                    Adjuntar Documento
-                  </label> */}
-                  {/* <div className="form-group col-lg-6"> */}
-
                   <label className="col-lg-2 control-label">Referencia</label>
                   <div className="col-lg-4">
                     <input
@@ -313,8 +270,6 @@ const DocInternoAdd = ({ history }) => {
                       onChange={handleInputChange}
                     />
                   </div>
-
-                  {/* </div> */}
                 </div>
 
                 <div className="form-group">
@@ -324,8 +279,6 @@ const DocInternoAdd = ({ history }) => {
                       className="form-control input-sm"
                       id="areaid"
                       name="areaid"
-                      // required
-                      // title="El area es requerido"
                       onChange={handleInputChange}
                     >
                       <option value="">--SELECCIONE--</option>
