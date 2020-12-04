@@ -64,11 +64,12 @@ const Planos = ({history}) => {
                     });
                     setValoresTramo(datosProyecto.idproyecto);
                     query =  await  queryString.stringify({busqueda, page: activePage, limit, gestionpredialid:datosProyecto.idproyecto});
+                    setBusqueda(`gestionpredialid=${datosProyecto.idproyecto}`);
                 }
 
                 let listPlanos = await buscarPlano(query);
-                setDataPlanos(listPlanos)
-                settotalItemsCount(listPlanos.count)
+                setDataPlanos(listPlanos);
+                settotalItemsCount(listPlanos.count);
                 set_cargandoGrid(false);
             } catch (error) {
                 console.log(error);
@@ -273,17 +274,29 @@ const Planos = ({history}) => {
         settotalItemsCount(listPlanos.count);
     }
 
-    // TODO: Revisar procedimiento de exportación
-    const descarxls=()=>{
+    const descarxls = async() => {
+        let numfilas = totalItemsCount;
 
-        let listexportexcel = resListaProyectos;
-        var resultgeojson = alasql(`SELECT *
-                 FROM ? `, [listexportexcel])
+        if (!numfilas || numfilas === "0") {
+            toastr.warning('Búsqueda de Planos', "No se encontrarón registros", {position: 'top-center'});
+            return;
+        }
+
+        let query =  await  queryString.stringify({page:1, numfilas});
+        if(busqueda) {
+            query += `&${busqueda}`;
+        }
+        let listaPlanos = await buscarPlano(query);
+
+        let listexportexcel = listaPlanos.rows;
+        
+        var resultjson = alasql(`SELECT id, codplano, denominacion as proyecto, profesional, fechacreacion, ubicacion, digital, antecedente
+                                FROM ? ORDER BY id DESC`, [listexportexcel])
         var opts = [{
             sheetid: 'Reporte',
             headers: true
         }];
-        var res = alasql('SELECT INTO XLSX("ListadoProyectos.xlsx",?) FROM ?', [opts, [resultgeojson]]);
+        var res = alasql('SELECT INTO XLSX("ListadoPlanos.xlsx",?) FROM ?', [opts, [resultjson]]);
         return false;
     }
 
@@ -442,9 +455,9 @@ const Planos = ({history}) => {
                     <legend className="fullborder">Resultados de Búsqueda de Planos</legend>
                 </div>
                 <div className="col-lg-6 text-right">
-                    {/* <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
-                        <i className="fa fa-file-excel-o"></i> TODO: Descargar Excel
-                    </button> */}
+                    <button type="button" onClick={descarxls} className="btn btn-default btn-sm fullborder">
+                        <i className="fa fa-file-excel-o"></i> Descargar Excel
+                    </button>
                     <Link to={`/plano-grupo`} className="btn btn-danger btn-sm fullborder">
                         <i className="fa fa-clone"></i>  Generación de Códigos
                     </Link>

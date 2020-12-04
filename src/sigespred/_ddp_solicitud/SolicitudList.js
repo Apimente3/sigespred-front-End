@@ -55,6 +55,7 @@ const SolicitudList = ({history}) => {
                         gestionpredialid: datosProyecto.idproyecto
                     });
                     query =  await  queryString.stringify({busqueda, page: activePage, limit, gestionpredialid:datosProyecto.idproyecto});
+                    setBusqueda(`gestionpredialid=${datosProyecto.idproyecto}`);
                 }
                 let listSolicitud = await buscarSolicitud(query);
                 changePage(activePage,listSolicitud);
@@ -190,14 +191,25 @@ const SolicitudList = ({history}) => {
         changePage(pageNumber,listSolicitud);
     }
 
-    // TODO: Revisar procedimiento de exportación
-    const descargarXls=()=>{
+    const descargarXls = async() =>{
+        let numfilas = list.count;
 
-        let listexportexcel = list.rows;
+        if (!numfilas || numfilas === "0") {
+            toastr.warning('Búsqueda de Solicitudes', "No se encontrarón registros", {position: 'top-center'});
+            return;
+        }
+
+        let query =  await  queryString.stringify({page:1, numfilas});
+        if(busqueda) {
+            query += `&${busqueda}`;
+        }
+        let listaSolicitud = await buscarSolicitud(query);
+
+        let listexportexcel = listaSolicitud.rows;
         
         var resultjson = alasql(`SELECT id,entidad,proyecto,tramo,tipoconsulta,tipodocumento, codigostd,nrooficio,fechaelaboficio,fecharecepcion,
                                 recibiorespuesta,fecharespuesta,nrodocrespuesta,plazo_atencion,estado,accion,observaciones
-                                FROM ? `, [listexportexcel])
+                                FROM ? ORDER BY id DESC`, [listexportexcel])
         var opts = [{
             sheetid: 'Reporte',
             headers: true

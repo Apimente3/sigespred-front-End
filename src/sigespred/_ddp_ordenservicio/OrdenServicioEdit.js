@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {initAxiosInterceptors} from '../../config/axios';
 import { toastr } from "react-redux-toastr";
 import {Link} from "react-router-dom";
@@ -18,19 +18,39 @@ import TableProducto from "./TableProducto";
 const {$} = window;
 const Axios = initAxiosInterceptors();
 
-async function addOrden(ordenservicio) {
-    const {data} = await Axios.post(`/ordenservicio`,ordenservicio);
+async function getOrden(id) {
+    const {data} = await Axios.get(`/ordenservicio/${id}`);
     return data;
 }
 
-export const OrdenServicioAdd = ({history,  match}) => {
+async function saveOrden(id, body) {
+    const {data} = await Axios.put(`/ordenservicio/${id}`,body);
+    return data;
+}
+
+export const OrdenServicioEdit = ({history,  match}) => {
+    const {id}=match.params;
+
     const listaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
     const [usuarioMonitor, setUsuarioMonitor] = useState(null);
     const [ordenServicio, setOrdenServicio, handleInputChange, reset ] = useForm({},["nrorequerimiento"]);
     const listaUsuarios = useAsync(helperGets.helperGetListaLocadores, []);
     const [modalProducto, setModalProducto] = useState(false);
     const [listaProductos, setListaProductos] = useState([]);
-    const [productoAdd, setProductoAdd] = useState(null);
+    const [productoEdit, setProductoEdit] = useState(null);
+
+    useEffect(() => {
+        const init = async () => {
+            let requerimientoOrden= await getOrden(id);
+            setOrdenServicio(requerimientoOrden)
+            setUsuarioMonitor(requerimientoOrden.monitorid);
+
+            if(requerimientoOrden.Producto){
+                setListaProductos(requerimientoOrden.Producto);
+            }
+        };
+        init();
+    }, []);
 
     function setMonitor(idLocador) {
         setUsuarioMonitor(idLocador);
@@ -38,7 +58,7 @@ export const OrdenServicioAdd = ({history,  match}) => {
 
     const cargarEditarProducto = (ordenservicioid) => {
         var  titularvalue =  listaProductos.find(x => x.id === ordenservicioid);
-        setProductoAdd(titularvalue);
+        setProductoEdit(titularvalue);
         setModalProducto(true);
     }
 
@@ -47,7 +67,7 @@ export const OrdenServicioAdd = ({history,  match}) => {
      }
 
      const cerrarModal=(estado)=>{
-        setProductoAdd(null);
+        setProductoEdit(null);
         setModalProducto(estado);
     }
 
@@ -64,7 +84,7 @@ export const OrdenServicioAdd = ({history,  match}) => {
             setListaProductos([...listaProductos,producto])
         }
         
-        setProductoAdd(null);
+        setProductoEdit(null);
         setModalProducto(false);
     }
     
@@ -75,119 +95,122 @@ export const OrdenServicioAdd = ({history,  match}) => {
        setListaProductos(data);
     };
 
-    const registrar = async (e) => {
+    const actualizar = async e => {
         e.preventDefault();
+    
         ordenServicio.monitorid = usuarioMonitor;
-        ordenServicio.Producto = listaProductos;
+        ordenServicio.producto = listaProductos;
 
         $('#btnguardar').button('loading');
+    
         try {
-        await addOrden(ordenServicio)
-        toastr.success("Registro de Requerimiento - O/S", "El Requerimiento se registro correctamente.", {position: "top-center"});
-        history.push('/orden-list');
-        } catch (e) {
-        toastr.error("Registro de Requerimientos", "Se encontro un error: " + JSON.stringify(e), {
-            position: "top-center",
-        });
+            await saveOrden(id, ordenServicio)
+            toastr.success(`Actualización de Requerimiento - O/S: ${id}`, 'Se actualizó correctamente.', {position: 'top-center'});
+            history.push('/orden-list');
+        }
+        catch (e) {
+            toastr.error('Se encontrarón errores al intentar actualizar', JSON.stringify(e), {position: 'top-center'});
         }
         $('#btnguardar').button('reset');
-  };
+    }
 
-  return (
-    <>
-      <WraperLarge titleForm={"Registrar Requerimiento / Orden de Servicio"} listbreadcrumb={LISTADO_PARTIDA_BREADCRUM} >
-        <Form onSubmit={registrar}>
-            <RowForm>
-                <Row12 title={"Datos del Requerimiento"}>
-                    <Row6>
-                        <FormGroup label={"Nro. de Requerimiento"} require={true}>
-                            <Input value={ordenServicio.nrorequerimiento || ""} onChange={handleInputChange}
-                                name={"nrorequerimiento"} placeholder={"Ingrese el Nro. de Requerimiento"}
-                                required={true} type={"text"}>
-                            </Input>
-                        </FormGroup>
-                        <FormGroup label={"Área"} >
-                            <Select value={ordenServicio.areaid || ""}
-                                onChange={handleInputChange}
-                                name={"areaid"}>
-                                {listaSubAreas.result ? (
-                                <ComboOptionsGroup
-                                data={listaSubAreas.result}
-                                valorkey="id"
-                                valornombre="nombre"
-                                valornombregrupo="nombre"
-                                grupojson="SubArea"
+    return (
+        <>
+        <WraperLarge titleForm={"Editar Requerimiento / Orden de Servicio"} listbreadcrumb={LISTADO_PARTIDA_BREADCRUM} >
+            <Form onSubmit={actualizar}>
+                <RowForm>
+                    <Row12 title={"Datos del Requerimiento"}>
+                        <Row6>
+                            <FormGroup label={"Nro. de Requerimiento"} require={true}>
+                                <Input value={ordenServicio.nrorequerimiento || ""} onChange={handleInputChange}
+                                    name={"nrorequerimiento"} placeholder={"Ingrese el Nro. de Requerimiento"}
+                                    required={true} type={"text"}>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup label={"Área"} >
+                                <Select value={ordenServicio.areaid || ""}
+                                    onChange={handleInputChange}
+                                    name={"areaid"}>
+                                    {listaSubAreas.result ? (
+                                    <ComboOptionsGroup
+                                    data={listaSubAreas.result}
+                                    valorkey="id"
+                                    valornombre="nombre"
+                                    valornombregrupo="nombre"
+                                    grupojson="SubArea"
+                                    />
+                                    ) : "Cargando..."}
+                                </Select>
+                            </FormGroup>
+                            <FormGroup label={"Objetivo"} >
+                                <textarea className="form-control input-sm noresize" placeholder="Ingrese el Objetivo del Requerimiento"
+                                rows="4" name="objetivo" onChange={handleInputChange} 
+                                value={ordenServicio.objetivo || ""}
+                                >
+                                </textarea>
+                            </FormGroup>
+                        </Row6>
+                        <Row6>
+                            <FormGroup label={"Coordinador/Monitor"} >
+                                {listaUsuarios.result
+                                ? <Autocomplete listaDatos={listaUsuarios.result} callabck={setMonitor}  valorinit={ordenServicio.monitorid}/>
+                                : "Cargando..."}
+                            </FormGroup>
+                            <FormGroup label={"Duración del Servicio (días)"} >
+                                <input type="number" min="10" max="120" step="1" className="form-control input-sm" 
+                                    id="duracionservicio" name="duracionservicio" 
+                                    value={ordenServicio.duracionservicio || ""}
+                                    placeholder="Ingrese la Duración del Servicio"
+                                    onChange={handleInputChange}
                                 />
-                                ) : "Cargando..."}
-                            </Select>
+                            </FormGroup>
+                            <FormGroup label={"Finalidad Pública"} >
+                                <textarea className="form-control input-sm noresize" placeholder="Ingrese la Finalidad Pública"
+                                    rows="8" name="finalidadpublica" onChange={handleInputChange} 
+                                    value={ordenServicio.finalidadpublica || ""}
+                                    >
+                                </textarea>
                         </FormGroup>
-                        <FormGroup label={"Objetivo"} >
-                            <textarea className="form-control input-sm noresize" placeholder="Ingrese el Objetivo del Requerimiento"
-                            rows="4" name="objetivo" onChange={handleInputChange} >
-                                {ordenServicio.objetivo || ""}
-                            </textarea>
-                        </FormGroup>
-                    </Row6>
-                    <Row6>
-                        <FormGroup label={"Coordinador/Monitor"} >
-                            {listaUsuarios.result
-                            ? <Autocomplete listaDatos={listaUsuarios.result} callabck={setMonitor} />
-                            : "Cargando..."}
-                        </FormGroup>
-                        <FormGroup label={"Duración del Servicio (días)"} >
-                            <input type="number" min="10" max="120" step="1" className="form-control input-sm" 
-                                id="duracionservicio" name="duracionservicio" 
-                                value={ordenServicio.duracionservicio || ""}
-                                placeholder="Ingrese la Duración del Servicio"
-                                onChange={handleInputChange}
-                            />
-                        </FormGroup>
-                        <FormGroup label={"Finalidad Pública"} >
-                            <textarea className="form-control input-sm noresize" placeholder="Ingrese la Finalidad Pública"
-                                rows="8" name="finalidadpublica" onChange={handleInputChange} >
-                                {ordenServicio.finalidadpublica || ""}
-                            </textarea>
-                    </FormGroup>
-                    </Row6>
-                </Row12>
-                <div className="row">
-                    <Row6>
-                        <FormGroup label={"Monto Total"} >
-                            <Input value={ordenServicio.montosueldo || ""} onChange={handleInputChange}
-                                name={"montosueldo"} placeholder={"Ingrese el monto/sueldo total"}
-                                pattern="^\d{1,10}(\.\d{1,2})?$"
-                                type={"text"}>
-                            </Input>
-                        </FormGroup>
-                    </Row6>
-                    <Row6>
-                        <FormGroup label={"Observaciones"} >
-                            <Input value={ordenServicio.observaciones || ""} onChange={handleInputChange}
-                                name={"observaciones"} placeholder={"Ingrese alguna observación o comentario"}
-                                type={"text"}>
-                            </Input>
-                        </FormGroup>
-                    </Row6>
-                </div>
-                <Row12 title={"Entregables / Productos"}>
-                    <div>
-                        <div className="col-lg-10">
-                            {(listaProductos && Array.isArray(listaProductos) && listaProductos.length > 0) &&
-                            <TableProducto 
-                                data={listaProductos}
-                                deleteproducto={deleteProducto}
-                                editproducto={cargarEditarProducto} >
-                            </TableProducto>
-                            }
-                        </div>
-                        <div className="col-lg-2 text-right">
-                            <button className="btn btn-sm btn-info" type="button" onClick={showModalProducto}>
-                            <i className="fa fa-plus fa-lg" /> Añadir Producto</button>
-                        </div>
+                        </Row6>
+                    </Row12>
+                    <div className="row">
+                        <Row6>
+                            <FormGroup label={"Monto Total"} >
+                                <Input value={ordenServicio.montosueldo || ""} onChange={handleInputChange}
+                                    name={"montosueldo"} placeholder={"Ingrese el monto/sueldo total"}
+                                    pattern="^\d{1,10}(\.\d{1,2})?$"
+                                    type={"text"}>
+                                </Input>
+                            </FormGroup>
+                        </Row6>
+                        <Row6>
+                            <FormGroup label={"Observaciones"} >
+                                <Input value={ordenServicio.observaciones || ""} onChange={handleInputChange}
+                                    name={"observaciones"} placeholder={"Ingrese alguna observación o comentario"}
+                                    type={"text"}>
+                                </Input>
+                            </FormGroup>
+                        </Row6>
                     </div>
+                    <Row12 title={"Entregables / Productos"}>
+                        <div>
+                            <div className="col-lg-10">
+                                {(listaProductos && Array.isArray(listaProductos) && listaProductos.length > 0) &&
+                                <TableProducto 
+                                    data={listaProductos}
+                                    deleteproducto={deleteProducto}
+                                    editproducto={cargarEditarProducto} >
+                                </TableProducto>
+                                }
+                            </div>
+                            <div className="col-lg-2 text-right">
+                                <button className="btn btn-sm btn-info" type="button" onClick={showModalProducto}>
+                                <i className="fa fa-plus fa-lg" /> Añadir Producto</button>
+                            </div>
+                        </div>
 
-                </Row12>
-                <Row12 title={"Datos del Invitado"}>
+                    </Row12>
+                    <Row12 title={"Datos del Invitado"}>
                         <Row6>
                             <FormGroup label={"DNI del Invitado"} >
                                 <Input value={ordenServicio.dniinvitado || ""} onChange={handleInputChange}
@@ -289,17 +312,16 @@ export const OrdenServicioAdd = ({history,  match}) => {
                             </FormGroup>
                         </Row6>
                     </Row12>
-                
-            </RowForm>
-            <FormFooter>
-                <Link to={`/orden-list`} className="btn btn-default btn-sm btn-control">Cancelar</Link>
-                <button id="btnguardar" type="submit" className="btn btn-danger btn-sm btn-control">Guardar
-                </button>
-            </FormFooter>
-        </Form>
-        {modalProducto && <MAddEntregable closeventana={cerrarModal} usevalue={updatevaluesproducto} 
-                            dataproducto={productoAdd}/> }
-      </WraperLarge>
-    </>
+                </RowForm>
+                <FormFooter>
+                    <Link to={`/orden-list`} className="btn btn-default btn-sm btn-control">Cancelar</Link>
+                    <button id="btnguardar" type="submit" className="btn btn-danger btn-sm btn-control">Guardar
+                    </button>
+                </FormFooter>
+            </Form>
+            {modalProducto && <MAddEntregable closeventana={cerrarModal} usevalue={updatevaluesproducto} 
+                            dataproducto={productoEdit}/> }
+        </WraperLarge>
+        </>
   );
 };

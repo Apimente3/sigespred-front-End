@@ -71,14 +71,16 @@ export const FilesUsuario={
     "CV":"FilesDDP/Usuario/CV",
 }
 
-
 export const FilesGestionPredial={
     "FilesSolicitud":"FilesDDP/GestionPredial/Solicitudes",
     "Files":"FilesDDP/GestionPredial/Files",
     "FilesPredios":"FilesDDP/GestionPredial/Predios"
 }
 
-
 export const FilesIndicador={
     "FilesIndicadores":"FilesDDP/GestionPredial/Indicadores",
+}
+
+export const FilesOrdenServicio={
+    "FilesOrdenes":"FilesDDP/Ordenes/Files",
 }
