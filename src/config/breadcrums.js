@@ -254,3 +254,17 @@ export const LISTADO_BLOG_BREADCRUM = [
     {link: "/blog", name: "Blog de la DDP"},
     
 ]
+
+export const LISTADO_REQOS_BREADCRUM = [
+    {link: "#", name: "Listado de Requerimientos (Ordenes de Servicio)"}
+]
+
+export const REGISTRO_REQOS_BREADCRUM = [
+    {link: "/orden-list", name: "Listado de Requerimientos (Ordenes de Servicio)"},
+    {link: "#", name: "Registro de Requerimiento (Orden de Servicio)"}
+]
+
+export const EDICION_REQOS_BREADCRUM = [
+    {link: "/orden-list", name: "Listado de Requerimientos (Ordenes de Servicio)"},
+    {link: "#", name: "Edición de Datos de Requerimiento (Orden de Servicio)"}
+]

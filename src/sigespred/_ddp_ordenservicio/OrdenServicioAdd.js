@@ -6,7 +6,7 @@ import { Form, FormGroup, Input, Row12, Row6, RowForm, FormFooter, Select } from
 import Autocomplete from '../../components/helpers/Autocomplete';
 import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
 import SingleUpload from "../../components/uploader/SingleUpload";
-import { LISTADO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
+import { REGISTRO_REQOS_BREADCRUM } from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {useForm} from "../../hooks/useForm";
 import { useAsync } from "react-async-hook";
@@ -95,7 +95,7 @@ export const OrdenServicioAdd = ({history,  match}) => {
 
   return (
     <>
-      <WraperLarge titleForm={"Registrar Requerimiento / Orden de Servicio"} listbreadcrumb={LISTADO_PARTIDA_BREADCRUM} >
+      <WraperLarge titleForm={"Registrar Requerimiento / Orden de Servicio"} listbreadcrumb={REGISTRO_REQOS_BREADCRUM} >
         <Form onSubmit={registrar}>
             <RowForm>
                 <Row12 title={"Datos del Requerimiento"}>

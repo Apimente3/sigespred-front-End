@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { useAsync } from "react-async-hook";
 import { Link } from "react-router-dom";
-import { LISTADO_PARTIDA_BREADCRUM } from "../../config/breadcrums";
+import { LISTADO_REQOS_BREADCRUM } from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import { Table } from "../../components/forms";
 import { initAxiosInterceptors } from "../../config/axios";
@@ -119,7 +119,7 @@ const OrdenServicioList = () => {
     ];
   return (
     <>
-    <WraperLarge titleForm={"Listado de Ordenes de Servicios"} listbreadcrumb={LISTADO_PARTIDA_BREADCRUM}>
+    <WraperLarge titleForm={"Listado de Ordenes de Servicios"} listbreadcrumb={LISTADO_REQOS_BREADCRUM}>
         <form className={"form-horizontal"}>
             <legend className="mleft-20">
                 <i className="fa fa-filter"></i> Filtros de Búsqueda de Ordenes de Servicio
