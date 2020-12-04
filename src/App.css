@@ -983,5 +983,9 @@ video {
   }
 
   #wrapper {
-    background-color: #f9f9f921 !important;
+    background-color: rgb(249 249 249 / 1%) !important;
   }
+
+.noresize {
+    resize: none;
+}
