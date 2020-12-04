@@ -44,6 +44,7 @@ const PredioList = ({history,  match}) => {
                 gestionpredialid: datosProyecto.idproyecto
             });
             query =  await  queryString.stringify({busqueda, page: activePage, limit, gestionpredialid:datosProyecto.idproyecto});
+            setBusqueda(`gestionpredialid=${datosProyecto.idproyecto}`);
         }
         
         let listPredios = await buscarPredios(query);
@@ -108,12 +109,24 @@ function handleInputChange(e) {
     }
 }
 
-const descargarXls=()=>{
+const descargarXls = async() =>{
+    let numfilas = list.count;
 
-    let listexportexcel = list.rows;
+    if (!numfilas || numfilas === "0") {
+        toastr.warning('Búsqueda de Predios', "No se encontrarón registros", {position: 'top-center'});
+        return;
+    }
+
+    let query =  await  queryString.stringify({page:1, numfilas});
+    if(busqueda) {
+        query += `&${busqueda}`;
+    }
+    let listaPredio = await buscarPredios(query);
+
+    let listexportexcel = listaPredio.rows;
     
     var resultjson = alasql(`SELECT id, codigopredio, gestionpredial, tramo, tipopredio, fechacreacion 
-                            FROM ? `, [listexportexcel])
+                            FROM ? ORDER BY id DESC`, [listexportexcel])
     var opts = [{
         sheetid: 'Reporte',
         headers: true
