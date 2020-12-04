@@ -145,8 +145,7 @@ export const LISTADO_ACUERDO_BREADCRUM = [
 ]
 
 export const REGISTRO_SOLICITUD_BREADCRUM = [
-    // {link: "solicitud-add", name: "Agregar Solicitud"},
-    {link: "solicitud-list", name: "Listado de Solicitudes"},
+        {link: "solicitud-list", name: "Listado de Solicitudes"},
     {link: "#", name: "Agregar Solicitud"}
 ]
 
@@ -157,7 +156,6 @@ export const ACTUALIZAR_SOLICITUD_BREADCRUM = [
 ]
 
 export const LISTADO_SOLICITUD_BREADCRUM = [
-    {link: "solicitud-add", name: "Agregar Solicitud"},
     {link: "solicitud-list", name: "Listado de Solicitudes"}
 ]
 
@@ -177,7 +175,6 @@ export const CODIGOS_PLANO_BREADCRUM = [
 ]
 
 export const LISTADO_PLANO_BREADCRUM = [
-    {link: "plano-add", name: "Registrar Plano"},
     {link: "#", name: "Listado de Planos"}
 ]
 
