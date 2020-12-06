@@ -23,7 +23,9 @@ import RouterModConfUsuario from './_ddp_RouteConfUsuario';
 import RouteModBlog from './_ddp_RouteModBlog';
 import RouteModTramo from './_ddp_RouteModTramo';
 import RouteModPredio from './_ddp_RouteModPredio';
+import RouteModCategoria from './_ddp_RouteModCategoria';
 
+ 
 export default [
     ...RouteMod01Login,
     ...RouteGestionPredial,
@@ -37,6 +39,7 @@ export default [
     ...RouterModConfUsuario,
     ...RouteModPredio,
     ...RouteModBlog,
+    ...RouteModCategoria,
 
 
     ...RouteMod02GestionTrabajadores,
