@@ -4,7 +4,7 @@ import { toastr } from "react-redux-toastr";
 import {Link} from "react-router-dom";
 import { Form, FormGroup, Input, Row12, Row6, RowForm, FormFooter, Select } from "../../components/forms";
 import Autocomplete from '../../components/helpers/Autocomplete';
-import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
+import ComboOptions from "../../components/helpers/ComboOptions";
 import SingleUpload from "../../components/uploader/SingleUpload";
 import { REGISTRO_REQOS_BREADCRUM } from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
@@ -14,9 +14,16 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import {FilesOrdenServicio} from "../../config/parameters";
 import MAddEntregable from "./MAddEntregable";
 import TableProducto from "./TableProducto";
+import MAddActividad from "./MAddActividad";
+import TableActividad from "./TableActividad";
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
+
+async function getUsuario(dni) {
+    const {data} = await Axios.get(`/usuariodni/${dni}`);
+    return data;
+}
 
 async function addOrden(ordenservicio) {
     const {data} = await Axios.post(`/ordenservicio`,ordenservicio);
@@ -24,26 +31,39 @@ async function addOrden(ordenservicio) {
 }
 
 export const OrdenServicioAdd = ({history,  match}) => {
-    const listaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
+    const listaAreas = useAsync(helperGets.helperGetListaAreas, []);
     const [usuarioMonitor, setUsuarioMonitor] = useState(null);
     const [ordenServicio, setOrdenServicio, handleInputChange, reset ] = useForm({},["nrorequerimiento"]);
     const listaUsuarios = useAsync(helperGets.helperGetListaLocadores, []);
     const [modalProducto, setModalProducto] = useState(false);
+    const [modalActividad, setModalActividad] = useState(false);
     const [listaProductos, setListaProductos] = useState([]);
+    const [listaActividades, setListaActividades] = useState([]);
     const [productoAdd, setProductoAdd] = useState(null);
+    const [actividadAdd, setActividadAdd] = useState(null);
 
     function setMonitor(idLocador) {
         setUsuarioMonitor(idLocador);
     }
 
-    const cargarEditarProducto = (ordenservicioid) => {
-        var  titularvalue =  listaProductos.find(x => x.id === ordenservicioid);
-        setProductoAdd(titularvalue);
+    const cargarEditarProducto = (productoid) => {
+        var  productovalue =  listaProductos.find(x => x.id === productoid);
+        setProductoAdd(productovalue);
         setModalProducto(true);
+    }
+
+    const cargarEditarActividad = (actividadid) => {
+        var  actividadvalue =  listaActividades.find(x => x.id === actividadid);
+        setActividadAdd(actividadvalue);
+        setModalActividad(true);
     }
 
     const showModalProducto = () => {
         setModalProducto(true);
+     }
+
+     const showModalActividad = () => {
+        setModalActividad(true);
      }
 
      const cerrarModal=(estado)=>{
@@ -51,14 +71,19 @@ export const OrdenServicioAdd = ({history,  match}) => {
         setModalProducto(estado);
     }
 
-    const updatevaluesproducto=(producto)=>{
-        var  titularindex =  listaProductos.findIndex(x => x.id === producto.id);
+    const cerrarModalActvidad=(estado)=>{
+        setActividadAdd(null);
+        setModalActividad(estado);
+    }
 
-        if (titularindex >= 0) {
-            listaProductos[titularindex].numentregable = producto.numentregable;
-            listaProductos[titularindex].numdias = producto.numdias;
-            listaProductos[titularindex].porcentajepago = producto.porcentajepago;
-            listaProductos[titularindex].detalleentregable = producto.detalleentregable;
+    const updatevaluesproducto=(producto)=>{
+        var  productoindex =  listaProductos.findIndex(x => x.id === producto.id);
+
+        if (productoindex >= 0) {
+            listaProductos[productoindex].numentregable = producto.numentregable;
+            listaProductos[productoindex].numdias = producto.numdias;
+            listaProductos[productoindex].porcentajepago = producto.porcentajepago;
+            listaProductos[productoindex].detalleentregable = producto.detalleentregable;
            setListaProductos(listaProductos);
         } else {
             setListaProductos([...listaProductos,producto])
@@ -66,6 +91,20 @@ export const OrdenServicioAdd = ({history,  match}) => {
         
         setProductoAdd(null);
         setModalProducto(false);
+    }
+
+    const updatevaluesactividad=(actividad)=>{
+        var  actividadindex =  listaActividades.findIndex(x => x.id === actividad.id);
+
+        if (actividadindex >= 0) {
+            listaActividades[actividadindex].descripcionactividad = actividad.descripcionactividad;
+            setListaActividades(listaActividades);
+        } else {
+            setListaActividades([...listaActividades,actividad])
+        }
+        
+        setActividadAdd(null);
+        setModalActividad(false);
     }
     
     const deleteProducto = key => {
@@ -75,10 +114,40 @@ export const OrdenServicioAdd = ({history,  match}) => {
        setListaProductos(data);
     };
 
+    const deleteActividad = key => {
+        var data = $.grep(listaActividades, function(e){
+            return e.id !== key;
+       });
+       setListaActividades(data);
+    };
+
+    const buscarProfesional = async () => {
+        if (ordenServicio.dniinvitado && ordenServicio.dniinvitado.length === 8){
+            let prof= await getUsuario(ordenServicio.dniinvitado);
+            
+            if (prof) {
+                $('#nombreinvitado').val(prof.nombres);
+                $('#apellidoinvitado').val(prof.apellidos);
+                $('#direccioninvitado').val(prof.direccion);
+                ordenServicio.nombreinvitado = prof.nombres;
+                ordenServicio.apellidoinvitado = prof.apellidos;
+                ordenServicio.direccioninvitado = prof.direccion;
+                setOrdenServicio(ordenServicio);
+            } else {
+                toastr.warning('Búsqueda de Profesional','No se encontró algún profesional con el DNI ingresado', {position: 'top-center'});
+            }
+        }
+    }
+
     const registrar = async (e) => {
         e.preventDefault();
+        
         ordenServicio.monitorid = usuarioMonitor;
         ordenServicio.Producto = listaProductos;
+        ordenServicio.Actividad = listaActividades;
+
+        ordenServicio.Producto.forEach(function(el){ delete el.id });
+        ordenServicio.Actividad.forEach(function(el){ delete el.id });
 
         $('#btnguardar').button('loading');
         try {
@@ -110,15 +179,9 @@ export const OrdenServicioAdd = ({history,  match}) => {
                             <Select value={ordenServicio.areaid || ""}
                                 onChange={handleInputChange}
                                 name={"areaid"}>
-                                {listaSubAreas.result ? (
-                                <ComboOptionsGroup
-                                data={listaSubAreas.result}
-                                valorkey="id"
-                                valornombre="nombre"
-                                valornombregrupo="nombre"
-                                grupojson="SubArea"
-                                />
-                                ) : "Cargando..."}
+                                {listaAreas.result?
+                                <ComboOptions data={listaAreas.result} valorkey="id" valornombre="nombre"/>
+                                : "Cargando..."}
                             </Select>
                         </FormGroup>
                         <FormGroup label={"Objetivo"} >
@@ -169,6 +232,23 @@ export const OrdenServicioAdd = ({history,  match}) => {
                         </FormGroup>
                     </Row6>
                 </div>
+                <Row12 title={"Actividades / Alcances"}>
+                    <div>
+                        <div className="col-lg-10">
+                            {(listaActividades && Array.isArray(listaActividades) && listaActividades.length > 0) &&
+                            <TableActividad 
+                                data={listaActividades}
+                                deleteactividad={deleteActividad}
+                                editactividad={cargarEditarActividad} >
+                            </TableActividad>
+                            }
+                        </div>
+                        <div className="col-lg-2 text-right">
+                            <button className="btn btn-sm btn-info" type="button" onClick={showModalActividad}>
+                            <i className="fa fa-plus fa-lg" /> Añadir actividad</button>
+                        </div>
+                    </div>
+                </Row12>
                 <Row12 title={"Entregables / Productos"}>
                     <div>
                         <div className="col-lg-10">
@@ -185,16 +265,30 @@ export const OrdenServicioAdd = ({history,  match}) => {
                             <i className="fa fa-plus fa-lg" /> Añadir Producto</button>
                         </div>
                     </div>
-
                 </Row12>
                 <Row12 title={"Datos del Invitado"}>
                         <Row6>
-                            <FormGroup label={"DNI del Invitado"} >
-                                <Input value={ordenServicio.dniinvitado || ""} onChange={handleInputChange}
-                                    name={"dniinvitado"} placeholder={"Ingrese el DNI del invitado"}
-                                    type={"text"}>
-                                </Input>
-                            </FormGroup>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    DNI del Invitado</label>
+                                <div className="col-lg-7">
+                                    <Input value={ordenServicio.dniinvitado || ""} onChange={handleInputChange}
+                                        name={"dniinvitado"} placeholder={"Ingrese el DNI del invitado"}
+                                        pattern="^\d{8}?$" type={"text"}>
+                                    </Input>    
+                                </div>
+                                <div className="col-lg-1">
+                                    <a className="btn btn-default btn-sm dropdown-toggle pull-left"
+                                        data-toggle="dropdown" data-toggle="tooltip" onClick={buscarProfesional}
+                                        data-original-title={`Buscar en Base de Profesionales`}>
+                                        <i className="fa fa-refresh"></i>
+                                    </a>    
+                                </div>
+                            </div>
+                            {/* <FormGroup label={"DNI del Invitado"} >
+                                
+                                
+                            </FormGroup> */}
                             <FormGroup label={"Nombre del Invitado"} >
                                 <Input value={ordenServicio.nombreinvitado || ""} onChange={handleInputChange}
                                     name={"nombreinvitado"} placeholder={"Ingrese el nombre del invitado"}
@@ -299,6 +393,8 @@ export const OrdenServicioAdd = ({history,  match}) => {
         </Form>
         {modalProducto && <MAddEntregable closeventana={cerrarModal} usevalue={updatevaluesproducto} 
                             dataproducto={productoAdd}/> }
+        {modalActividad && <MAddActividad closeventana={cerrarModalActvidad} usevalue={updatevaluesactividad} 
+                            dataactividad={actividadAdd}/> }
       </WraperLarge>
     </>
   );

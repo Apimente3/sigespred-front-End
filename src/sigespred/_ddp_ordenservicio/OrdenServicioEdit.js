@@ -4,7 +4,7 @@ import { toastr } from "react-redux-toastr";
 import {Link} from "react-router-dom";
 import { Form, FormGroup, Input, Row12, Row6, RowForm, FormFooter, Select } from "../../components/forms";
 import Autocomplete from '../../components/helpers/Autocomplete';
-import ComboOptionsGroup from "../../components/helpers/ComboOptionsGroup";
+import ComboOptions from "../../components/helpers/ComboOptions";
 import SingleUpload from "../../components/uploader/SingleUpload";
 import { EDICION_REQOS_BREADCRUM } from "../../config/breadcrums";
 import WraperLarge from "../m000_common/formContent/WraperLarge";
@@ -14,9 +14,16 @@ import * as helperGets from "../../components/helpers/LoadMaestros";
 import {FilesOrdenServicio} from "../../config/parameters";
 import MAddEntregable from "./MAddEntregable";
 import TableProducto from "./TableProducto";
+import MAddActividad from "./MAddActividad";
+import TableActividad from "./TableActividad";
 
 const {$} = window;
 const Axios = initAxiosInterceptors();
+
+async function getUsuario(dni) {
+    const {data} = await Axios.get(`/usuariodni/${dni}`);
+    return data;
+}
 
 async function getOrden(id) {
     const {data} = await Axios.get(`/ordenservicio/${id}`);
@@ -31,13 +38,16 @@ async function saveOrden(id, body) {
 export const OrdenServicioEdit = ({history,  match}) => {
     const {id}=match.params;
 
-    const listaSubAreas = useAsync(helperGets.helperGetListaSubAreas, []);
+    const listaAreas = useAsync(helperGets.helperGetListaAreas, []);
     const [usuarioMonitor, setUsuarioMonitor] = useState(null);
     const [ordenServicio, setOrdenServicio, handleInputChange, reset ] = useForm({},["nrorequerimiento"]);
     const listaUsuarios = useAsync(helperGets.helperGetListaLocadores, []);
     const [modalProducto, setModalProducto] = useState(false);
+    const [modalActividad, setModalActividad] = useState(false);
     const [listaProductos, setListaProductos] = useState([]);
+    const [listaActividades, setListaActividades] = useState([]);
     const [productoEdit, setProductoEdit] = useState(null);
+    const [actividadEdit, setActividadEdit] = useState(null);
 
     useEffect(() => {
         const init = async () => {
@@ -47,6 +57,9 @@ export const OrdenServicioEdit = ({history,  match}) => {
 
             if(requerimientoOrden.Producto){
                 setListaProductos(requerimientoOrden.Producto);
+            }
+            if(requerimientoOrden.Actividad){
+                setListaActividades(requerimientoOrden.Actividad);
             }
         };
         init();
@@ -62,13 +75,28 @@ export const OrdenServicioEdit = ({history,  match}) => {
         setModalProducto(true);
     }
 
+    const cargarEditarActividad = (actividadid) => {
+        var  actividadvalue =  listaActividades.find(x => x.id === actividadid);
+        setActividadEdit(actividadvalue);
+        setModalActividad(true);
+    }
+
     const showModalProducto = () => {
         setModalProducto(true);
+     }
+
+     const showModalActividad = () => {
+        setModalActividad(true);
      }
 
      const cerrarModal=(estado)=>{
         setProductoEdit(null);
         setModalProducto(estado);
+    }
+
+    const cerrarModalActvidad=(estado)=>{
+        setActividadEdit(null);
+        setModalActividad(estado);
     }
 
     const updatevaluesproducto=(producto)=>{
@@ -87,6 +115,20 @@ export const OrdenServicioEdit = ({history,  match}) => {
         setProductoEdit(null);
         setModalProducto(false);
     }
+
+    const updatevaluesactividad=(actividad)=>{
+        var  actividadindex =  listaActividades.findIndex(x => x.id === actividad.id);
+
+        if (actividadindex >= 0) {
+            listaActividades[actividadindex].descripcionactividad = actividad.descripcionactividad;
+            setListaActividades(listaActividades);
+        } else {
+            setListaActividades([...listaActividades,actividad])
+        }
+        
+        setActividadEdit(null);
+        setModalActividad(false);
+    }
     
     const deleteProducto = key => {
         var data = $.grep(listaProductos, function(e){
@@ -95,11 +137,37 @@ export const OrdenServicioEdit = ({history,  match}) => {
        setListaProductos(data);
     };
 
+    const deleteActividad = key => {
+        var data = $.grep(listaActividades, function(e){
+            return e.id !== key;
+       });
+       setListaActividades(data);
+    };
+
+    const buscarProfesional = async () => {
+        if (ordenServicio.dniinvitado && ordenServicio.dniinvitado.length === 8){
+            let prof= await getUsuario(ordenServicio.dniinvitado);
+
+            if (prof) {
+                $('#nombreinvitado').val(prof.nombres);
+                $('#apellidoinvitado').val(prof.apellidos);
+                $('#direccioninvitado').val(prof.direccion);
+                ordenServicio.nombreinvitado = prof.nombres;
+                ordenServicio.apellidoinvitado = prof.apellidos;
+                ordenServicio.direccioninvitado = prof.direccion;
+                setOrdenServicio(ordenServicio);
+            } else {
+                toastr.warning('Búsqueda de Profesional','No se encontró algún profesional con el DNI ingresado', {position: 'top-center'});
+            }
+        }
+    }
+
     const actualizar = async e => {
         e.preventDefault();
     
         ordenServicio.monitorid = usuarioMonitor;
-        ordenServicio.producto = listaProductos;
+        ordenServicio.Producto = listaProductos;
+        ordenServicio.Actividad = listaActividades;
 
         $('#btnguardar').button('loading');
     
@@ -131,15 +199,9 @@ export const OrdenServicioEdit = ({history,  match}) => {
                                 <Select value={ordenServicio.areaid || ""}
                                     onChange={handleInputChange}
                                     name={"areaid"}>
-                                    {listaSubAreas.result ? (
-                                    <ComboOptionsGroup
-                                    data={listaSubAreas.result}
-                                    valorkey="id"
-                                    valornombre="nombre"
-                                    valornombregrupo="nombre"
-                                    grupojson="SubArea"
-                                    />
-                                    ) : "Cargando..."}
+                                    {listaAreas.result?
+                                    <ComboOptions data={listaAreas.result} valorkey="id" valornombre="nombre"/>
+                                    : "Cargando..."}
                                 </Select>
                             </FormGroup>
                             <FormGroup label={"Objetivo"} >
@@ -192,6 +254,23 @@ export const OrdenServicioEdit = ({history,  match}) => {
                             </FormGroup>
                         </Row6>
                     </div>
+                    <Row12 title={"Actividades / Alcances"}>
+                    <div>
+                        <div className="col-lg-10">
+                            {(listaActividades && Array.isArray(listaActividades) && listaActividades.length > 0) &&
+                            <TableActividad 
+                                data={listaActividades}
+                                deleteactividad={deleteActividad}
+                                editactividad={cargarEditarActividad} >
+                            </TableActividad>
+                            }
+                        </div>
+                        <div className="col-lg-2 text-right">
+                            <button className="btn btn-sm btn-info" type="button" onClick={showModalActividad}>
+                            <i className="fa fa-plus fa-lg" /> Añadir actividad</button>
+                        </div>
+                    </div>
+                </Row12>
                     <Row12 title={"Entregables / Productos"}>
                         <div>
                             <div className="col-lg-10">
@@ -212,12 +291,26 @@ export const OrdenServicioEdit = ({history,  match}) => {
                     </Row12>
                     <Row12 title={"Datos del Invitado"}>
                         <Row6>
-                            <FormGroup label={"DNI del Invitado"} >
-                                <Input value={ordenServicio.dniinvitado || ""} onChange={handleInputChange}
-                                    name={"dniinvitado"} placeholder={"Ingrese el DNI del invitado"}
-                                    type={"text"}>
-                                </Input>
-                            </FormGroup>
+                            <div className="form-group">
+                                <label className="col-lg-4 control-label">
+                                    DNI del Invitado</label>
+                                <div className="col-lg-7">
+                                    <Input value={ordenServicio.dniinvitado || ""} onChange={handleInputChange}
+                                        name={"dniinvitado"} placeholder={"Ingrese el DNI del invitado"}
+                                        type={"text"}>
+                                    </Input>
+                                </div>
+                                <div className="col-lg-1">
+                                    <a className="btn btn-default btn-sm dropdown-toggle pull-left"
+                                        data-toggle="dropdown" data-toggle="tooltip" onClick={buscarProfesional}
+                                        data-original-title={`Buscar en Base de Profesionales`}>
+                                        <i className="fa fa-refresh"></i>
+                                    </a>    
+                                </div>
+                            </div>
+                            {/* <FormGroup label={"DNI del Invitado"} >
+                            
+                            </FormGroup> */}
                             <FormGroup label={"Nombre del Invitado"} >
                                 <Input value={ordenServicio.nombreinvitado || ""} onChange={handleInputChange}
                                     name={"nombreinvitado"} placeholder={"Ingrese el nombre del invitado"}
@@ -321,6 +414,8 @@ export const OrdenServicioEdit = ({history,  match}) => {
             </Form>
             {modalProducto && <MAddEntregable closeventana={cerrarModal} usevalue={updatevaluesproducto} 
                             dataproducto={productoEdit}/> }
+            {modalActividad && <MAddActividad closeventana={cerrarModalActvidad} usevalue={updatevaluesactividad} 
+                    dataactividad={actividadEdit}/> }
         </WraperLarge>
         </>
   );

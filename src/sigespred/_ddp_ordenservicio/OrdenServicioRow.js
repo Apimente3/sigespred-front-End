@@ -2,7 +2,7 @@ import React, { useEffect }  from 'react';
 import {Link} from "react-router-dom";
 const {$} = window;
 
-export const OrdenServicioRow = ( {ordenservicio, nro}) => {
+export const OrdenServicioRow = ( {ordenservicio, nro, loadentregables}) => {
 
     useEffect(() => {
         const init = async () => {
@@ -10,6 +10,10 @@ export const OrdenServicioRow = ( {ordenservicio, nro}) => {
         };
         init();
     }, []);
+
+    const cargarPopup = (osid) => {
+        loadentregables(osid);
+    }
 
     return (
         <>
@@ -21,6 +25,15 @@ export const OrdenServicioRow = ( {ordenservicio, nro}) => {
                 <td key={`tdrowkey_6${nro}`}>{ordenservicio.monitor}</td>
                 <td key={`tdrowkey_12${nro}`}>{ordenservicio.montosueldo}</td>
                 <td key={`tdrowkey_11${nro}`}>{ordenservicio.duracionservicio}</td>
+                <td key={`tdrowkey_14${nro}`} className="pull-center">
+                    {ordenservicio.entregables === '0'?
+                        ordenservicio.entregables
+                        :
+                        <a onClick={() => cargarPopup(ordenservicio.id)} className="cursorpointer">
+                            {ordenservicio.entregables}
+                        </a>
+                    }
+                    </td>
                 <td key={`tdrowkey_13${nro}`} className="acciones-3bot">
                     <div key={`divrowkey_${nro}`} className="btn-group pull-right">
                         {/* <Link  to={`/solicitud-respuesta/${ordenservicio.id}`}  className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip" data-placement="bottom" data-original-title={ "Respuesta a Solicitud" }><i

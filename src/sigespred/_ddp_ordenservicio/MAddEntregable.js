@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toastr } from "react-redux-toastr";
 import moment from 'moment';
+const {$} = window;
 
 const MAddEntregable = ({closeventana, usevalue, dataproducto = null}) => {
     const [producto, setProducto] = useState({});
@@ -9,6 +10,7 @@ const MAddEntregable = ({closeventana, usevalue, dataproducto = null}) => {
         function initialLoad() {
                 if(dataproducto){
                     setProducto(dataproducto);
+                    $('#detalleentregable').val(dataproducto.detalleentregable);
                 } else { 
                     var idDate = moment().format("HHmmss");
                     setProducto({
@@ -35,7 +37,7 @@ const MAddEntregable = ({closeventana, usevalue, dataproducto = null}) => {
     const handleInputChange=(e)=>{
         setProducto({
             ...producto,
-            [e.target.name]: e.target.value.toUpperCase()
+            [e.target.name]: e.target.value
         });
     }
     
@@ -104,9 +106,9 @@ const MAddEntregable = ({closeventana, usevalue, dataproducto = null}) => {
                                     <span className="obligatorio">* </span>Detalle del Entregable / Producto
                                 </label>
                                 <div className="col-lg-8">
-                                    <textarea className="form-control input-sm noresize uppercaseinput" placeholder="INGRESE EL DETALLE DEL ENTREGABLE / PRODUCTO"
-                                    rows="4" name="detalleentregable" onChange={handleInputChange} required
-                                    value={producto.detalleentregable || ""}
+                                    <textarea className="form-control input-sm noresize" placeholder="INGRESE EL DETALLE DEL ENTREGABLE / PRODUCTO"
+                                    rows="4" id="detalleentregable" name="detalleentregable" onChange={handleInputChange} required
+                                    // value={producto.detalleentregable || ""}
                                     >
                                     </textarea>
                                 </div>

@@ -12,6 +12,7 @@ import { OrdenServicioRow } from "./OrdenServicioRow";
 import Pagination from "react-js-pagination";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import Autocomplete from '../../components/helpers/Autocomplete';
+import MViewEntregables from './MViewEntregables'
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -23,6 +24,11 @@ async function buscarOrdenServicio(query) {
     return data;
   }
 
+async function buscarProductoOrdenServicio(idos) {
+const { data } = await Axios.get(`/producto/${idos}`);
+return data;
+}
+
 const OrdenServicioList = () => {
     const listaUsuarios = useAsync(helperGets.helperGetListaLocadores, []);
     const [filtros, setFiltros] = useState({});
@@ -31,6 +37,9 @@ const OrdenServicioList = () => {
     const [busqueda, setBusqueda] = useState("");
     const [cargandoGrid, setCargandoGrid] = useState(true);
     const [reiniciarUsuario, setReiniciarUsuario] = useState(false);
+    const [mostrarPopup, setMostrarPopup] = useState(false);
+    const [productosOs, setProductosOs] = useState('');
+    const [idOs, setIdOs] = useState('');
 
     useEffect(() => {
         async function initialLoad() {
@@ -62,6 +71,7 @@ const OrdenServicioList = () => {
         setFiltros({});
         ejecutarOrdenFilter('');
     }
+
     const buscarOrdenFilter =async (e)=>{
         let valorFiltros = '';
         if (filtros) {
@@ -107,6 +117,57 @@ const OrdenServicioList = () => {
         changePage(pageNumber,listOrdenes);
     }
 
+    const cargarPopupEntregables = async (idos) => {
+        if(idos) {
+            try {        
+                var listaProductos = await buscarProductoOrdenServicio(idos);
+                
+              } catch (e) {
+                  toastr.error('Productos/Entregables de Orden de Servicio', `Se ha encontrado un error: ${e.message}`, {position: 'top-right'})
+                  return;
+              }
+
+              if(listaProductos) {
+                setIdOs(idos);
+                setProductosOs(listaProductos);
+                setMostrarPopup(true);
+              }
+        }
+    }
+
+    const cerrarModal=(estado)=>{
+        setMostrarPopup(estado);
+        setProductosOs(null);
+    }
+
+    const descargarXls = async() =>{
+        let numfilas = list.count;
+
+        if (!numfilas || numfilas === "0") {
+            toastr.warning('Listado de Ordenes de Servicio', "No se encontrarón registros", {position: 'top-center'});
+            return;
+        }
+
+        let query =  await  queryString.stringify({page:1, numfilas});
+        if(busqueda) {
+            query += `&${busqueda}`;
+        }
+        let listaOrdenes = await buscarOrdenServicio(query);
+
+        let listexportexcel = listaOrdenes.rows;
+        
+        var resultjson = alasql(`SELECT id, monitor, area, objetivo, duracionservicio, montosueldo, profesionalinvitado,
+                                dniinvitado, fecharespuesta, nrorequerimiento, entregables
+                                FROM ? ORDER BY id DESC`, [listexportexcel])
+
+        var opts = [{
+            sheetid: 'Reporte',
+            headers: true
+        }];
+        var res = alasql('SELECT INTO XLSX("ListadoOrdenes.xlsx",?) FROM ?', [opts, [resultjson]]);
+        return false;
+    }
+
     const cabecerasTabla = [
     "",
     "ID",
@@ -115,6 +176,7 @@ const OrdenServicioList = () => {
     "COORDINADOR/MONITOR",
     "MONTO TOTAL",
     "DURACIÓN (DÍAS)",
+    "ENTREGABLES",
     "ACCIONES"
     ];
   return (
@@ -186,7 +248,7 @@ const OrdenServicioList = () => {
                     </div>
                     <div className="col-md-6 text-right">
                         <button type="button" 
-                        // onClick={descargarXls} 
+                        onClick={descargarXls} 
                         className="btn btn-default btn-sm fullborder">
                             <i className="fa fa-file-excel-o"></i> Descargar Excel
                         </button>
@@ -205,7 +267,7 @@ const OrdenServicioList = () => {
                 <>
                 <Table cabecera={cabecerasTabla}>
                     {list.rows.map((ordenservicio, i) => (
-                        <OrdenServicioRow nro={i} ordenservicio={ordenservicio}></OrdenServicioRow>
+                        <OrdenServicioRow nro={i} ordenservicio={ordenservicio} loadentregables={cargarPopupEntregables}></OrdenServicioRow>
                     ))}        
                 </Table>
                 <div className="panel-footer clearfix pull-right">
@@ -221,6 +283,7 @@ const OrdenServicioList = () => {
                 )
             }
             </div>
+            {mostrarPopup && <MViewEntregables closeventana={cerrarModal} listaproductos={productosOs} idos={idOs} />}
       </WraperLarge>
     </>
   );

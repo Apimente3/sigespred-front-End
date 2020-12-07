@@ -7,6 +7,7 @@ const Input = ({required,type,placeholder,name,onChange,value,pattern,title,read
                    type={type}
                    className="form-control input-sm center-date"
                    placeholder={placeholder}
+                   id={name}
                    name={name}
                    onChange={onChange}
                    value={value}
