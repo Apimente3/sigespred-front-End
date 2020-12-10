@@ -24,6 +24,7 @@ import RouteModBlog from './_ddp_RouteModBlog';
 import RouteModTramo from './_ddp_RouteModTramo';
 import RouteModPredio from './_ddp_RouteModPredio';
 import RouteModCategoria from './_ddp_RouteModCategoria';
+import RouteModPlantillaImpresion from './_ddp_RouteModPlantillaImpresion';
 
  
 export default [
@@ -40,7 +41,7 @@ export default [
     ...RouteModPredio,
     ...RouteModBlog,
     ...RouteModCategoria,
-
+    ...RouteModPlantillaImpresion,
 
     ...RouteMod02GestionTrabajadores,
     ...RouteMod03GestionProyectos,

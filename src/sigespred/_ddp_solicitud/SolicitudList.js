@@ -29,7 +29,6 @@ async function buscarSolicitud(query) {
 
 const SolicitudList = ({history}) => {
     const resListaProyectos = useAsync(helperGets.helperGetListProyectos, []);
-    //const resListaEntidades = useAsync(helperGets.helperGetListEntidades, []);
     const resListaTipoSolic = useAsync(helperGets.helperGetListDetalle, [PARAMS.LISTASIDS.TIPOSOLICEXT]);
     const listaEntidades = useAsync(helperGets.helperGetListaAutoEntidad, []);
 
@@ -366,7 +365,6 @@ const SolicitudList = ({history}) => {
                     )
                 }
             </div>
-            {/* {mostrarPopup && <MArcDigital closeventana={cerrarModal} codplano={codPlanoPopup} archivosdescargar={archivosPopup}/>} */}
         </WraperLarge>
         </>
     );

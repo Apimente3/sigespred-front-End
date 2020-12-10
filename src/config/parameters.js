@@ -61,8 +61,8 @@ export const LISTASIDS = {
         LISTACONSTRUCCION:31,
         LISTARIESGO:32,
         LISTAAGRICOLA:33,
-        LISTAGANADERIA:34
-
+        LISTAGANADERIA:34,
+        LISTATIPOPRINTTEMP:35
     }
 
 export const FilesUsuario={
@@ -83,4 +83,9 @@ export const FilesIndicador={
 
 export const FilesOrdenServicio={
     "FilesOrdenes":"FilesDDP/Ordenes/Files",
+}
+
+export const FilesPlantillaImpresion={
+    //Si se modifica, modificar en el backend tambien
+    "FilesPlantillas":"FilesDDP/Plantillas/plantillasprint/",
 }

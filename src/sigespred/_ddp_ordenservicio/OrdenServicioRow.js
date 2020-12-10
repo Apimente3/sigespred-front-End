@@ -2,7 +2,7 @@ import React, { useEffect }  from 'react';
 import {Link} from "react-router-dom";
 const {$} = window;
 
-export const OrdenServicioRow = ( {ordenservicio, nro, loadentregables}) => {
+export const OrdenServicioRow = ( {ordenservicio, nro, loadentregables, loadprintdocs}) => {
 
     useEffect(() => {
         const init = async () => {
@@ -13,6 +13,10 @@ export const OrdenServicioRow = ( {ordenservicio, nro, loadentregables}) => {
 
     const cargarPopup = (osid) => {
         loadentregables(osid);
+    }
+
+    const cargarPopupPrint = (osid) => {
+        loadprintdocs(osid);
     }
 
     return (
@@ -40,9 +44,8 @@ export const OrdenServicioRow = ( {ordenservicio, nro, loadentregables}) => {
                             className="fa fa-envelope fa-lg "></i></Link> */}
                         <Link  to={`/orden-edit/${ordenservicio.id}`}  className="btn btn-xs btn-default mright-5" type="button" data-toggle="tooltip" data-original-title={ "Editar Orden de Servicio" }><i
                             className="fa fa-edit fa-lg"></i></Link>
-                        {/* <a key={`arowkey_${nro}`} onClick={() => eliminar(solicitud.id, solicitud.nrooficio)}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Eliminar Solicitud" }><i
-                            className="fa fa-trash-o fa-lg"></i></a> */}
-
+                        <a key={`arowkey_${nro}`} onClick={() => cargarPopupPrint(ordenservicio.id)}  className="btn btn-xs btn-default" type="button" data-toggle="tooltip" data-original-title={ "Generar Documento TDR" }><i
+                            className="fa fa-print fa-lg"></i></a>
                     </div>
                 </td>
             </tr>

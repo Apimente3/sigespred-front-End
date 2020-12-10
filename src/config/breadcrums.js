@@ -265,3 +265,12 @@ export const EDICION_REQOS_BREADCRUM = [
     {link: "/orden-list", name: "Listado de Requerimientos (Ordenes de Servicio)"},
     {link: "#", name: "Edición de Datos de Requerimiento (Orden de Servicio)"}
 ]
+
+export const EDICION_PLANTILLAIMP_BREADCRUM = [
+    {link: "/printtemp-list", name: "Listado de Plantillas de Impresión"},
+    {link: "#", name: "Edición de Datos de Plantilla"}
+]
+
+export const LISTADO_PLANTILLAIMP_BREADCRUM = [
+    {link: "#", name: "Listado de Plantillas de Impresion"}   
+]

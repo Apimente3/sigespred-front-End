@@ -12,7 +12,8 @@ import { OrdenServicioRow } from "./OrdenServicioRow";
 import Pagination from "react-js-pagination";
 import * as helperGets from "../../components/helpers/LoadMaestros";
 import Autocomplete from '../../components/helpers/Autocomplete';
-import MViewEntregables from './MViewEntregables'
+import MViewEntregables from './MViewEntregables';
+import MGenReqDocumento from './MGenReqDocumento';
 
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
@@ -38,8 +39,10 @@ const OrdenServicioList = () => {
     const [cargandoGrid, setCargandoGrid] = useState(true);
     const [reiniciarUsuario, setReiniciarUsuario] = useState(false);
     const [mostrarPopup, setMostrarPopup] = useState(false);
+    const [mostrarPopupDocumento, setMostrarPopupDocumento] = useState(false);
     const [productosOs, setProductosOs] = useState('');
     const [idOs, setIdOs] = useState('');
+    const [idOsDocumento, setIdOsDocumento] = useState('');
 
     useEffect(() => {
         async function initialLoad() {
@@ -135,9 +138,20 @@ const OrdenServicioList = () => {
         }
     }
 
+    const cargarPopupDocumentos = (idos) => {
+        if(idos) {
+            setIdOsDocumento(idos);
+            setMostrarPopupDocumento(true);
+        }
+    }
+
     const cerrarModal=(estado)=>{
         setMostrarPopup(estado);
         setProductosOs(null);
+    }
+
+    const cerrarModalDocumento=(estado)=>{
+        setMostrarPopupDocumento(estado);
     }
 
     const descargarXls = async() =>{
@@ -267,7 +281,8 @@ const OrdenServicioList = () => {
                 <>
                 <Table cabecera={cabecerasTabla}>
                     {list.rows.map((ordenservicio, i) => (
-                        <OrdenServicioRow nro={i} ordenservicio={ordenservicio} loadentregables={cargarPopupEntregables}></OrdenServicioRow>
+                        <OrdenServicioRow nro={i} ordenservicio={ordenservicio} loadentregables={cargarPopupEntregables} 
+                        loadprintdocs={cargarPopupDocumentos} />
                     ))}        
                 </Table>
                 <div className="panel-footer clearfix pull-right">
@@ -284,6 +299,7 @@ const OrdenServicioList = () => {
             }
             </div>
             {mostrarPopup && <MViewEntregables closeventana={cerrarModal} listaproductos={productosOs} idos={idOs} />}
+            {mostrarPopupDocumento && <MGenReqDocumento closeventana={cerrarModalDocumento} idos={idOsDocumento} />}
       </WraperLarge>
     </>
   );
