@@ -11,6 +11,7 @@ import { Loading } from "../../components/forms";
 import { OrdenServicioRow } from "./OrdenServicioRow";
 import Pagination from "react-js-pagination";
 import * as helperGets from "../../components/helpers/LoadMaestros";
+import * as PARAMS from "../../config/parameters";
 import Autocomplete from '../../components/helpers/Autocomplete';
 import MViewEntregables from './MViewEntregables';
 import MGenReqDocumento from './MGenReqDocumento';
@@ -32,6 +33,7 @@ return data;
 
 const OrdenServicioList = () => {
     const listaUsuarios = useAsync(helperGets.helperGetListaLocadores, []);
+    const listaTipoPlantilla = useAsync(helperGets.helperGetListPrintTempPorTipo, [PARAMS.listaplantillas.generaciontdr]);
     const [filtros, setFiltros] = useState({});
     const [contentMessage, set_contentMessage] = useState("");
     const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
@@ -299,7 +301,8 @@ const OrdenServicioList = () => {
             }
             </div>
             {mostrarPopup && <MViewEntregables closeventana={cerrarModal} listaproductos={productosOs} idos={idOs} />}
-            {mostrarPopupDocumento && <MGenReqDocumento closeventana={cerrarModalDocumento} idos={idOsDocumento} />}
+            {mostrarPopupDocumento && <MGenReqDocumento closeventana={cerrarModalDocumento} idos={idOsDocumento} 
+            listaplantillas={listaTipoPlantilla.result} />}
       </WraperLarge>
     </>
   );

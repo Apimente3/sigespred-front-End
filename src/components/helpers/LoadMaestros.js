@@ -100,3 +100,8 @@ export const helperGetListEquipos = async(params) => {
         const {data:equipos} = await Axios.get(`/equipolista`);
         return {equipos};
 }
+
+export const helperGetListPrintTempPorTipo = async(params) => {
+    const {data:plantillas} = await Axios.get(`/listaplantillaimpresion/${params}`);
+    return {plantillas};
+}

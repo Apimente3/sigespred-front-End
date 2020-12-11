@@ -65,6 +65,10 @@ export const LISTASIDS = {
         LISTATIPOPRINTTEMP:35
     }
 
+export const listaplantillas = {
+        generaciontdr:224
+    }
+
 export const FilesUsuario={
     "fotosUsuario":"FilesDDP/Usuario/Fotos",
     "fotos":"FilesDDP/Usuario/Fotos",

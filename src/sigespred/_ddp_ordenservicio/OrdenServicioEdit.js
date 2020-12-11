@@ -164,6 +164,16 @@ export const OrdenServicioEdit = ({history,  match}) => {
 
     const actualizar = async e => {
         e.preventDefault();
+
+        if (!(Array.isArray(listaProductos) && listaProductos.length)) {
+            toastr.warning('Edición de Requerimiento / Orden de Servicio','Se requiere registrar los entregables.', {position: 'top-center'});
+            return;
+        }
+        
+        if (!(Array.isArray(listaActividades) && listaActividades.length)) {
+            toastr.warning('Edición de Requerimiento / Orden de Servicio','Se requiere registrar las actividades.', {position: 'top-center'});
+            return;
+        }
     
         ordenServicio.monitorid = usuarioMonitor;
         ordenServicio.Producto = listaProductos;
@@ -189,10 +199,10 @@ export const OrdenServicioEdit = ({history,  match}) => {
                 <RowForm>
                     <Row12 title={"Datos del Requerimiento"}>
                         <Row6>
-                            <FormGroup label={"Nro. de Requerimiento"} require={true}>
+                            <FormGroup label={"Nro. de Requerimiento"} >
                                 <Input value={ordenServicio.nrorequerimiento || ""} onChange={handleInputChange}
                                     name={"nrorequerimiento"} placeholder={"Ingrese el Nro. de Requerimiento"}
-                                    required={true} type={"text"}>
+                                    type={"text"}>
                                 </Input>
                             </FormGroup>
                             <FormGroup label={"Área"} >
@@ -204,9 +214,9 @@ export const OrdenServicioEdit = ({history,  match}) => {
                                     : "Cargando..."}
                                 </Select>
                             </FormGroup>
-                            <FormGroup label={"Objetivo"} >
+                            <FormGroup label={"Objetivo"} require={true}>
                                 <textarea className="form-control input-sm noresize" placeholder="Ingrese el Objetivo del Requerimiento"
-                                rows="4" name="objetivo" onChange={handleInputChange} 
+                                rows="4" name="objetivo" onChange={handleInputChange}  required
                                 value={ordenServicio.objetivo || ""}
                                 >
                                 </textarea>
@@ -218,17 +228,17 @@ export const OrdenServicioEdit = ({history,  match}) => {
                                 ? <Autocomplete listaDatos={listaUsuarios.result} callabck={setMonitor}  valorinit={ordenServicio.monitorid}/>
                                 : "Cargando..."}
                             </FormGroup>
-                            <FormGroup label={"Duración del Servicio (días)"} >
+                            <FormGroup label={"Duración del Servicio (días)"} require={true} >
                                 <input type="number" min="10" max="120" step="1" className="form-control input-sm" 
-                                    id="duracionservicio" name="duracionservicio" 
+                                    id="duracionservicio" name="duracionservicio" required={true}
                                     value={ordenServicio.duracionservicio || ""}
                                     placeholder="Ingrese la Duración del Servicio"
                                     onChange={handleInputChange}
                                 />
                             </FormGroup>
-                            <FormGroup label={"Finalidad Pública"} >
+                            <FormGroup label={"Finalidad Pública"} require={true}>
                                 <textarea className="form-control input-sm noresize" placeholder="Ingrese la Finalidad Pública"
-                                    rows="8" name="finalidadpublica" onChange={handleInputChange} 
+                                    rows="8" name="finalidadpublica" onChange={handleInputChange} required
                                     value={ordenServicio.finalidadpublica || ""}
                                     >
                                 </textarea>
@@ -237,10 +247,10 @@ export const OrdenServicioEdit = ({history,  match}) => {
                     </Row12>
                     <div className="row">
                         <Row6>
-                            <FormGroup label={"Monto Total"} >
+                            <FormGroup label={"Monto Total"} require={true} >
                                 <Input value={ordenServicio.montosueldo || ""} onChange={handleInputChange}
                                     name={"montosueldo"} placeholder={"Ingrese el monto/sueldo total"}
-                                    pattern="^\d{1,10}(\.\d{1,2})?$"
+                                    pattern="^\d{1,10}(\.\d{1,2})?$" required={true}
                                     type={"text"}>
                                 </Input>
                             </FormGroup>

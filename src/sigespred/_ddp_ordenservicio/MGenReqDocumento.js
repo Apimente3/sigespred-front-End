@@ -2,32 +2,44 @@ import React, { useState, useEffect } from "react";
 import { toastr } from "react-redux-toastr";
 import {serverFile} from "../../config/axios";
 import {initAxiosInterceptors} from "../../config/axios";
+import ComboOptions from "../../components/helpers/ComboOptions";
 
 const Axios = initAxiosInterceptors();
 const {$} = window;
 
-async function generarDocumento(idos) {
-    const {data} = await Axios.get(`/ordenservicioprint/${idos}`);
+async function genDocumento(idos,idplantilla) {
+    const {data} = await Axios.get(`/ordenservicioprint/${idos}?idplantilla=${idplantilla}`);
     return data;
 }
 
-const MGenReqDocumento = ({closeventana, idos}) => {
-    const [mensajeResultado, setMensajeResultado] = useState('El archivo se esta generando...');
+const MGenReqDocumento = ({closeventana, idos, listaplantillas}) => {
+    console.log(listaplantillas);
+    const [mensajeResultado, setMensajeResultado] = useState('');
     const [archivoResultado, setArchivoResultado] = useState('');
-    useEffect(() => {
-        async function initialLoad() {
-                if(idos){
-                    try {
-                        let filepath = await generarDocumento(idos);
-                        setMensajeResultado(`Se genero el archivo TDR para el requerimiento con id: ${idos}`);
-                        setArchivoResultado(filepath);
-                    } catch (error) {
-                        toastr.error('Generación de TDR', 'Se encontró un error al intentar generar el archivo.', {position: 'top-center'})
-                    }
-                }
+    const [valorPlantilla, setValorPlantilla] = useState('');
+    
+    const handleInputChange = (e) => {
+        setValorPlantilla(e.target.value)
+    }
+
+    const generarDocumento = async() => {
+       if(!valorPlantilla) {
+            toastr.warning('Generación de TDR', "Debe seleccionar un plantilla. ");
+            return
         }
-        initialLoad();
-    }, []);
+        $('#btngenerar').button('loading');
+        if(idos){
+            try {
+                setMensajeResultado('El archivo se esta generando...')
+                let filepath = await genDocumento(idos, valorPlantilla);
+                setMensajeResultado(`Se genero el archivo TDR para el requerimiento con id: ${idos}`);
+                setArchivoResultado(filepath);
+            } catch (error) {
+                toastr.error('Generación de TDR', 'Se encontró un error al intentar generar el archivo.', {position: 'top-center'})
+            }
+        }
+        $('#btngenerar').button('reset');
+    }
 
     const closeModal=()=>{      
         closeventana(false);
@@ -50,6 +62,29 @@ const MGenReqDocumento = ({closeventana, idos}) => {
                         <div className=" " style={{width: '600px'}}>
                             <div className="modal-header">
                                 <h4>Generación de Documento TDR</h4>
+                            </div>
+                            <div className="mtop-10 mleft-20">
+                                Seleccione la Plantilla a Usar
+                            </div>
+                            <div className="form-group mtop-10">
+                                        <label className="col-lg-4 control-label">
+                                            <span className="obligatorio">* </span>Plantilla
+                                        </label>
+                                        <div className="col-lg-8">
+                                            <select className="form-control input-sm" id="templateid" name="templateid"
+                                                onChange={handleInputChange}
+                                                >
+                                                <option value="">--SELECCIONE--</option>
+                                                {listaplantillas &&
+                                                <ComboOptions data={listaplantillas} valorkey="id" valornombre="nombre" />
+                                                }
+                                            </select>
+                                        </div>
+                            </div>
+                            <div className="form-group text-right">
+                                <button id="btngenerar" type="button" onClick={generarDocumento} className="btn btn-info btn-sm fullborder">
+                                    <i className="fa fa-file-word-o"></i> Generar TDR
+                                </button>
                             </div>
                             <div className="form-group mtop-10">
                                 <label className="col-lg-12">
