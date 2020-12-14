@@ -47,12 +47,12 @@ const PlantillaImpresionEdit = ({history, match}) => {
 
     useEffect(() => {
         const init = async () => {
-            console.log(id);
             if (id) {
                 try{
                 setNuevoPlantillaImpresion(false);
                 let PlantillaImpresionEdit= await getPlantillaImpresion(id);
                 setPlantillaImpresion(PlantillaImpresionEdit);
+                setValorTexto(PlantillaImpresionEdit.tipomodulovalor);
                 } catch(e){
                     toastr.error('Editar Plantilla', "Se encontró un error: " +  e);
                     history.push(`/printtemp-list`)
@@ -74,8 +74,12 @@ const PlantillaImpresionEdit = ({history, match}) => {
         e.preventDefault();
 
          $('#btnguardar').button('loading');
-         plantillaImpresion.nombrearchivo = plantillaImpresion.rutaarchivo.filename;
+         let posSlash = plantillaImpresion.rutaarchivo.path.lastIndexOf('/');
+         let nomArchivo = plantillaImpresion.rutaarchivo.path.substring(posSlash + 1);
+
+         plantillaImpresion.nombrearchivo = nomArchivo;
          plantillaImpresion.tipomodulovalor = valorTexto;
+
          try {
             if (nuevoPlantillaImpresion) {
                 await addPlantillaImpresion(plantillaImpresion);
@@ -121,7 +125,7 @@ const PlantillaImpresionEdit = ({history, match}) => {
                             <SingleUpload
                                     key="rutaarchivo"
                                     accept={'.docx'}
-                                    folderSave={PARAMS.FilesPlantillaImpresion}
+                                    folderSave={PARAMS.FilesPlantillaImpresion.FilesPlantillas}
                                     form={plantillaImpresion}
                                     setForm={setPlantillaImpresion}
                                     nameUpload={"rutaarchivo"}

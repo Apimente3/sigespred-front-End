@@ -214,11 +214,18 @@ export const OrdenServicioEdit = ({history,  match}) => {
                                     : "Cargando..."}
                                 </Select>
                             </FormGroup>
-                            <FormGroup label={"Objetivo"} require={true}>
+                            <FormGroup label={"Objeto"} require={true}>
                                 <textarea className="form-control input-sm noresize" placeholder="Ingrese el Objetivo del Requerimiento"
                                 rows="4" name="objetivo" onChange={handleInputChange}  required
                                 value={ordenServicio.objetivo || ""}
                                 >
+                                </textarea>
+                            </FormGroup>
+                            <FormGroup label={"Finalidad Pública"} require={true}>
+                                <textarea className="form-control input-sm noresize" placeholder="Ingrese la Finalidad Pública"
+                                    rows="7" name="finalidadpublica" onChange={handleInputChange} required
+                                    value={ordenServicio.finalidadpublica || ""}
+                                    >
                                 </textarea>
                             </FormGroup>
                         </Row6>
@@ -236,17 +243,6 @@ export const OrdenServicioEdit = ({history,  match}) => {
                                     onChange={handleInputChange}
                                 />
                             </FormGroup>
-                            <FormGroup label={"Finalidad Pública"} require={true}>
-                                <textarea className="form-control input-sm noresize" placeholder="Ingrese la Finalidad Pública"
-                                    rows="8" name="finalidadpublica" onChange={handleInputChange} required
-                                    value={ordenServicio.finalidadpublica || ""}
-                                    >
-                                </textarea>
-                        </FormGroup>
-                        </Row6>
-                    </Row12>
-                    <div className="row">
-                        <Row6>
                             <FormGroup label={"Monto Total"} require={true} >
                                 <Input value={ordenServicio.montosueldo || ""} onChange={handleInputChange}
                                     name={"montosueldo"} placeholder={"Ingrese el monto/sueldo total"}
@@ -254,16 +250,21 @@ export const OrdenServicioEdit = ({history,  match}) => {
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
-                        </Row6>
-                        <Row6>
                             <FormGroup label={"Observaciones"} >
                                 <Input value={ordenServicio.observaciones || ""} onChange={handleInputChange}
                                     name={"observaciones"} placeholder={"Ingrese alguna observación o comentario"}
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
+                            <FormGroup label={"Perfil del Profesional"} require={true} ayuda="Ingrese cada detalle en una nueva línea">
+                                <textarea className="form-control input-sm noresize" placeholder="Ingrese el perfil del profesional"
+                                    rows="8" name="perfilprofesional" onChange={handleInputChange} required
+                                    value={ordenServicio.perfilprofesional || ""}
+                                    >
+                                </textarea>
+                            </FormGroup>
                         </Row6>
-                    </div>
+                    </Row12>
                     <Row12 title={"Actividades / Alcances"}>
                     <div>
                         <div className="col-lg-10">
@@ -280,7 +281,7 @@ export const OrdenServicioEdit = ({history,  match}) => {
                             <i className="fa fa-plus fa-lg" /> Añadir actividad</button>
                         </div>
                     </div>
-                </Row12>
+                    </Row12>
                     <Row12 title={"Entregables / Productos"}>
                         <div>
                             <div className="col-lg-10">
