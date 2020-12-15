@@ -989,3 +989,34 @@ video {
 .noresize {
     resize: none;
 }
+
+.cardBlog{
+    width: 100%;
+    background: #fff;
+}
+
+.containerBlog{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+.blogPost {
+    width: 70%;
+    background: #fff;
+}
+.sidebarBlog {
+    width: 25%;
+    background: #fff;
+}
+.post-content {
+    min-height: 200px;
+  }
+
+  .no-post {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .photoBlog {
+    /* height: 400px; */
+    width: 400px;
+  }
