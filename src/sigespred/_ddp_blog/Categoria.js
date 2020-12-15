@@ -16,7 +16,8 @@ const { alasql } = window;
 const { $ } = window;
 
 async function buscarCategoria(query) {
-    const { data } = await Axios.get(`/categoria?` + query);
+  
+    const { data } = await Axios.get(`/categoria1/buscarcategoria?` + query);
     return data;
   }
 
@@ -146,7 +147,7 @@ export const Categoria = () => {
                     <div className="col-lg-4">
                     <input
                         type="text"
-                        className="form-control input-sm"
+                        className="form-control input-sm"R
                         id="descripcion"
                         name="descripcion"
                         placeholder="Categoria"

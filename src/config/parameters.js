@@ -93,3 +93,7 @@ export const FilesPlantillaImpresion={
     //Si se modifica, modificar en el backend tambien
     "FilesPlantillas":"FilesDDP/Plantillas/plantillasprint/",
 }
+
+export const FilesImagenBlog={
+    "FilesImagenes":"FilesDDP/Blog/img",
+}

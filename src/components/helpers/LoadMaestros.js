@@ -12,7 +12,12 @@ export const helperGetListTipoPlano = async (busqueda = '') => {
     return {tiposplano};
 }
 
-  export const helperGetListDepartamento = async (busqueda = '') => {
+export const  helperGetListCategorias= async(busqueda = '') => {
+    const {data} = await Axios.get(`/categoria`);
+    return data;
+}
+
+export const helperGetListDepartamento = async (busqueda = '') => {
     const {data:departamentos} = await Axios.get(`/departamento`);
     return {departamentos};
 }

@@ -21,6 +21,7 @@
     "react-full-screen": "^0.3.1",
     "react-js-pagination": "^3.0.3",
     "react-leaflet": "^3.0.2",
+    "react-multiselect-checkboxes": "^0.1.1",
     "react-redux": "^7.2.1",
     "react-redux-toastr": "^7.6.5",
     "react-router-dom": "^5.2.0",
@@ -29,6 +30,7 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.2.1",
+    "suneditor-react": "^2.14.9",
     "togeojson": "^0.16.0",
     "xlsx": "^0.16.8"
   },
