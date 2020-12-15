@@ -328,7 +328,7 @@ export const OrdenServicioEdit = ({history,  match}) => {
                                     type={"text"}>
                                 </Input>
                             </FormGroup>
-                            <FormGroup label={"Apelido del Invitado"} >
+                            <FormGroup label={"Apellido del Invitado"} >
                                 <Input value={ordenServicio.apellidoinvitado || ""} onChange={handleInputChange}
                                     name={"apellidoinvitado"} placeholder={"Ingrese el apellido del invitado"}
                                     type={"text"}>
