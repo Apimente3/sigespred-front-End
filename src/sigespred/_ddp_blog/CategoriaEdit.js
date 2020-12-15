@@ -36,7 +36,7 @@ export const CategoriaEdit = ({match, history}) => {
 
     const actualizar = async (e) => {
         e.preventDefault();
-debugger;
+
         $("#btnguardar").button("loading");
         try {
           await updateCategoria(categoria);

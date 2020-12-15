@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { toastr } from 'react-redux-toastr';
 import { Link } from 'react-router-dom';
 import { Form, FormFooter, FormGroup, Input, Options, Row12, Row6, RowForm, Select, TextArea } from '../../components/forms';
@@ -7,6 +7,13 @@ import { LISTADO_BLOG_BREADCRUM } from '../../config/breadcrums';
 import { useForm } from '../../hooks/useForm';
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import {initAxiosInterceptors} from '../../config/axios';
+import { useAsync } from 'react-async-hook';
+import * as helperGets from "../../components/helpers/LoadMaestros";
+import {FilesImagenBlog} from "../../config/parameters";
+import SunEditor from 'suneditor-react';
+import 'suneditor/dist/css/suneditor.min.css'; // Import Sun Editor's CSS File
+//import ComboOptions from '../../components/helpers/ComboOptions';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 
 const rutaFolder = 'folder/MTC'
 
@@ -14,24 +21,35 @@ const {$} = window;
 const Axios = initAxiosInterceptors();
 
 
+
 async function addBlog(blog) {
     const {data} = await Axios.post(`/blog`,blog);
     return data;
 }
 
-export const BlogAdd = (history) => {
+
+
+
+export const BlogAdd = ({history}) => {
 
     const [blog, setBlog,handleInputChange, reset ] = useForm({}, []);
+    const resListaCategorias = useAsync(helperGets.helperGetListCategorias,[])
+    const [listaCategoria, setListaCategoria] = useState("");
+    const [content, setContent] = useState("");
+
+
+
+
 
     const registrar = async e => {
         e.preventDefault();
         $('#btnguardar').button('loading');
-
+        blog.contenido = content;
         try {
 
             await addBlog(blog)
             toastr.success('Registro Correcto', 'Se registro correctamente.', {position: 'top-right'});
-            //history.push('/blog');
+            history.push('/blog');
         }
         catch (e){
             toastr.error('Registro Incorrecto', JSON.stringify(e), {position: 'top-right'})
@@ -56,42 +74,76 @@ export const BlogAdd = (history) => {
                                 </Input>
                             </FormGroup>
                             <FormGroup label={"Texto de la publicacion"}>
-                                <TextArea 
-                                    required={true} 
-                                    value={blog.contenido} 
-                                    onChange={handleInputChange}
-                                    name={"contenido"} 
-                                    placeholder={"Ingrese texto del blog"}
-                                    type={"text"}>
-                                </TextArea>
+                            <SunEditor  
+                                lang="es"
+                                width="100%"
+                                height="500px"
+                                placeholder="Porfavor ingrese el contenido..."
+                                showToolbar={true}
+                                onChange={setContent}
+                                setOptions={{
+                                    buttonList: [
+                                        // default
+                                        ['undo', 'redo'],
+                                        ['bold', 'underline', 'italic', 'strike', 'subscript', 'superscript', 'list'],
+                                        ['fontColor', 'hiliteColor', 'textStyle'],
+                                        ['outdent', 'indent'],
+                                        ['table', 'link', 'image'],
+                                        ['align', 'horizontalRule',  'lineHeight'],
+                                        ['fullScreen'],
+                                        ['table' ],
+                                    ]
+                                
+                                }}
+                                />
                             </FormGroup>
                             <FormGroup label={"Categoria"}>
-                                 <Select 
+                                
+                                <ReactMultiSelectCheckboxes
+                                    options={
+                                        { label: 'categoria 1', value: 1} ,
+                                        { label: 'categoria 2', value: 2} ,
+                                        { label: 'categoria 3', value: 3} 
+                                    }
+                                 
+                                />
+                                 {/* <Select 
                                     required={true} 
                                     value={blog.categoria}
                                     onChange={handleInputChange}
                                     name={"categoria"}>
-                                    <Options 
-                                        options={[
-                                                    {id: 1, value: "CATEGORIA 1"}, 
-                                                    {id: 2, value: "CATEGORIA2"}]} 
-                                        index={"id"}
-                                        valor={"value"}>
-                                    </Options> 
-                            </Select>
+                                        {resListaCategorias.result && 
+                                    <Options options={resListaCategorias.result} index={"id"} valor={"descripcion"}></Options>
+                                        }
+                                    
+                            </Select> */}
                             </FormGroup>
                             <FormGroup label={"Adjuntar Archivo"} 
-                                   ayuda={"Archivo del documento de preferencia en PDF."}>
+                                   ayuda={"Archivo del documento de preferencia en JPG."}>
                                   <SingleUpload
-                                    key="upload_portada_imagen"
+                                    key="imagen"
                                     accept={'.*'}
-                                    folderSave={rutaFolder}
+                                    folderSave={FilesImagenBlog.FilesImagenes}
                                     form={blog}
                                     setForm={setBlog}
-                                    nameUpload={"archivodigital"}
+                                    nameUpload={"imagen"}
                                         >
                                 </SingleUpload> 
                             </FormGroup>
+                            <FormGroup label={"Estado"}>
+                                <Select
+                                    value={blog.estado  || "" }
+                                    onChange={handleInputChange}
+                                    name={"estado"}
+                                >
+                                    <Options options={[
+                                        { id: "PENDIENTE", value: "PENDIENTE"},
+                                        { id: "PUBLICADO", value: "PUBLICADO"}]}
+                                        index={"id"}
+                                        valor={"value"}>
+                                        </Options>
+                                </Select>
+                        </FormGroup>     
                         </Row12>
                     </RowForm>
                     <FormFooter>

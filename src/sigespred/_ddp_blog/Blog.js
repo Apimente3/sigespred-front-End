@@ -1,26 +1,55 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ComboOptions from '../../components/helpers/ComboOptions';
 import { LISTADO_BLOG_BREADCRUM } from '../../config/breadcrums';
 import WraperLarge from "../m000_common/formContent/WraperLarge";
 import * as funcGlob from "../../components/helpers/FuncionesGlobales";
 import { initAxiosInterceptors } from "../../config/axios";
 import { Link } from 'react-router-dom';
+import { Loading, Options } from '../../components/forms';
+import { TableBlog } from './TableBlog';
+import { useTable } from '../../hooks/useTable';
+import { BlogRow } from './BlogRow';
+import { toastr } from 'react-redux-toastr';
+import { useAsync } from 'react-async-hook';
+import * as helperGets from "../../components/helpers/LoadMaestros";
+
 const Axios = initAxiosInterceptors();
 const { alasql } = window;
 const { $ } = window;
 const queryString = require("query-string");
 
+async function buscarBlog(query) {
+  const { data } = await Axios.get(`/blog1/buscar?` + query);
+  return data;
+}
 
 export const Blog = () => {
     const [filtros, set_filtros] = useState({});
     const [contentMessage, set_contentMessage] = useState("");
-
-
-
-
-
+    const [cargandoGrid, set_cargandoGrid] = useState(false);
+    const [activePage,changePage, limit, totalItemsCount,pageRangeDisplayed , list] = useTable();
+    const [busqueda, setBusqueda] = useState("");
+    const resListaCategorias = useAsync(helperGets.helperGetListCategorias,[])
     
-  const buscarDocumentosInternosFilter = async (e) => {
+
+    useEffect(() => {
+      async function initialLoad(){
+          try {
+            let query = await queryString.stringify({ busqueda, page: activePage, limit });
+            let listaBlog = await buscarBlog(query);
+
+            changePage(activePage, listaBlog);
+            set_cargandoGrid(false);
+
+          } catch (error) {
+              console.log(error);
+          }
+      }
+      initialLoad();
+    }, []);
+    
+  const buscarBlogFilter = async (e) => {
+    debugger;
     if (
       (filtros.fechainicio && !filtros.fechafin) ||
       (!filtros.fechainicio && filtros.fechafin)
@@ -73,11 +102,86 @@ export const Blog = () => {
 
     }
 
-    //ejecutarDocInternosFilter(valorFiltros);
+    ejecutarBlogFilter(valorFiltros);
   };
-    function handleInputChange(e) {
 
+  
+  function handleInputChange(e) {
+    switch (e.target.name) {
+      case "titulo":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value.toUpperCase(),
+        });
+        break;
+      case "categoria":
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
+        break;
+      default:
+        set_filtros({
+          ...filtros,
+          [e.target.name]: e.target.value,
+        });
     }
+    //TODO: remover console
+
+  }
+
+  const ejecutarBlogFilter = async (datosfiltro) => {
+    set_cargandoGrid(true);
+    setBusqueda(datosfiltro);
+    let query = await queryString.stringify({ page: 1, limit });
+    if (datosfiltro) {
+      query += `&${datosfiltro}`;
+    }
+    let listaBlog = await buscarBlog(query);
+    changePage(1, listaBlog);
+    set_cargandoGrid(false);
+  }
+
+  
+
+    const ejecutarEliminar = (id) => {
+      Axios.delete(`/blog/${id}`)
+        .then(() => {
+          ejecutarBlogFilter(busqueda);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    const callbackEliminarBlog = (idblog) => {
+      try {
+  
+        const toastrConfirmOptions = {
+          onOk: () => ejecutarEliminar(idblog),
+        };
+        toastr.confirm(
+          `¿Desea eliminar el Blog: ${idblog}?`,
+          toastrConfirmOptions
+        );
+      } catch (e) {
+        toastr.error(
+          "Búsqueda de Blog",
+          "Se encontró un error: " + e.message
+        );
+      }
+    };
+
+    const limpiarBlogFilter = (e) => {
+
+      $("#titulo").val("");
+      $("#categoria").val("");
+      $("#fechainicio").val("");
+      $("#fechafin").val("");
+      set_filtros({});
+      ejecutarBlogFilter("");
+    }
+
     const cabecerasTabla = ["#",
     "ID",
     "TITULO",
@@ -113,22 +217,18 @@ export const Blog = () => {
                         Categoria
                         </label>
                         <div className="col-lg-4">
-                        <select
-                            className="form-control input-sm"
-                            id="categoria"
-                            name="categoria"
-                            // title="El Tipo de Plano es requerido"
-                            onChange={handleInputChange}
-                        >
+                          <select
+                              className="form-control input-sm"
+                              id="categoria"
+                              name="categoria"
+                              // title="El Tipo de Plano es requerido"
+                              onChange={handleInputChange}
+                          >
                             <option value="">--SELECCIONE--</option>
-                            {/* {dataEquipo && ( */}
-                            <ComboOptions
-                                //data={cateroria}
-                                valorkey="id"
-                                valornombre="equipo"
-                            />
-                            {/* )} */}
-                        </select>
+                            {resListaCategorias.result && 
+                              <Options options={resListaCategorias.result} index={"descripcion"} valor={"descripcion"}></Options>
+                             }
+                          </select>
                         </div>
                     </div>
                     <div className="form-group">
@@ -165,14 +265,14 @@ export const Blog = () => {
                             <div className="col-lg-6 text-right">
                                 <button
                                 type="button"
-                                // onClick={limpiarDocumentacionInternaFilter}
+                                onClick={limpiarBlogFilter}
                                 className="btn btn-default btn-sm fullborder  btn-control"
                                 >
                                 <i className="fa fa-eraser"></i> Limpiar Filtro(s)
                                 </button>
                                 <button
                                 type="button"
-                                // onClick={buscarDocumentosInternosFilter}
+                                onClick={buscarBlogFilter}
                                 className="btn btn-info  btn-sm  fullborder  btn-control"
                                 >
                                 <i className="fa fa-search"></i> Aplicar Filtro(s)
@@ -183,23 +283,38 @@ export const Blog = () => {
                     <div className="mt-4 form-group">
                         <div className="row">
                         {/* <div className="col-md-6"> */}
-                        <div className="col-md-6">
-                            <legend className="fullborder">
-                            Resultados de Búsqueda de contenido del Blog
-                            </legend>
+                          <div className="col-md-6">
+                              <legend className="fullborder">
+                              Resultados de Búsqueda de contenido del Blog
+                              </legend>
+                          </div>
+                          {/* </div> */}
+                          <div className="col-md-6 text-right">
+                              <Link to={`/categoria`} className="btn btn-danger btn-sm fullborder">
+                                  <i className="fa fa-clone"></i>  Categorias
+                              </Link>
+                              <Link
+                              to={`/blog-add`}
+                              className="btn btn-danger btn-sm fullborder  btn-control">
+                              <i className="fa fa-plus-circle"></i> Agregar
+                              </Link>
+                          </div>
                         </div>
-                        {/* </div> */}
-                        <div className="col-md-6 text-right">
-                            {/* <button type="button" onClick={descargarXls} className="btn btn-default btn-sm fullborder">
-                                <i className="fa fa-file-excel-o"></i> Descargar Excel
-                            </button> */}
-                            <Link
-                            to={`/blog-add`}
-                            className="btn btn-danger btn-sm fullborder  btn-control">
-                            <i className="fa fa-plus-circle"></i> Agregar
-                            </Link>
-                        </div>
-                        </div>
+                    </div>
+
+                    <div className="panel panel-default">
+                    {cargandoGrid ? (
+                      <Loading></Loading>
+                      ) : (
+                        <>
+                          <TableBlog cabecera={cabecerasTabla}>
+                          {list.rows.map((blog, i) => (
+                            <BlogRow nro={i} blog={blog} callback={callbackEliminarBlog} ></BlogRow>
+                            ))}
+                          </TableBlog>
+                        </>
+                      )
+                    }
                     </div>
                 </form>
 
